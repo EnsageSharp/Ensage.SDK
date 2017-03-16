@@ -11,7 +11,7 @@ namespace Ensage.SDK.Threading
     {
         private static readonly object SyncRoot = new object();
 
-        private static volatile EnsageDispatcher instance = null;
+        private static volatile EnsageDispatcher instance;
 
         private bool disposed;
 

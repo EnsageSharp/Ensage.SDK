@@ -21,11 +21,6 @@ namespace Ensage.SDK.TargetSelector
 
         private IEnsageServiceContext Context { get; }
 
-        public IEnumerable<Unit> GetAOEUnits(IActiveAbility ability)
-        {
-            return null;
-        }
-
         public Unit GetClosestUnitToMouse(Team team = Team.Undefined)
         {
             var mousePosition = Game.MousePosition;

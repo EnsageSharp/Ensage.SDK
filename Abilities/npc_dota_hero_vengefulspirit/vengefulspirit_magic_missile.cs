@@ -2,6 +2,8 @@
 //    Copyright (c) 2017 Ensage.
 // </copyright>
 
+// ReSharper disable once StyleCop.SA1300
+
 namespace Ensage.SDK.Abilities.npc_dota_hero_vengefulspirit
 {
     using System.Linq;
@@ -10,6 +12,7 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_vengefulspirit
     using Ensage.SDK.Helpers;
 
     // ReSharper disable once InconsistentNaming
+    // ReSharper disable once StyleCop.SA1300
     public class vengefulspirit_magic_missile : TargetAbility
     {
         public vengefulspirit_magic_missile(Ability ability)

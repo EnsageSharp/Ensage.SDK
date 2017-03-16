@@ -55,7 +55,7 @@ namespace Ensage.SDK.Service
                 Catalog,
                 CompositionOptions.IsThreadSafe | CompositionOptions.DisableSilentRejection);
 
-            container.ComposeExportedValue<IEnsageServiceContext>(context);
+            container.ComposeExportedValue(context);
 
             return new ContextContainer<IEnsageServiceContext>(context, container);
         }

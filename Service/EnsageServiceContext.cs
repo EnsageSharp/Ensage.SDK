@@ -20,9 +20,9 @@ namespace Ensage.SDK.Service
             this.Owner = unit;
         }
 
-        public Hero Owner { get; }
+        public Unit Owner { get; }
 
-        public bool Equals(Hero other)
+        public bool Equals(Unit other)
         {
             return this.Owner.Equals(other);
         }

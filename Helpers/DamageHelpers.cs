@@ -10,7 +10,7 @@ namespace Ensage.SDK.Helpers
 
     public static class DamageHelpers
     {
-        public static bool CanAffectTarget(this Ability ability, Unit target, bool pierceImmunity = false)
+        public static bool CanAffectTarget(this Ability ability, Unit target, bool pierceImmunityOverwrite = false)
         {
             // check if target is in the correct team
             var teamType = ability.TargetTeamType;
@@ -32,7 +32,7 @@ namespace Ensage.SDK.Helpers
                 return false;
             }
 
-            if (pierceImmunity)
+            if (pierceImmunityOverwrite)
             {
                 return true;
             }

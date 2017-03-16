@@ -13,7 +13,7 @@ namespace Ensage.SDK.Threading
     {
         private static readonly object SyncRoot = new object();
 
-        private static volatile EnsageTaskScheduler instance = null;
+        private static volatile EnsageTaskScheduler instance;
 
         private EnsageTaskScheduler()
         {
@@ -64,7 +64,7 @@ namespace Ensage.SDK.Threading
 
         protected override void QueueTask(Task task)
         {
-            EnsageSynchronizationContext.Instance.Post(state => task.Start(this), (object)task);
+            EnsageSynchronizationContext.Instance.Post(state => task.Start(this), task);
         }
 
         protected override bool TryExecuteTaskInline(Task task, bool taskWasPreviouslyQueued)

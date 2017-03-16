@@ -130,11 +130,11 @@ namespace Ensage.SDK.Service
 
             if (contract == null)
             {
-                this.Container.ComposeExportedValue<T>(value);
+                this.Container.ComposeExportedValue(value);
             }
             else
             {
-                this.Container.ComposeExportedValue<T>(contract, value);
+                this.Container.ComposeExportedValue(contract, value);
             }
         }
     }

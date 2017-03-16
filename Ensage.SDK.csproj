@@ -34,35 +34,60 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Ensage">
-      <HintPath>..\..\..\..\..\EnsageSharp\References\Ensage.dll</HintPath>
+      <HintPath>C:\EnsageSharp\References\Ensage.dll</HintPath>
+    </Reference>
+    <Reference Include="PlaySharp.Toolkit">
+      <HintPath>C:\EnsageSharp\References\PlaySharp.Toolkit.dll</HintPath>
     </Reference>
     <Reference Include="SharpDX">
-      <HintPath>..\..\..\..\..\EnsageSharp\References\SharpDX.dll</HintPath>
+      <HintPath>C:\EnsageSharp\References\SharpDX.dll</HintPath>
     </Reference>
     <Reference Include="SharpDX.Direct2D1">
-      <HintPath>..\..\..\..\..\EnsageSharp\References\SharpDX.Direct2D1.dll</HintPath>
+      <HintPath>C:\EnsageSharp\References\SharpDX.Direct2D1.dll</HintPath>
     </Reference>
     <Reference Include="SharpDX.Direct3D11">
-      <HintPath>..\..\..\..\..\EnsageSharp\References\SharpDX.Direct3D11.dll</HintPath>
+      <HintPath>C:\EnsageSharp\References\SharpDX.Direct3D11.dll</HintPath>
     </Reference>
     <Reference Include="SharpDX.Direct3D9">
-      <HintPath>..\..\..\..\..\EnsageSharp\References\SharpDX.Direct3D9.dll</HintPath>
+      <HintPath>C:\EnsageSharp\References\SharpDX.Direct3D9.dll</HintPath>
     </Reference>
     <Reference Include="SharpDX.DXGI">
-      <HintPath>..\..\..\..\..\EnsageSharp\References\SharpDX.DXGI.dll</HintPath>
+      <HintPath>C:\EnsageSharp\References\SharpDX.DXGI.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Net.Http" />
-    <Reference Include="System.Xml" />
+    <Reference Include="System.Drawing" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
+    <Compile Include="Abilities\ActiveAbility.cs" />
+    <Compile Include="Abilities\AuraAbility.cs" />
+    <Compile Include="Abilities\BaseAbility.cs" />
+    <Compile Include="Abilities\CircleAbility.cs" />
+    <Compile Include="Abilities\ConeAbility.cs" />
+    <Compile Include="Abilities\IActiveAbility.cs" />
+    <Compile Include="Abilities\LineAbility.cs" />
+    <Compile Include="Abilities\PointAbility.cs" />
+    <Compile Include="Abilities\TargetAbility.cs" />
+    <Compile Include="Abilities\npc_dota_hero_vengefulspirit\vengefulspirit_magic_missile.cs" />
+    <Compile Include="Helpers\DamageHelpers.cs" />
+    <Compile Include="Service\ContainerFactory.cs" />
+    <Compile Include="Service\ContextContainer.cs" />
+    <Compile Include="Service\IServiceContext.cs" />
+    <Compile Include="TargetSelector\ExportTargetSelectorAttribute.cs" />
+    <Compile Include="Extensions\AbilityExtensions.cs" />
+    <Compile Include="Service\EnsageServiceContext.cs" />
+    <Compile Include="Extensions\EntityExtensions.cs" />
+    <Compile Include="Abilities\IAbility.cs" />
+    <Compile Include="Service\IEnsageServiceContext.cs" />
+    <Compile Include="IItem.cs" />
+    <Compile Include="Service\IServiceMetadata.cs" />
+    <Compile Include="TargetSelector\ITargetSelector.cs" />
+    <Compile Include="TargetSelector\ITargetSelectorMetadata.cs" />
+    <Compile Include="Attributes\ObjectProviderAttribute.cs" />
+    <Compile Include="TargetSelector\TargetSelector.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Extensions\UnitExtensions.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

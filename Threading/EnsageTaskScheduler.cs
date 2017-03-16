@@ -47,9 +47,14 @@ namespace Ensage.SDK.Threading
 
         public override int MaximumConcurrencyLevel => 1;
 
-        public Task Run(Func<Task> function, CancellationToken cancellationToken)
+        public Task Run(Func<Task> function, CancellationToken cancellationToken = default(CancellationToken))
         {
             return this.Factory.StartNew(function, cancellationToken);
+        }
+
+        public Task Run(Action Action, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return this.Factory.StartNew(Action, cancellationToken);
         }
 
         protected override IEnumerable<Task> GetScheduledTasks()

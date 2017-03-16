@@ -4,6 +4,7 @@
 
 namespace Ensage.SDK.Threading
 {
+    using System;
     using System.Collections.Generic;
     using System.Threading;
     using System.Threading.Tasks;
@@ -16,6 +17,11 @@ namespace Ensage.SDK.Threading
 
         private EnsageTaskScheduler()
         {
+            this.Factory = new TaskFactory(
+                CancellationToken.None,
+                TaskCreationOptions.DenyChildAttach,
+                TaskContinuationOptions.None,
+                this);
         }
 
         public static EnsageTaskScheduler Instance
@@ -37,7 +43,14 @@ namespace Ensage.SDK.Threading
             }
         }
 
+        public TaskFactory Factory { get; }
+
         public override int MaximumConcurrencyLevel => 1;
+
+        public Task Run(Func<Task> function, CancellationToken cancellationToken)
+        {
+            return this.Factory.StartNew(function, cancellationToken);
+        }
 
         protected override IEnumerable<Task> GetScheduledTasks()
         {

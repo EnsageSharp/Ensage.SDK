@@ -1,8 +1,12 @@
-﻿using System.ComponentModel;
-using System.Security;
+﻿// <copyright file="IServiceMetadata.cs" company="Ensage">
+//    Copyright (c) 2017 Ensage.
+// </copyright>
 
 namespace Ensage.SDK.Service
 {
+    using System.ComponentModel;
+    using System.Security;
+
     [SecuritySafeCritical]
     public interface IServiceMetadata
     {

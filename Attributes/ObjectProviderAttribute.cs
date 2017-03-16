@@ -1,18 +1,23 @@
-﻿using System;
-using System.ComponentModel.Composition;
-using Ensage.SDK.Service;
+﻿// <copyright file="ObjectProviderAttribute.cs" company="Ensage">
+//    Copyright (c) 2017 Ensage.
+// </copyright>
 
 namespace Ensage.SDK.Attributes
 {
+    using System;
+    using System.ComponentModel.Composition;
+
+    using Ensage.SDK.Service;
+
     [AttributeUsage(AttributeTargets.Class)]
     public class ObjectProviderAttribute : ExportAttribute, IServiceMetadata
     {
         protected ObjectProviderAttribute(Type contract, string name, string version = null, string description = null)
             : base(contract)
         {
-            Name = name;
-            Version = version;
-            Description = description;
+            this.Name = name;
+            this.Version = version;
+            this.Description = description;
         }
 
         public string Description { get; }

@@ -1,39 +1,28 @@
-﻿using System.Linq;
-using Ensage.SDK.Extensions;
-using Ensage.SDK.Helpers;
+﻿// <copyright file="TargetAbility.cs" company="Ensage">
+//    Copyright (c) 2017 Ensage.
+// </copyright>
 
 namespace Ensage.SDK.Abilities
 {
+    using System.Linq;
+
+    using Ensage.SDK.Extensions;
+    using Ensage.SDK.Helpers;
+
     public abstract class TargetAbility : BaseAbility
     {
-        protected TargetAbility(Ability ability) : base(ability)
+        protected TargetAbility(Ability ability)
+            : base(ability)
         {
         }
 
-        public override float GetDamage(params Unit[] targets)
-        {
-            var level = Ability.Level;  
-            if (level == 0)
-                return 0;
-            var damage = Ability.GetDamage(level - 1);
-
-            var target = targets.First();
-            if (!Ability.CanAffectTarget(target))
-                return 0;
-
-            var amplify = Ability.GetSpellAmp();
-            var reduction = Ability.GetDamageReduction(target);
-
-            return damage * (1.0f + amplify) * (1.0f - reduction);
-        }
-
-        public virtual float Range 
+        public virtual float Range
         {
             get
             {
-                var castRange = (float) Ability.CastRange;
+                var castRange = (float)this.Ability.CastRange;
 
-                var unit = Ability.Owner as Unit;
+                var unit = this.Ability.Owner as Unit;
                 if (unit != null)
                 {
                     // items
@@ -44,7 +33,8 @@ namespace Ensage.SDK.Abilities
                     }
 
                     // talents
-                    foreach (var talent in unit.Spellbook.Spells.Where(x => x.Level > 0 && x.Name.StartsWith("special_bonus_cast_range_") ))
+                    foreach (var talent in
+                        unit.Spellbook.Spells.Where(x => x.Level > 0 && x.Name.StartsWith("special_bonus_cast_range_")))
                     {
                         castRange += talent.GetAbilitySpecialData("value");
                     }
@@ -52,6 +42,28 @@ namespace Ensage.SDK.Abilities
 
                 return castRange;
             }
+        }
+
+        public override float GetDamage(params Unit[] targets)
+        {
+            var level = this.Ability.Level;
+            if (level == 0)
+            {
+                return 0;
+            }
+
+            var damage = this.Ability.GetDamage(level - 1);
+
+            var target = targets.First();
+            if (!this.Ability.CanAffectTarget(target))
+            {
+                return 0;
+            }
+
+            var amplify = this.Ability.GetSpellAmp();
+            var reduction = this.Ability.GetDamageReduction(target);
+
+            return damage * (1.0f + amplify) * (1.0f - reduction);
         }
     }
 }

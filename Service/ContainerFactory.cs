@@ -1,17 +1,23 @@
-using System;
-using System.ComponentModel.Composition;
-using System.ComponentModel.Composition.Hosting;
-using System.Reflection;
-using log4net;
-using PlaySharp.Toolkit.Logging;
+// <copyright file="ContainerFactory.cs" company="Ensage">
+//    Copyright (c) 2017 Ensage.
+// </copyright>
 
 namespace Ensage.SDK.Service
 {
+    using System;
+    using System.ComponentModel.Composition;
+    using System.ComponentModel.Composition.Hosting;
+    using System.Reflection;
+
+    using log4net;
+
+    using PlaySharp.Toolkit.Logging;
+
     public static class ContainerFactory
     {
         private static readonly ILog Log = AssemblyLogs.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-        private static AggregateCatalog _catalog;
 
+        private static AggregateCatalog _catalog;
 
         public static AggregateCatalog Catalog
         {
@@ -26,9 +32,14 @@ namespace Ensage.SDK.Service
                         _catalog.Catalogs.Add(new AssemblyCatalog(assembly));
                     }
                 }
+
                 return _catalog;
             }
-            private set { _catalog = value; }
+
+            private set
+            {
+                _catalog = value;
+            }
         }
 
         public static ContextContainer<IEnsageServiceContext> CreateContainer(IEnsageServiceContext context)
@@ -42,8 +53,7 @@ namespace Ensage.SDK.Service
 
             var container = new CompositionContainer(
                 Catalog,
-                CompositionOptions.IsThreadSafe |
-                CompositionOptions.DisableSilentRejection);
+                CompositionOptions.IsThreadSafe | CompositionOptions.DisableSilentRejection);
 
             container.ComposeExportedValue<IEnsageServiceContext>(context);
 

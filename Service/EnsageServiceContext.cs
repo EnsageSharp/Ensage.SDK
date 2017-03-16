@@ -1,8 +1,12 @@
-﻿using System;
-using System.Security;
+﻿// <copyright file="EnsageServiceContext.cs" company="Ensage">
+//    Copyright (c) 2017 Ensage.
+// </copyright>
 
 namespace Ensage.SDK.Service
 {
+    using System;
+    using System.Security;
+
     [SecuritySafeCritical]
     public sealed class EnsageServiceContext : IEnsageServiceContext
     {
@@ -13,14 +17,14 @@ namespace Ensage.SDK.Service
                 throw new ArgumentNullException(nameof(unit));
             }
 
-            Owner = unit;
+            this.Owner = unit;
         }
 
         public Hero Owner { get; }
 
         public bool Equals(Hero other)
         {
-            return Owner.Equals(other);
+            return this.Owner.Equals(other);
         }
     }
 }

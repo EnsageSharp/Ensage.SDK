@@ -1,7 +1,11 @@
-using System.Linq;
+// <copyright file="AbilityExtensions.cs" company="Ensage">
+//    Copyright (c) 2017 Ensage.
+// </copyright>
 
 namespace Ensage.SDK.Extensions
 {
+    using System.Linq;
+
     public static class AbilityExtensions
     {
         public static float GetAbilitySpecialData(this Ability ability, string name, uint level = 0)

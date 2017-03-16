@@ -1,15 +1,21 @@
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.Composition;
-using System.ComponentModel.Composition.Hosting;
-using System.Reflection;
-using System.Security;
-using log4net;
-using PlaySharp.Toolkit.Helper.Annotations;
-using PlaySharp.Toolkit.Logging;
+// <copyright file="ContextContainer.cs" company="Ensage">
+//    Copyright (c) 2017 Ensage.
+// </copyright>
 
 namespace Ensage.SDK.Service
 {
+    using System;
+    using System.Collections.Generic;
+    using System.ComponentModel.Composition;
+    using System.ComponentModel.Composition.Hosting;
+    using System.Reflection;
+    using System.Security;
+
+    using log4net;
+
+    using PlaySharp.Toolkit.Helper.Annotations;
+    using PlaySharp.Toolkit.Logging;
+
     [SecuritySafeCritical]
     public class ContextContainer<TContext> : IEquatable<ContextContainer<TContext>>
         where TContext : class, IServiceContext
@@ -85,7 +91,7 @@ namespace Ensage.SDK.Service
             }
 
             var other = obj as ContextContainer<TContext>;
-            return (other != null) && this.Equals(other);
+            return other != null && this.Equals(other);
         }
 
         public virtual T Get<T>([CanBeNull] string contract = null)

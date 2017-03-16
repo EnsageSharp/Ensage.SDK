@@ -1,43 +1,52 @@
-﻿using SharpDX;
+﻿// <copyright file="ActiveAbility.cs" company="Ensage">
+//    Copyright (c) 2017 Ensage.
+// </copyright>
 
 namespace Ensage.SDK.Abilities
 {
+    using SharpDX;
+
     public abstract class ActiveAbility : BaseAbility, IActiveAbility
     {
-        protected ActiveAbility(Ability ability) : base(ability)
+        protected ActiveAbility(Ability ability)
+            : base(ability)
         {
-        }
-
-        public void UseAbility(bool queued = false)
-        {
-            Ability.UseAbility(queued);
-        }
-
-        public void UseAbility(Unit target, bool queued = false)
-        {
-            Ability.UseAbility(target, queued);
-        }
-
-        public void UseAbility(Vector3 target, bool queued = false)
-        {
-            Ability.UseAbility(target, queued);
         }
 
         public float CastPoint
         {
             get
             {
-                if (Ability is Item)
+                if (this.Ability is Item)
+                {
                     return 0.0f;
+                }
 
-                var level = Ability.Level;
+                var level = this.Ability.Level;
                 if (level == 0)
+                {
                     return 0.0f;
+                }
 
-                return Ability.GetCastPoint(level - 1);
+                return this.Ability.GetCastPoint(level - 1);
             }
         }
 
         public virtual bool IsChanneling { get; } = false;
+
+        public void UseAbility(bool queued = false)
+        {
+            this.Ability.UseAbility(queued);
+        }
+
+        public void UseAbility(Unit target, bool queued = false)
+        {
+            this.Ability.UseAbility(target, queued);
+        }
+
+        public void UseAbility(Vector3 target, bool queued = false)
+        {
+            this.Ability.UseAbility(target, queued);
+        }
     }
 }

@@ -39,31 +39,41 @@
     <AssemblyOriginatorKeyFile>key.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="clipper_library">
+      <HintPath>..\..\..\..\..\EnsageSharpTest\References\clipper_library.dll</HintPath>
+    </Reference>
     <Reference Include="Ensage">
-      <HintPath>C:\EnsageSharp\References\Ensage.dll</HintPath>
+      <HintPath>C:\EnsageSharpTest\References\Ensage.dll</HintPath>
     </Reference>
     <Reference Include="PlaySharp.Toolkit">
-      <HintPath>C:\EnsageSharp\References\PlaySharp.Toolkit.dll</HintPath>
+      <HintPath>C:\EnsageSharpTest\References\PlaySharp.Toolkit.dll</HintPath>
     </Reference>
-    <Reference Include="SharpDX">
-      <HintPath>C:\EnsageSharp\References\SharpDX.dll</HintPath>
+    <Reference Include="SharpDX, Version=2.6.3.0, Culture=neutral, PublicKeyToken=7e3dc52b16ce4f66, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\EnsageSharpTest\References\SharpDX.dll</HintPath>
     </Reference>
-    <Reference Include="SharpDX.Direct2D1">
-      <HintPath>C:\EnsageSharp\References\SharpDX.Direct2D1.dll</HintPath>
+    <Reference Include="SharpDX.Direct2D1, Version=2.6.3.0, Culture=neutral, PublicKeyToken=7e3dc52b16ce4f66, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\EnsageSharpTest\References\SharpDX.Direct2D1.dll</HintPath>
     </Reference>
-    <Reference Include="SharpDX.Direct3D11">
-      <HintPath>C:\EnsageSharp\References\SharpDX.Direct3D11.dll</HintPath>
+    <Reference Include="SharpDX.Direct3D11, Version=2.6.3.0, Culture=neutral, PublicKeyToken=7e3dc52b16ce4f66, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\EnsageSharpTest\References\SharpDX.Direct3D11.dll</HintPath>
     </Reference>
-    <Reference Include="SharpDX.Direct3D9">
-      <HintPath>C:\EnsageSharp\References\SharpDX.Direct3D9.dll</HintPath>
+    <Reference Include="SharpDX.Direct3D9, Version=2.6.3.0, Culture=neutral, PublicKeyToken=7e3dc52b16ce4f66, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\EnsageSharpTest\References\SharpDX.Direct3D9.dll</HintPath>
     </Reference>
-    <Reference Include="SharpDX.DXGI">
-      <HintPath>C:\EnsageSharp\References\SharpDX.DXGI.dll</HintPath>
+    <Reference Include="SharpDX.DXGI, Version=2.6.3.0, Culture=neutral, PublicKeyToken=7e3dc52b16ce4f66, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\EnsageSharpTest\References\SharpDX.DXGI.dll</HintPath>
+    </Reference>
+    <Reference Include="SharpDX.Mathematics">
+      <HintPath>C:\EnsageSharpTest\References\SharpDX.Mathematics.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Drawing" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Abilities\ActiveAbility.cs" />
@@ -72,11 +82,40 @@
     <Compile Include="Abilities\CircleAbility.cs" />
     <Compile Include="Abilities\ConeAbility.cs" />
     <Compile Include="Abilities\IActiveAbility.cs" />
+    <Compile Include="Abilities\IDotAbility.cs" />
+    <Compile Include="Abilities\IPolygonAbility.cs" />
     <Compile Include="Abilities\LineAbility.cs" />
+    <Compile Include="Abilities\npc_dota_hero_enigma\enigma_black_hole.cs" />
+    <Compile Include="Abilities\npc_dota_hero_enigma\enigma_demonic_conversion.cs" />
+    <Compile Include="Abilities\npc_dota_hero_enigma\enigma_malefice.cs" />
+    <Compile Include="Abilities\npc_dota_hero_enigma\enigma_midnight_pulse.cs" />
+    <Compile Include="Abilities\npc_dota_hero_queenofpain\queenofpain_blink.cs" />
+    <Compile Include="Abilities\npc_dota_hero_queenofpain\queenofpain_scream_of_pain.cs" />
+    <Compile Include="Abilities\npc_dota_hero_queenofpain\queenofpain_shadow_strike.cs" />
+    <Compile Include="Abilities\npc_dota_hero_queenofpain\queenofpain_sonic_wave.cs" />
+    <Compile Include="Abilities\npc_dota_hero_vengefulspirit\vengefulspirit_command_aura.cs" />
+    <Compile Include="Abilities\npc_dota_hero_vengefulspirit\vengefulspirit_nether_swap.cs" />
+    <Compile Include="Abilities\npc_dota_hero_vengefulspirit\vengefulspirit_wave_of_terror.cs" />
     <Compile Include="Abilities\PointAbility.cs" />
+    <Compile Include="Abilities\RangedAbility.cs" />
     <Compile Include="Abilities\TargetAbility.cs" />
     <Compile Include="Abilities\npc_dota_hero_vengefulspirit\vengefulspirit_magic_missile.cs" />
+    <Compile Include="Extensions\AnimationExtensions.cs" />
+    <Compile Include="Extensions\HeroExtensions.cs" />
+    <Compile Include="Extensions\IntersectionResult.cs" />
+    <Compile Include="Extensions\MovementCollisionInfo.cs" />
+    <Compile Include="Extensions\ProjectionInfo.cs" />
+    <Compile Include="Extensions\SharpDXExtensions.cs" />
+    <Compile Include="Extensions\Vector2Extensions.cs" />
+    <Compile Include="Extensions\Vector3Extensions.cs" />
+    <Compile Include="Extensions\Vector4Extensions.cs" />
+    <Compile Include="Geometry\Geometry.cs" />
     <Compile Include="Helpers\DamageHelpers.cs" />
+    <Compile Include="Helpers\EntityOrPosition.cs" />
+    <Compile Include="Orbwalker\ExportOrbwalkerAttribute.cs" />
+    <Compile Include="Orbwalker\IOrbwalker.cs" />
+    <Compile Include="Orbwalker\IOrbwalkerMetadata.cs" />
+    <Compile Include="Orbwalker\Orbwalker.cs" />
     <Compile Include="Service\ContainerFactory.cs" />
     <Compile Include="Service\ContextContainer.cs" />
     <Compile Include="Service\IServiceContext.cs" />

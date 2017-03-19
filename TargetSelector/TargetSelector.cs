@@ -7,7 +7,6 @@ namespace Ensage.SDK.TargetSelector
     using System.Collections.Generic;
     using System.Linq;
 
-    using Ensage.SDK.Abilities;
     using Ensage.SDK.Extensions;
     using Ensage.SDK.Service;
 

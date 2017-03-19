@@ -42,12 +42,12 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_vengefulspirit
             }
 
             var target = targets.First();
-            if (!this.Ability.CanAffectTarget(target, pierceTalentActive))
+            if (!this.CanAffectTarget(target, pierceTalentActive))
             {
                 return 0;
             }
 
-            var amplify = this.Ability.GetSpellAmp();
+            var amplify = this.Ability.SpellAmplification();
             var reduction = this.Ability.GetDamageReduction(target);
 
             return damage * (1.0f + amplify) * (1.0f - reduction);

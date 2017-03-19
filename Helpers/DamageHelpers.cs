@@ -10,52 +10,6 @@ namespace Ensage.SDK.Helpers
 
     public static class DamageHelpers
     {
-        public static bool CanAffectTarget(this Ability ability, Unit target, bool pierceImmunityOverwrite = false)
-        {
-            // check if target is in the correct team
-            var teamType = ability.TargetTeamType;
-            if (teamType.HasFlag(TargetTeamType.None))
-            {
-                return false;
-            }
-
-            var team = ability.Owner.Team;
-            var targetTeam = target.Team;
-
-            if (!teamType.HasFlag(TargetTeamType.Allied) && team == targetTeam)
-            {
-                return false;
-            }
-
-            if (!teamType.HasFlag(TargetTeamType.Enemy) && team != targetTeam)
-            {
-                return false;
-            }
-
-            if (pierceImmunityOverwrite)
-            {
-                return true;
-            }
-
-            // check if target is magic immune
-            var pierceType = ability.SpellPierceImmunityType;
-            switch (pierceType)
-            {
-                case SpellPierceImmunityType.None:
-                case SpellPierceImmunityType.AlliesNo:
-                case SpellPierceImmunityType.EnemiesNo:
-                    return !target.IsMagicImmune();
-
-                case SpellPierceImmunityType.AlliesYes:
-                    return targetTeam == team;
-
-                case SpellPierceImmunityType.EnemiesYes:
-                    return targetTeam != team;
-            }
-
-            return true;
-        }
-
         public static float GetDamageReduction(this Ability ability, Unit target)
         {
             var damageType = ability.DamageType;
@@ -79,7 +33,7 @@ namespace Ensage.SDK.Helpers
             return reduction;
         }
 
-        public static float GetSpellAmp(this Ability ability)
+        public static float SpellAmplification(this Ability ability)
         {
             var owner = ability.Owner as Unit;
             if (owner == null)
@@ -109,6 +63,11 @@ namespace Ensage.SDK.Helpers
             }
 
             return spellAmp;
+        }
+
+        public static float GetSpellDamage(float damage, float amplify, float reduction)
+        {
+            return damage * (1.0f + amplify) * (1.0f - reduction);
         }
     }
 }

@@ -4,7 +4,10 @@
 
 namespace Ensage.SDK.Extensions
 {
+    using System;
     using System.Linq;
+
+    using SharpDX;
 
     public static class UnitExtensions
     {
@@ -48,7 +51,7 @@ namespace Ensage.SDK.Extensions
 
         public static Ability GetAbilityById(this Unit unit, AbilityId abilityId)
         {
-            return unit.Spellbook.Spells.FirstOrDefault(x => x.AbilityId == 0);
+            return unit.Spellbook.Spells.FirstOrDefault(x => x.Id == 0);
         }
 
         public static float GetAttackDamage(this Unit unit, Unit target)
@@ -74,7 +77,13 @@ namespace Ensage.SDK.Extensions
 
         public static Item GetItemById(this Unit unit, AbilityId abilityId)
         {
-            return unit.Inventory.Items.FirstOrDefault(x => x.AbilityId == abilityId);
+            return unit.Inventory.Items.FirstOrDefault(x => x.Id == abilityId);
+        }
+
+        public static Vector3 InFront(this Unit unit, float distance)
+        {
+            var v = unit.Position + (unit.Vector3FromPolarAngle() * distance);
+            return new Vector3(v.X, v.Y, 0);
         }
 
         public static bool IsMagicImmune(this Unit unit)
@@ -82,9 +91,54 @@ namespace Ensage.SDK.Extensions
             return unit.UnitState.HasFlag(UnitState.MagicImmune);
         }
 
+        public static bool IsMuted(this Unit unit)
+        {
+            return unit.UnitState.HasFlag(UnitState.Muted);
+        }
+
         public static bool IsRealUnit(this Unit unit)
         {
             return unit.UnitType != 0 && !unit.UnitState.HasFlag(UnitState.FakeAlly);
         }
+
+        public static bool IsSilenced(this Unit unit)
+        {
+            return unit.UnitState.HasFlag(UnitState.Silenced);
+        }
+
+        public static Vector2 Vector2FromPolarAngle(this Unit unit, float delta = 0f, float radial = 1f)
+        {
+            var diff = MathUtil.DegreesToRadians(unit.RotationDifference);
+            var alpha = unit.NetworkRotationRad + diff;
+            return SharpDXExtensions.FromPolarCoordinates(radial, alpha + delta);
+        }
+
+        public static Vector3 Vector3FromPolarAngle(this Unit unit, float delta = 0f, float radial = 1f)
+        {
+            return Vector2FromPolarAngle(unit, delta, radial).ToVector3();
+        }
+
+        public static float AttackSpeedValue(this Unit hero)
+        {
+            // TODO modifiers like ursa overpower
+            var attackSpeed = Math.Max(20, hero.AttackSpeedValue);
+            return Math.Min(attackSpeed, 600);
+        }
+
+        public static float AttackPoint(this Unit unit)
+        {
+            try
+            {
+                var attackAnimationPoint =
+                    Game.FindKeyValues($"{unit.Name}/AttackAnimationPoint", KeyValueSource.Unit).FloatValue;
+
+                return attackAnimationPoint / (1 + (unit.AttackSpeedValue() - 100) / 100);
+            }
+            catch (KeyValuesNotFoundException)
+            {
+                return 0;
+            }
+        }
+
     }
 }

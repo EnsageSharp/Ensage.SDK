@@ -4,11 +4,25 @@
 
 namespace Ensage.SDK.Abilities
 {
-    public abstract class PointAbility : ActiveAbility
+    using System.Linq;
+
+    using Ensage.SDK.Extensions;
+    using Ensage.SDK.Geometry;
+
+    using SharpDX;
+
+    public abstract class PointAbility : RangedAbility, IPolygonAbility
     {
         protected PointAbility(Ability ability)
             : base(ability)
         {
+        }
+
+        public abstract Geometry.Polygon GetPolygon(Vector3 position);
+
+        public virtual Geometry.Polygon GetPolygon(Vector3 position, float time)
+        {
+            return this.GetPolygon(position);
         }
     }
 }

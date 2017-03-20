@@ -6,8 +6,6 @@
 
         string ModifierName { get; }
 
-        float TickDamage { get; }
-
         float TickRate { get; }
 
         float GetTickDamage(params Unit[] target);

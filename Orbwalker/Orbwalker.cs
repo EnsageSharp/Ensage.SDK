@@ -83,7 +83,7 @@
             if (targetEntity != null)
             {
                 var animation = contextOwner.Animation;
-
+                distance = contextOwner.Distance2D(targetEntity);
                 if (animation.IsAttackAnimation())
                 {
                     var attackPoint = contextOwner.AttackPoint();
@@ -97,7 +97,7 @@
                 }
                 else
                 {
-                    distance = contextOwner.Distance2D(targetEntity);
+
                     if (distance <= contextOwner.AttackRange())
                     {
                         this.OnAttacking();
@@ -105,12 +105,26 @@
                         return;
                     }
                 }
-               
+                if (distance < this.SafeZone)
+                {
+
+                }
             }
             else
             {
                 distance = contextOwner.Distance2D(this.target.Position);
             }
+
+            var mousePos = Game.MousePosition;
+            var distanceTomouse = mousePos.Distance(contextOwner.NetworkPosition);
+            if (distanceTomouse < this.HoldZoneRange)
+            {
+                // don't move but hold to cancel backswing etc // TODO: better move on current position?
+                contextOwner.Hold();
+                return;
+            }
+
+            
 
             contextOwner.Move(this.target.Position);
         }

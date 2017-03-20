@@ -40,7 +40,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="clipper_library">
-      <HintPath>..\..\..\..\..\EnsageSharpTest\References\clipper_library.dll</HintPath>
+      <HintPath>C:\EnsageSharpTest\References\clipper_library.dll</HintPath>
     </Reference>
     <Reference Include="Ensage">
       <HintPath>C:\EnsageSharpTest\References\Ensage.dll</HintPath>

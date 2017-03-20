@@ -3,9 +3,6 @@
     using System.Linq;
 
     using Ensage.SDK.Extensions;
-    using Ensage.SDK.Geometry;
-
-    using SharpDX;
 
     public class enigma_midnight_pulse : CircleAbility, IDotAbility
     {
@@ -18,11 +15,11 @@
 
         public string ModifierName { get; } = "TODO";
 
-        public float TickDamage => this.Ability.GetAbilitySpecialData("damage_percent");
-
         public float TickRate { get; } = 1.0f;
 
         public float TotalDamage => this.TickDamage * this.Duration;
+
+        private float TickDamage => this.Ability.GetAbilitySpecialData("damage_percent");
 
         public override float GetDamage(params Unit[] target)
         {

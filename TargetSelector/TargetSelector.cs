@@ -5,6 +5,7 @@
 namespace Ensage.SDK.TargetSelector
 {
     using System.Collections.Generic;
+    using System.ComponentModel.Composition;
     using System.Linq;
 
     using Ensage.SDK.Extensions;
@@ -13,6 +14,7 @@ namespace Ensage.SDK.TargetSelector
     [ExportTargetSelector("SDK")]
     public class TargetSelector : ITargetSelector
     {
+        [ImportingConstructor]
         public TargetSelector(IEnsageServiceContext context)
         {
             this.Context = context;
@@ -26,6 +28,7 @@ namespace Ensage.SDK.TargetSelector
             var query = team == Team.Undefined
                             ? this.GetValidTargetEnemyTeam<Unit>(this.Context.Owner.Team)
                             : this.GetValidTargeTeam<Unit>(team);
+            query = query.Where(x => x.Distance2D(mousePosition) < 800);
             return query.OrderBy(x => x.Distance2D(mousePosition)).FirstOrDefault();
         }
 

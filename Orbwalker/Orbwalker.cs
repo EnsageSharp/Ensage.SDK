@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel.Composition;
 
     using Ensage.SDK.Abilities;
     using Ensage.SDK.Extensions;
@@ -12,7 +13,7 @@
 
     using SharpDX;
 
-    [ExportTargetSelector("SDK")]
+    [ExportOrbwalker("SDK")]
     public class Orbwalker : IOrbwalker
     {
         public float HoldZoneRange;
@@ -21,13 +22,14 @@
 
         public bool UseAttackModifier;
 
-        private readonly EnsageServiceContext context;
+        private readonly IEnsageServiceContext context;
 
         private List<TargetAbility> attackModifierAbilities = new List<TargetAbility>();
 
         private EntityOrPosition target;
 
-        public Orbwalker(EnsageServiceContext context)
+        [ImportingConstructor]
+        public Orbwalker(IEnsageServiceContext context)
         {
             this.context = context;
             EnsageDispatcher.Instance.OnIngameUpdate += this.Instance_OnIngameUpdate;
@@ -86,7 +88,9 @@
                 distance = contextOwner.Distance2D(targetEntity);
                 if (animation.IsAttackAnimation())
                 {
-                    var attackPoint = contextOwner.AttackPoint();
+                    var hero = contextOwner as Hero;
+                    var attackPoint = hero?.AttackPoint() ?? contextOwner.AttackPoint();
+
                     var animationTime = animation.SequenceUpdateTime - animation.SequenceStartTime;
                     if (animationTime < attackPoint)
                     {

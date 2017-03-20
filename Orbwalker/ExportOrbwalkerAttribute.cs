@@ -14,7 +14,7 @@ namespace Ensage.SDK.Orbwalker
     [MetadataAttribute]
     [SecuritySafeCritical]
     [AttributeUsage(AttributeTargets.Class)]
-    public class ExportOrbwalkerAttribute : ObjectProviderAttribute, ITargetSelectorMetadata
+    public class ExportOrbwalkerAttribute : ObjectProviderAttribute, IOrbwalkerMetadata
     {
         public ExportOrbwalkerAttribute(string name, string version = null, string description = null)
             : base(typeof(IOrbwalker), name, version, description)

@@ -1,4 +1,4 @@
-// <copyright file="ID2D1BrushContainer.cs" company="Ensage">
+// <copyright file="ID2DBrushContainer.cs" company="Ensage">
 //    Copyright (c) 2017 Ensage.
 // </copyright>
 
@@ -10,7 +10,7 @@ namespace Ensage.SDK.Service.Renderer.D2D
 
     using SharpDX.Direct2D1;
 
-    public interface ID2D1BrushContainer : IDictionary<string, SolidColorBrush>, IDisposable
+    public interface ID2DBrushContainer : IDictionary<string, SolidColorBrush>, IDisposable
     {
         SolidColorBrush this[Color color] { get; }
 

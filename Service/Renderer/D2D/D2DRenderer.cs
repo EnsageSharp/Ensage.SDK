@@ -1,4 +1,4 @@
-// <copyright file="D2D1Renderer.cs" company="Ensage">
+// <copyright file="D2DRenderer.cs" company="Ensage">
 //    Copyright (c) 2017 Ensage.
 // </copyright>
 
@@ -14,16 +14,16 @@ namespace Ensage.SDK.Service.Renderer.D2D
     using SharpDX.DirectWrite;
     using SharpDX.Mathematics.Interop;
 
-    public class D2D1Renderer : ID2D1Renderer
+    public class D2DRenderer : ID2DRenderer
     {
-        [Import(typeof(ID2D1BrushContainer))]
-        public ID2D1BrushContainer Brushes { get; private set; }
+        [Import(typeof(ID2DBrushContainer))]
+        public ID2DBrushContainer Brushes { get; private set; }
 
-        [Import(typeof(ID2D1Context))]
-        public ID2D1Context Context { get; private set; }
+        [Import(typeof(ID2DContext))]
+        public ID2DContext Context { get; private set; }
 
-        [Import(typeof(ID2D1FontContainer))]
-        public ID2D1FontContainer Fonts { get; private set; }
+        [Import(typeof(ID2DFontContainer))]
+        public ID2DFontContainer Fonts { get; private set; }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void DrawBox2D(

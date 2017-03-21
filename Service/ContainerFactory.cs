@@ -63,13 +63,13 @@ namespace Ensage.SDK.Service
 
             var container = new CompositionContainer(Catalog, flags);
 
-            container.ComposeExportedValue<IEnsageServiceContext>(context);
+            container.ComposeExportedValue(context);
 
             switch (Drawing.RenderMode)
             {
                 case RenderMode.Dx11:
-                    container.ComposeExportedValue<ID2D1Context>(new D2D1Context());
-                    container.ComposeExportedValue<ID2D1Renderer>(new D2D1Renderer());
+                    container.ComposeExportedValue<ID2DContext>(new D2DContext());
+                    container.ComposeExportedValue<ID2DRenderer>(new D2DRenderer());
                     break;
 
                 case RenderMode.Dx9:

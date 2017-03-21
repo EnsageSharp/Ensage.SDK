@@ -1,4 +1,4 @@
-// <copyright file="D2D1FontContainer.cs" company="Ensage">
+// <copyright file="D2DFontContainer.cs" company="Ensage">
 //    Copyright (c) 2017 Ensage.
 // </copyright>
 
@@ -10,12 +10,13 @@ namespace Ensage.SDK.Service.Renderer.D2D
 
     using SharpDX.DirectWrite;
 
-    public class D2D1FontContainer : Dictionary<string, TextFormat>, ID2D1FontContainer
+    [Export(typeof(ID2DFontContainer))]
+    public class D2DFontContainer : Dictionary<string, TextFormat>, ID2DFontContainer
     {
         private bool disposed;
 
-        [Import(typeof(ID2D1Context))]
-        protected ID2D1Context Context { get; private set; }
+        [Import(typeof(ID2DContext))]
+        protected ID2DContext Context { get; private set; }
 
         public TextFormat Create(string name, string familyName, float size, bool bold = false, bool italic = false)
         {

@@ -1,4 +1,4 @@
-// <copyright file="ID2D1Renderer.cs" company="Ensage">
+// <copyright file="ID2DRenderer.cs" company="Ensage">
 //    Copyright (c) 2017 Ensage.
 // </copyright>
 
@@ -9,13 +9,13 @@ namespace Ensage.SDK.Service.Renderer.D2D
     using SharpDX.Direct2D1;
     using SharpDX.DirectWrite;
 
-    public interface ID2D1Renderer
+    public interface ID2DRenderer
     {
-        ID2D1BrushContainer Brushes { get; }
+        ID2DBrushContainer Brushes { get; }
 
-        ID2D1Context Context { get; }
+        ID2DContext Context { get; }
 
-        ID2D1FontContainer Fonts { get; }
+        ID2DFontContainer Fonts { get; }
 
         void DrawBox2D(
             int x,

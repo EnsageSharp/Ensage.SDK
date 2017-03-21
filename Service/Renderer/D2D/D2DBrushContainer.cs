@@ -1,4 +1,4 @@
-// <copyright file="D2D1BrushContainer.cs" company="Ensage">
+// <copyright file="D2DBrushContainer.cs" company="Ensage">
 //    Copyright (c) 2017 Ensage.
 // </copyright>
 
@@ -12,12 +12,13 @@ namespace Ensage.SDK.Service.Renderer.D2D
     using SharpDX.Direct2D1;
     using SharpDX.Mathematics.Interop;
 
-    public class D2D1BrushContainer : Dictionary<string, SolidColorBrush>, ID2D1BrushContainer
+    [Export(typeof(ID2DBrushContainer))]
+    public class D2DBrushContainer : Dictionary<string, SolidColorBrush>, ID2DBrushContainer
     {
         private bool disposed;
 
-        [Import(typeof(ID2D1Context))]
-        protected ID2D1Context Context { get; private set; }
+        [Import(typeof(ID2DContext))]
+        protected ID2DContext Context { get; private set; }
 
         public SolidColorBrush this[Color color]
         {

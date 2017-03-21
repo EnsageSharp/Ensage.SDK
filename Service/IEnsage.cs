@@ -12,9 +12,9 @@ namespace Ensage.SDK.Service
 
     public interface IEnsage
     {
-        ID2D1Renderer D2D { get; }
+        ID2DRenderer D2D { get; }
 
-        IDirect3DRenderer D3D { get; }
+        ID3DRenderer D3D { get; }
 
         IInput Input { get; }
 

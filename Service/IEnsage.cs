@@ -11,9 +11,9 @@ namespace Ensage.SDK.Service
 
     public interface IEnsage
     {
-        IDirect2DRenderer D2D { get; }
+        IDirect2DRenderer Direct2D { get; }
 
-        IDirect3DRenderer D3D { get; }
+        IDirect3DRenderer Direct3D { get; }
 
         IInput Input { get; }
 

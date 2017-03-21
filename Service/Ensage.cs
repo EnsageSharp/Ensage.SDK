@@ -14,10 +14,10 @@ namespace Ensage.SDK.Service
     public class Ensage : IEnsage
     {
         [Import(typeof(IDirect2DRenderer))]
-        public IDirect2DRenderer D2D { get; }
+        public IDirect2DRenderer Direct2D { get; }
 
         [Import(typeof(IDirect3DRenderer))]
-        public IDirect3DRenderer D3D { get; }
+        public IDirect3DRenderer Direct3D { get; }
 
         [Import(typeof(IInput))]
         public IInput Input { get; internal set; }

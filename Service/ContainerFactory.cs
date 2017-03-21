@@ -9,7 +9,7 @@ namespace Ensage.SDK.Service
     using System.ComponentModel.Composition.Hosting;
     using System.Reflection;
 
-    using global::Ensage.SDK.Service.Renderer.D2D;
+    using Ensage.SDK.Service.Renderer.D2D;
 
     using log4net;
 
@@ -19,34 +19,24 @@ namespace Ensage.SDK.Service
     {
         private static readonly ILog Log = AssemblyLogs.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        private static AggregateCatalog catalog;
+        private static CatalogLoader loader;
 
-        public static AggregateCatalog Catalog
+        public static CatalogLoader Loader
         {
             get
             {
-                if (catalog == null)
+                if (loader == null)
                 {
-                    catalog = new AggregateCatalog();
-                    foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
-                    {
-                        Log.Debug($"Add Catalog {assembly.GetName().Name}");
-                        catalog.Catalogs.Add(new AssemblyCatalog(assembly));
-                    }
+                    loader = new CatalogLoader();
                 }
 
-                return catalog;
-            }
-
-            private set
-            {
-                catalog = value;
+                return loader;
             }
         }
 
         public static ContextContainer<IEnsageServiceContext> CreateContainer(
             IEnsageServiceContext context,
-            bool disableSilent = false)
+            bool disableSilent = true)
         {
             if (context == null)
             {
@@ -61,7 +51,7 @@ namespace Ensage.SDK.Service
                 flags |= CompositionOptions.DisableSilentRejection;
             }
 
-            var container = new CompositionContainer(Catalog, flags);
+            var container = new CompositionContainer(Loader.Catalog, flags);
 
             container.ComposeExportedValue(context);
 

@@ -124,6 +124,7 @@
     <Compile Include="Orbwalker\IOrbwalker.cs" />
     <Compile Include="Orbwalker\IOrbwalkerMetadata.cs" />
     <Compile Include="Orbwalker\Orbwalker.cs" />
+    <Compile Include="Service\CatalogLoader.cs" />
     <Compile Include="Service\ContainerFactory.cs" />
     <Compile Include="Service\ContextContainer.cs" />
     <Compile Include="Service\Renderer\D2D\D2DBrushContainer.cs" />

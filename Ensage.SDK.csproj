@@ -131,7 +131,7 @@
     <Compile Include="Service\Renderer\D2D\D2DRenderer.cs" />
     <Compile Include="Service\Renderer\D2D\ID2DBrushContainer.cs" />
     <Compile Include="Service\Renderer\D2D\ID2DFontContainer.cs" />
-    <Compile Include="Service\Ensage.cs" />
+    <Compile Include="Service\EnsageWorkUnit.cs" />
     <Compile Include="Service\IEnsage.cs" />
     <Compile Include="Service\Input\IInput.cs" />
     <Compile Include="Service\Input\InputHandler.cs" />

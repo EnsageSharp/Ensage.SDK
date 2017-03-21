@@ -1,4 +1,4 @@
-// <copyright file="Ensage.cs" company="Ensage">
+// <copyright file="EnsageWorkUnit.cs" company="Ensage">
 //    Copyright (c) 2017 Ensage.
 // </copyright>
 
@@ -6,13 +6,14 @@ namespace Ensage.SDK.Service
 {
     using System.ComponentModel.Composition;
 
-    using global::Ensage.SDK.Orbwalker;
-    using global::Ensage.SDK.Service.Input;
-    using global::Ensage.SDK.Service.Renderer.D2D;
-    using global::Ensage.SDK.Service.Renderer.D3D;
-    using global::Ensage.SDK.TargetSelector;
+    using Ensage.SDK.Orbwalker;
+    using Ensage.SDK.Service.Input;
+    using Ensage.SDK.Service.Renderer.D2D;
+    using Ensage.SDK.Service.Renderer.D3D;
+    using Ensage.SDK.TargetSelector;
 
-    public class Ensage : IEnsage
+    [Export(typeof(IEnsage))]
+    public class EnsageWorkUnit : IEnsage
     {
         [Import(typeof(ID2DRenderer))]
         public ID2DRenderer D2D { get; internal set; }

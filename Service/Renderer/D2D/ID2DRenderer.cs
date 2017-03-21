@@ -4,7 +4,7 @@
 
 namespace Ensage.SDK.Service.Renderer.D2D
 {
-    using global::Ensage.SDK.Geometry;
+    using Ensage.SDK.Geometry;
 
     using SharpDX.Direct2D1;
     using SharpDX.DirectWrite;
@@ -18,38 +18,45 @@ namespace Ensage.SDK.Service.Renderer.D2D
         ID2DFontContainer Fonts { get; }
 
         void DrawBox2D(
-            int x,
-            int y,
-            int width,
-            int height,
+            float x,
+            float y,
+            float width,
+            float height,
             float stroke,
             SolidColorBrush brush,
-            SolidColorBrush interiorBrush);
+            SolidColorBrush floateriorBrush);
 
         void DrawBox3D(
-            int x,
-            int y,
-            int width,
-            int height,
-            int length,
+            float x,
+            float y,
+            float width,
+            float height,
+            float length,
             float stroke,
             SolidColorBrush brush,
-            SolidColorBrush interiorBrush);
+            SolidColorBrush floateriorBrush);
 
-        void DrawCircle(int x, int y, int radius, float stroke, SolidColorBrush brush);
+        void DrawCircle(float x, float y, float radius, float stroke, SolidColorBrush brush);
 
-        void DrawLine(int startX, int startY, int endX, int endY, float stroke, SolidColorBrush brush);
+        void DrawLine(float startX, float startY, float endX, float endY, float stroke, SolidColorBrush brush);
 
         void DrawPolygon(Polygon polygon);
 
-        void DrawRectangle(int x, int y, int width, int height, float stroke, SolidColorBrush brush);
+        void DrawRectangle(float x, float y, float width, float height, float stroke, SolidColorBrush brush);
 
-        void DrawRectangle3D(int x, int y, int width, int height, int length, float stroke, SolidColorBrush brush);
+        void DrawRectangle3D(
+            float x,
+            float y,
+            float width,
+            float height,
+            float length,
+            float stroke,
+            SolidColorBrush brush);
 
-        void DrawText(int x, int y, string text, TextFormat font, SolidColorBrush brush);
+        void DrawText(float x, float y, string text, TextFormat font, SolidColorBrush brush);
 
-        void FillCircle(int x, int y, int radius, SolidColorBrush brush);
+        void FillCircle(float x, float y, float radius, SolidColorBrush brush);
 
-        void FillRectangle(int x, int y, int width, int height, SolidColorBrush brush);
+        void FillRectangle(float x, float y, float width, float height, SolidColorBrush brush);
     }
 }

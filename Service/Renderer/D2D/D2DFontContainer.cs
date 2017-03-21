@@ -7,12 +7,19 @@ namespace Ensage.SDK.Service.Renderer.D2D
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.Composition;
+    using System.Reflection;
+
+    using log4net;
+
+    using PlaySharp.Toolkit.Logging;
 
     using SharpDX.DirectWrite;
 
     [Export(typeof(ID2DFontContainer))]
     public class D2DFontContainer : Dictionary<string, TextFormat>, ID2DFontContainer
     {
+        private static readonly ILog Log = AssemblyLogs.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
         private bool disposed;
 
         [Import(typeof(ID2DContext))]
@@ -27,6 +34,7 @@ namespace Ensage.SDK.Service.Renderer.D2D
                 italic ? FontStyle.Italic : FontStyle.Normal,
                 size);
 
+            Log.Debug($"Create Font {name} {familyName}-{size}");
             this.Add(name, format);
 
             return format;

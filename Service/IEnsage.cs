@@ -4,11 +4,11 @@
 
 namespace Ensage.SDK.Service
 {
-    using global::Ensage.SDK.Orbwalker;
-    using global::Ensage.SDK.Service.Input;
-    using global::Ensage.SDK.Service.Renderer.D2D;
-    using global::Ensage.SDK.Service.Renderer.D3D;
-    using global::Ensage.SDK.TargetSelector;
+    using Ensage.SDK.Orbwalker;
+    using Ensage.SDK.Service.Input;
+    using Ensage.SDK.Service.Renderer.D2D;
+    using Ensage.SDK.Service.Renderer.D3D;
+    using Ensage.SDK.TargetSelector;
 
     public interface IEnsage
     {

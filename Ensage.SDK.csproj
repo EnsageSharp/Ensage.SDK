@@ -143,6 +143,9 @@
     <Compile Include="Service\Renderer\D2D\ID2DContext.cs" />
     <Compile Include="Service\Renderer\D2D\ID2DRenderer.cs" />
     <Compile Include="Service\IServiceContext.cs" />
+    <Compile Include="Service\Renderer\UI\AnchorElement.cs" />
+    <Compile Include="Service\Renderer\UI\FrameworkElement.cs" />
+    <Compile Include="Service\Renderer\UI\PropertyChangeBase.cs" />
     <Compile Include="TargetSelector\ExportTargetSelectorAttribute.cs" />
     <Compile Include="Extensions\AbilityExtensions.cs" />
     <Compile Include="Service\EnsageServiceContext.cs" />

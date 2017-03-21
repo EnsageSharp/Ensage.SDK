@@ -8,7 +8,7 @@ namespace Ensage.SDK.Service.Renderer.D2D
     using System.ComponentModel.Composition;
     using System.Runtime.CompilerServices;
 
-    using global::Ensage.SDK.Geometry;
+    using Ensage.SDK.Geometry;
 
     using SharpDX.Direct2D1;
     using SharpDX.DirectWrite;
@@ -27,10 +27,10 @@ namespace Ensage.SDK.Service.Renderer.D2D
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void DrawBox2D(
-            int x,
-            int y,
-            int width,
-            int height,
+            float x,
+            float y,
+            float width,
+            float height,
             float stroke,
             SolidColorBrush brush,
             SolidColorBrush interiorBrush)
@@ -43,11 +43,11 @@ namespace Ensage.SDK.Service.Renderer.D2D
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void DrawBox3D(
-            int x,
-            int y,
-            int width,
-            int height,
-            int length,
+            float x,
+            float y,
+            float width,
+            float height,
+            float length,
             float stroke,
             SolidColorBrush brush,
             SolidColorBrush interiorBrush)
@@ -85,13 +85,13 @@ namespace Ensage.SDK.Service.Renderer.D2D
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void DrawCircle(int x, int y, int radius, float stroke, SolidColorBrush brush)
+        public void DrawCircle(float x, float y, float radius, float stroke, SolidColorBrush brush)
         {
             this.Context.Target.DrawEllipse(new Ellipse(new RawVector2(x, y), radius, radius), brush, stroke);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void DrawLine(int startX, int startY, int endX, int endY, float stroke, SolidColorBrush brush)
+        public void DrawLine(float startX, float startY, float endX, float endY, float stroke, SolidColorBrush brush)
         {
             this.Context.Target.DrawLine(new RawVector2(startX, startY), new RawVector2(endX, endY), brush, stroke);
         }
@@ -103,18 +103,18 @@ namespace Ensage.SDK.Service.Renderer.D2D
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void DrawRectangle(int x, int y, int width, int height, float stroke, SolidColorBrush brush)
+        public void DrawRectangle(float x, float y, float width, float height, float stroke, SolidColorBrush brush)
         {
             this.Context.Target.DrawRectangle(new RawRectangleF(x, y, x + width, y + height), brush, stroke);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void DrawRectangle3D(
-            int x,
-            int y,
-            int width,
-            int height,
-            int length,
+            float x,
+            float y,
+            float width,
+            float height,
+            float length,
             float stroke,
             SolidColorBrush brush)
         {
@@ -148,7 +148,7 @@ namespace Ensage.SDK.Service.Renderer.D2D
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void DrawText(int x, int y, string text, TextFormat font, SolidColorBrush brush)
+        public void DrawText(float x, float y, string text, TextFormat font, SolidColorBrush brush)
         {
             using (var layout = new TextLayout(this.Context.DirectWrite, text, font, float.MaxValue, float.MaxValue))
             {
@@ -157,13 +157,13 @@ namespace Ensage.SDK.Service.Renderer.D2D
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void FillCircle(int x, int y, int radius, SolidColorBrush brush)
+        public void FillCircle(float x, float y, float radius, SolidColorBrush brush)
         {
             this.Context.Target.FillEllipse(new Ellipse(new RawVector2(x, y), radius, radius), brush);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void FillRectangle(int x, int y, int width, int height, SolidColorBrush brush)
+        public void FillRectangle(float x, float y, float width, float height, SolidColorBrush brush)
         {
             this.Context.Target.FillRectangle(new RawRectangleF(x, y, x + width, y + height), brush);
         }

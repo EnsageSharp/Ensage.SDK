@@ -15,5 +15,7 @@ namespace Ensage.SDK.Service.Renderer.D2D
         SolidColorBrush this[Color color] { get; }
 
         SolidColorBrush Create(string name, Color color);
+
+        SolidColorBrush Create(Color color);
     }
 }

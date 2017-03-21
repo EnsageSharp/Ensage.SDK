@@ -23,6 +23,8 @@ namespace Ensage.SDK.Service
         {
             AppDomain.CurrentDomain.AssemblyLoad += this.OnAssemblyLoad;
 
+            this.Add(Assembly.GetExecutingAssembly());
+
             foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
             {
                 this.Add(assembly);

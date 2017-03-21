@@ -9,6 +9,8 @@ namespace Ensage.SDK.Service
     using System.ComponentModel.Composition.Hosting;
     using System.Reflection;
 
+    using global::Ensage.SDK.Service.Renderer;
+
     using log4net;
 
     using PlaySharp.Toolkit.Logging;
@@ -17,45 +19,68 @@ namespace Ensage.SDK.Service
     {
         private static readonly ILog Log = AssemblyLogs.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        private static AggregateCatalog _catalog;
+        private static AggregateCatalog catalog;
 
         public static AggregateCatalog Catalog
         {
             get
             {
-                if (_catalog == null)
+                if (catalog == null)
                 {
-                    _catalog = new AggregateCatalog();
+                    catalog = new AggregateCatalog();
                     foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
                     {
                         Log.Debug($"Add Catalog {assembly.GetName().Name}");
-                        _catalog.Catalogs.Add(new AssemblyCatalog(assembly));
+                        catalog.Catalogs.Add(new AssemblyCatalog(assembly));
                     }
                 }
 
-                return _catalog;
+                return catalog;
             }
 
             private set
             {
-                _catalog = value;
+                catalog = value;
             }
         }
 
-        public static ContextContainer<IEnsageServiceContext> CreateContainer(IEnsageServiceContext context)
+        public static ContextContainer<IEnsageServiceContext> CreateContainer(
+            IEnsageServiceContext context,
+            bool disableSilent = false)
         {
             if (context == null)
             {
                 throw new ArgumentNullException(nameof(context));
             }
 
-            Log.Debug($"Create Context {context} Container");
+            Log.Debug($"Create Context({context}) Container");
 
-            var container = new CompositionContainer(
-                Catalog,
-                CompositionOptions.IsThreadSafe | CompositionOptions.DisableSilentRejection);
+            var flags = CompositionOptions.IsThreadSafe;
+            if (disableSilent)
+            {
+                flags |= CompositionOptions.DisableSilentRejection;
+            }
 
-            container.ComposeExportedValue(context);
+            var container = new CompositionContainer(Catalog, flags);
+
+            container.ComposeExportedValue<IEnsageServiceContext>(context);
+
+            switch (Drawing.RenderMode)
+            {
+                case RenderMode.Dx9:
+                    container.ComposeExportedValue<IDirect2DRenderer>(new Direct2D9Renderer());
+                    container.ComposeExportedValue<IDirect3DRenderer>(new Direct3D9Renderer());
+                    break;
+
+                case RenderMode.Dx11:
+                    container.ComposeExportedValue<IDirect2DRenderer>(new Direct2D11Renderer());
+                    container.ComposeExportedValue<IDirect3DRenderer>(new Direct3D11Renderer());
+                    break;
+
+                case RenderMode.OpenGL:
+                case RenderMode.Vulkan:
+                    throw new NotSupportedException($"RenderMode({Drawing.RenderMode}) not supported.");
+            }
 
             return new ContextContainer<IEnsageServiceContext>(context, container);
         }

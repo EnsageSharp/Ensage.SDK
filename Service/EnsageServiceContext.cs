@@ -26,5 +26,10 @@ namespace Ensage.SDK.Service
         {
             return this.Owner.Equals(other);
         }
+
+        public override string ToString()
+        {
+            return $"{this.Owner.Name}";
+        }
     }
 }

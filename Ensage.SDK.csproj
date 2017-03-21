@@ -73,7 +73,9 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="System.ComponentModel.Composition.Registration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Reflection.Context" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="WindowsBase" />
   </ItemGroup>
@@ -120,11 +122,23 @@
     <Compile Include="Orbwalker\Orbwalker.cs" />
     <Compile Include="Service\ContainerFactory.cs" />
     <Compile Include="Service\ContextContainer.cs" />
+    <Compile Include="Service\Renderer\2D\Direct2D9Renderer.cs" />
+    <Compile Include="Service\Renderer\3D\Direct3D11Renderer.cs" />
+    <Compile Include="Service\Renderer\2D\Direct2D11Renderer.cs" />
+    <Compile Include="Service\Renderer\3D\Direct3D9Renderer.cs" />
+    <Compile Include="Service\Ensage.cs" />
+    <Compile Include="Service\IEnsage.cs" />
     <Compile Include="Service\Input\IInput.cs" />
     <Compile Include="Service\Input\InputHandler.cs" />
     <Compile Include="Service\Input\KeyEventArgs.cs" />
     <Compile Include="Service\Input\MouseEventArgs.cs" />
+    <Compile Include="Service\Renderer\2D\IBrushManager.cs" />
+    <Compile Include="Service\Renderer\3D\IDirect3DRenderer.cs" />
+    <Compile Include="Service\Renderer\2D\IFontManager.cs" />
+    <Compile Include="Service\Renderer\2D\IRenderContext.cs" />
+    <Compile Include="Service\Renderer\2D\IDirect2DRenderer.cs" />
     <Compile Include="Service\IServiceContext.cs" />
+    <Compile Include="Service\Renderer\2D\IRenderObjectManager.cs" />
     <Compile Include="TargetSelector\ExportTargetSelectorAttribute.cs" />
     <Compile Include="Extensions\AbilityExtensions.cs" />
     <Compile Include="Service\EnsageServiceContext.cs" />
@@ -146,6 +160,7 @@
   <ItemGroup>
     <None Include="key.snk" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

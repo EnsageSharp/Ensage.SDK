@@ -150,9 +150,10 @@ namespace Ensage.SDK.Service.Renderer.D2D
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void DrawText(int x, int y, string text, TextFormat font, SolidColorBrush brush)
         {
-            var layout = new TextLayout(this.Context.DirectWrite, text, font, float.MaxValue, float.MaxValue);
-            this.Context.Target.DrawTextLayout(new RawVector2(x, y), layout, brush);
-            layout.Dispose();
+            using (var layout = new TextLayout(this.Context.DirectWrite, text, font, float.MaxValue, float.MaxValue))
+            {
+                this.Context.Target.DrawTextLayout(new RawVector2(x, y), layout, brush);
+            }
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

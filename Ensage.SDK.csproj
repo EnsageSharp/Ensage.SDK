@@ -74,6 +74,8 @@
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Abilities\ActiveAbility.cs" />
@@ -118,6 +120,10 @@
     <Compile Include="Orbwalker\Orbwalker.cs" />
     <Compile Include="Service\ContainerFactory.cs" />
     <Compile Include="Service\ContextContainer.cs" />
+    <Compile Include="Service\Input\IInput.cs" />
+    <Compile Include="Service\Input\InputHandler.cs" />
+    <Compile Include="Service\Input\KeyEventArgs.cs" />
+    <Compile Include="Service\Input\MouseEventArgs.cs" />
     <Compile Include="Service\IServiceContext.cs" />
     <Compile Include="TargetSelector\ExportTargetSelectorAttribute.cs" />
     <Compile Include="Extensions\AbilityExtensions.cs" />

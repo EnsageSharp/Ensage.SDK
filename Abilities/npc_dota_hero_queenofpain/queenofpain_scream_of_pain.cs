@@ -1,4 +1,8 @@
-﻿namespace Ensage.SDK.Abilities.npc_dota_hero_queenofpain
+﻿// <copyright file="queenofpain_scream_of_pain.cs" company="Ensage">
+//    Copyright (c) 2017 Ensage.
+// </copyright>
+
+namespace Ensage.SDK.Abilities.npc_dota_hero_queenofpain
 {
     using Ensage.SDK.Extensions;
     using Ensage.SDK.Helpers;

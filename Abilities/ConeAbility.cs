@@ -20,16 +20,16 @@ namespace Ensage.SDK.Abilities
 
         public abstract float StartWidth { get; }
 
-        public override Geometry.Polygon GetPolygon(Vector3 position)
+        public override Polygon GetPolygon(Vector3 position)
         {
             var start = this.Ability.Owner.NetworkPosition;
             var dir = (position - start).Normalized();
             var end = start + dir * this.Range;
 
-            return new Geometry.Polygon.Cone(start, end, this.StartWidth, this.EndWidth);
+            return new Polygon.Cone(start, end, this.StartWidth, this.EndWidth);
         }
 
-        public override Geometry.Polygon GetPolygon(Vector3 position, float time)
+        public override Polygon GetPolygon(Vector3 position, float time)
         {
             var range = this.Range * time * this.Speed;
 
@@ -42,7 +42,7 @@ namespace Ensage.SDK.Abilities
 
             endRadius = startRadius + (endRadius - startRadius) / this.GetTravelTime() * time;
 
-            return new Geometry.Polygon.Cone(start, end, startRadius, endRadius);
+            return new Polygon.Cone(start, end, startRadius, endRadius);
         }
     }
 }

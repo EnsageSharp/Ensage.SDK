@@ -6,14 +6,15 @@ namespace Ensage.SDK.Service
 {
     using global::Ensage.SDK.Orbwalker;
     using global::Ensage.SDK.Service.Input;
-    using global::Ensage.SDK.Service.Renderer;
+    using global::Ensage.SDK.Service.Renderer.D2D;
+    using global::Ensage.SDK.Service.Renderer.D3D;
     using global::Ensage.SDK.TargetSelector;
 
     public interface IEnsage
     {
-        IDirect2DRenderer Direct2D { get; }
+        ID2D1Renderer D2D { get; }
 
-        IDirect3DRenderer Direct3D { get; }
+        IDirect3DRenderer D3D { get; }
 
         IInput Input { get; }
 

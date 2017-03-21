@@ -43,24 +43,24 @@ namespace Ensage.SDK.Abilities
             return damage * (1.0f + amplify) * (1.0f - reduction);
         }
 
-        public override Geometry.Polygon GetPolygon(Vector3 position)
+        public override Polygon GetPolygon(Vector3 position)
         {
             var start = this.Ability.Owner.NetworkPosition;
             var dir = (position - start).Normalized();
-            var end = start + (dir * this.Range);
+            var end = start + dir * this.Range;
 
-            return new Geometry.Polygon.Rectangle(start, end, this.Width);
+            return new Polygon.Rectangle(start, end, this.Width);
         }
 
-        public override Geometry.Polygon GetPolygon(Vector3 position, float time)
+        public override Polygon GetPolygon(Vector3 position, float time)
         {
             var range = this.Range * time * this.Speed;
 
             var start = this.Ability.Owner.NetworkPosition;
             var dir = (position - start).Normalized();
-            var end = start + (dir * range);
+            var end = start + dir * range;
 
-            return new Geometry.Polygon.Rectangle(start, end, this.Width);
+            return new Polygon.Rectangle(start, end, this.Width);
         }
     }
 }

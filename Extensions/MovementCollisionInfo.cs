@@ -1,3 +1,7 @@
+// <copyright file="MovementCollisionInfo.cs" company="Ensage">
+//    Copyright (c) 2017 Ensage.
+// </copyright>
+
 namespace Ensage.SDK.Extensions
 {
     using SharpDX;

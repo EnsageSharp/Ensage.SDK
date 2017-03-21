@@ -1,8 +1,10 @@
-﻿namespace Ensage.SDK.Abilities.npc_dota_hero_enigma
+﻿// <copyright file="enigma_demonic_conversion.cs" company="Ensage">
+//    Copyright (c) 2017 Ensage.
+// </copyright>
+
+namespace Ensage.SDK.Abilities.npc_dota_hero_enigma
 {
     using System.Linq;
-
-    using Ensage.SDK.Helpers;
 
     public class enigma_demonic_conversion : TargetAbility
     {
@@ -28,7 +30,6 @@
             }
 
             // TODO target flag
-
             return target.MaximumHealth; // we insta deny the target
         }
     }

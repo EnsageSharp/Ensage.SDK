@@ -18,9 +18,9 @@ namespace Ensage.SDK.Abilities
 
         public virtual float Radius => this.Ability.GetAbilitySpecialData("radius");
 
-        public override Geometry.Polygon GetPolygon(Vector3 position)
+        public override Polygon GetPolygon(Vector3 position)
         {
-            return new Geometry.Polygon.Circle(position, this.Radius);
+            return new Polygon.Circle(position, this.Radius);
         }
     }
 }

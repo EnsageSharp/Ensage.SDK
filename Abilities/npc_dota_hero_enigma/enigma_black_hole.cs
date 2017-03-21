@@ -1,7 +1,9 @@
-﻿namespace Ensage.SDK.Abilities.npc_dota_hero_enigma
-{
-    using System;
+﻿// <copyright file="enigma_black_hole.cs" company="Ensage">
+//    Copyright (c) 2017 Ensage.
+// </copyright>
 
+namespace Ensage.SDK.Abilities.npc_dota_hero_enigma
+{
     using Ensage.SDK.Extensions;
     using Ensage.SDK.Helpers;
 

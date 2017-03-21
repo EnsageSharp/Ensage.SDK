@@ -1,4 +1,8 @@
-﻿namespace Ensage.SDK.Extensions
+﻿// <copyright file="AnimationExtensions.cs" company="Ensage">
+//    Copyright (c) 2017 Ensage.
+// </copyright>
+
+namespace Ensage.SDK.Extensions
 {
     public static class AnimationExtensions
     {

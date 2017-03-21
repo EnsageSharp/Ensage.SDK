@@ -2,29 +2,29 @@
 //    Copyright (c) 2017 Ensage.
 // </copyright>
 
-namespace Ensage.SDK.Extensions
+namespace Ensage.SDK.Geometry
 {
     using SharpDX;
 
     /// <summary>
-    ///     Holds info for the <see cref="Vector2Extensions.ProjectOn" /> method.
+    ///     Represents the projection information.
     /// </summary>
     public struct ProjectionInfo
     {
         #region Fields
 
         /// <summary>
-        ///     Returns if the point is on the segment
+        ///     The is on segment
         /// </summary>
         public bool IsOnSegment;
 
         /// <summary>
-        ///     Line point
+        ///     The line point
         /// </summary>
         public Vector2 LinePoint;
 
         /// <summary>
-        ///     Segment point
+        ///     The segment point
         /// </summary>
         public Vector2 SegmentPoint;
 
@@ -35,16 +35,10 @@ namespace Ensage.SDK.Extensions
         /// <summary>
         ///     Initializes a new instance of the <see cref="ProjectionInfo" /> struct.
         /// </summary>
-        /// <param name="isOnSegment">
-        ///     Is on Segment
-        /// </param>
-        /// <param name="segmentPoint">
-        ///     Segment point
-        /// </param>
-        /// <param name="linePoint">
-        ///     Line point
-        /// </param>
-        internal ProjectionInfo(bool isOnSegment, Vector2 segmentPoint, Vector2 linePoint)
+        /// <param name="isOnSegment">if set to <c>true</c> [is on segment].</param>
+        /// <param name="segmentPoint">The segment point.</param>
+        /// <param name="linePoint">The line point.</param>
+        public ProjectionInfo(bool isOnSegment, Vector2 segmentPoint, Vector2 linePoint)
         {
             this.IsOnSegment = isOnSegment;
             this.SegmentPoint = segmentPoint;

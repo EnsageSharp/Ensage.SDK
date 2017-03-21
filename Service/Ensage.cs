@@ -8,16 +8,17 @@ namespace Ensage.SDK.Service
 
     using global::Ensage.SDK.Orbwalker;
     using global::Ensage.SDK.Service.Input;
-    using global::Ensage.SDK.Service.Renderer;
+    using global::Ensage.SDK.Service.Renderer.D2D;
+    using global::Ensage.SDK.Service.Renderer.D3D;
     using global::Ensage.SDK.TargetSelector;
 
     public class Ensage : IEnsage
     {
-        [Import(typeof(IDirect2DRenderer))]
-        public IDirect2DRenderer Direct2D { get; }
+        [Import(typeof(ID2D1Renderer))]
+        public ID2D1Renderer D2D { get; }
 
         [Import(typeof(IDirect3DRenderer))]
-        public IDirect3DRenderer Direct3D { get; }
+        public IDirect3DRenderer D3D { get; }
 
         [Import(typeof(IInput))]
         public IInput Input { get; internal set; }

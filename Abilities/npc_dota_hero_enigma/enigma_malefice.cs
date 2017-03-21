@@ -1,4 +1,8 @@
-﻿namespace Ensage.SDK.Abilities.npc_dota_hero_enigma
+﻿// <copyright file="enigma_malefice.cs" company="Ensage">
+//    Copyright (c) 2017 Ensage.
+// </copyright>
+
+namespace Ensage.SDK.Abilities.npc_dota_hero_enigma
 {
     using System.Linq;
 

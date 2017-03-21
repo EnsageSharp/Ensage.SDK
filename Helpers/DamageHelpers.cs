@@ -33,6 +33,11 @@ namespace Ensage.SDK.Helpers
             return reduction;
         }
 
+        public static float GetSpellDamage(float damage, float amplify, float reduction)
+        {
+            return damage * (1.0f + amplify) * (1.0f - reduction);
+        }
+
         public static float SpellAmplification(this Ability ability)
         {
             var owner = ability.Owner as Unit;
@@ -63,11 +68,6 @@ namespace Ensage.SDK.Helpers
             }
 
             return spellAmp;
-        }
-
-        public static float GetSpellDamage(float damage, float amplify, float reduction)
-        {
-            return damage * (1.0f + amplify) * (1.0f - reduction);
         }
     }
 }

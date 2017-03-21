@@ -1,4 +1,4 @@
-﻿// <copyright file="ExportTargetSelectorAttribute.cs" company="Ensage">
+﻿// <copyright file="ExportOrbwalkerAttribute.cs" company="Ensage">
 //    Copyright (c) 2017 Ensage.
 // </copyright>
 
@@ -9,7 +9,6 @@ namespace Ensage.SDK.Orbwalker
     using System.Security;
 
     using Ensage.SDK.Attributes;
-    using Ensage.SDK.TargetSelector;
 
     [MetadataAttribute]
     [SecuritySafeCritical]

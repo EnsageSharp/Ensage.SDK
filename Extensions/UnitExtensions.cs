@@ -11,6 +11,21 @@ namespace Ensage.SDK.Extensions
 
     public static class UnitExtensions
     {
+        public static float AttackPoint(this Unit unit)
+        {
+            try
+            {
+                var attackAnimationPoint =
+                    Game.FindKeyValues($"{unit.Name}/AttackAnimationPoint", KeyValueSource.Unit).FloatValue;
+
+                return attackAnimationPoint / (1 + (unit.AttackSpeedValue() - 100) / 100);
+            }
+            catch (KeyValuesNotFoundException)
+            {
+                return 0;
+            }
+        }
+
         public static float AttackRange(this Unit unit)
         {
             var result = (float)unit.AttackRange;
@@ -49,6 +64,13 @@ namespace Ensage.SDK.Extensions
             return result;
         }
 
+        public static float AttackSpeedValue(this Unit hero)
+        {
+            // TODO modifiers like ursa overpower
+            var attackSpeed = Math.Max(20, hero.AttackSpeedValue);
+            return Math.Min(attackSpeed, 600);
+        }
+
         public static Ability GetAbilityById(this Unit unit, AbilityId abilityId)
         {
             return unit.Spellbook.Spells.FirstOrDefault(x => x.Id == 0);
@@ -82,7 +104,7 @@ namespace Ensage.SDK.Extensions
 
         public static Vector3 InFront(this Unit unit, float distance)
         {
-            var v = unit.Position + (unit.Vector3FromPolarAngle() * distance);
+            var v = unit.Position + unit.Vector3FromPolarAngle() * distance;
             return new Vector3(v.X, v.Y, 0);
         }
 
@@ -117,28 +139,5 @@ namespace Ensage.SDK.Extensions
         {
             return Vector2FromPolarAngle(unit, delta, radial).ToVector3();
         }
-
-        public static float AttackSpeedValue(this Unit hero)
-        {
-            // TODO modifiers like ursa overpower
-            var attackSpeed = Math.Max(20, hero.AttackSpeedValue);
-            return Math.Min(attackSpeed, 600);
-        }
-
-        public static float AttackPoint(this Unit unit)
-        {
-            try
-            {
-                var attackAnimationPoint =
-                    Game.FindKeyValues($"{unit.Name}/AttackAnimationPoint", KeyValueSource.Unit).FloatValue;
-
-                return attackAnimationPoint / (1 + (unit.AttackSpeedValue() - 100) / 100);
-            }
-            catch (KeyValuesNotFoundException)
-            {
-                return 0;
-            }
-        }
-
     }
 }

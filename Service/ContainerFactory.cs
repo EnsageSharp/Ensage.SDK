@@ -9,7 +9,7 @@ namespace Ensage.SDK.Service
     using System.ComponentModel.Composition.Hosting;
     using System.Reflection;
 
-    using global::Ensage.SDK.Service.Renderer;
+    using global::Ensage.SDK.Service.Renderer.D2D;
 
     using log4net;
 
@@ -67,16 +67,12 @@ namespace Ensage.SDK.Service
 
             switch (Drawing.RenderMode)
             {
-                case RenderMode.Dx9:
-                    container.ComposeExportedValue<IDirect2DRenderer>(new Direct2D9Renderer());
-                    container.ComposeExportedValue<IDirect3DRenderer>(new Direct3D9Renderer());
-                    break;
-
                 case RenderMode.Dx11:
-                    container.ComposeExportedValue<IDirect2DRenderer>(new Direct2D11Renderer());
-                    container.ComposeExportedValue<IDirect3DRenderer>(new Direct3D11Renderer());
+                    container.ComposeExportedValue<ID2D1Context>(new D2D1Context());
+                    container.ComposeExportedValue<ID2D1Renderer>(new D2D1Renderer());
                     break;
 
+                case RenderMode.Dx9:
                 case RenderMode.OpenGL:
                 case RenderMode.Vulkan:
                     throw new NotSupportedException($"RenderMode({Drawing.RenderMode}) not supported.");

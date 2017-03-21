@@ -1,11 +1,6 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="RangedAbility.cs" company="">
-//   
+﻿// <copyright file="RangedAbility.cs" company="Ensage">
+//    Copyright (c) 2017 Ensage.
 // </copyright>
-// <summary>
-//   Defines the RangedAbility type.
-// </summary>
-// --------------------------------------------------------------------------------------------------------------------
 
 namespace Ensage.SDK.Abilities
 {

@@ -4,9 +4,6 @@
 
 namespace Ensage.SDK.Abilities
 {
-    using System.Linq;
-
-    using Ensage.SDK.Extensions;
     using Ensage.SDK.Geometry;
 
     using SharpDX;
@@ -18,9 +15,9 @@ namespace Ensage.SDK.Abilities
         {
         }
 
-        public abstract Geometry.Polygon GetPolygon(Vector3 position);
+        public abstract Polygon GetPolygon(Vector3 position);
 
-        public virtual Geometry.Polygon GetPolygon(Vector3 position, float time)
+        public virtual Polygon GetPolygon(Vector3 position, float time)
         {
             return this.GetPolygon(position);
         }

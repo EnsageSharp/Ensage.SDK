@@ -24,7 +24,9 @@ namespace Ensage.SDK.Extensions
 
         public static float Distance2D(this Entity entity, EntityOrPosition other)
         {
-            return other.Entity != null && other.Entity.IsValid ? entity.Distance2D(other.Entity) : entity.Distance2D(other.Position);
+            return other.Entity != null && other.Entity.IsValid
+                       ? entity.Distance2D(other.Entity)
+                       : entity.Distance2D(other.Position);
         }
 
         public static float Distance2D(this Entity entity, Vector3 position)
@@ -34,6 +36,5 @@ namespace Ensage.SDK.Extensions
                 (float)
                 Math.Sqrt(Math.Pow(entityPosition.X - position.X, 2) + Math.Pow(entityPosition.Y - position.Y, 2));
         }
-
     }
 }

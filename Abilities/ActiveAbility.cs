@@ -5,7 +5,6 @@
 namespace Ensage.SDK.Abilities
 {
     using Ensage.SDK.Extensions;
-    using Ensage.SDK.Geometry;
     using Ensage.SDK.Helpers;
 
     using SharpDX;
@@ -49,12 +48,6 @@ namespace Ensage.SDK.Abilities
 
                 return true;
             }
-        }
-
-        public override float GetDamage(params Unit[] target)
-        {
-            var level = this.Ability.Level;
-            return level == 0 ? 0.0f : this.Ability.GetDamage(level - 1);
         }
 
         public virtual float CastPoint
@@ -102,7 +95,11 @@ namespace Ensage.SDK.Abilities
             return true;
         }
 
-        
+        public override float GetDamage(params Unit[] target)
+        {
+            var level = this.Ability.Level;
+            return level == 0 ? 0.0f : this.Ability.GetDamage(level - 1);
+        }
 
         public virtual float GetTravelTime(EntityOrPosition target)
         {

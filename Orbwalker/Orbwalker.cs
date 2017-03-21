@@ -1,4 +1,8 @@
-﻿namespace Ensage.SDK.Orbwalker
+﻿// <copyright file="Orbwalker.cs" company="Ensage">
+//    Copyright (c) 2017 Ensage.
+// </copyright>
+
+namespace Ensage.SDK.Orbwalker
 {
     using System;
     using System.Collections.Generic;
@@ -8,7 +12,6 @@
     using Ensage.SDK.Extensions;
     using Ensage.SDK.Helpers;
     using Ensage.SDK.Service;
-    using Ensage.SDK.TargetSelector;
     using Ensage.SDK.Threading;
 
     using SharpDX;
@@ -39,7 +42,6 @@
 
         public event EventHandler<EventArgs> Attacking;
 
-       
         public void Dispose()
         {
             EnsageDispatcher.Instance.OnIngameUpdate -= this.Instance_OnIngameUpdate;
@@ -97,11 +99,11 @@
                         // attack not done / in backswing animation yet
                         return;
                     }
+
                     this.OnAttacked();
                 }
                 else
                 {
-
                     if (distance <= contextOwner.AttackRange())
                     {
                         this.OnAttacking();
@@ -109,9 +111,9 @@
                         return;
                     }
                 }
+
                 if (distance < this.SafeZone)
                 {
-
                 }
             }
             else
@@ -127,8 +129,6 @@
                 contextOwner.Hold();
                 return;
             }
-
-            
 
             contextOwner.Move(this.target.Position);
         }

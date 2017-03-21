@@ -1,4 +1,8 @@
-﻿namespace Ensage.SDK.Abilities
+﻿// <copyright file="IPolygonAbility.cs" company="Ensage">
+//    Copyright (c) 2017 Ensage.
+// </copyright>
+
+namespace Ensage.SDK.Abilities
 {
     using Ensage.SDK.Geometry;
 
@@ -6,8 +10,8 @@
 
     public interface IPolygonAbility
     {
-        Geometry.Polygon GetPolygon(Vector3 position);
+        Polygon GetPolygon(Vector3 position);
 
-        Geometry.Polygon GetPolygon(Vector3 position, float time);
+        Polygon GetPolygon(Vector3 position, float time);
     }
 }

@@ -40,7 +40,7 @@ namespace Ensage.SDK.Abilities
             {
                 return false;
             }
-           
+
             if (pierceImmunityOverwrite)
             {
                 return true;
@@ -61,7 +61,6 @@ namespace Ensage.SDK.Abilities
                 case SpellPierceImmunityType.EnemiesYes:
                     return targetTeam != team;
             }
-
 
             return true;
         }

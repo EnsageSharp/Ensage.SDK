@@ -9,7 +9,7 @@ namespace Ensage.SDK.Service
     using System.ComponentModel.Composition.Hosting;
     using System.Reflection;
 
-    using Ensage.SDK.Service.Renderer.D2D;
+    using Ensage.SDK.Renderer.D2D;
 
     using log4net;
 

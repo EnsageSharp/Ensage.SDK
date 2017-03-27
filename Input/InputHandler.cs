@@ -2,13 +2,20 @@
 //    Copyright (c) 2017 Ensage.
 // </copyright>
 
-namespace Ensage.SDK.Service.Input
+namespace Ensage.SDK.Input
 {
     using System;
+    using System.Collections.Generic;
     using System.ComponentModel.Composition;
     using System.Diagnostics.CodeAnalysis;
+    using System.Linq;
+    using System.Reflection;
     using System.Windows.Forms;
     using System.Windows.Input;
+
+    using log4net;
+
+    using PlaySharp.Toolkit.Logging;
 
     [Export(typeof(IInput))]
     [SuppressMessage("ReSharper", "InconsistentNaming")]
@@ -33,11 +40,16 @@ namespace Ensage.SDK.Service.Input
 
         private const uint WM_RBUTTONUP = 0x0205;
 
+        private static readonly ILog Log = AssemblyLogs.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
+        private readonly List<Hotkey> hotkeys = new List<Hotkey>();
+
         private bool disposed;
 
         public InputHandler()
         {
             Game.OnWndProc += this.OnWndProc;
+            this.KeyDown += this.HotkeyHandler;
         }
 
         public event EventHandler<KeyEventArgs> KeyDown;
@@ -50,6 +62,8 @@ namespace Ensage.SDK.Service.Input
 
         public MouseButtons ActiveButtons { get; private set; }
 
+        public IEnumerable<Hotkey> Hotkeys => this.hotkeys.AsReadOnly();
+
         public void Dispose()
         {
             this.Dispose(true);
@@ -59,6 +73,25 @@ namespace Ensage.SDK.Service.Input
         public bool IsKeyDown(Key key)
         {
             return Game.IsKeyDown(key);
+        }
+
+        public Hotkey RegisterHotkey(string name, Key key, Action<KeyEventArgs> callback)
+        {
+            if (this.hotkeys.Any(e => e.Name == name))
+            {
+                throw new ArgumentException($"Hotkey ({name}) with the same {nameof(name)} already asigned");
+            }
+
+            var hotkey = new Hotkey(name, key, callback);
+
+            this.hotkeys.Add(hotkey);
+
+            return hotkey;
+        }
+
+        public void UnregisterHotkey(string name)
+        {
+            this.hotkeys.RemoveAll(h => h.Name == name);
         }
 
         protected virtual void Dispose(bool disposing)
@@ -78,7 +111,8 @@ namespace Ensage.SDK.Service.Input
 
         private void FireKeyDown(WndEventArgs args)
         {
-            var data = new KeyEventArgs((uint)args.WParam, args.Process);
+            var key = KeyInterop.KeyFromVirtualKey((int)args.WParam);
+            var data = new KeyEventArgs(key, args.Process);
             this.KeyDown?.Invoke(this, data);
 
             // update Process state
@@ -87,7 +121,8 @@ namespace Ensage.SDK.Service.Input
 
         private void FireKeyUp(WndEventArgs args)
         {
-            var data = new KeyEventArgs((uint)args.WParam, args.Process);
+            var key = KeyInterop.KeyFromVirtualKey((int)args.WParam);
+            var data = new KeyEventArgs(key, args.Process);
             this.KeyUp?.Invoke(this, data);
 
             // update Process state
@@ -138,6 +173,21 @@ namespace Ensage.SDK.Service.Input
 
             // update Process state
             args.Process = args.Process && data.Process;
+        }
+
+        private void HotkeyHandler(object sender, KeyEventArgs args)
+        {
+            foreach (var hotkey in this.hotkeys.Where(e => e.Key == args.Key))
+            {
+                try
+                {
+                    hotkey.Execute(args);
+                }
+                catch (Exception e)
+                {
+                    Log.Error(e);
+                }
+            }
         }
 
         private void OnWndProc(WndEventArgs args)

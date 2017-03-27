@@ -2,7 +2,7 @@
 //    Copyright (c) 2017 Ensage.
 // </copyright>
 
-namespace Ensage.SDK.Service.Input
+namespace Ensage.SDK.Input
 {
     using System;
     using System.Windows.Forms;
@@ -21,5 +21,9 @@ namespace Ensage.SDK.Service.Input
         MouseButtons ActiveButtons { get; }
 
         bool IsKeyDown(Key key);
+
+        Hotkey RegisterHotkey(string name, Key key, Action<KeyEventArgs> callback);
+
+        void UnregisterHotkey(string name);
     }
 }

@@ -2,7 +2,7 @@
 //    Copyright (c) 2017 Ensage.
 // </copyright>
 
-namespace Ensage.SDK.Service.Renderer.D3D
+namespace Ensage.SDK.Renderer.D3D
 {
     public interface ID3DRenderer
     {

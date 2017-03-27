@@ -2,7 +2,7 @@
 //    Copyright (c) 2017 Ensage.
 // </copyright>
 
-namespace Ensage.SDK.Service.Renderer.UI
+namespace Ensage.SDK.Renderer.UI
 {
     using System.Collections.Generic;
     using System.ComponentModel;

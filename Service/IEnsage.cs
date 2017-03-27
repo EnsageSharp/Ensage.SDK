@@ -4,10 +4,10 @@
 
 namespace Ensage.SDK.Service
 {
+    using Ensage.SDK.Input;
     using Ensage.SDK.Orbwalker;
-    using Ensage.SDK.Service.Input;
-    using Ensage.SDK.Service.Renderer.D2D;
-    using Ensage.SDK.Service.Renderer.D3D;
+    using Ensage.SDK.Renderer.D2D;
+    using Ensage.SDK.Renderer.D3D;
     using Ensage.SDK.TargetSelector;
 
     public interface IEnsage

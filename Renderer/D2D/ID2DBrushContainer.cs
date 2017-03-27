@@ -2,7 +2,7 @@
 //    Copyright (c) 2017 Ensage.
 // </copyright>
 
-namespace Ensage.SDK.Service.Renderer.D2D
+namespace Ensage.SDK.Renderer.D2D
 {
     using System;
     using System.Collections.Generic;

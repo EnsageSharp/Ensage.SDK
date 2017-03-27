@@ -2,7 +2,7 @@
 //    Copyright (c) 2017 Ensage.
 // </copyright>
 
-namespace Ensage.SDK.Service.Input
+namespace Ensage.SDK.Input
 {
     using System;
     using System.Windows.Forms;

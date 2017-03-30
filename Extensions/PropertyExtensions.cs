@@ -8,7 +8,7 @@ namespace Ensage.SDK.Extensions
     using System.Linq.Expressions;
     using System.Reflection;
 
-    public static class ExpressionExtensions
+    public static class PropertyExtensions
     {
         public static Func<object, object> GetPropertyGetter(this PropertyInfo property, object target)
         {

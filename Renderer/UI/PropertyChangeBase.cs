@@ -8,6 +8,8 @@ namespace Ensage.SDK.Renderer.UI
     using System.ComponentModel;
     using System.Runtime.CompilerServices;
 
+    using PlaySharp.Toolkit.Helper.Annotations;
+
     public abstract class PropertyChangeBase : INotifyPropertyChanging, INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
@@ -19,11 +21,13 @@ namespace Ensage.SDK.Renderer.UI
             return field;
         }
 
+        [NotifyPropertyChangedInvocator]
         protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
+        [NotifyPropertyChangedInvocator]
         protected void OnPropertyChanging([CallerMemberName] string propertyName = null)
         {
             this.PropertyChanging?.Invoke(this, new PropertyChangingEventArgs(propertyName));

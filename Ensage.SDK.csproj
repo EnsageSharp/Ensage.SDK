@@ -103,15 +103,13 @@
     <Compile Include="Abilities\npc_dota_hero_vengefulspirit\vengefulspirit_magic_missile.cs" />
     <Compile Include="Extensions\AnimationExtensions.cs" />
     <Compile Include="Extensions\HeroExtensions.cs" />
-    <Compile Include="Extensions\IntersectionResult.cs" />
-    <Compile Include="Extensions\MovementCollisionInfo.cs" />
-    <Compile Include="Extensions\ProjectionInfo.cs" />
+    <Compile Include="Geometry\IntersectionResult.cs" />
+    <Compile Include="Geometry\MovementCollisionInfo.cs" />
     <Compile Include="Extensions\SharpDXExtensions.cs" />
     <Compile Include="Extensions\Vector2Extensions.cs" />
     <Compile Include="Extensions\Vector3Extensions.cs" />
     <Compile Include="Extensions\Vector4Extensions.cs" />
     <Compile Include="Geometry\Geometry.cs" />
-    <Compile Include="Geometry\IntersectionResult.cs" />
     <Compile Include="Geometry\Polygon.cs" />
     <Compile Include="Geometry\ProjectionInfo.cs" />
     <Compile Include="Helpers\DamageHelpers.cs" />
@@ -131,8 +129,6 @@
     <Compile Include="Service\CatalogLoader.cs" />
     <Compile Include="Service\ContainerFactory.cs" />
     <Compile Include="Service\ContextContainer.cs" />
-    <Compile Include="Renderer\UI\AssemblyConfig.cs" />
-    <Compile Include="Renderer\UI\Markup\CreateMenuAttribute.cs" />
     <Compile Include="Renderer\D2D\D2DBrushContainer.cs" />
     <Compile Include="Renderer\D2D\D2DContext.cs" />
     <Compile Include="Renderer\D2D\D2DRenderer.cs" />
@@ -149,10 +145,6 @@
     <Compile Include="Renderer\D2D\ID2DContext.cs" />
     <Compile Include="Renderer\D2D\ID2DRenderer.cs" />
     <Compile Include="Service\IServiceContext.cs" />
-    <Compile Include="Renderer\UI\AnchorElement.cs" />
-    <Compile Include="Renderer\UI\FrameworkElement.cs" />
-    <Compile Include="Renderer\UI\Markup\BindItemAttribute.cs" />
-    <Compile Include="Renderer\UI\Markup\BindMenuAttribute.cs" />
     <Compile Include="Renderer\UI\PropertyChangeBase.cs" />
     <Compile Include="TargetSelector\ExportTargetSelectorAttribute.cs" />
     <Compile Include="Extensions\AbilityExtensions.cs" />

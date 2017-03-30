@@ -1,25 +1,27 @@
-﻿// <copyright file="IntersectionResult.cs" company="Ensage">
+// <copyright file="IntersectionResult.cs" company="Ensage">
 //    Copyright (c) 2017 Ensage.
 // </copyright>
 
 namespace Ensage.SDK.Geometry
 {
+    using Ensage.SDK.Extensions;
+
     using SharpDX;
 
     /// <summary>
-    ///     Represents an intersection result.
+    ///     Holds info for the <see cref="Vector2Extensions.Intersection" /> method.
     /// </summary>
     public struct IntersectionResult
     {
         #region Fields
 
         /// <summary>
-        ///     If they intersect.
+        ///     Returns if both of the points intersect.
         /// </summary>
         public bool Intersects;
 
         /// <summary>
-        ///     The point
+        ///     Intersection point
         /// </summary>
         public Vector2 Point;
 
@@ -29,13 +31,18 @@ namespace Ensage.SDK.Geometry
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="IntersectionResult" /> struct.
+        ///     Constructor for Intersection Result
         /// </summary>
-        /// <param name="Intersects">if set to <c>true</c>, they insersect.</param>
-        /// <param name="Point">The point.</param>
-        public IntersectionResult(bool Intersects = false, Vector2 Point = new Vector2())
+        /// <param name="intersects">
+        ///     Intersection of input
+        /// </param>
+        /// <param name="point">
+        ///     Intersection Point
+        /// </param>
+        public IntersectionResult(bool intersects = false, Vector2 point = new Vector2())
         {
-            this.Intersects = Intersects;
-            this.Point = Point;
+            this.Intersects = intersects;
+            this.Point = point;
         }
 
         #endregion

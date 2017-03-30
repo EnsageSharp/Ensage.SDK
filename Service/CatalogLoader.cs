@@ -37,6 +37,16 @@ namespace Ensage.SDK.Service
 
         public void Add(Assembly assembly)
         {
+            if (assembly.ReflectionOnly)
+            {
+                return;
+            }
+
+            if (assembly.GlobalAssemblyCache)
+            {
+                return;
+            }
+
             if (this.LoadedAssemblies.Contains(assembly))
             {
                 return;

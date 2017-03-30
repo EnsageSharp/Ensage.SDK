@@ -39,7 +39,7 @@ namespace Ensage.SDK.Persistence
 
         public event PropertyChangingEventHandler PropertyChanging;
 
-        public IReadOnlyDictionary<string, CacheEntry> Entries => this.Cache;
+        public IEnumerable<CacheEntry> Entries => this.Cache.Values;
 
         private Dictionary<string, CacheEntry> Cache { get; set; } = new Dictionary<string, CacheEntry>();
 

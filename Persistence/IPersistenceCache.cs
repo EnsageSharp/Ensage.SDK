@@ -5,6 +5,7 @@
 namespace Ensage.SDK.Persistence
 {
     using System;
+    using System.Collections.Generic;
     using System.ComponentModel;
 
     public interface IPersistenceCache
@@ -12,6 +13,8 @@ namespace Ensage.SDK.Persistence
         event PropertyChangedEventHandler PropertyChanged;
 
         event PropertyChangingEventHandler PropertyChanging;
+
+        IEnumerable<CacheEntry> Entries { get; }
 
         CacheEntry this[string key] { get; }
 

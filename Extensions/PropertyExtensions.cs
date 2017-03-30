@@ -2,7 +2,7 @@
 //    Copyright (c) 2017 Ensage.
 // </copyright>
 
-namespace Ensage.SDK.Persistence
+namespace Ensage.SDK.Extensions
 {
     using System;
     using System.Linq.Expressions;

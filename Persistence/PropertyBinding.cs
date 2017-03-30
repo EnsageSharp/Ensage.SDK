@@ -7,6 +7,8 @@ namespace Ensage.SDK.Persistence
     using System;
     using System.Reflection;
 
+    using Ensage.SDK.Extensions;
+
     public class PropertyBinding
     {
         public PropertyBinding(PropertyInfo propertyInfo, object target)

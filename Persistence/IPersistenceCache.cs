@@ -1,19 +1,30 @@
-// <copyright file="IPersistenceCache.cs" company="Ensage">
+﻿// <copyright file="IPersistenceCache.cs" company="Ensage">
 //    Copyright (c) 2017 Ensage.
 // </copyright>
 
 namespace Ensage.SDK.Persistence
 {
     using System;
+    using System.ComponentModel;
 
     public interface IPersistenceCache
     {
+        event PropertyChangedEventHandler PropertyChanged;
+
+        event PropertyChangingEventHandler PropertyChanging;
+
+        CacheEntry this[string key] { get; }
+
         void Clear();
 
-        void CreateOrUpdate(string key, object value);
+        void Dispose();
 
-        T GetOrCreate<T>(string key, Func<T> factory = null);
+        T GetValue<T>(string key, Func<object> valueFactory = null);
+
+        void Load();
 
         void Save();
+
+        void SetValue<T>(string key, T value, bool @override = true);
     }
 }

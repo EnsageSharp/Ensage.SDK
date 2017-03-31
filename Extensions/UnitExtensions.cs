@@ -155,13 +155,19 @@ namespace Ensage.SDK.Extensions
 
             if (target.IsNeutral || target is Creep)
             {
-                // TODO test IsNeutral -> quelling blade bonus applied?
                 var isMelee = source.IsMelee;
-                var quellingBlade = source.GetItemById(AbilityId.item_quelling_blade)
-                                    ?? source.GetItemById(AbilityId.item_iron_talon);
-                if (quellingBlade != null)
+
+                // apply bonus damage from quelling blade and iron talon (they do stack)
+                var bonusCreepItems =
+                    source.Inventory.Items.Where(
+                        x => x.Id == AbilityId.item_quelling_blade || x.Id == AbilityId.item_iron_talon);
+                damage += bonusCreepItems.Sum(bonusCreepItem => bonusCreepItem.GetAbilitySpecialData(isMelee ? "damage_bonus" : "damage_bonus_ranged"));
+
+                // apply percentage bonus damage from battle fury
+                var battleFury = source.GetItemById(AbilityId.item_bfury);
+                if (battleFury != null)
                 {
-                    damage += quellingBlade.GetAbilitySpecialData(isMelee ? "damage_bonus" : "damage_bonus_ranged");
+                    mult *= battleFury.GetAbilitySpecialData(isMelee ? "quelling_bonus" : "quelling_bonus_ranged") / 100.0f; // 160 | 125
                 }
             }
 

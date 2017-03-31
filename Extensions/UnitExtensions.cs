@@ -158,12 +158,20 @@ namespace Ensage.SDK.Extensions
                 var isMelee = source.IsMelee;
 
                 // apply bonus damage from quelling blade and iron talon (they do stack)
-                var bonusCreepItems =
-                    source.Inventory.Items.Where(
-                        x => x.Id == AbilityId.item_quelling_blade || x.Id == AbilityId.item_iron_talon);
-                damage += bonusCreepItems.Sum(bonusCreepItem => bonusCreepItem.GetAbilitySpecialData(isMelee ? "damage_bonus" : "damage_bonus_ranged"));
+                var bonusDmgItem = source.GetItemById(AbilityId.item_quelling_blade);
+                if (bonusDmgItem != null)
+                {
+                    damage += bonusDmgItem.GetAbilitySpecialData(isMelee ? "damage_bonus" : "damage_bonus_ranged");
+                }
 
-                // apply percentage bonus damage from battle fury
+                bonusDmgItem = source.GetItemById(AbilityId.item_iron_talon);
+                if (bonusDmgItem != null)
+                {
+                    damage += bonusDmgItem.GetAbilitySpecialData(isMelee ? "damage_bonus" : "damage_bonus_ranged");
+                }
+
+
+                // apply percentage bonus damage from battle fury to base dmg
                 var battleFury = source.GetItemById(AbilityId.item_bfury);
                 if (battleFury != null)
                 {

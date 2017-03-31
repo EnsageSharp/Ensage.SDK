@@ -103,6 +103,7 @@
     <Compile Include="Abilities\npc_dota_hero_vengefulspirit\vengefulspirit_magic_missile.cs" />
     <Compile Include="Extensions\AnimationExtensions.cs" />
     <Compile Include="Extensions\HeroExtensions.cs" />
+    <Compile Include="Extensions\TypeExtensions.cs" />
     <Compile Include="Geometry\IntersectionResult.cs" />
     <Compile Include="Geometry\MovementCollisionInfo.cs" />
     <Compile Include="Extensions\SharpDXExtensions.cs" />

@@ -426,8 +426,8 @@ namespace Ensage.SDK.Extensions
         /// <returns></returns>
         public static bool IsInRange(this Vector2 sourcePosition, Vector2 targetPosition, float range)
         {
-            var diffX = (sourcePosition.X - targetPosition.X);
-            var diffY = (sourcePosition.Y - targetPosition.Y);
+            var diffX = sourcePosition.X - targetPosition.X;
+            var diffY = sourcePosition.Y - targetPosition.Y;
 
             return diffX * diffX + diffY * diffY < range * range;
         }
@@ -441,8 +441,8 @@ namespace Ensage.SDK.Extensions
         /// <returns></returns>
         public static bool IsInRange(this Vector2 sourcePosition, Vector3 targetPosition, float range)
         {
-            var diffX = (sourcePosition.X - targetPosition.X);
-            var diffY = (sourcePosition.Y - targetPosition.Y);
+            var diffX = sourcePosition.X - targetPosition.X;
+            var diffY = sourcePosition.Y - targetPosition.Y;
 
             return diffX * diffX + diffY * diffY < range * range;
         }

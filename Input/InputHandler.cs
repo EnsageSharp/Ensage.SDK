@@ -111,6 +111,11 @@ namespace Ensage.SDK.Input
 
         private void FireKeyDown(WndEventArgs args)
         {
+            if (Game.IsChatOpen)
+            {
+                return;
+            }
+
             var key = KeyInterop.KeyFromVirtualKey((int)args.WParam);
             var data = new KeyEventArgs(key, args.Process);
             this.KeyDown?.Invoke(this, data);
@@ -121,6 +126,11 @@ namespace Ensage.SDK.Input
 
         private void FireKeyUp(WndEventArgs args)
         {
+            if (Game.IsChatOpen)
+            {
+                return;
+            }
+
             var key = KeyInterop.KeyFromVirtualKey((int)args.WParam);
             var data = new KeyEventArgs(key, args.Process);
             this.KeyUp?.Invoke(this, data);

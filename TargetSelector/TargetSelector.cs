@@ -22,7 +22,12 @@ namespace Ensage.SDK.TargetSelector
 
         private IEnsageServiceContext Context { get; }
 
-        public Unit GetClosestUnitToMouse(Team team = Team.Undefined)
+        public Unit GetClosestUnitToMouse(float range)
+        {
+            return this.GetClosestUnitToMouse(Team.Undefined, range);
+        }
+
+        public Unit GetClosestUnitToMouse(Team team = Team.Undefined, float range = 800)
         {
             var mousePosition = Game.MousePosition;
             var query = team == Team.Undefined

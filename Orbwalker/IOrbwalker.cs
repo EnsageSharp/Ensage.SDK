@@ -5,6 +5,7 @@
 namespace Ensage.SDK.Orbwalker
 {
     using System;
+    using System.Windows.Input;
 
     using SharpDX;
 
@@ -13,6 +14,10 @@ namespace Ensage.SDK.Orbwalker
         event EventHandler<EventArgs> Attacked;
 
         event EventHandler<EventArgs> Attacking;
+
+        Key Key { get; set; }
+
+        bool IsOrbwalking { get; set; }
 
         void Orbwalk(Vector3 position);
 

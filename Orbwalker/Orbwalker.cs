@@ -7,6 +7,7 @@ namespace Ensage.SDK.Orbwalker
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.Composition;
+    using System.Windows.Input;
 
     using Ensage.SDK.Abilities;
     using Ensage.SDK.Extensions;
@@ -19,12 +20,6 @@ namespace Ensage.SDK.Orbwalker
     [ExportOrbwalker("SDK")]
     public class Orbwalker : IOrbwalker
     {
-        public float HoldZoneRange;
-
-        public float SafeZone;
-
-        public bool UseAttackModifier;
-
         private readonly IEnsageServiceContext context;
 
         private List<TargetAbility> attackModifierAbilities = new List<TargetAbility>();
@@ -41,6 +36,16 @@ namespace Ensage.SDK.Orbwalker
         public event EventHandler<EventArgs> Attacked;
 
         public event EventHandler<EventArgs> Attacking;
+
+        public float HoldZoneRange { get; set; }
+
+        public bool IsOrbwalking { get; set; }
+
+        public Key Key { get; set; }
+
+        public float SafeZone { get; set; }
+
+        public bool UseAttackModifier { get; set; }
 
         public void Dispose()
         {
@@ -71,15 +76,19 @@ namespace Ensage.SDK.Orbwalker
         {
             if (this.target == null)
             {
+                this.IsOrbwalking = false;
                 return;
             }
 
             var targetEntity = this.target.Entity as Unit;
-            if (targetEntity != null && !targetEntity.IsValid)
+            if ((targetEntity != null && !targetEntity.IsValid) || Game.IsKeyDown(this.Key))
             {
                 this.target = null;
+                this.IsOrbwalking = false;
                 return;
             }
+
+            this.IsOrbwalking = true;
 
             var contextOwner = this.context.Owner;
 

@@ -406,6 +406,48 @@ namespace Ensage.SDK.Extensions
         }
 
         /// <summary>
+        /// Returns if the distance to target is lower than range
+        /// </summary>
+        /// <param name="sourcePosition"></param>
+        /// <param name="target"></param>
+        /// <param name="range"></param>
+        /// <returns></returns>
+        public static bool IsInRange(this Vector2 sourcePosition, Entity target, float range)
+        {
+            return target.NetworkPosition.IsInRange(sourcePosition, range);
+        }
+
+        /// <summary>
+        /// Returns if the distance to target is lower than range
+        /// </summary>
+        /// <param name="sourcePosition"></param>
+        /// <param name="target"></param>
+        /// <param name="range"></param>
+        /// <returns></returns>
+        public static bool IsInRange(this Vector2 sourcePosition, Vector2 targetPosition, float range)
+        {
+            var diffX = (sourcePosition.X - targetPosition.X);
+            var diffY = (sourcePosition.Y - targetPosition.Y);
+
+            return diffX * diffX + diffY * diffY < range * range;
+        }
+
+        /// <summary>
+        /// Returns if the distance to target is lower than range
+        /// </summary>
+        /// <param name="sourcePosition"></param>
+        /// <param name="target"></param>
+        /// <param name="range"></param>
+        /// <returns></returns>
+        public static bool IsInRange(this Vector2 sourcePosition, Vector3 targetPosition, float range)
+        {
+            var diffX = (sourcePosition.X - targetPosition.X);
+            var diffY = (sourcePosition.Y - targetPosition.Y);
+
+            return diffX * diffX + diffY * diffY < range * range;
+        }
+
+        /// <summary>
         ///     Returns if the Vector2 is on the screen.
         /// </summary>
         /// <param name="vector2">Extended SharpDX Vector2</param>

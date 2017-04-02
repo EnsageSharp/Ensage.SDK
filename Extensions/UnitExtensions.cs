@@ -115,7 +115,7 @@ namespace Ensage.SDK.Extensions
 
         public static Ability GetAbilityById(this Unit unit, AbilityId abilityId)
         {
-            return unit.Spellbook.Spells.FirstOrDefault(x => x.Id == 0);
+            return unit.Spellbook.Spells.FirstOrDefault(x => x.Id == abilityId);
         }
 
         /// <summary>
@@ -330,7 +330,7 @@ namespace Ensage.SDK.Extensions
         {
             return source.NetworkPosition.IsInRange(
                 target,
-                centerToCenter ? range : Math.Max(0, range - source.HullRadius - target.HullRadius));
+                centerToCenter ? range : Math.Max(0, range + source.HullRadius + target.HullRadius));
         }
 
         public static bool IsInvulnerable(this Unit unit)

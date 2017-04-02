@@ -14,7 +14,8 @@ namespace Ensage.SDK.Extensions
     {
         public static float Distance2D(this Unit entity, Unit other, bool fromCenterToCenter = false)
         {
-            return entity.Distance2D(other.NetworkPosition) - (fromCenterToCenter ? 0f : (entity.HullRadius + other.HullRadius));
+            return entity.Distance2D(other.NetworkPosition)
+                   - (fromCenterToCenter ? 0f : entity.HullRadius + other.HullRadius);
         }
 
         public static float Distance2D(this Entity entity, Entity other)

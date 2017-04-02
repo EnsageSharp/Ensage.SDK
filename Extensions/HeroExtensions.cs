@@ -4,8 +4,16 @@
 
 namespace Ensage.SDK.Extensions
 {
+    using System.Reflection;
+
+    using log4net;
+
+    using PlaySharp.Toolkit.Logging;
+
     public static class HeroExtensions
     {
+        private static readonly ILog Log = AssemblyLogs.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
         public static float AttackPoint(this Hero hero)
         {
             try
@@ -17,6 +25,7 @@ namespace Ensage.SDK.Extensions
             }
             catch (KeyValuesNotFoundException)
             {
+                Log.Warn($"Missing AttackAnimationPoint for {hero.Name}");
                 return 0;
             }
         }

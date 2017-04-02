@@ -5,24 +5,34 @@
 namespace Ensage.SDK.Extensions
 {
     using System;
-    using System.Collections.Generic;	
+    using System.Collections.Generic;
     using System.Linq;
+    using System.Reflection;
+
+    using log4net;
+
+    using PlaySharp.Toolkit.Logging;
 
     using SharpDX;
 
     public static class UnitExtensions
     {
+        private static readonly ILog Log = AssemblyLogs.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
         public static float AttackPoint(this Unit unit)
         {
             try
             {
                 var attackAnimationPoint =
-                    Game.FindKeyValues($"{unit.Name}/AttackAnimationPoint", unit is Hero ? KeyValueSource.Hero : KeyValueSource.Unit).FloatValue;
+                    Game.FindKeyValues(
+                        $"{unit.Name}/AttackAnimationPoint",
+                        unit is Hero ? KeyValueSource.Hero : KeyValueSource.Unit).FloatValue;
 
                 return attackAnimationPoint / (1 + (unit.AttackSpeedValue() - 100) / 100);
             }
             catch (KeyValuesNotFoundException)
             {
+                Log.Warn($"Missing AttackAnimationPoint for {unit.Name}");
                 return 0;
             }
         }
@@ -36,12 +46,12 @@ namespace Ensage.SDK.Extensions
                 result += target.HullRadius;
             }
 
-            if(unit is Creep)
+            if (unit is Creep)
             {
                 result += 15f;
             }
 
-            if(unit is Hero)
+            if (unit is Hero)
             {
                 // test for items with bonus range
                 var bonusRangeItem = unit.GetItemById(AbilityId.item_dragon_lance)
@@ -65,7 +75,8 @@ namespace Ensage.SDK.Extensions
                 }
 
                 // test for talents with bonus range
-                foreach (var ability in unit.Spellbook.Spells.Where(x => x.Name.StartsWith("special_bonus_attack_range_")))
+                foreach (
+                    var ability in unit.Spellbook.Spells.Where(x => x.Name.StartsWith("special_bonus_attack_range_")))
                 {
                     if (ability.Level > 0)
                     {
@@ -73,7 +84,7 @@ namespace Ensage.SDK.Extensions
                     }
                 }
             }
-            
+
             // test for modifiers with bonus range TODO
             return result;
         }
@@ -155,19 +166,33 @@ namespace Ensage.SDK.Extensions
 
             if (target.IsNeutral || target is Creep)
             {
-                // TODO test IsNeutral -> quelling blade bonus applied?
                 var isMelee = source.IsMelee;
-                var quellingBlade = source.GetItemById(AbilityId.item_quelling_blade)
-                                    ?? source.GetItemById(AbilityId.item_iron_talon);
-                if (quellingBlade != null)
+
+                // apply bonus damage from quelling blade and iron talon (they do stack)
+                var bonusDmgItem = source.GetItemById(AbilityId.item_quelling_blade);
+                if (bonusDmgItem != null)
                 {
-                    damage += quellingBlade.GetAbilitySpecialData(isMelee ? "damage_bonus" : "damage_bonus_ranged");
+                    damage += bonusDmgItem.GetAbilitySpecialData(isMelee ? "damage_bonus" : "damage_bonus_ranged");
+                }
+
+                bonusDmgItem = source.GetItemById(AbilityId.item_iron_talon);
+                if (bonusDmgItem != null)
+                {
+                    damage += bonusDmgItem.GetAbilitySpecialData(isMelee ? "damage_bonus" : "damage_bonus_ranged");
+                }
+
+
+                // apply percentage bonus damage from battle fury to base dmg
+                var battleFury = source.GetItemById(AbilityId.item_bfury);
+                if (battleFury != null)
+                {
+                    mult *= battleFury.GetAbilitySpecialData(isMelee ? "quelling_bonus" : "quelling_bonus_ranged") / 100.0f; // 160 | 125
                 }
             }
 
             var armor = target.Armor;
 
-            mult *= (1 - 0.06f * armor / (1 + 0.06f * Math.Abs(armor)));
+            mult *= 1 - 0.06f * armor / (1 + 0.06f * Math.Abs(armor));
 
             return damage * mult;
         }
@@ -178,16 +203,34 @@ namespace Ensage.SDK.Extensions
         /// <param name="source">The attacker</param>
         /// <param name="target">The target</param>
         /// <returns></returns>
-        public static float GetAutoAttackArrivalTime(this Unit source, Unit target, bool takeRotationTimeIntoAccount = true)
+        public static float GetAutoAttackArrivalTime(
+            this Unit source,
+            Unit target,
+            bool takeRotationTimeIntoAccount = true)
         {
-            var result = GetProjectileArrivalTime(source, target, source.AttackPoint(), source.IsMelee ? float.MaxValue : source.ProjectileSpeed(), takeRotationTimeIntoAccount);
+            var result = GetProjectileArrivalTime(
+                source,
+                target,
+                source.AttackPoint(),
+                source.IsMelee ? float.MaxValue : source.ProjectileSpeed(),
+                takeRotationTimeIntoAccount);
 
             if (!(source is Tower))
             {
-                result -= 0.05f; //:broscience:
+                result -= 0.05f; // :broscience:
             }
 
             return result;
+        }
+
+        public static Item GetItemById(this Unit unit, AbilityId abilityId)
+        {
+            if (!unit.HasInventory)
+            {
+                return null;
+            }
+
+            return unit.Inventory.Items.FirstOrDefault(x => x != null && x.IsValid && x.Id == abilityId);
         }
 
         /// <summary>
@@ -199,32 +242,28 @@ namespace Ensage.SDK.Extensions
         /// <param name="missileSpeed"></param>
         /// <param name="takeRotationIntoAccount"></param>
         /// <returns></returns>
-        public static float GetProjectileArrivalTime(this Unit source, Unit target, float delay, float missileSpeed, bool takeRotationTimeIntoAccount = true)
+        public static float GetProjectileArrivalTime(
+            this Unit source,
+            Unit target,
+            float delay,
+            float missileSpeed,
+            bool takeRotationTimeIntoAccount = true)
         {
             var result = 0f;
 
-            //rotation time
+            // rotation time
             result += takeRotationTimeIntoAccount ? source.TurnTime(target.NetworkPosition) : 0f;
 
-            //delay
+            // delay
             result += delay;
 
-            //time that takes to the missile to reach the target
+            // time that takes to the missile to reach the target
             if (missileSpeed != float.MaxValue)
             {
                 result += source.Distance2D(target) / missileSpeed;
             }
 
             return result;
-        }
-
-        public static Item GetItemById(this Unit unit, AbilityId abilityId)
-        {
-            if(!unit.HasInventory)
-            {
-                return null;
-            }
-            return unit.Inventory.Items.FirstOrDefault(x => x != null && x.IsValid && x.Id == abilityId);
         }
 
         public static bool HasModifier(this Unit unit, string modifierName)
@@ -235,13 +274,13 @@ namespace Ensage.SDK.Extensions
         public static bool HasModifiers(this Unit unit, IEnumerable<string> modifierNames, bool hasAll = true)
         {
             var counter = 0;
-            
+
             foreach (var modifier in unit.Modifiers)
             {
-                if(modifierNames.Contains(modifier.Name))
+                if (modifierNames.Contains(modifier.Name))
                 {
                     counter++;
-                    if(hasAll)
+                    if (hasAll)
                     {
                         return true;
                     }
@@ -289,7 +328,9 @@ namespace Ensage.SDK.Extensions
         /// <returns></returns>
         public static bool IsInRange(this Unit source, Unit target, float range, bool centerToCenter = false)
         {
-            return source.NetworkPosition.IsInRange(target, centerToCenter ? range : Math.Max(0, range - source.HullRadius - target.HullRadius));
+            return source.NetworkPosition.IsInRange(
+                target,
+                centerToCenter ? range : Math.Max(0, range - source.HullRadius - target.HullRadius));
         }
 
         public static bool IsInvulnerable(this Unit unit)
@@ -337,10 +378,14 @@ namespace Ensage.SDK.Extensions
         {
             try
             {
-                return Game.FindKeyValues($"{unit.Name}/ProjectileSpeed", unit is Hero ? KeyValueSource.Hero : KeyValueSource.Unit).IntValue;
+                return
+                    Game.FindKeyValues(
+                        $"{unit.Name}/ProjectileSpeed",
+                        unit is Hero ? KeyValueSource.Hero : KeyValueSource.Unit).IntValue;
             }
             catch (KeyValuesNotFoundException)
             {
+                Log.Warn($"Missing ProjectileSpeed for {unit.Name}");
                 return 0;
             }
         }
@@ -350,9 +395,11 @@ namespace Ensage.SDK.Extensions
             try
             {
                 var turnRate =
-                    Game.FindKeyValues($"{unit.Name}/MovementTurnRate", unit is Hero ? KeyValueSource.Hero : KeyValueSource.Unit).FloatValue;
+                    Game.FindKeyValues(
+                        $"{unit.Name}/MovementTurnRate",
+                        unit is Hero ? KeyValueSource.Hero : KeyValueSource.Unit).FloatValue;
 
-                if(currentTurnRate)
+                if (currentTurnRate)
                 {
                     if (unit.HasModifier("modifier_medusa_stone_gaze_slow"))
                     {
@@ -369,6 +416,7 @@ namespace Ensage.SDK.Extensions
             }
             catch (KeyValuesNotFoundException)
             {
+                Log.Warn($"Missing MovementTurnRate for {unit.Name}");
                 return 0.5f;
             }
         }

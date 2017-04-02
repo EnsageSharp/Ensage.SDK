@@ -8,7 +8,9 @@ namespace Ensage.SDK.TargetSelector
 
     public interface ITargetSelector
     {
-        Unit GetClosestUnitToMouse(Team team = Team.Undefined);
+        Unit GetClosestUnitToMouse(Team team = Team.Undefined, float range = 800);
+
+        Unit GetClosestUnitToMouse(float range);
 
         IEnumerable<Unit> GetUnitsInRange(float range, Team team = Team.Undefined);
 

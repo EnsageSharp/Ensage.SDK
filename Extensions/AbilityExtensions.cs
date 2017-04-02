@@ -9,25 +9,18 @@ namespace Ensage.SDK.Extensions
 
     public static class AbilityExtensions
     {
-        public static readonly List<AbilityId> UniqueAttackModifiers = new List<AbilityId>
-                                                                           {
-                                                                               AbilityId
-                                                                                   .drow_ranger_frost_arrows,
-                                                                               AbilityId
-                                                                                   .obsidian_destroyer_arcane_orb,
-                                                                               AbilityId
-                                                                                   .silencer_glaives_of_wisdom,
-                                                                               AbilityId
-                                                                                   .jakiro_liquid_fire,
-                                                                               AbilityId
-                                                                                   .viper_poison_attack,
-                                                                               AbilityId
-                                                                                   .enchantress_impetus,
-                                                                               AbilityId
-                                                                                   .clinkz_searing_arrows,
-                                                                               AbilityId
-                                                                                   .huskar_burning_spear
-                                                                           };
+        public static readonly List<AbilityId> UniqueAttackModifiers =
+            new List<AbilityId>
+                {
+                    AbilityId.drow_ranger_frost_arrows,
+                    AbilityId.obsidian_destroyer_arcane_orb,
+                    AbilityId.silencer_glaives_of_wisdom,
+                    AbilityId.jakiro_liquid_fire,
+                    AbilityId.viper_poison_attack,
+                    AbilityId.enchantress_impetus,
+                    AbilityId.clinkz_searing_arrows,
+                    AbilityId.huskar_burning_spear
+                };
 
         public static float GetAbilitySpecialData(this Ability ability, string name, uint level = 0)
         {

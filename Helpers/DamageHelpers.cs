@@ -46,28 +46,7 @@ namespace Ensage.SDK.Helpers
                 return 0.0f;
             }
 
-            var spellAmp = 0.0f;
-
-            var hero = owner as Hero;
-            if (hero != null)
-            {
-                spellAmp += hero.TotalIntelligence / 16.0f / 100.0f;
-            }
-
-            var aether = owner.GetItemById(AbilityId.item_aether_lens);
-            if (aether != null)
-            {
-                spellAmp += aether.AbilitySpecialData.First(x => x.Name == "spell_amp").Value / 100.0f;
-            }
-
-            var talents =
-                owner.Spellbook.Spells.Where(x => x.Level > 0 && x.Name.StartsWith("special_bonus_spell_amplify_"));
-            foreach (var talent in talents)
-            {
-                spellAmp += talent.AbilitySpecialData.First(x => x.Name == "value").Value / 100.0f;
-            }
-
-            return spellAmp;
+            return owner.GetSpellAmplification();
         }
     }
 }

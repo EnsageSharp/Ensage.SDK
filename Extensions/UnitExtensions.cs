@@ -19,6 +19,8 @@ namespace Ensage.SDK.Extensions
     {
         private static readonly ILog Log = AssemblyLogs.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
+        private static readonly HashSet<string> ChannelAnimations = new HashSet<string>(StringComparer.OrdinalIgnoreCase) { "death_ward_anim", "powershot_cast_anim", "", "rearm1_anim", "warlock_cast3_upheaval", "warlock_cast3_upheaval_channel_anim", "cast_channel_shackles_anim", "channel_shackles", "sand_king_epicast_anim", "cast4_tricks_trade", "life drain_anim", "pudge_dismember_start", "pudge_dismember_mid_anim", "cast1_FortunesEnd_anim_anim", "cast04_spring", "Illuminate_anim", "cast1_echo_stomp_anim", "cast4_black_hole_anim", "freezing_field_anim_10s", "fiends_grip_cast_anim", "fiends_grip_loop_anim", "drain_anim" };
+
         public static float AttackPoint(this Unit unit)
         {
             try
@@ -96,14 +98,48 @@ namespace Ensage.SDK.Extensions
             return Math.Min(attackSpeed, 600);
         }
 
+        public static float CalculateSpellDamage(this Hero source, Unit target, DamageType damageType, float amount)
+        {
+            switch (damageType)
+            {
+                case DamageType.Magical:
+                    return (1 - target.MagicDamageResist) * (1 + source.GetSpellAmplification()) * amount;
+                case DamageType.Physical:
+                    return (1 - target.DamageResist) * (1 + source.GetSpellAmplification()) * amount;
+                case DamageType.HealthRemoval:
+                    return amount;
+                case DamageType.Pure:
+                    return amount;
+            }
+
+            return amount;
+        }
+
         public static bool CanAttack(this Unit unit)
         {
             return unit.AttackCapability != AttackCapability.None && !unit.IsDisarmed();
         }
 
+        /// <summary>
+        /// Gets the direction unit vector
+        /// </summary>
+        /// <param name="unit"></param>
+        /// <returns></returns>
+        public static Vector3 Direction(this Unit unit, float length = 1f)
+        {
+            var rotation = unit.NetworkRotationRad;
+            return new Vector3((float)Math.Cos(rotation) * length, (float)Math.Sin(rotation) * length, unit.NetworkPosition.Z);
+        }
+
+        public static Vector2 Direction2D(this Unit unit, float length = 1f)
+        {
+            var rotation = unit.NetworkRotationRad;
+            return new Vector2((float)Math.Cos(rotation) * length, (float)Math.Sin(rotation) * length);
+        }
+
         public static float FindRotationAngle(this Unit unit, Vector3 pos)
         {
-            var angle = Math.Abs(Math.Atan2(pos.Y - unit.Position.Y, pos.X - unit.Position.X) - unit.RotationRad);
+            var angle = Math.Abs(Math.Atan2(pos.Y - unit.Position.Y, pos.X - unit.Position.X) - unit.NetworkRotationRad);
 
             if (angle > Math.PI)
             {
@@ -266,6 +302,30 @@ namespace Ensage.SDK.Extensions
             return result;
         }
 
+        public static float GetSpellAmplification(this Unit source)
+        {
+            var spellAmp = 0.0f;
+            if (source is Hero)
+            {
+                spellAmp += (source as Hero).TotalIntelligence / 16.0f / 100.0f;
+            }
+
+            var aether = source.GetItemById(AbilityId.item_aether_lens);
+            if (aether != null)
+            {
+                spellAmp += aether.AbilitySpecialData.First(x => x.Name == "spell_amp").Value / 100.0f;
+            }
+
+            var talents =
+                source.Spellbook.Spells.Where(x => x.Level > 0 && x.Name.StartsWith("special_bonus_spell_amplify_"));
+            foreach (var talent in talents)
+            {
+                spellAmp += talent.AbilitySpecialData.First(x => x.Name == "value").Value / 100.0f;
+            }
+
+            return spellAmp;
+        }
+
         public static bool HasModifier(this Unit unit, string modifierName)
         {
             return unit.Modifiers.Any(modifier => modifier.Name == modifierName);
@@ -294,6 +354,26 @@ namespace Ensage.SDK.Extensions
         {
             var v = unit.Position + unit.Vector3FromPolarAngle() * distance;
             return new Vector3(v.X, v.Y, 0);
+        }
+
+        public static bool IsChannelAnimation(this Animation animation)
+        {
+            return ChannelAnimations.Contains(animation.Name);
+        }
+
+        /// <summary>
+        /// Check if the unit is channeling a spell
+        /// </summary>
+        /// <param name="unit"></param>
+        /// <returns></returns>
+        public static bool IsChanneling(this Unit unit)
+        {
+            if (ChannelAnimations.Contains(unit.Animation.Name))
+            {
+                return true;
+            }
+
+            return unit.Spellbook.Spells.Any(s => s.IsChanneling);
         }
 
         /// <summary>
@@ -367,6 +447,38 @@ namespace Ensage.SDK.Extensions
         {
             return target.IsValid && target.IsVisible && target.IsAlive && target.IsSpawned && !target.IsIllusion &&
                    attacker.IsInAttackRange(target) && !target.IsInvulnerable();
+        }
+
+        /// <summary>
+        /// Checks if the target is valid (alive, visible, spawned and not invulnerable)
+        /// </summary>
+        /// <param name="unit"></param>
+        /// <param name="range"></param>
+        /// <param name="checkTeam"></param>
+        /// <param name="from"></param>
+        /// <returns></returns>
+        public static bool IsValidTarget(
+            this Unit unit,
+            float range = float.MaxValue,
+            bool checkTeam = true,
+            Vector3? from = null)
+        {
+            if (unit == null || !unit.IsValid || !unit.IsAlive || !unit.IsVisible || !unit.IsSpawned || unit.IsInvulnerable())
+            {
+                return false;
+            }
+
+            if (checkTeam && unit.Team == ObjectManager.LocalHero.Team)
+            {
+                return false;
+            }
+
+            if (range != float.MaxValue)
+            {
+                return @from == null ? ObjectManager.LocalHero.IsInRange(unit, range) : ((Vector3)@from).IsInRange(unit, range);
+            }
+
+            return true;
         }
 
         /// <summary>

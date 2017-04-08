@@ -442,11 +442,16 @@ namespace Ensage.SDK.Extensions
         {
             return unit.UnitState.HasFlag(UnitState.Stunned);
         }
+        
+        public static bool IsAttackImmune(this Unit unit)
+        {
+            return unit.UnitState.HasFlag(UnitState.AttackImmune);
+        }
 
         public static bool IsValidOrbwalkingTarget(this Unit attacker, Unit target)
         {
             return target.IsValid && target.IsVisible && target.IsAlive && target.IsSpawned && !target.IsIllusion &&
-                   attacker.IsInAttackRange(target) && !target.IsInvulnerable();
+                   attacker.IsInAttackRange(target) && !target.IsInvulnerable() && !target.IsAttackImmune();
         }
 
         /// <summary>

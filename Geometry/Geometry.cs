@@ -227,30 +227,6 @@ namespace Ensage.SDK.Geometry
             return float.MaxValue;
         }
 
-        /// <summary>
-        ///     Extends the vector.
-        /// </summary>
-        /// <param name="v">The vector.</param>
-        /// <param name="to">The vector to extend to</param>
-        /// <param name="distance">The distance to extend.</param>
-        /// <returns></returns>
-        public static Vector2 Extend(this Vector2 v, Vector2 to, float distance)
-        {
-            return v + distance * (to - v).Normalized();
-        }
-
-        /// <summary>
-        ///     Extends the specified vector.
-        /// </summary>
-        /// <param name="v">The vector.</param>
-        /// <param name="to">The vector to extend to.</param>
-        /// <param name="distance">The distance.</param>
-        /// <returns></returns>
-        public static Vector3 Extend(this Vector3 v, Vector3 to, float distance)
-        {
-            return v + distance * (to - v).Normalized();
-        }
-
         // From: http://social.msdn.microsoft.com/Forums/vstudio/en-US/e5993847-c7a9-46ec-8edc-bfb86bd689e3/help-on-line-segment-intersection-algorithm
         /// <summary>
         ///     Intersects two line segments.
@@ -734,7 +710,7 @@ namespace Ensage.SDK.Geometry
         /// <param name="v2">The v2.</param>
         /// <param name="delay">The delay.</param>
         /// <returns></returns>
-        public static object[] VectorMovementCollision(
+        public static Tuple<float, Vector2> VectorMovementCollision(
             Vector2 startPoint1,
             Vector2 endPoint1,
             float v1,
@@ -814,8 +790,7 @@ namespace Ensage.SDK.Geometry
             {
                 t1 = 0f;
             }
-
-            return new object[] { t1, !float.IsNaN(t1) ? new Vector2(sP1x + S * t1, sP1y + K * t1) : new Vector2() };
+            return new Tuple<float, Vector2>(t1, !float.IsNaN(t1) ? new Vector2(sP1x + S * t1, sP1y + K * t1) : Vector2.Zero);
         }
     }
 }

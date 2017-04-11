@@ -40,10 +40,10 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="clipper_library">
-      <HintPath>C:\EnsageSharp\References\clipper_library.dll</HintPath>
+      <HintPath>D:\GitHub\PlaySharp.Loader\Loader\bin\Debug\References\clipper_library.dll</HintPath>
     </Reference>
     <Reference Include="Ensage">
-      <HintPath>C:\EnsageSharp\References\Ensage.dll</HintPath>
+      <HintPath>D:\GitHub\PlaySharp.Loader\Loader\bin\Debug\References\Ensage.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json">
       <HintPath>C:\EnsageSharpTest\References\Newtonsoft.Json.dll</HintPath>
@@ -52,22 +52,22 @@
       <HintPath>C:\EnsageSharp\References\PlaySharp.Toolkit.dll</HintPath>
     </Reference>
     <Reference Include="SharpDX">
-      <HintPath>C:\EnsageSharpTest\References\SharpDX.dll</HintPath>
+      <HintPath>D:\GitHub\PlaySharp.Loader\Loader\bin\Debug\References\SharpDX.dll</HintPath>
     </Reference>
     <Reference Include="SharpDX.Direct2D1">
-      <HintPath>C:\EnsageSharpTest\References\SharpDX.Direct2D1.dll</HintPath>
+      <HintPath>D:\GitHub\PlaySharp.Loader\Loader\bin\Debug\References\SharpDX.Direct2D1.dll</HintPath>
     </Reference>
     <Reference Include="SharpDX.Direct3D11">
-      <HintPath>C:\EnsageSharpTest\References\SharpDX.Direct3D11.dll</HintPath>
+      <HintPath>D:\GitHub\PlaySharp.Loader\Loader\bin\Debug\References\SharpDX.Direct3D11.dll</HintPath>
     </Reference>
     <Reference Include="SharpDX.Direct3D9">
-      <HintPath>C:\EnsageSharpTest\References\SharpDX.Direct3D9.dll</HintPath>
+      <HintPath>D:\GitHub\PlaySharp.Loader\Loader\bin\Debug\References\SharpDX.Direct3D9.dll</HintPath>
     </Reference>
     <Reference Include="SharpDX.DXGI">
-      <HintPath>C:\EnsageSharpTest\References\SharpDX.DXGI.dll</HintPath>
+      <HintPath>D:\GitHub\PlaySharp.Loader\Loader\bin\Debug\References\SharpDX.DXGI.dll</HintPath>
     </Reference>
     <Reference Include="SharpDX.Mathematics">
-      <HintPath>C:\EnsageSharp\References\SharpDX.Mathematics.dll</HintPath>
+      <HintPath>D:\GitHub\PlaySharp.Loader\Loader\bin\Debug\References\SharpDX.Mathematics.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
@@ -119,7 +119,6 @@
     <Compile Include="Orbwalker\ExportOrbwalkerAttribute.cs" />
     <Compile Include="Orbwalker\IOrbwalker.cs" />
     <Compile Include="Orbwalker\IOrbwalkerMetadata.cs" />
-    <Compile Include="Orbwalker\Orbwalker.cs" />
     <Compile Include="Persistence\CacheEntry.cs" />
     <Compile Include="Persistence\ObjectValue.cs" />
     <Compile Include="Persistence\PersistenceCache.cs" />
@@ -127,6 +126,7 @@
     <Compile Include="Persistence\PropertyBinding.cs" />
     <Compile Include="Persistence\PropertyBindingAttribute.cs" />
     <Compile Include="Extensions\PropertyExtensions.cs" />
+    <Compile Include="Service\Bootstrapper.cs" />
     <Compile Include="Service\CatalogLoader.cs" />
     <Compile Include="Service\ContainerFactory.cs" />
     <Compile Include="Service\ContextContainer.cs" />
@@ -135,8 +135,6 @@
     <Compile Include="Renderer\D2D\D2DRenderer.cs" />
     <Compile Include="Renderer\D2D\ID2DBrushContainer.cs" />
     <Compile Include="Renderer\D2D\ID2DFontContainer.cs" />
-    <Compile Include="Service\EnsageWorkUnit.cs" />
-    <Compile Include="Service\IEnsage.cs" />
     <Compile Include="Input\IInput.cs" />
     <Compile Include="Input\InputHandler.cs" />
     <Compile Include="Input\KeyEventArgs.cs" />
@@ -145,15 +143,16 @@
     <Compile Include="Renderer\D3D\ID3DRenderer.cs" />
     <Compile Include="Renderer\D2D\ID2DContext.cs" />
     <Compile Include="Renderer\D2D\ID2DRenderer.cs" />
-    <Compile Include="Service\IServiceContext.cs" />
     <Compile Include="Renderer\UI\PropertyChangeBase.cs" />
+    <Compile Include="Service\ExportAssemblyAttribute.cs" />
+    <Compile Include="Service\IAssemblyLoader.cs" />
+    <Compile Include="Service\IAssemblyLoaderMetadata.cs" />
     <Compile Include="TargetSelector\ExportTargetSelectorAttribute.cs" />
     <Compile Include="Extensions\AbilityExtensions.cs" />
-    <Compile Include="Service\EnsageServiceContext.cs" />
+    <Compile Include="Service\ServiceContext.cs" />
     <Compile Include="Extensions\EntityExtensions.cs" />
     <Compile Include="Abilities\IAbility.cs" />
-    <Compile Include="Service\IEnsageServiceContext.cs" />
-    <Compile Include="IItem.cs" />
+    <Compile Include="Service\IServiceContext.cs" />
     <Compile Include="Service\IServiceMetadata.cs" />
     <Compile Include="TargetSelector\ITargetSelector.cs" />
     <Compile Include="TargetSelector\ITargetSelectorMetadata.cs" />

@@ -1,14 +1,12 @@
-﻿// <copyright file="EnsageServiceContext.cs" company="Ensage">
+﻿// <copyright file="ServiceContext.cs" company="Ensage">
 //    Copyright (c) 2017 Ensage.
 // </copyright>
 
 namespace Ensage.SDK.Service
 {
     using System;
-    using System.Security;
 
-    [SecuritySafeCritical]
-    public sealed class EnsageServiceContext : IEnsageServiceContext
+    public sealed class EnsageServiceContext : IServiceContext
     {
         public EnsageServiceContext(Hero unit)
         {

@@ -9,8 +9,6 @@ namespace Ensage.SDK.Service
     using System.ComponentModel.Composition.Hosting;
     using System.Reflection;
 
-    using Ensage.SDK.Renderer.D2D;
-
     using log4net;
 
     using PlaySharp.Toolkit.Logging;
@@ -34,9 +32,7 @@ namespace Ensage.SDK.Service
             }
         }
 
-        public static ContextContainer<IEnsageServiceContext> CreateContainer(
-            IEnsageServiceContext context,
-            bool disableSilent = true)
+        public static ContextContainer<IServiceContext> CreateContainer(IServiceContext context, bool disableSilentRejection = true)
         {
             if (context == null)
             {
@@ -46,29 +42,30 @@ namespace Ensage.SDK.Service
             Log.Debug($"Create Context({context}) Container");
 
             var flags = CompositionOptions.IsThreadSafe;
-            if (disableSilent)
+            if (disableSilentRejection)
             {
                 flags |= CompositionOptions.DisableSilentRejection;
             }
 
             var container = new CompositionContainer(Loader.Catalog, flags);
+            var cc = new ContextContainer<IServiceContext>(context, container);
 
             container.ComposeExportedValue(context);
+            container.ComposeExportedValue(cc);
 
-            switch (Drawing.RenderMode)
-            {
-                case RenderMode.Dx11:
-                    container.ComposeExportedValue<ID2DContext>(new D2DContext());
-                    container.ComposeExportedValue<ID2DRenderer>(new D2DRenderer());
-                    break;
+            // switch (Drawing.RenderMode)
+            // {
+            // case RenderMode.Dx11:
+            // container.ComposeExportedValue<ID2DContext>(new D2DContext());
+            // container.ComposeExportedValue<ID2DRenderer>(new D2DRenderer());
+            // break;
 
-                case RenderMode.Dx9:
-                case RenderMode.OpenGL:
-                case RenderMode.Vulkan:
-                    throw new NotSupportedException($"RenderMode({Drawing.RenderMode}) not supported.");
-            }
-
-            return new ContextContainer<IEnsageServiceContext>(context, container);
+            // case RenderMode.Dx9:
+            // case RenderMode.OpenGL:
+            // case RenderMode.Vulkan:
+            // throw new NotSupportedException($"RenderMode({Drawing.RenderMode}) not supported.");
+            // }
+            return cc;
         }
     }
 }

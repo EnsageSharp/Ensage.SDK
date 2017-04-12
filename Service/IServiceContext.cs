@@ -6,6 +6,8 @@ namespace Ensage.SDK.Service
 {
     public interface IServiceContext
     {
-        Unit Owner { get; }
+        ContextContainer<IServiceContext> Container { get; }
+
+        Hero Owner { get; }
     }
 }

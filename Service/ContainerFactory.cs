@@ -32,14 +32,12 @@ namespace Ensage.SDK.Service
             }
         }
 
-        public static ContextContainer<IServiceContext> CreateContainer(IServiceContext context, bool disableSilentRejection = true)
+        public static ContextContainer<IServiceContext> CreateContainer(Hero owner, bool disableSilentRejection = true)
         {
-            if (context == null)
+            if (owner == null)
             {
-                throw new ArgumentNullException(nameof(context));
+                throw new ArgumentNullException(nameof(owner));
             }
-
-            Log.Debug($"Create Context({context}) Container");
 
             var flags = CompositionOptions.IsThreadSafe;
             if (disableSilentRejection)
@@ -47,11 +45,13 @@ namespace Ensage.SDK.Service
                 flags |= CompositionOptions.DisableSilentRejection;
             }
 
+            var context = new EnsageServiceContext(owner);
             var container = new CompositionContainer(Loader.Catalog, flags);
-            var cc = new ContextContainer<IServiceContext>(context, container);
+            context.Container = new ContextContainer<IServiceContext>(context, container);
+
+            Log.Debug($"Create Context({context}) Container");
 
             container.ComposeExportedValue(context);
-            container.ComposeExportedValue(cc);
 
             // switch (Drawing.RenderMode)
             // {
@@ -65,7 +65,7 @@ namespace Ensage.SDK.Service
             // case RenderMode.Vulkan:
             // throw new NotSupportedException($"RenderMode({Drawing.RenderMode}) not supported.");
             // }
-            return cc;
+            return context.Container;
         }
     }
 }

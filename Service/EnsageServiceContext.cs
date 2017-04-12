@@ -1,4 +1,4 @@
-﻿// <copyright file="ServiceContext.cs" company="Ensage">
+﻿// <copyright file="EnsageServiceContext.cs" company="Ensage">
 //    Copyright (c) 2017 Ensage.
 // </copyright>
 
@@ -18,7 +18,9 @@ namespace Ensage.SDK.Service
             this.Owner = unit;
         }
 
-        public Unit Owner { get; }
+        public ContextContainer<IServiceContext> Container { get; internal set; }
+
+        public Hero Owner { get; }
 
         public bool Equals(Unit other)
         {

@@ -17,9 +17,33 @@ namespace Ensage.SDK.Extensions
 
     public static class UnitExtensions
     {
-        private static readonly ILog Log = AssemblyLogs.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly HashSet<string> ChannelAnimations = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
+                                                                    {
+                                                                        "death_ward_anim",
+                                                                        "powershot_cast_anim",
+                                                                        string.Empty,
+                                                                        "rearm1_anim",
+                                                                        "warlock_cast3_upheaval",
+                                                                        "warlock_cast3_upheaval_channel_anim",
+                                                                        "cast_channel_shackles_anim",
+                                                                        "channel_shackles",
+                                                                        "sand_king_epicast_anim",
+                                                                        "cast4_tricks_trade",
+                                                                        "life drain_anim",
+                                                                        "pudge_dismember_start",
+                                                                        "pudge_dismember_mid_anim",
+                                                                        "cast1_FortunesEnd_anim_anim",
+                                                                        "cast04_spring",
+                                                                        "Illuminate_anim",
+                                                                        "cast1_echo_stomp_anim",
+                                                                        "cast4_black_hole_anim",
+                                                                        "freezing_field_anim_10s",
+                                                                        "fiends_grip_cast_anim",
+                                                                        "fiends_grip_loop_anim",
+                                                                        "drain_anim"
+                                                                    };
 
-        private static readonly HashSet<string> ChannelAnimations = new HashSet<string>(StringComparer.OrdinalIgnoreCase) { "death_ward_anim", "powershot_cast_anim", "", "rearm1_anim", "warlock_cast3_upheaval", "warlock_cast3_upheaval_channel_anim", "cast_channel_shackles_anim", "channel_shackles", "sand_king_epicast_anim", "cast4_tricks_trade", "life drain_anim", "pudge_dismember_start", "pudge_dismember_mid_anim", "cast1_FortunesEnd_anim_anim", "cast04_spring", "Illuminate_anim", "cast1_echo_stomp_anim", "cast4_black_hole_anim", "freezing_field_anim_10s", "fiends_grip_cast_anim", "fiends_grip_loop_anim", "drain_anim" };
+        private static readonly ILog Log = AssemblyLogs.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         public static float AttackPoint(this Unit unit)
         {
@@ -30,7 +54,7 @@ namespace Ensage.SDK.Extensions
                         $"{unit.Name}/AttackAnimationPoint",
                         unit is Hero ? KeyValueSource.Hero : KeyValueSource.Unit).FloatValue;
 
-                return attackAnimationPoint / (1 + (unit.AttackSpeedValue() - 100) / 100);
+                return attackAnimationPoint / (1 + ((unit.AttackSpeedValue() - 100) / 100));
             }
             catch (KeyValuesNotFoundException)
             {
@@ -120,6 +144,34 @@ namespace Ensage.SDK.Extensions
             return unit.AttackCapability != AttackCapability.None && !unit.IsDisarmed();
         }
 
+        public static bool CanAttack(this Unit attacker, Unit target)
+        {
+            if (target == null || !target.IsValid || !target.IsAlive || !target.IsVisible || !target.IsSpawned || target.IsInvulnerable())
+            {
+                return false;
+            }
+
+            if (attacker.Team == target.Team)
+            {
+                if (target is Creep)
+                {
+                    return target.HealthPercent() < 0.5;
+                }
+
+                if (target is Hero)
+                {
+                    return target.HealthPercent() < 0.25;
+                }
+
+                if (target is Building)
+                {
+                    return target.HealthPercent() < 0.10;
+                }
+            }
+
+            return true;
+        }
+
         /// <summary>
         /// Gets the direction unit vector
         /// </summary>
@@ -143,7 +195,7 @@ namespace Ensage.SDK.Extensions
 
             if (angle > Math.PI)
             {
-                angle = Math.PI * 2 - angle;
+                angle = (Math.PI * 2) - angle;
             }
 
             return (float)angle;
@@ -217,7 +269,6 @@ namespace Ensage.SDK.Extensions
                     damage += bonusDmgItem.GetAbilitySpecialData(isMelee ? "damage_bonus" : "damage_bonus_ranged");
                 }
 
-
                 // apply percentage bonus damage from battle fury to base dmg
                 var battleFury = source.GetItemById(AbilityId.item_bfury);
                 if (battleFury != null)
@@ -228,7 +279,7 @@ namespace Ensage.SDK.Extensions
 
             var armor = target.Armor;
 
-            mult *= 1 - 0.06f * armor / (1 + 0.06f * Math.Abs(armor));
+            mult *= 1 - ((0.06f * armor) / (1 + (0.06f * Math.Abs(armor))));
 
             return damage * mult;
         }
@@ -350,10 +401,20 @@ namespace Ensage.SDK.Extensions
             return hasAll ? counter == modifierNames.Count() : false;
         }
 
+        public static float HealthPercent(this Unit unit)
+        {
+            return (float)unit.Health / unit.MaximumHealth;
+        }
+
         public static Vector3 InFront(this Unit unit, float distance)
         {
-            var v = unit.Position + unit.Vector3FromPolarAngle() * distance;
+            var v = unit.Position + (unit.Vector3FromPolarAngle() * distance);
             return new Vector3(v.X, v.Y, 0);
+        }
+
+        public static bool IsAlly(this Unit unit, Unit target)
+        {
+            return unit.Team == target.Team;
         }
 
         public static bool IsChannelAnimation(this Animation animation)
@@ -392,6 +453,11 @@ namespace Ensage.SDK.Extensions
         public static bool IsDisarmed(this Unit unit)
         {
             return unit.UnitState.HasFlag(UnitState.Disarmed);
+        }
+
+        public static bool IsEnemy(this Unit unit, Unit target)
+        {
+            return unit.Team != target.Team;
         }
 
         public static bool IsInAttackRange(this Unit source, Unit target)
@@ -555,7 +621,7 @@ namespace Ensage.SDK.Extensions
                 return 0;
             }
 
-            return 0.03f / unit.TurnRate(unit is Hero) * angle;
+            return (0.03f / unit.TurnRate(unit is Hero)) * angle;
         }
 
         public static Vector2 Vector2FromPolarAngle(this Unit unit, float delta = 0f, float radial = 1f)

@@ -4,8 +4,6 @@
 
 namespace Ensage.SDK.Helpers
 {
-    using System.Linq;
-
     using Ensage.SDK.Extensions;
 
     public static class DamageHelpers

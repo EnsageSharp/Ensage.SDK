@@ -22,8 +22,6 @@ namespace Ensage.SDK.Service
         [ImportMany(typeof(IAssemblyLoader))]
         public IEnumerable<Lazy<IAssemblyLoader, IAssemblyLoaderMetadata>> Assemblies { get; private set; }
 
-        public EnsageServiceContext Context { get; set; }
-
         public ContextContainer<IServiceContext> Default { get; private set; }
 
         protected override void OnActivated()
@@ -57,9 +55,7 @@ namespace Ensage.SDK.Service
 
             try
             {
-                this.Context = new EnsageServiceContext(ObjectManager.LocalHero);
-                this.Default = ContainerFactory.CreateContainer(this.Context);
-
+                this.Default = ContainerFactory.CreateContainer(ObjectManager.LocalHero);
                 this.Default.BuildUp(this);
 
                 foreach (var assembly in this.Assemblies)

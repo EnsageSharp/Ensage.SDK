@@ -38,7 +38,7 @@ namespace Ensage.SDK.Menu
 
         public MenuItem<T> Item<T>(string displayName, T value)
         {
-            var item = new MenuItem<T>($"{this.Parent.Name}.{displayName}", displayName, value);
+            var item = new MenuItem<T>(displayName, $"{this.Parent.Name}.{displayName}", value);
             this.Parent.AddItem(item.Item);
 
             return item;
@@ -46,7 +46,7 @@ namespace Ensage.SDK.Menu
 
         public MenuItem<T> Item<T>(string displayName, string name, T value)
         {
-            var item = new MenuItem<T>($"{this.Parent.Name}.{name}", displayName, value);
+            var item = new MenuItem<T>(displayName, $"{this.Parent.Name}.{name}", value);
             this.Parent.AddItem(item.Item);
 
             return item;

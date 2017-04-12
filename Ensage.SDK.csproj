@@ -40,34 +40,38 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="clipper_library">
-      <HintPath>D:\GitHub\PlaySharp.Loader\Loader\bin\Debug\References\clipper_library.dll</HintPath>
+      <HintPath>D:\Games\ps\References\clipper_library.dll</HintPath>
     </Reference>
     <Reference Include="Ensage">
-      <HintPath>D:\GitHub\PlaySharp.Loader\Loader\bin\Debug\References\Ensage.dll</HintPath>
+      <HintPath>D:\Games\ps\References\Ensage.dll</HintPath>
     </Reference>
+    <Reference Include="Ensage.Common">
+      <HintPath>D:\Games\ps\References\Ensage.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Build.Tasks.v4.0" />
     <Reference Include="Newtonsoft.Json">
-      <HintPath>C:\EnsageSharpTest\References\Newtonsoft.Json.dll</HintPath>
+      <HintPath>D:\Games\ps\References\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="PlaySharp.Toolkit">
-      <HintPath>C:\EnsageSharp\References\PlaySharp.Toolkit.dll</HintPath>
+      <HintPath>D:\Games\ps\References\PlaySharp.Toolkit.dll</HintPath>
     </Reference>
     <Reference Include="SharpDX">
-      <HintPath>D:\GitHub\PlaySharp.Loader\Loader\bin\Debug\References\SharpDX.dll</HintPath>
+      <HintPath>D:\Games\ps\References\SharpDX.dll</HintPath>
     </Reference>
     <Reference Include="SharpDX.Direct2D1">
-      <HintPath>D:\GitHub\PlaySharp.Loader\Loader\bin\Debug\References\SharpDX.Direct2D1.dll</HintPath>
+      <HintPath>D:\Games\ps\References\SharpDX.Direct2D1.dll</HintPath>
     </Reference>
     <Reference Include="SharpDX.Direct3D11">
-      <HintPath>D:\GitHub\PlaySharp.Loader\Loader\bin\Debug\References\SharpDX.Direct3D11.dll</HintPath>
+      <HintPath>D:\Games\ps\References\SharpDX.Direct3D11.dll</HintPath>
     </Reference>
     <Reference Include="SharpDX.Direct3D9">
-      <HintPath>D:\GitHub\PlaySharp.Loader\Loader\bin\Debug\References\SharpDX.Direct3D9.dll</HintPath>
+      <HintPath>D:\Games\ps\References\SharpDX.Direct3D9.dll</HintPath>
     </Reference>
     <Reference Include="SharpDX.DXGI">
-      <HintPath>D:\GitHub\PlaySharp.Loader\Loader\bin\Debug\References\SharpDX.DXGI.dll</HintPath>
+      <HintPath>D:\Games\ps\References\SharpDX.DXGI.dll</HintPath>
     </Reference>
     <Reference Include="SharpDX.Mathematics">
-      <HintPath>D:\GitHub\PlaySharp.Loader\Loader\bin\Debug\References\SharpDX.Mathematics.dll</HintPath>
+      <HintPath>D:\Games\ps\References\SharpDX.Mathematics.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
@@ -116,9 +120,24 @@
     <Compile Include="Helpers\DamageHelpers.cs" />
     <Compile Include="Helpers\EntityOrPosition.cs" />
     <Compile Include="Input\Hotkey.cs" />
+    <Compile Include="Menu\Config.cs" />
+    <Compile Include="Menu\MenuFactory.cs" />
+    <Compile Include="Menu\MenuItem.cs" />
+    <Compile Include="Helpers\CircularIndicator.cs" />
+    <Compile Include="Helpers\CircularIndicatorHelper.cs" />
+    <Compile Include="Helpers\CreepManager.cs" />
+    <Compile Include="Helpers\CreepStatus.cs" />
+    <Compile Include="Helpers\EntityManager.cs" />
     <Compile Include="Orbwalker\ExportOrbwalkerAttribute.cs" />
+    <Compile Include="Helpers\HealthPrediction.cs" />
+    <Compile Include="Orbwalker\HealthPredictionOLD.cs" />
     <Compile Include="Orbwalker\IOrbwalker.cs" />
     <Compile Include="Orbwalker\IOrbwalkerMetadata.cs" />
+    <Compile Include="Orbwalker\Orbwalker.cs" />
+    <Compile Include="Orbwalker\OrbwalkerConfig.cs" />
+    <Compile Include="Orbwalker\OrbwalkingMode.cs" />
+    <Compile Include="TargetSelector\OrbwalkingTargetSelector.cs" />
+    <Compile Include="TargetSelector\TargetSelectorConfig.cs" />
     <Compile Include="Persistence\CacheEntry.cs" />
     <Compile Include="Persistence\ObjectValue.cs" />
     <Compile Include="Persistence\PersistenceCache.cs" />
@@ -149,7 +168,7 @@
     <Compile Include="Service\IAssemblyLoaderMetadata.cs" />
     <Compile Include="TargetSelector\ExportTargetSelectorAttribute.cs" />
     <Compile Include="Extensions\AbilityExtensions.cs" />
-    <Compile Include="Service\ServiceContext.cs" />
+    <Compile Include="Service\EnsageServiceContext.cs" />
     <Compile Include="Extensions\EntityExtensions.cs" />
     <Compile Include="Abilities\IAbility.cs" />
     <Compile Include="Service\IServiceContext.cs" />

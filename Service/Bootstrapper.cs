@@ -51,6 +51,11 @@ namespace Ensage.SDK.Service
 
         private void OnLoad(EventArgs args)
         {
+            if (ObjectManager.LocalHero == null)
+            {
+                return;
+            }
+
             Game.OnIngameUpdate -= this.OnLoad;
 
             try

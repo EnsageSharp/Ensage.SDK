@@ -5,10 +5,8 @@
 namespace Ensage.SDK.Service
 {
     using System;
-    using System.Security;
 
-    [SecuritySafeCritical]
-    public sealed class EnsageServiceContext : IEnsageServiceContext
+    public sealed class EnsageServiceContext : IServiceContext
     {
         public EnsageServiceContext(Hero unit)
         {
@@ -20,7 +18,9 @@ namespace Ensage.SDK.Service
             this.Owner = unit;
         }
 
-        public Unit Owner { get; }
+        public ContextContainer<IServiceContext> Container { get; internal set; }
+
+        public Hero Owner { get; }
 
         public bool Equals(Unit other)
         {

@@ -9,18 +9,18 @@ namespace Ensage.SDK.Service
     using System.ComponentModel.Composition;
     using System.ComponentModel.Composition.Hosting;
     using System.Reflection;
-    using System.Security;
 
     using log4net;
 
     using PlaySharp.Toolkit.Helper.Annotations;
     using PlaySharp.Toolkit.Logging;
 
-    [SecuritySafeCritical]
-    public class ContextContainer<TContext> : IEquatable<ContextContainer<TContext>>
+    public class ContextContainer<TContext> : IDisposable, IEquatable<ContextContainer<TContext>>
         where TContext : class, IServiceContext
     {
         private static readonly ILog Log = AssemblyLogs.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
+        private bool disposed;
 
         public ContextContainer([NotNull] TContext context, [NotNull] CompositionContainer container)
         {
@@ -59,8 +59,14 @@ namespace Ensage.SDK.Service
                 throw new ArgumentNullException(nameof(instance));
             }
 
-            Log.Debug($"BuildUp {instance.GetType().Name}");
+            Log.Debug($"SatisfyImports {instance.GetType().Name}");
             this.Container.SatisfyImportsOnce(instance);
+        }
+
+        public void Dispose()
+        {
+            this.Dispose(true);
+            GC.SuppressFinalize(this);
         }
 
         public bool Equals(ContextContainer<TContext> other)
@@ -136,6 +142,21 @@ namespace Ensage.SDK.Service
             {
                 this.Container.ComposeExportedValue(contract, value);
             }
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (this.disposed)
+            {
+                return;
+            }
+
+            if (disposing)
+            {
+                this.Container.Dispose();
+            }
+
+            this.disposed = true;
         }
     }
 }

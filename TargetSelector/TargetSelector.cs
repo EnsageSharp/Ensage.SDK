@@ -15,12 +15,12 @@ namespace Ensage.SDK.TargetSelector
     public class TargetSelector : ITargetSelector
     {
         [ImportingConstructor]
-        public TargetSelector(IEnsageServiceContext context)
+        public TargetSelector(IServiceContext context)
         {
             this.Context = context;
         }
 
-        private IEnsageServiceContext Context { get; }
+        private IServiceContext Context { get; }
 
         public Unit GetClosestUnitToMouse(float range)
         {

@@ -15,9 +15,9 @@ namespace Ensage.SDK.Orbwalker
 
         event EventHandler<EventArgs> Attacking;
 
-        Key Key { get; set; }
-
         bool IsOrbwalking { get; set; }
+
+        Key Key { get; set; }
 
         void Orbwalk(Vector3 position);
 

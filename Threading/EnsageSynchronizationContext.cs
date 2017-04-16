@@ -4,6 +4,7 @@
 
 namespace Ensage.SDK.Threading
 {
+    using System.Collections.Concurrent;
     using System.Collections.Generic;
     using System.Threading;
 
@@ -13,8 +14,8 @@ namespace Ensage.SDK.Threading
 
         private static EnsageSynchronizationContext instance;
 
-        private Queue<KeyValuePair<SendOrPostCallback, object>> queue =
-            new Queue<KeyValuePair<SendOrPostCallback, object>>();
+        private readonly ConcurrentQueue<KeyValuePair<SendOrPostCallback, object>> queue =
+            new ConcurrentQueue<KeyValuePair<SendOrPostCallback, object>>();
 
         public static EnsageSynchronizationContext Instance
         {
@@ -42,25 +43,16 @@ namespace Ensage.SDK.Threading
 
         public override void Post(SendOrPostCallback d, object state)
         {
-            lock (SyncRoot)
-            {
-                this.queue.Enqueue(new KeyValuePair<SendOrPostCallback, object>(d, state));
-            }
+            this.queue.Enqueue(new KeyValuePair<SendOrPostCallback, object>(d, state));
         }
 
         internal void RunOnCurrentThread()
         {
-            KeyValuePair<SendOrPostCallback, object>[] items;
+            KeyValuePair<SendOrPostCallback, object> workItem;
 
-            lock (SyncRoot)
+            while (!this.queue.IsEmpty && this.queue.TryDequeue(out workItem))
             {
-                items = this.queue.ToArray();
-                this.queue = new Queue<KeyValuePair<SendOrPostCallback, object>>();
-            }
-
-            foreach (var item in items)
-            {
-                item.Key(item.Value);
+                workItem.Key(workItem.Value);
             }
         }
     }

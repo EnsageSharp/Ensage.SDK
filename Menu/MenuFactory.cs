@@ -4,10 +4,15 @@
 
 namespace Ensage.SDK.Menu
 {
+    using System;
+    using System.Reflection;
+
     using Ensage.Common.Menu;
 
-    public class MenuFactory
+    public class MenuFactory : IDisposable
     {
+        private bool disposed;
+
         public MenuFactory(Menu parent)
         {
             this.Parent = parent;
@@ -22,8 +27,8 @@ namespace Ensage.SDK.Menu
 
         public static MenuFactory Create(string displayName, string name = null)
         {
-            var menu = new Menu(displayName, $"{Config.AppName}.{name ?? displayName}", true);
-            menu.AddToMainMenu();
+            var menu = new Menu(displayName, $"{name ?? displayName}", true);
+            menu.AddToMainMenu(Assembly.GetCallingAssembly());
 
             return new MenuFactory(menu);
         }
@@ -34,6 +39,12 @@ namespace Ensage.SDK.Menu
             parent.AddSubMenu(menu);
 
             return new MenuFactory(menu);
+        }
+
+        public void Dispose()
+        {
+            this.Dispose(true);
+            GC.SuppressFinalize(this);
         }
 
         public MenuItem<T> Item<T>(string displayName, T value)
@@ -55,6 +66,21 @@ namespace Ensage.SDK.Menu
         public MenuFactory Menu(string displayName, string name = null)
         {
             return Create(this.Parent, displayName, name ?? displayName);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (this.disposed)
+            {
+                return;
+            }
+
+            if (disposing)
+            {
+                this.Parent.RemoveFromMainMenu(Assembly.GetCallingAssembly());
+            }
+
+            this.disposed = true;
         }
     }
 }

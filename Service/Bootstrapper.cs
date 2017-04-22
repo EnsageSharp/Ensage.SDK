@@ -37,10 +37,12 @@ namespace Ensage.SDK.Service
                 {
                     if (assembly.IsValueCreated)
                     {
+                        Log.Info($"Deactivate {assembly.Metadata.Name}");
                         assembly.Value.Deactivate();
                     }
                 }
 
+                Log.Debug($"Dispose Context({this.Default.Context}) Container");
                 this.Default?.Dispose();
             }
             catch (Exception e)

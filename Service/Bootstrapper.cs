@@ -13,6 +13,7 @@ namespace Ensage.SDK.Service
     using log4net;
 
     using PlaySharp.Toolkit.AppDomain.Loader;
+    using PlaySharp.Toolkit.Helper;
     using PlaySharp.Toolkit.Logging;
 
     public class Bootstrapper : AssemblyEntryPoint
@@ -23,6 +24,21 @@ namespace Ensage.SDK.Service
         public IEnumerable<Lazy<IAssemblyLoader, IAssemblyLoaderMetadata>> Assemblies { get; private set; }
 
         public ContextContainer<IServiceContext> Default { get; private set; }
+
+        public void BuildUp(object instance)
+        {
+            this.Default.BuildUp(instance);
+        }
+
+        public IEnumerable<object> GetAllInstances(Type serviceType)
+        {
+            return this.Default.GetAllInstances(serviceType);
+        }
+
+        public object GetInstance(Type serviceType, string key)
+        {
+            return this.Default.GetInstance(serviceType, key);
+        }
 
         protected override void OnActivated()
         {
@@ -64,6 +80,8 @@ namespace Ensage.SDK.Service
             {
                 this.Default = ContainerFactory.CreateContainer(ObjectManager.LocalHero);
                 this.Default.BuildUp(this);
+
+                IoC.Initialize(this.BuildUp, this.GetInstance, this.GetAllInstances);
 
                 foreach (var assembly in this.Assemblies)
                 {

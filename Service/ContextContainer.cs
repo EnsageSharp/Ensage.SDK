@@ -8,6 +8,7 @@ namespace Ensage.SDK.Service
     using System.Collections.Generic;
     using System.ComponentModel.Composition;
     using System.ComponentModel.Composition.Hosting;
+    using System.Linq;
     using System.Reflection;
 
     using log4net;
@@ -118,6 +119,24 @@ namespace Ensage.SDK.Service
             }
 
             return this.Container.GetExportedValues<T>(contract);
+        }
+
+        public IEnumerable<object> GetAllInstances(Type serviceType)
+        {
+            return this.Container.GetExportedValues<object>(AttributedModelServices.GetContractName(serviceType));
+        }
+
+        public object GetInstance(Type serviceType, string key)
+        {
+            var contract = string.IsNullOrEmpty(key) ? AttributedModelServices.GetContractName(serviceType) : key;
+            var exports = this.Container.GetExportedValues<object>(contract);
+
+            if (exports.Any())
+            {
+                return exports.First();
+            }
+
+            throw new Exception($"Could not locate any instances of contract {contract}.");
         }
 
         public override int GetHashCode()

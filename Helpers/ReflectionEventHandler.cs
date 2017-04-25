@@ -43,7 +43,7 @@ namespace Ensage.SDK.Helpers
             }
             catch (Exception e)
             {
-                Console.WriteLine(e);
+                Log.Error(e);
             }
         }
 
@@ -60,7 +60,7 @@ namespace Ensage.SDK.Helpers
             }
             catch (Exception e)
             {
-                Console.WriteLine(e);
+                Log.Error(e);
             }
         }
     }

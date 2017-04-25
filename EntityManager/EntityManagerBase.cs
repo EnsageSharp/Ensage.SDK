@@ -7,18 +7,11 @@ namespace Ensage.SDK.EntityManager
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Reflection;
 
     using Ensage.SDK.Helpers;
 
-    using log4net;
-
-    using PlaySharp.Toolkit.Logging;
-
     public abstract class EntityManagerBase
     {
-        private static readonly ILog Log = AssemblyLogs.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-
         static EntityManagerBase()
         {
             Handler = new ReflectionEventHandler<EventArgs>(typeof(Game), "PreUpdate");
@@ -35,7 +28,6 @@ namespace Ensage.SDK.EntityManager
         {
             if (Entities == null)
             {
-                Log.Debug($"Updating Entities");
                 Entities = ObjectManager.GetEntities<Entity>().ToArray();
             }
 

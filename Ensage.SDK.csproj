@@ -105,6 +105,9 @@
     <Compile Include="Abilities\RangedAbility.cs" />
     <Compile Include="Abilities\TargetAbility.cs" />
     <Compile Include="Abilities\npc_dota_hero_vengefulspirit\vengefulspirit_magic_missile.cs" />
+    <Compile Include="EntityManager\EntityManager.cs" />
+    <Compile Include="EntityManager\EntityManagerBase.cs" />
+    <Compile Include="Helpers\ReflectionEventHandler.cs" />
     <Compile Include="Extensions\AnimationExtensions.cs" />
     <Compile Include="Extensions\HeroExtensions.cs" />
     <Compile Include="Extensions\TypeExtensions.cs" />

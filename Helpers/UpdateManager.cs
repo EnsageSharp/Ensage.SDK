@@ -29,9 +29,9 @@ namespace Ensage.SDK.Helpers
 
         private static ReflectionEventHandler<EventArgs> Handler { get; }
 
-        private static ImmutableSortedSet<UpdateHandler> PreUpdateHandlers { get; set; } = ImmutableSortedSet<UpdateHandler>.Empty;
+        private static ImmutableArray<UpdateHandler> PreUpdateHandlers { get; set; } = ImmutableArray<UpdateHandler>.Empty;
 
-        private static ImmutableSortedSet<UpdateHandler> UpdateHandlers { get; set; } = ImmutableSortedSet<UpdateHandler>.Empty;
+        private static ImmutableArray<UpdateHandler> UpdateHandlers { get; set; } = ImmutableArray<UpdateHandler>.Empty;
 
         /// <summary>
         /// Subscribes <paramref name="callback"/> to OnIngameUpdate with a call timeout of <paramref name="timeout"/>
@@ -105,7 +105,7 @@ namespace Ensage.SDK.Helpers
             }
         }
 
-        private static ImmutableSortedSet<UpdateHandler> Subscribe(ImmutableSortedSet<UpdateHandler> handlers, Action callback, int timeout = 0)
+        private static ImmutableArray<UpdateHandler> Subscribe(ImmutableArray<UpdateHandler> handlers, Action callback, int timeout = 0)
         {
             var handler = handlers.FirstOrDefault(h => h.Callback == callback);
             if (handler != null && handler.Timeout != timeout)
@@ -119,7 +119,7 @@ namespace Ensage.SDK.Helpers
             return handlers.Add(new UpdateHandler(callback, timeout));
         }
 
-        private static ImmutableSortedSet<UpdateHandler> Unsubscribe(ImmutableSortedSet<UpdateHandler> handlers, Action callback)
+        private static ImmutableArray<UpdateHandler> Unsubscribe(ImmutableArray<UpdateHandler> handlers, Action callback)
         {
             var handler = handlers.FirstOrDefault(h => h.Callback == callback);
             if (handler != null)

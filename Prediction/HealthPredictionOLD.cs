@@ -2,7 +2,7 @@
 //    Copyright (c) 2017 Ensage.
 // </copyright>
 
-namespace Ensage.SDK.Orbwalker
+namespace Ensage.SDK.Prediction
 {
     using System;
     using System.Collections.Generic;
@@ -110,8 +110,8 @@ namespace Ensage.SDK.Orbwalker
                 // towers
                 var closestTower =
                     EntityManager<Tower>.Entities
-                                 .OrderBy(tower => tower.IsValid ? tower.Distance2D(this.Hero) : float.MaxValue)
-                                 .FirstOrDefault(t => t.IsValid);
+                                        .OrderBy(tower => tower.IsValid ? tower.Distance2D(this.Hero) : float.MaxValue)
+                                        .FirstOrDefault(t => t.IsValid);
                 if (closestTower != null)
                 {
                     var towerTarget = closestTower.AttackTarget;
@@ -174,9 +174,9 @@ namespace Ensage.SDK.Orbwalker
             return;
             var pTeam = this.Hero.Team;
             foreach (var senderCreep in EntityManager<Creep>.Entities
-                                                    .Where(
-                                                        unit =>
-                                                            unit.Team == pTeam && unit.Distance2D(this.Hero) < 3000f))
+                                                            .Where(
+                                                                unit =>
+                                                                    unit.Team == pTeam && unit.Distance2D(this.Hero) < 3000f))
             {
                 var creepStatus = this.GetCreepStatusEntry(senderCreep);
                 var targetCreep = creepStatus.Target;
@@ -220,8 +220,8 @@ namespace Ensage.SDK.Orbwalker
 
             var closestTower =
                 EntityManager<Tower>.Entities
-                             .OrderBy(tower => tower.IsValid ? tower.Distance2D(this.Hero) : float.MaxValue)
-                             .FirstOrDefault(t => t.IsValid);
+                                    .OrderBy(tower => tower.IsValid ? tower.Distance2D(this.Hero) : float.MaxValue)
+                                    .FirstOrDefault(t => t.IsValid);
             if (closestTower != null)
             {
                 var towerTarget = closestTower.AttackTarget;

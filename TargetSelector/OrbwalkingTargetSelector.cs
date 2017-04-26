@@ -6,11 +6,12 @@ namespace Ensage.SDK.TargetSelector
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel.Composition;
     using System.Linq;
 
     using Ensage.SDK.Extensions;
     using Ensage.SDK.Helpers;
+    using Ensage.SDK.Prediction;
+    using Ensage.SDK.Prediction.Metadata;
     using Ensage.SDK.Service;
 
     public class OrbwalkingTargetSelector
@@ -27,8 +28,8 @@ namespace Ensage.SDK.TargetSelector
 
         public IServiceContext Context { get; }
 
-        [Import]
-        private Lazy<HealthPrediction<Creep>> HealthPrediction { get; set; }
+        [ImportHealthPrediction]
+        private Lazy<IHealthPrediction> HealthPrediction { get; set; }
 
         public IEnumerable<Building> GetBuildings()
         {

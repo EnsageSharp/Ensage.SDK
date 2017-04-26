@@ -208,7 +208,7 @@ namespace Ensage.SDK.Extensions
         /// <returns>Extended Vector3</returns>
         public static Vector3 Extend(this Vector3 vector3, Vector3 toVector3, float distance)
         {
-            return vector3 + distance * (toVector3 - vector3).Normalized();
+            return vector3 + (distance * (toVector3 - vector3).Normalized());
         }
 
         /// <summary>
@@ -220,7 +220,7 @@ namespace Ensage.SDK.Extensions
         /// <returns>Extended Vector3</returns>
         public static Vector3 Extend(this Vector3 vector3, Vector2 toVector2, float distance)
         {
-            return vector3 + distance * (toVector2.ToVector3(vector3.Z) - vector3).Normalized();
+            return vector3 + (distance * (toVector2.ToVector3(vector3.Z) - vector3).Normalized());
         }
 
         /// <summary>
@@ -232,7 +232,7 @@ namespace Ensage.SDK.Extensions
         /// <returns>Extended Vector3</returns>
         public static Vector3 Extend(this Vector3 vector3, Vector4 toVector4, float distance)
         {
-            return vector3 + distance * (toVector4.ToVector3() - vector3).Normalized();
+            return vector3 + (distance * (toVector4.ToVector3() - vector3).Normalized());
         }
 
         /// <summary>
@@ -244,7 +244,7 @@ namespace Ensage.SDK.Extensions
         {
             var distance = 0f;
 
-            for (var i = 0; i < path.Count - 1; i++)
+            for (var i = 0; i < (path.Count - 1); i++)
             {
                 distance += path[i].Distance(path[i + 1]);
             }
@@ -276,7 +276,7 @@ namespace Ensage.SDK.Extensions
             var diffX = sourcePosition.X - targetPosition.X;
             var diffY = sourcePosition.Y - targetPosition.Y;
 
-            return diffX * diffX + diffY * diffY < range * range;
+            return ((diffX * diffX) + (diffY * diffY)) < (range * range);
         }
 
         /// <summary>
@@ -291,7 +291,7 @@ namespace Ensage.SDK.Extensions
             var diffX = sourcePosition.X - targetPosition.X;
             var diffY = sourcePosition.Y - targetPosition.Y;
 
-            return diffX * diffX + diffY * diffY < range * range;
+            return ((diffX * diffX) + (diffY * diffY)) < (range * range);
         }
 
         /// <summary>
@@ -313,7 +313,7 @@ namespace Ensage.SDK.Extensions
         /// <returns>Returns if the angle is orthogonal</returns>
         public static bool IsOrthogonal(Vector3 vector3, Vector3 toVector3)
         {
-            return Math.Abs(vector3.X * toVector3.X + vector3.Y * toVector3.Y) < float.Epsilon;
+            return Math.Abs((vector3.X * toVector3.X) + (vector3.Y * toVector3.Y)) < float.Epsilon;
         }
 
         /// <summary>
@@ -369,7 +369,7 @@ namespace Ensage.SDK.Extensions
         /// <returns>Magnitude in float-units</returns>
         public static float Magnitude(this Vector3 vector3)
         {
-            return (float)Math.Sqrt(vector3.X * vector3.X + vector3.Y * vector3.Y + vector3.Z * vector3.Z);
+            return (float)Math.Sqrt((vector3.X * vector3.X) + (vector3.Y * vector3.Y) + (vector3.Z * vector3.Z));
         }
 
         /// <summary>
@@ -395,7 +395,7 @@ namespace Ensage.SDK.Extensions
         public static float PathLength(this List<Vector3> path)
         {
             var distance = 0f;
-            for (var i = 0; i < path.Count - 1; i++)
+            for (var i = 0; i < (path.Count - 1); i++)
             {
                 distance += path[i].Distance(path[i + 1]);
             }
@@ -466,8 +466,8 @@ namespace Ensage.SDK.Extensions
             var sin = Math.Sin(angle);
 
             return new Vector3(
-                (float)(vector3.X * cos - vector3.Y * sin),
-                (float)(vector3.Y * cos + vector3.X * sin),
+                (float)((vector3.X * cos) - (vector3.Y * sin)),
+                (float)((vector3.Y * cos) + (vector3.X * sin)),
                 vector3.Z);
         }
 

@@ -37,7 +37,7 @@ namespace Ensage.SDK.Renderer.D2D
         {
             this.Context.Target.DrawRectangle(new RawRectangleF(x, y, x + width, y + height), brush, stroke);
             this.Context.Target.FillRectangle(
-                new RawRectangleF(x + stroke, y + stroke, x + width - stroke, y + height - stroke),
+                new RawRectangleF(x + stroke, y + stroke, (x + width) - stroke, (y + height) - stroke),
                 interiorBrush);
         }
 

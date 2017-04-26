@@ -9,24 +9,24 @@ namespace Ensage.SDK.Helpers
     using System.Collections.Immutable;
     using System.Linq;
 
-    public static class EntityManager
+    internal static class EntityManager
     {
-        private static ImmutableSortedSet<Entity> entities;
+        private static ImmutableHashSet<Entity> entities;
 
         static EntityManager()
         {
             UpdateManager.SubscribeService(OnPreUpdate);
         }
 
-        public static event EventHandler PreUpdate;
+        internal static event EventHandler PreUpdate;
 
-        public static IEnumerable<Entity> Entities
+        internal static ImmutableHashSet<Entity> Entities
         {
             get
             {
                 if (entities == null)
                 {
-                    entities = ObjectManager.GetEntities<Entity>().ToImmutableSortedSet();
+                    entities = ObjectManager.GetEntities<Entity>().ToImmutableHashSet();
                 }
 
                 return entities;
@@ -43,7 +43,7 @@ namespace Ensage.SDK.Helpers
     public class EntityManager<T>
         where T : Entity, new()
     {
-        private static ImmutableSortedSet<T> entities;
+        private static ImmutableHashSet<T> entities;
 
         static EntityManager()
         {
@@ -56,7 +56,7 @@ namespace Ensage.SDK.Helpers
             {
                 if (entities == null)
                 {
-                    entities = EntityManager.Entities.OfType<T>().ToImmutableSortedSet();
+                    entities = EntityManager.Entities.OfType<T>().ToImmutableHashSet();
                 }
 
                 return entities.Where(e => e.IsValid);

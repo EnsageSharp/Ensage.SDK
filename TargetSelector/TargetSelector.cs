@@ -11,6 +11,7 @@ namespace Ensage.SDK.TargetSelector
     using Ensage.SDK.Extensions;
     using Ensage.SDK.Helpers;
     using Ensage.SDK.Service;
+    using Ensage.SDK.TargetSelector.Metadata;
 
     [ExportTargetSelector("SDK")]
     public class TargetSelector : ITargetSelector

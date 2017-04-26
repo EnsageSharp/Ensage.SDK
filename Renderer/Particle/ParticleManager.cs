@@ -1,4 +1,4 @@
-// <copyright file="ParticleEffectManager.cs" company="Ensage">
+// <copyright file="ParticleManager.cs" company="Ensage">
 //    Copyright (c) 2017 Ensage.
 // </copyright>
 
@@ -6,9 +6,10 @@ namespace Ensage.SDK.Renderer.Particle
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel.Composition;
     using System.Linq;
     using System.Reflection;
+
+    using Ensage.SDK.Renderer.Particle.Metadata;
 
     using log4net;
 
@@ -16,8 +17,8 @@ namespace Ensage.SDK.Renderer.Particle
 
     using SharpDX;
 
-    [Export(typeof(IParticleEffectManager))]
-    public class ParticleEffectManager : IParticleEffectManager
+    [ExportParticleManager]
+    public class ParticleManager : IParticleManager
     {
         private static readonly ILog Log = AssemblyLogs.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 

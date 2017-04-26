@@ -47,7 +47,7 @@ namespace Ensage.SDK.Abilities
         {
             var start = this.Ability.Owner.NetworkPosition;
             var dir = (position - start).Normalized();
-            var end = start + dir * this.Range;
+            var end = start + (dir * this.Range);
 
             return new Polygon.Rectangle(start, end, this.Width);
         }
@@ -58,7 +58,7 @@ namespace Ensage.SDK.Abilities
 
             var start = this.Ability.Owner.NetworkPosition;
             var dir = (position - start).Normalized();
-            var end = start + dir * range;
+            var end = start + (dir * range);
 
             return new Polygon.Rectangle(start, end, this.Width);
         }

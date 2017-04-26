@@ -7,7 +7,7 @@ namespace Ensage.SDK.Threading
     using System;
     using System.Threading;
 
-    public class EnsageDispatcher : IDisposable
+    internal class EnsageDispatcher : IDisposable
     {
         private static readonly object SyncRoot = new object();
 

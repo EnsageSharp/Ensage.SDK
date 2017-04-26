@@ -9,7 +9,7 @@ namespace Ensage.SDK.Threading
     using System.Threading;
     using System.Threading.Tasks;
 
-    public sealed class EnsageTaskScheduler : TaskScheduler
+    internal sealed class EnsageTaskScheduler : TaskScheduler
     {
         private static readonly object SyncRoot = new object();
 

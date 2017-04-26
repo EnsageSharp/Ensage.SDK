@@ -10,6 +10,8 @@ namespace Ensage.SDK.Service
     using System.Linq;
     using System.Reflection;
 
+    using Ensage.SDK.Service.Metadata;
+
     using log4net;
 
     using PlaySharp.Toolkit.AppDomain.Loader;

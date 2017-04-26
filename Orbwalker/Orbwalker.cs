@@ -11,6 +11,8 @@ namespace Ensage.SDK.Orbwalker
     using Ensage.Common.Menu;
     using Ensage.SDK.Extensions;
     using Ensage.SDK.Helpers;
+    using Ensage.SDK.Orbwalker.Metadata;
+    using Ensage.SDK.Prediction;
 
     using log4net;
 
@@ -18,7 +20,8 @@ namespace Ensage.SDK.Orbwalker
 
     using SharpDX;
 
-    public class Orbwalker
+    [ExportOrbwalker("SDK")]
+    public class Orbwalker : IOrbwalker
     {
         private static readonly ILog Log = AssemblyLogs.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 

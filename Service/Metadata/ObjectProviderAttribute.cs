@@ -1,13 +1,11 @@
-﻿// <copyright file="ObjectProviderAttribute.cs" company="Ensage">
+// <copyright file="ObjectProviderAttribute.cs" company="Ensage">
 //    Copyright (c) 2017 Ensage.
 // </copyright>
 
-namespace Ensage.SDK.Attributes
+namespace Ensage.SDK.Service.Metadata
 {
     using System;
     using System.ComponentModel.Composition;
-
-    using Ensage.SDK.Service;
 
     [AttributeUsage(AttributeTargets.Class)]
     public class ObjectProviderAttribute : ExportAttribute, IServiceMetadata

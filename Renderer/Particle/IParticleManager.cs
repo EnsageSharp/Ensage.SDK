@@ -1,4 +1,4 @@
-﻿// <copyright file="IParticleEffectManager.cs" company="Ensage">
+﻿// <copyright file="IParticleManager.cs" company="Ensage">
 //    Copyright (c) 2017 Ensage.
 // </copyright>
 
@@ -8,7 +8,7 @@ namespace Ensage.SDK.Renderer.Particle
 
     using SharpDX;
 
-    public interface IParticleEffectManager : IDisposable
+    public interface IParticleManager : IDisposable
     {
         void AddOrUpdate(Entity unit, string name, string file, ParticleAttachment attachment, params object[] controlPoints);
 

@@ -2,14 +2,14 @@
 //    Copyright (c) 2017 Ensage.
 // </copyright>
 
-namespace Ensage.SDK.Helpers
+namespace Ensage.SDK.Prediction
 {
     using System;
-    using System.ComponentModel.Composition;
 
-    [Export(typeof(HealthPrediction<>))]
-    public class HealthPrediction<TEntity> : IDisposable
-        where TEntity : Entity, new()
+    using Ensage.SDK.Prediction.Metadata;
+
+    [ExportHealthPrediction]
+    public class HealthPrediction : IHealthPrediction, IDisposable
     {
         private bool disposed;
 

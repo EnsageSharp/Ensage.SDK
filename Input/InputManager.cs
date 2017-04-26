@@ -1,4 +1,4 @@
-﻿// <copyright file="InputHandler.cs" company="Ensage">
+﻿// <copyright file="InputManager.cs" company="Ensage">
 //    Copyright (c) 2017 Ensage.
 // </copyright>
 
@@ -6,21 +6,22 @@ namespace Ensage.SDK.Input
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel.Composition;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using System.Reflection;
     using System.Windows.Forms;
     using System.Windows.Input;
 
+    using Ensage.SDK.Input.Metadata;
+
     using log4net;
 
     using PlaySharp.Toolkit.Logging;
 
-    [Export(typeof(IInput))]
+    [ExportInputManager]
     [SuppressMessage("ReSharper", "InconsistentNaming")]
     [SuppressMessage("ReSharper", "StyleCop.SA1310")]
-    public class InputHandler : IInput, IDisposable
+    public class InputManager : IInputManager, IDisposable
     {
         private const uint WM_KEYDOWN = 0x0100;
 
@@ -46,7 +47,7 @@ namespace Ensage.SDK.Input
 
         private bool disposed;
 
-        public InputHandler()
+        public InputManager()
         {
             Game.OnWndProc += this.OnWndProc;
             this.KeyDown += this.HotkeyHandler;

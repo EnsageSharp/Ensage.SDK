@@ -2,16 +2,14 @@
 //    Copyright (c) 2017 Ensage.
 // </copyright>
 
-namespace Ensage.SDK.TargetSelector
+namespace Ensage.SDK.TargetSelector.Metadata
 {
     using System;
     using System.ComponentModel.Composition;
-    using System.Security;
 
-    using Ensage.SDK.Attributes;
+    using Ensage.SDK.Service.Metadata;
 
     [MetadataAttribute]
-    [SecuritySafeCritical]
     [AttributeUsage(AttributeTargets.Class)]
     public class ExportTargetSelectorAttribute : ObjectProviderAttribute, ITargetSelectorMetadata
     {

@@ -31,6 +31,11 @@ namespace Ensage.SDK.Helpers
 
         private static List<UpdateHandler> UpdateHandlers { get; } = new List<UpdateHandler>();
 
+        /// <summary>
+        /// Subscribes <paramref name="callback"/> to OnIngameUpdate with a call timeout of <paramref name="timeout"/>
+        /// </summary>
+        /// <param name="callback">callback</param>
+        /// <param name="timeout">in ms</param>
         public static void Subscribe(Action callback, int timeout = 0)
         {
             Subscribe(UpdateHandlers, callback, timeout);
@@ -41,6 +46,11 @@ namespace Ensage.SDK.Helpers
             Unsubscribe(UpdateHandlers, callback);
         }
 
+        /// <summary>
+        /// Subscribes <paramref name="callback"/> to PreOnIngameUpdate with a call timeout of <paramref name="timeout"/>
+        /// </summary>
+        /// <param name="callback">callback</param>
+        /// <param name="timeout">in ms</param>
         internal static void SubscribeService(Action callback, int timeout = 0)
         {
             Subscribe(ServiceHandlers, callback, timeout);

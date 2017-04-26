@@ -154,7 +154,7 @@ namespace Ensage.SDK.Helpers
                     return this._lastPossibleTarget;
                 }
 
-                var possibleTarget = CreepManager.Instance().GetCreeps()
+                var possibleTarget = EntityManager<Creep>.Entities
                                                  .FirstOrDefault(
                                                      unit =>
                                                          unit.IsValid && unit.Team != this.Team

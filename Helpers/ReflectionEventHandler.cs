@@ -30,7 +30,7 @@ namespace Ensage.SDK.Helpers
 
         private Dictionary<MethodInfo, Delegate> Handlers { get; } = new Dictionary<MethodInfo, Delegate>();
 
-        public void Attach(Action<TEventArgs> action)
+        public void Attach(Action<object, TEventArgs> action)
         {
             try
             {
@@ -47,7 +47,7 @@ namespace Ensage.SDK.Helpers
             }
         }
 
-        public void Detach(Action<TEventArgs> action)
+        public void Detach(Action<object, TEventArgs> action)
         {
             try
             {

@@ -173,7 +173,7 @@ namespace Ensage.SDK.Orbwalker
         {
             return;
             var pTeam = this.Hero.Team;
-            foreach (var senderCreep in CreepManager.Instance().GetCreeps()
+            foreach (var senderCreep in EntityManager<Creep>.Entities
                                                     .Where(
                                                         unit =>
                                                             unit.Team == pTeam && unit.Distance2D(this.Hero) < 3000f))

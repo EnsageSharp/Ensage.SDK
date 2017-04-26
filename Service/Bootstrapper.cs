@@ -85,7 +85,7 @@ namespace Ensage.SDK.Service
 
                 foreach (var assembly in this.Assemblies)
                 {
-                    Log.Debug($"Found {assembly.Metadata.Name}");
+                    Log.Debug($"Found {assembly.Metadata.Name}|{string.Join(", ", assembly.Metadata.Units)}|{assembly.Metadata.Author}|{assembly.Metadata.Version}");
                 }
 
                 var id = ObjectManager.LocalHero.HeroId;

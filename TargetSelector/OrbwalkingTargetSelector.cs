@@ -28,35 +28,26 @@ namespace Ensage.SDK.TargetSelector
         public IServiceContext Context { get; }
 
         [Import]
-        private Lazy<EntityManager<Building>> Buildings { get; set; }
-
-        [Import]
-        private Lazy<EntityManager<Creep>> Creeps { get; set; }
-
-        [Import]
         private Lazy<HealthPrediction<Creep>> HealthPrediction { get; set; }
-
-        [Import]
-        private Lazy<EntityManager<Hero>> Heroes { get; set; }
 
         public IEnumerable<Building> GetBuildings()
         {
-            return this.Buildings.Value.GetEntries().Where(b => this.Context.Owner.CanAttack(b)).OrderBy(b => b.Health);
+            return EntityManager<Building>.Entities.Where(b => this.Context.Owner.CanAttack(b)).OrderBy(b => b.Health);
         }
 
         public IEnumerable<Creep> GetCreeps()
         {
-            return this.Creeps.Value.GetEntries().Where(creep => this.Context.Owner.CanAttack(creep)).OrderBy(creep => creep.Health);
+            return EntityManager<Creep>.Entities.Where(creep => this.Context.Owner.CanAttack(creep)).OrderBy(creep => creep.Health);
         }
 
         public IEnumerable<Creep> GetFarm()
         {
-            return this.Creeps.Value.GetEntries().Where(creep => this.Context.Owner.CanAttack(creep) && this.CanLasthit(creep)).OrderBy(creep => creep.Health);
+            return EntityManager<Creep>.Entities.Where(creep => this.Context.Owner.CanAttack(creep) && this.CanLasthit(creep)).OrderBy(creep => creep.Health);
         }
 
         public IEnumerable<Hero> GetHeroes()
         {
-            return this.Heroes.Value.GetEntries().Where(b => this.Context.Owner.CanAttack(b)).OrderBy(b => b.Distance2D(Game.MousePosition));
+            return EntityManager<Hero>.Entities.Where(b => this.Context.Owner.CanAttack(b)).OrderBy(b => b.Distance2D(Game.MousePosition));
         }
 
         public IEnumerable<Unit> GetTargets()

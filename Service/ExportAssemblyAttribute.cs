@@ -31,7 +31,7 @@ namespace Ensage.SDK.Service
             this.Units = units.Length > 0 ? units : null;
         }
 
-        [DefaultValue("")]
+        [DefaultValue("Ensage")]
         public string Author { get; }
 
         public string Name { get; }
@@ -39,7 +39,7 @@ namespace Ensage.SDK.Service
         [DefaultValue(null)]
         public HeroId[] Units { get; }
 
-        [DefaultValue("")]
+        [DefaultValue("1.0.0.0")]
         public string Version { get; }
     }
 }

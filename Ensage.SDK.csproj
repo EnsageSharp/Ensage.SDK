@@ -74,6 +74,10 @@
       <HintPath>D:\Games\ps\References\SharpDX.Mathematics.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Collections.Immutable, Version=1.1.37.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Games\ps\References\System.Collections.Immutable.dll</HintPath>
+    </Reference>
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
@@ -105,8 +109,9 @@
     <Compile Include="Abilities\RangedAbility.cs" />
     <Compile Include="Abilities\TargetAbility.cs" />
     <Compile Include="Abilities\npc_dota_hero_vengefulspirit\vengefulspirit_magic_missile.cs" />
-    <Compile Include="EntityManager\EntityManager.cs" />
-    <Compile Include="EntityManager\EntityManagerBase.cs" />
+    <Compile Include="Helpers\IParticleEffectManager.cs" />
+    <Compile Include="Helpers\ParticleEffectManager.cs" />
+    <Compile Include="Helpers\ParticleEffect.cs" />
     <Compile Include="Helpers\ReflectionEventHandler.cs" />
     <Compile Include="Extensions\AnimationExtensions.cs" />
     <Compile Include="Extensions\HeroExtensions.cs" />
@@ -122,13 +127,12 @@
     <Compile Include="Geometry\ProjectionInfo.cs" />
     <Compile Include="Helpers\DamageHelpers.cs" />
     <Compile Include="Helpers\EntityOrPosition.cs" />
+    <Compile Include="Helpers\UpdateHandler.cs" />
+    <Compile Include="Helpers\UpdateManager.cs" />
     <Compile Include="Input\Hotkey.cs" />
     <Compile Include="Menu\Config.cs" />
     <Compile Include="Menu\MenuFactory.cs" />
     <Compile Include="Menu\MenuItem.cs" />
-    <Compile Include="Helpers\CircularIndicator.cs" />
-    <Compile Include="Helpers\CircularIndicatorHelper.cs" />
-    <Compile Include="Helpers\CreepManager.cs" />
     <Compile Include="Helpers\CreepStatus.cs" />
     <Compile Include="Helpers\EntityManager.cs" />
     <Compile Include="Orbwalker\ExportOrbwalkerAttribute.cs" />

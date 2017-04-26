@@ -6,83 +6,66 @@ namespace Ensage.SDK.Helpers
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel.Composition;
+    using System.Collections.Immutable;
     using System.Linq;
 
-    using Ensage.SDK.Extensions;
-    using Ensage.SDK.Service;
-
-    [Export(typeof(EntityManager<>))]
-    public class EntityManager<TEntity> : IDisposable
-        where TEntity : Entity, new()
+    public static class EntityManager
     {
-        private bool disposed;
+        private static ImmutableSortedSet<Entity> entities;
 
-        public EntityManager(IServiceContext context)
+        static EntityManager()
         {
-            this.Context = context;
-            Game.OnIngameUpdate += this.OnUpdate;
+            UpdateManager.SubscribeService(OnPreUpdate);
         }
 
-        public IServiceContext Context { get; }
+        public static event EventHandler PreUpdate;
 
-        public float Range { get; set; } = 3000;
-
-        public float UpdateRate { get; set; } = 250;
-
-        private TEntity[] Cache { get; set; }
-
-        private float LastUpdateTime { get; set; }
-
-        public void Dispose()
+        public static IEnumerable<Entity> Entities
         {
-            this.Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        public IEnumerable<TEntity> GetEntries()
-        {
-            return this.Cache;
-        }
-
-        public ParallelQuery<TEntity> GetEntriesParallel()
-        {
-            return this.Cache.AsParallel();
-        }
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (this.disposed)
+            get
             {
-                return;
-            }
-
-            if (disposing)
-            {
-                Game.OnIngameUpdate -= this.OnUpdate;
-            }
-
-            this.disposed = true;
-        }
-
-        protected virtual void OnUpdate(EventArgs args)
-        {
-            if (this.UpdateRate > 0)
-            {
-                var now = Game.RawGameTime;
-                if ((now - this.LastUpdateTime) < (this.UpdateRate / 1000))
+                if (entities == null)
                 {
-                    return;
+                    entities = ObjectManager.GetEntities<Entity>().ToImmutableSortedSet();
                 }
 
-                this.LastUpdateTime = now;
+                return entities;
             }
+        }
 
-            var position = this.Context.Owner.Position;
+        private static void OnPreUpdate()
+        {
+            entities = null;
+            PreUpdate?.Invoke(null, EventArgs.Empty);
+        }
+    }
 
-            this.Cache = ObjectManager.GetEntitiesParallel<TEntity>()
-                                      .Where(e => e.IsValid && position.IsInRange(e, this.Range))
-                                      .ToArray();
+    public class EntityManager<T>
+        where T : Entity, new()
+    {
+        private static ImmutableSortedSet<T> entities;
+
+        static EntityManager()
+        {
+            EntityManager.PreUpdate += OnPreUpdate;
+        }
+
+        public static IEnumerable<T> Entities
+        {
+            get
+            {
+                if (entities == null)
+                {
+                    entities = EntityManager.Entities.OfType<T>().ToImmutableSortedSet();
+                }
+
+                return entities.Where(e => e.IsValid);
+            }
+        }
+
+        private static void OnPreUpdate(object sender, EventArgs args)
+        {
+            entities = null;
         }
     }
 }

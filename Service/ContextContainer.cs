@@ -9,18 +9,12 @@ namespace Ensage.SDK.Service
     using System.ComponentModel.Composition;
     using System.ComponentModel.Composition.Hosting;
     using System.Linq;
-    using System.Reflection;
-
-    using log4net;
 
     using PlaySharp.Toolkit.Helper.Annotations;
-    using PlaySharp.Toolkit.Logging;
 
     public class ContextContainer<TContext> : IDisposable, IEquatable<ContextContainer<TContext>>
         where TContext : class, IServiceContext
     {
-        private static readonly ILog Log = AssemblyLogs.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-
         private bool disposed;
 
         public ContextContainer([NotNull] TContext context, [NotNull] CompositionContainer container)
@@ -60,7 +54,6 @@ namespace Ensage.SDK.Service
                 throw new ArgumentNullException(nameof(instance));
             }
 
-            Log.Debug($"SatisfyImports {instance.GetType().Name}");
             this.Container.SatisfyImportsOnce(instance);
         }
 
@@ -121,9 +114,24 @@ namespace Ensage.SDK.Service
             return this.Container.GetExportedValues<T>(contract);
         }
 
+        public virtual IEnumerable<Lazy<T, TMetadata>> GetAll<T, TMetadata>([CanBeNull] string contract = null)
+        {
+            if (contract == null)
+            {
+                return this.Container.GetExports<T, TMetadata>();
+            }
+
+            return this.Container.GetExports<T, TMetadata>(contract);
+        }
+
         public IEnumerable<object> GetAllInstances(Type serviceType)
         {
             return this.Container.GetExportedValues<object>(AttributedModelServices.GetContractName(serviceType));
+        }
+
+        public override int GetHashCode()
+        {
+            return EqualityComparer<TContext>.Default.GetHashCode(this.Context);
         }
 
         public object GetInstance(Type serviceType, string key)
@@ -139,19 +147,12 @@ namespace Ensage.SDK.Service
             throw new Exception($"Could not locate any instances of contract {contract}.");
         }
 
-        public override int GetHashCode()
-        {
-            return EqualityComparer<TContext>.Default.GetHashCode(this.Context);
-        }
-
         public virtual void RegisterValue<T>([NotNull] T value, [CanBeNull] string contract = null)
         {
             if (value == null)
             {
                 throw new ArgumentNullException(nameof(value));
             }
-
-            Log.Debug($"ComposeExportedValue {value} {contract}");
 
             if (contract == null)
             {

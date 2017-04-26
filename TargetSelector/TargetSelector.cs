@@ -9,6 +9,7 @@ namespace Ensage.SDK.TargetSelector
     using System.Linq;
 
     using Ensage.SDK.Extensions;
+    using Ensage.SDK.Helpers;
     using Ensage.SDK.Service;
 
     [ExportTargetSelector("SDK")]
@@ -55,18 +56,14 @@ namespace Ensage.SDK.TargetSelector
             return result;
         }
 
-        private ParallelQuery<T> GetValidTargeTeam<T>(Team team) where T : Unit, new()
+        private IEnumerable<T> GetValidTargeTeam<T>(Team team) where T : Unit, new()
         {
-            return
-                ObjectManager.GetEntitiesParallel<T>()
-                             .Where(x => x.IsValid && x.IsAlive && x.Team == team && x.IsRealUnit());
+            return EntityManager<T>.Entities.Where(x => x.IsAlive && x.Team == team && x.IsRealUnit());
         }
 
-        private ParallelQuery<T> GetValidTargetEnemyTeam<T>(Team team) where T : Unit, new()
+        private IEnumerable<T> GetValidTargetEnemyTeam<T>(Team team) where T : Unit, new()
         {
-            return
-                ObjectManager.GetEntitiesParallel<T>()
-                             .Where(x => x.IsValid && x.IsAlive && x.Team != team && x.IsRealUnit());
+            return EntityManager<T>.Entities.Where(x => x.IsAlive && x.Team != team && x.IsRealUnit());
         }
     }
 }

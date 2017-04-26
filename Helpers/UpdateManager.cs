@@ -29,7 +29,7 @@ namespace Ensage.SDK.Helpers
 
         private static ReflectionEventHandler<EventArgs> Handler { get; }
 
-        private static ImmutableSortedSet<UpdateHandler> ServiceHandlers { get; set; } = ImmutableSortedSet<UpdateHandler>.Empty;
+        private static ImmutableSortedSet<UpdateHandler> PreUpdateHandlers { get; set; } = ImmutableSortedSet<UpdateHandler>.Empty;
 
         private static ImmutableSortedSet<UpdateHandler> UpdateHandlers { get; set; } = ImmutableSortedSet<UpdateHandler>.Empty;
 
@@ -55,7 +55,7 @@ namespace Ensage.SDK.Helpers
         }
 
         /// <summary>
-        /// Subscribes <paramref name="callback"/> to PreOnIngameUpdate with a call timeout of <paramref name="timeout"/>
+        /// Subscribes <paramref name="callback"/> to OnPreIngameUpdate with a call timeout of <paramref name="timeout"/>
         /// </summary>
         /// <param name="callback">callback</param>
         /// <param name="timeout">in ms</param>
@@ -63,7 +63,7 @@ namespace Ensage.SDK.Helpers
         {
             lock (SyncRoot)
             {
-                ServiceHandlers = Subscribe(ServiceHandlers, callback, timeout);
+                PreUpdateHandlers = Subscribe(PreUpdateHandlers, callback, timeout);
             }
         }
 
@@ -71,13 +71,13 @@ namespace Ensage.SDK.Helpers
         {
             lock (SyncRoot)
             {
-                ServiceHandlers = Unsubscribe(ServiceHandlers, callback);
+                PreUpdateHandlers = Unsubscribe(PreUpdateHandlers, callback);
             }
         }
 
         private static void OnPreUpdate(object sender, EventArgs args)
         {
-            foreach (var handler in ServiceHandlers.Where(h => h.HasTimeout))
+            foreach (var handler in PreUpdateHandlers.Where(h => h.HasTimeout))
             {
                 try
                 {
@@ -110,12 +110,12 @@ namespace Ensage.SDK.Helpers
             var handler = handlers.FirstOrDefault(h => h.Callback == callback);
             if (handler != null && handler.Timeout != timeout)
             {
-                Log.Debug($"Update Handler[{callback.Method}][{timeout}]");
+                Log.Debug($"Update Handler[{timeout}][{callback.Method}]");
                 handler.Timeout = timeout;
                 return handlers;
             }
 
-            Log.Debug($"Create Handler[{callback.Method}][{timeout}]");
+            Log.Debug($"Create Handler[{timeout}][{callback.Method}]");
             return handlers.Add(new UpdateHandler(callback, timeout));
         }
 

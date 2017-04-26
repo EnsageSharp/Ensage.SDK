@@ -109,9 +109,9 @@
     <Compile Include="Abilities\RangedAbility.cs" />
     <Compile Include="Abilities\TargetAbility.cs" />
     <Compile Include="Abilities\npc_dota_hero_vengefulspirit\vengefulspirit_magic_missile.cs" />
-    <Compile Include="Helpers\IParticleEffectManager.cs" />
-    <Compile Include="Helpers\ParticleEffectManager.cs" />
-    <Compile Include="Helpers\ParticleEffectContainer.cs" />
+    <Compile Include="Renderer\Particle\IParticleEffectManager.cs" />
+    <Compile Include="Renderer\Particle\ParticleEffectManager.cs" />
+    <Compile Include="Renderer\Particle\ParticleEffectContainer.cs" />
     <Compile Include="Helpers\ReflectionEventHandler.cs" />
     <Compile Include="Extensions\AnimationExtensions.cs" />
     <Compile Include="Extensions\HeroExtensions.cs" />

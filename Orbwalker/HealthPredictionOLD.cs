@@ -109,7 +109,7 @@ namespace Ensage.SDK.Orbwalker
             {
                 // towers
                 var closestTower =
-                    ObjectManager.GetEntitiesFast<Tower>()
+                    EntityManager<Tower>.Entities
                                  .OrderBy(tower => tower.IsValid ? tower.Distance2D(this.Hero) : float.MaxValue)
                                  .FirstOrDefault(t => t.IsValid);
                 if (closestTower != null)
@@ -219,7 +219,7 @@ namespace Ensage.SDK.Orbwalker
             }
 
             var closestTower =
-                ObjectManager.GetEntitiesFast<Tower>()
+                EntityManager<Tower>.Entities
                              .OrderBy(tower => tower.IsValid ? tower.Distance2D(this.Hero) : float.MaxValue)
                              .FirstOrDefault(t => t.IsValid);
             if (closestTower != null)

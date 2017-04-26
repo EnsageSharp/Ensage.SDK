@@ -2,7 +2,7 @@
 //    Copyright (c) 2017 Ensage.
 // </copyright>
 
-namespace Ensage.SDK.Helpers
+namespace Ensage.SDK.Renderer.Particle
 {
     using System;
     using System.Linq;

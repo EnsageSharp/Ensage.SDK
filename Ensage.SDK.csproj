@@ -76,7 +76,7 @@
     <Reference Include="System" />
     <Reference Include="System.Collections.Immutable, Version=1.1.37.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Games\ps\References\System.Collections.Immutable.dll</HintPath>
+      <HintPath>D:\Games\ps\References\System.Collections.Immutable.dll</HintPath>
     </Reference>
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Core" />
@@ -111,7 +111,7 @@
     <Compile Include="Abilities\npc_dota_hero_vengefulspirit\vengefulspirit_magic_missile.cs" />
     <Compile Include="Helpers\IParticleEffectManager.cs" />
     <Compile Include="Helpers\ParticleEffectManager.cs" />
-    <Compile Include="Helpers\ParticleEffect.cs" />
+    <Compile Include="Helpers\ParticleEffectContainer.cs" />
     <Compile Include="Helpers\ReflectionEventHandler.cs" />
     <Compile Include="Extensions\AnimationExtensions.cs" />
     <Compile Include="Extensions\HeroExtensions.cs" />

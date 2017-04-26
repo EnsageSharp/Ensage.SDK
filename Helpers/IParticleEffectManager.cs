@@ -20,6 +20,8 @@ namespace Ensage.SDK.Helpers
 
         void DrawRange(Unit unit, string id, float range, Color color);
 
+        void Remove(string name);
+
         void ShowClick(Unit unit, string id, Vector3 position, Color color);
     }
 }

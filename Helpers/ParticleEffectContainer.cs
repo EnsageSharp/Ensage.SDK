@@ -1,4 +1,4 @@
-// <copyright file="ParticleEffect.cs" company="Ensage">
+// <copyright file="ParticleEffectContainer.cs" company="Ensage">
 //    Copyright (c) 2017 Ensage.
 // </copyright>
 
@@ -21,7 +21,7 @@ namespace Ensage.SDK.Helpers
             this.Attachment = attachment;
             this.ControlPoints = controlPoints;
 
-            this.Effect = new ParticleEffect(this.File, this.Unit, this.Attachment);
+            this.Effect = new ParticleEffect(file, unit, attachment);
             this.SetControlPoints();
         }
 
@@ -143,6 +143,8 @@ namespace Ensage.SDK.Helpers
                     this.Effect.SetControlPoint(index, (Vector3)controlPoint);
                 }
             }
+
+            this.Effect.Restart();
         }
 
         protected virtual void Dispose(bool disposing)

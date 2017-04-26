@@ -32,11 +32,30 @@ namespace Ensage.SDK.Helpers
             ParticleAttachment attachment,
             params object[] controlPoints)
         {
+            if (unit == null)
+            {
+                throw new ArgumentNullException(nameof(unit));
+            }
+
+            if (!unit.IsValid)
+            {
+                throw new ArgumentException("Value should be valid.", nameof(unit));
+            }
+
+            if (name == null)
+            {
+                throw new ArgumentNullException(nameof(name));
+            }
+
+            if (file == null)
+            {
+                throw new ArgumentNullException(nameof(file));
+            }
+
             var particle = Particles.FirstOrDefault(p => p.Name == name);
 
             if (particle == null)
             {
-                Log.Debug($"Create Effect {name} '{file}'");
                 Particles.Add(new ParticleEffectContainer(name, file, unit, attachment, controlPoints));
             }
             else
@@ -44,7 +63,6 @@ namespace Ensage.SDK.Helpers
                 // parts changed
                 if (particle.Unit != unit || particle.File != file || particle.Attachment != attachment)
                 {
-                    Log.Debug($"Update Effect {name}");
                     particle.Dispose();
 
                     Particles.Remove(particle);
@@ -56,7 +74,6 @@ namespace Ensage.SDK.Helpers
                 var hash = controlPoints.Sum(p => p.GetHashCode());
                 if (particle.GetControlPointsHashCode() != hash)
                 {
-                    Log.Debug($"Update ControlPoints {name}");
                     particle.SetControlPoints(controlPoints);
                 }
             }
@@ -154,6 +171,20 @@ namespace Ensage.SDK.Helpers
                 color,
                 2,
                 range * 1.1f);
+        }
+
+        public void Remove(string name)
+        {
+            if (name == null)
+            {
+                throw new ArgumentNullException(nameof(name));
+            }
+
+            foreach (var particle in Particles.Where(p => p.Name == name).ToArray())
+            {
+                Particles.Remove(particle);
+                particle.Dispose();
+            }
         }
 
         /// <summary>

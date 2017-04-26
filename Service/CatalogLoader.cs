@@ -23,6 +23,7 @@ namespace Ensage.SDK.Service
             "PlaySharp.Service",
             "Newtonsoft.Json",
             "clipper_library",
+            "System.Collections.Immutable",
             "SharpDX",
             "SharpDX.Direct2D1",
             "SharpDX.Direct3D9",

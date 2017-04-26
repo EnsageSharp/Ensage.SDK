@@ -30,15 +30,15 @@ namespace Ensage.SDK.Helpers
 
         private Dictionary<MethodInfo, Delegate> Handlers { get; } = new Dictionary<MethodInfo, Delegate>();
 
-        public void Attach(Action<object, TEventArgs> action)
+        public void Subscribe(Action<object, TEventArgs> action)
         {
             try
             {
                 var method = action.Method;
                 var handler = Delegate.CreateDelegate(this.Event.EventHandlerType, this, method);
 
-                Log.Debug($"Add [{this.Event.Name}] {action.Target.GetType().Name}");
-                this.Event.AddEventHandler(this, handler);
+                Log.Debug($"Add [{this.Event.Name}] {action.Method}");
+                this.Event.GetAddMethod(true).Invoke(this.Event, new object[] { handler });
                 this.Handlers.Add(method, handler);
             }
             catch (Exception e)
@@ -47,7 +47,7 @@ namespace Ensage.SDK.Helpers
             }
         }
 
-        public void Detach(Action<object, TEventArgs> action)
+        public void Unsubscribe(Action<object, TEventArgs> action)
         {
             try
             {

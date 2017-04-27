@@ -109,6 +109,11 @@
     <Compile Include="Abilities\RangedAbility.cs" />
     <Compile Include="Abilities\TargetAbility.cs" />
     <Compile Include="Abilities\npc_dota_hero_vengefulspirit\vengefulspirit_magic_missile.cs" />
+    <Compile Include="Inventory\Metadata\ExportInventoryManagerAttribute.cs" />
+    <Compile Include="Inventory\IInventoryManager.cs" />
+    <Compile Include="Inventory\Metadata\IInventoryManagerMetadata.cs" />
+    <Compile Include="Inventory\Metadata\ImportInventoryManagerAttribute.cs" />
+    <Compile Include="Inventory\InventoryManager.cs" />
     <Compile Include="Input\Metadata\ExportInputManagerAttribute.cs" />
     <Compile Include="Input\Metadata\IInputManagerMetadata.cs" />
     <Compile Include="Input\Metadata\ImportInputManagerAttribute.cs" />

@@ -34,6 +34,25 @@ namespace Ensage.SDK.Helpers
         private static ImmutableArray<UpdateHandler> UpdateHandlers { get; set; } = ImmutableArray<UpdateHandler>.Empty;
 
         /// <summary>
+        /// Enables Performace tracing for <paramref name="assembly"/>
+        /// </summary>
+        /// <param name="assembly">Target Assembly</param>
+        public static void EnableTracing(Assembly assembly)
+        {
+            foreach (var type in assembly.GetTypes())
+            {
+                foreach (var method in type.GetMethods(BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic))
+                {
+                    var handler = UpdateHandlers.FirstOrDefault(h => h.Callback.Method == method);
+                    if (handler != null)
+                    {
+                        handler.EnableTracing = true;
+                    }
+                }
+            }
+        }
+
+        /// <summary>
         /// Subscribes <paramref name="callback"/> to OnIngameUpdate with a call timeout of <paramref name="timeout"/>
         /// </summary>
         /// <param name="callback">callback</param>
@@ -110,12 +129,12 @@ namespace Ensage.SDK.Helpers
             var handler = handlers.FirstOrDefault(h => h.Callback == callback);
             if (handler != null && handler.Timeout != timeout)
             {
-                Log.Debug($"Update Handler[{timeout}][{callback.Method}]");
+                Log.Debug($"Update Handler[{timeout}][{callback.Method.DeclaringType}.{callback.Method.Name}]");
                 handler.Timeout = timeout;
                 return handlers;
             }
 
-            Log.Debug($"Create Handler[{timeout}][{callback.Method}]");
+            Log.Debug($"Create Handler[{timeout}][{callback.Method.DeclaringType}.{callback.Method.Name}]");
             return handlers.Add(new UpdateHandler(callback, timeout));
         }
 
@@ -124,7 +143,7 @@ namespace Ensage.SDK.Helpers
             var handler = handlers.FirstOrDefault(h => h.Callback == callback);
             if (handler != null)
             {
-                Log.Debug($"Remove Handler[{callback.Method}]");
+                Log.Debug($"Remove Handler[{callback.Method.DeclaringType}.{callback.Method.Name}]");
                 return handlers.Remove(handler);
             }
 

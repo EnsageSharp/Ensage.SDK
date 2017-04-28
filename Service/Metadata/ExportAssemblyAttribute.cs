@@ -13,7 +13,7 @@ namespace Ensage.SDK.Service.Metadata
     public class ExportAssemblyAttribute : ExportAttribute, IAssemblyLoaderMetadata
     {
         public ExportAssemblyAttribute(string name, params HeroId[] units)
-            : this(name, null, null, units)
+            : this(name, "Ensage", "1.0.0.0", units)
         {
         }
 

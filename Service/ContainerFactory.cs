@@ -7,6 +7,7 @@ namespace Ensage.SDK.Service
     using System;
     using System.ComponentModel.Composition;
     using System.ComponentModel.Composition.Hosting;
+    using System.Linq;
     using System.Reflection;
 
     using log4net;
@@ -48,8 +49,11 @@ namespace Ensage.SDK.Service
             var context = new EnsageServiceContext(owner);
             var container = new CompositionContainer(Loader.Catalog, flags);
             context.Container = new ContextContainer<IServiceContext>(context, container);
+            container.ExportsChanged += OnExportsChanged;
 
-            Log.Debug($"Create Context({context}) Container");
+            Log.Debug($"Create {context} Container");
+            Log.Debug($"Catalogs {Loader.Catalog.Catalogs.Count}");
+            Log.Debug($"Parts {container.Catalog.Parts.Count()}");
 
             container.ComposeExportedValue<IServiceContext>(context);
 
@@ -66,6 +70,19 @@ namespace Ensage.SDK.Service
             // throw new NotSupportedException($"RenderMode({Drawing.RenderMode}) not supported.");
             // }
             return context.Container;
+        }
+
+        private static void OnExportsChanged(object sender, ExportsChangeEventArgs args)
+        {
+            if (args.AddedExports.Any())
+            {
+                Log.Debug($"Added Exports {args.AddedExports.Count()}");
+            }
+
+            if (args.RemovedExports.Any())
+            {
+                Log.Debug($"Removed Exports {args.RemovedExports.Count()}");
+            }
         }
     }
 }

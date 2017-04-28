@@ -109,6 +109,7 @@
     <Compile Include="Abilities\RangedAbility.cs" />
     <Compile Include="Abilities\TargetAbility.cs" />
     <Compile Include="Abilities\npc_dota_hero_vengefulspirit\vengefulspirit_magic_missile.cs" />
+    <Compile Include="Inventory\InventoryItem.cs" />
     <Compile Include="Inventory\Metadata\ExportInventoryManagerAttribute.cs" />
     <Compile Include="Inventory\IInventoryManager.cs" />
     <Compile Include="Inventory\Metadata\IInventoryManagerMetadata.cs" />
@@ -117,6 +118,7 @@
     <Compile Include="Input\Metadata\ExportInputManagerAttribute.cs" />
     <Compile Include="Input\Metadata\IInputManagerMetadata.cs" />
     <Compile Include="Input\Metadata\ImportInputManagerAttribute.cs" />
+    <Compile Include="Service\SDKConfig.cs" />
     <Compile Include="Orbwalker\Metadata\ExportOrbwalkerAttribute.cs" />
     <Compile Include="Orbwalker\Metadata\ImportManyOrbwalkerAttribute.cs" />
     <Compile Include="Orbwalker\Metadata\ImportOrbwalkerAttribute.cs" />
@@ -149,7 +151,6 @@
     <Compile Include="Helpers\UpdateHandler.cs" />
     <Compile Include="Helpers\UpdateManager.cs" />
     <Compile Include="Input\Hotkey.cs" />
-    <Compile Include="Menu\Config.cs" />
     <Compile Include="Menu\MenuFactory.cs" />
     <Compile Include="Menu\MenuItem.cs" />
     <Compile Include="Helpers\CreepStatus.cs" />

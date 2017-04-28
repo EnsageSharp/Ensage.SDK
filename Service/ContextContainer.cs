@@ -9,12 +9,18 @@ namespace Ensage.SDK.Service
     using System.ComponentModel.Composition;
     using System.ComponentModel.Composition.Hosting;
     using System.Linq;
+    using System.Reflection;
+
+    using log4net;
 
     using PlaySharp.Toolkit.Helper.Annotations;
+    using PlaySharp.Toolkit.Logging;
 
     public class ContextContainer<TContext> : IDisposable, IEquatable<ContextContainer<TContext>>
         where TContext : class, IServiceContext
     {
+        private static readonly ILog Log = AssemblyLogs.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
         private bool disposed;
 
         public ContextContainer([NotNull] TContext context, [NotNull] CompositionContainer container)
@@ -173,6 +179,7 @@ namespace Ensage.SDK.Service
 
             if (disposing)
             {
+                Log.Debug($"Dispose {this.Context} Container");
                 this.Container.Dispose();
             }
 

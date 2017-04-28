@@ -4,9 +4,11 @@
 
 namespace Ensage.SDK.Inventory
 {
+    using System;
     using System.Collections.Immutable;
     using System.Collections.Specialized;
     using System.ComponentModel.Composition;
+    using System.Linq;
     using System.Reflection;
 
     using Ensage.SDK.Helpers;
@@ -24,13 +26,13 @@ namespace Ensage.SDK.Inventory
     {
         private static readonly ILog Log = AssemblyLogs.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        private ImmutableHashSet<Item> items;
+        private ImmutableHashSet<InventoryItem> items;
 
         [ImportingConstructor]
-        public InventoryManager(IServiceContext context)
+        public InventoryManager([Import] IServiceContext context)
         {
-            this.LastItems = ImmutableHashSet<Item>.Empty;
             this.Owner = context.Owner;
+            this.LastItems = ImmutableHashSet<InventoryItem>.Empty;
 
             UpdateManager.Subscribe(this.OnInventoryUpdate, 500);
             UpdateManager.SubscribeService(this.OnInventoryClear);
@@ -40,13 +42,13 @@ namespace Ensage.SDK.Inventory
 
         public Inventory Inventory => this.Owner.Inventory;
 
-        public ImmutableHashSet<Item> Items
+        public ImmutableHashSet<InventoryItem> Items
         {
             get
             {
                 if (this.items == null)
                 {
-                    this.items = this.Inventory.Items.ToImmutableHashSet();
+                    this.items = this.Inventory.Items.Select(item => new InventoryItem(item)).ToImmutableHashSet();
                 }
 
                 return this.items;
@@ -55,7 +57,7 @@ namespace Ensage.SDK.Inventory
 
         public Hero Owner { get; }
 
-        private ImmutableHashSet<Item> LastItems { get; set; }
+        private ImmutableHashSet<InventoryItem> LastItems { get; set; }
 
         private void OnInventoryClear()
         {
@@ -66,14 +68,32 @@ namespace Ensage.SDK.Inventory
         {
             if (this.CollectionChanged != null)
             {
-                var changes = this.Items.SymmetricExcept(this.LastItems);
+                var added = this.Items.Except(this.LastItems);
+                var removed = this.LastItems.Except(this.Items);
 
-                foreach (var change in changes)
+                foreach (var change in added)
                 {
-                    if (!this.LastItems.Contains(change))
+                    try
                     {
                         Log.Debug($"Added {change.Id}");
                         this.CollectionChanged.Invoke(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, change));
+                    }
+                    catch (Exception e)
+                    {
+                        Log.Error(e);
+                    }
+                }
+
+                foreach (var change in removed)
+                {
+                    try
+                    {
+                        Log.Debug($"Removed {change.Id}");
+                        this.CollectionChanged.Invoke(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Remove, change));
+                    }
+                    catch (Exception e)
+                    {
+                        Log.Error(e);
                     }
                 }
 

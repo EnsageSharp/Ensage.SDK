@@ -34,6 +34,7 @@ namespace Ensage.SDK.Service
             "Ensage",
             "EnsageSharp.Sandbox",
             "Ensage.Common",
+            "Anonymously Hosted DynamicMethods Assembly"
         };
 
         private bool disposed;

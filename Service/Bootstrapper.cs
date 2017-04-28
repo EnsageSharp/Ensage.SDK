@@ -6,10 +6,12 @@ namespace Ensage.SDK.Service
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel.Composition;
+    using System.ComponentModel.Composition.Hosting;
+    using System.Diagnostics;
     using System.Linq;
     using System.Reflection;
 
+    using Ensage.SDK.Helpers;
     using Ensage.SDK.Service.Metadata;
 
     using log4net;
@@ -22,10 +24,19 @@ namespace Ensage.SDK.Service
     {
         private static readonly ILog Log = AssemblyLogs.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        [ImportMany(typeof(IAssemblyLoader))]
-        public IEnumerable<Lazy<IAssemblyLoader, IAssemblyLoaderMetadata>> Assemblies { get; private set; }
+        public IEnumerable<Lazy<IAssemblyLoader, IAssemblyLoaderMetadata>> Assemblies
+        {
+            get
+            {
+                return this.Default?.GetAll<IAssemblyLoader, IAssemblyLoaderMetadata>();
+            }
+        }
+
+        public SDKConfig Config { get; private set; }
 
         public ContextContainer<IServiceContext> Default { get; private set; }
+
+        private bool ExportsChanged { get; set; }
 
         public void BuildUp(object instance)
         {
@@ -44,23 +55,14 @@ namespace Ensage.SDK.Service
 
         protected override void OnActivated()
         {
-            Game.OnIngameUpdate += this.OnLoad;
+            UpdateManager.Subscribe(this.OnLoad);
         }
 
         protected override void OnDeactivated()
         {
             try
             {
-                foreach (var assembly in this.Assemblies)
-                {
-                    if (assembly.IsValueCreated)
-                    {
-                        Log.Info($"Deactivate {assembly.Metadata.Name}");
-                        assembly.Value.Deactivate();
-                    }
-                }
-
-                Log.Debug($"Dispose Context({this.Default.Context}) Container");
+                this.DeactivatePlugins();
                 this.Default?.Dispose();
             }
             catch (Exception e)
@@ -69,38 +71,19 @@ namespace Ensage.SDK.Service
             }
         }
 
-        private void OnLoad(EventArgs args)
+        private void ActivatePlugins()
         {
-            if (ObjectManager.LocalHero == null)
+            var id = ObjectManager.LocalHero.HeroId;
+
+            foreach (var assembly in this.Assemblies)
             {
-                return;
-            }
-
-            Game.OnIngameUpdate -= this.OnLoad;
-
-            try
-            {
-                this.Default = ContainerFactory.CreateContainer(ObjectManager.LocalHero);
-                this.Default.BuildUp(this);
-
-                IoC.Initialize(this.BuildUp, this.GetInstance, this.GetAllInstances);
-
-                foreach (var assembly in this.Assemblies)
+                try
                 {
-                    if (assembly.Metadata.Units == null)
+                    if (assembly.IsValueCreated)
                     {
-                        Log.Debug($"Found {assembly.Metadata.Name}|{assembly.Metadata.Author}|{assembly.Metadata.Version}");
+                        continue;
                     }
-                    else
-                    {
-                        Log.Debug($"Found {assembly.Metadata.Name}|{assembly.Metadata.Author}|{assembly.Metadata.Version}|{string.Join(", ", assembly.Metadata.Units)}");
-                    }
-                }
 
-                var id = ObjectManager.LocalHero.HeroId;
-
-                foreach (var assembly in this.Assemblies)
-                {
                     if (assembly.Metadata.Units != null && assembly.Metadata.Units.Length > 0)
                     {
                         if (!assembly.Metadata.Units.Contains(id))
@@ -112,6 +95,78 @@ namespace Ensage.SDK.Service
                     Log.Info($"Activate {assembly.Metadata.Name}");
                     assembly.Value.Activate();
                 }
+                catch (Exception e)
+                {
+                    Log.Error(e);
+                }
+            }
+        }
+
+        private void DeactivatePlugins()
+        {
+            foreach (var assembly in this.Assemblies)
+            {
+                try
+                {
+                    if (assembly.IsValueCreated)
+                    {
+                        Log.Info($"Deactivate {assembly.Metadata.Name}");
+                        assembly.Value.Deactivate();
+                    }
+                }
+                catch (Exception e)
+                {
+                    Log.Error(e);
+                }
+            }
+        }
+
+        private void OnExportsChanged(object sender, ExportsChangeEventArgs args)
+        {
+            this.ExportsChanged = true;
+        }
+
+        private void OnLoad()
+        {
+            if (ObjectManager.LocalHero == null)
+            {
+                return;
+            }
+
+            UpdateManager.Unsubscribe(this.OnLoad);
+
+            try
+            {
+                var sw = Stopwatch.StartNew();
+
+                Log.Debug("====================================================");
+                Log.Debug($">> Ensage.SDK Bootstrap started");
+                Log.Debug("====================================================");
+
+                Log.Debug($">> Building Menu");
+                this.Config = new SDKConfig();
+
+                Log.Debug($">> Building Container for LocalHero");
+                this.Default = ContainerFactory.CreateContainer(ObjectManager.LocalHero);
+                this.Default.RegisterValue(this.Config);
+
+                Log.Debug($">> Initializing Services");
+                IoC.Initialize(this.BuildUp, this.GetInstance, this.GetAllInstances);
+
+                Log.Debug($">> Searching for IAssemblyLoader Plugins");
+                this.PrintPlugins();
+
+                Log.Debug($">> Activating Plugins");
+                this.ActivatePlugins();
+
+                UpdateManager.Subscribe(this.UpdateExportChange, 1000);
+                this.Default.Container.ExportsChanged += this.OnExportsChanged;
+
+                sw.Stop();
+
+                Log.Debug("====================================================");
+                Log.Debug($">> Bootstrap completed in {sw.Elapsed}");
+                Log.Debug("====================================================");
             }
             catch (ReflectionTypeLoadException e)
             {
@@ -123,6 +178,30 @@ namespace Ensage.SDK.Service
             catch (Exception e)
             {
                 Log.Error(e);
+            }
+        }
+
+        private void PrintPlugins()
+        {
+            foreach (var assembly in this.Assemblies)
+            {
+                if (assembly.Metadata.Units == null)
+                {
+                    Log.Debug($"Found [{assembly.Metadata.Name}|{assembly.Metadata.Author}|{assembly.Metadata.Version}]");
+                }
+                else
+                {
+                    Log.Debug($"Found [{assembly.Metadata.Name}|{assembly.Metadata.Author}|{assembly.Metadata.Version}|{string.Join(", ", assembly.Metadata.Units)}]");
+                }
+            }
+        }
+
+        private void UpdateExportChange()
+        {
+            if (this.ExportsChanged)
+            {
+                this.ExportsChanged = false;
+                this.ActivatePlugins();
             }
         }
     }

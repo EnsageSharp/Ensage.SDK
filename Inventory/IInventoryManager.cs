@@ -13,7 +13,7 @@ namespace Ensage.SDK.Inventory
     {
         Inventory Inventory { get; }
 
-        ImmutableHashSet<Item> Items { get; }
+        ImmutableHashSet<InventoryItem> Items { get; }
 
         Hero Owner { get; }
     }

@@ -29,7 +29,7 @@ namespace Ensage.SDK.Service
 
         public override string ToString()
         {
-            return $"{this.Owner.Name}";
+            return $"Context({this.Owner.Name})";
         }
     }
 }

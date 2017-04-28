@@ -7,16 +7,23 @@ namespace Ensage.SDK.Inventory
     using System.Collections.Immutable;
     using System.Collections.Specialized;
     using System.ComponentModel.Composition;
+    using System.Reflection;
 
     using Ensage.SDK.Helpers;
     using Ensage.SDK.Inventory.Metadata;
     using Ensage.SDK.Service;
+
+    using log4net;
+
+    using PlaySharp.Toolkit.Logging;
 
     using Inventory = Ensage.Inventory;
 
     [ExportInventoryManager]
     public class InventoryManager : IInventoryManager
     {
+        private static readonly ILog Log = AssemblyLogs.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
         private ImmutableHashSet<Item> items;
 
         [ImportingConstructor]
@@ -59,14 +66,19 @@ namespace Ensage.SDK.Inventory
         {
             if (this.CollectionChanged != null)
             {
-                var added = this.LastItems.Except(this.Items);
-                this.CollectionChanged?.Invoke(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, added));
+                var changes = this.Items.SymmetricExcept(this.LastItems);
 
-                var removed = this.Items.Except(this.LastItems);
-                this.CollectionChanged?.Invoke(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Remove, removed));
+                foreach (var change in changes)
+                {
+                    if (!this.LastItems.Contains(change))
+                    {
+                        Log.Debug($"Added {change.Id}");
+                        this.CollectionChanged.Invoke(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, change));
+                    }
+                }
+
+                this.LastItems = this.Items;
             }
-
-            this.LastItems = this.Items;
         }
     }
 }

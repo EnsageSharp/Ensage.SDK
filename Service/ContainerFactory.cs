@@ -51,7 +51,7 @@ namespace Ensage.SDK.Service
 
             Log.Debug($"Create Context({context}) Container");
 
-            container.ComposeExportedValue(context);
+            container.ComposeExportedValue<IServiceContext>(context);
 
             // switch (Drawing.RenderMode)
             // {

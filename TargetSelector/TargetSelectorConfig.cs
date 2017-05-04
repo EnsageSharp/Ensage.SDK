@@ -4,34 +4,36 @@
 
 namespace Ensage.SDK.TargetSelector
 {
+    using System.Reflection;
+
+    using Ensage.Common.Menu;
     using Ensage.SDK.Menu;
+    using Ensage.SDK.Service;
+
+    using log4net;
+
+    using PlaySharp.Toolkit.Logging;
 
     public class TargetSelectorConfig
     {
-        public TargetSelectorConfig(MenuFactory parent, string name, bool hero, bool creep, bool neutral, bool building, bool deny, bool farm)
-        {
-            this.Factory = parent.Menu(name);
+        private static readonly ILog Log = AssemblyLogs.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-            this.Hero = this.Factory.Item("Hero", hero);
-            this.Creep = this.Factory.Item("Creep", creep);
-            this.Neutral = this.Factory.Item("Neutral", neutral);
-            this.Building = this.Factory.Item("Building", building);
-            this.Deny = this.Factory.Item("Deny", deny);
-            this.Farm = this.Factory.Item("Farm", farm);
+        public TargetSelectorConfig(IServiceContext context, string[] modes)
+        {
+            this.Factory = MenuFactory.Create("Target Selector");
+            this.Active = this.Factory.Item("Mode", new StringList(modes));
+
+            context.Container.RegisterValue(this);
         }
 
-        public MenuItem<bool> Building { get; }
-
-        public MenuItem<bool> Creep { get; }
-
-        public MenuItem<bool> Deny { get; }
+        public MenuItem<StringList> Active { get; }
 
         public MenuFactory Factory { get; }
 
-        public MenuItem<bool> Farm { get; }
-
-        public MenuItem<bool> Hero { get; }
-
-        public MenuItem<bool> Neutral { get; }
+        public void UpdateModes(string[] @select)
+        {
+            Log.Debug(string.Join(", ", @select));
+            this.Active.Value = new StringList(@select);
+        }
     }
 }

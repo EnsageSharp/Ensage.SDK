@@ -2,7 +2,7 @@
 //    Copyright (c) 2017 Ensage.
 // </copyright>
 
-namespace Ensage.SDK.Helpers
+namespace Ensage.SDK.EventHandler
 {
     using System;
     using System.Collections.Generic;
@@ -37,7 +37,7 @@ namespace Ensage.SDK.Helpers
                 var method = action.Method;
                 var handler = Delegate.CreateDelegate(this.Event.EventHandlerType, this, method);
 
-                Log.Debug($"Add [{this.Event.Name}] {action.Method}");
+                Log.Debug($"Create [{this.Event.Name}] {action.Method}");
                 this.Event.GetAddMethod(true).Invoke(this.Event, new object[] { handler });
                 this.Handlers.Add(method, handler);
             }
@@ -62,6 +62,14 @@ namespace Ensage.SDK.Helpers
             {
                 Log.Error(e);
             }
+        }
+    }
+
+    public class ReflectionEventHandler<TType, TEventArgs> : ReflectionEventHandler<TEventArgs>
+    {
+        public ReflectionEventHandler(string name, BindingFlags flags = BindingFlags.Static | BindingFlags.NonPublic)
+            : base(typeof(TType), name, flags)
+        {
         }
     }
 }

@@ -21,6 +21,17 @@ namespace Ensage.SDK.Menu
 
         public MenuItem Item { get; }
 
-        public TType Value => this.Item.GetValue<TType>();
+        public TType Value
+        {
+            get
+            {
+                return this.Item.GetValue<TType>();
+            }
+
+            set
+            {
+                this.Item.SetValue(value);
+            }
+        }
     }
 }

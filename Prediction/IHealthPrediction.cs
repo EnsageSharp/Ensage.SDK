@@ -6,6 +6,8 @@ namespace Ensage.SDK.Prediction
 {
     public interface IHealthPrediction
     {
-        float GetPredictedHealth(Unit unit, float untilTime);
+        float GetPrediction(Unit unit, float untilTime);
+
+        bool ShouldWait();
     }
 }

@@ -156,7 +156,10 @@ namespace Ensage.SDK.Renderer.Particle
 
             if (disposing)
             {
-                this.Effect?.Dispose();
+                if (this.Effect != null && this.Effect.IsValid)
+                {
+                    this.Effect.Dispose();
+                }
             }
 
             this.disposed = true;

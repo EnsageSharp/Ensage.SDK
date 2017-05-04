@@ -74,7 +74,6 @@ namespace Ensage.SDK.Menu
                 return new MenuItem<T>(menuItem);
             }
 
-            Log.Debug($"Created {ns}");
             var item = new MenuItem<T>(displayName, ns, value);
             this.Parent.AddItem(item.Item);
 

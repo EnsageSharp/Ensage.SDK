@@ -12,6 +12,7 @@ namespace Ensage.SDK.Input
     using System.Windows.Forms;
     using System.Windows.Input;
 
+    using Ensage.SDK.EventHandler;
     using Ensage.SDK.Input.Metadata;
 
     using log4net;
@@ -170,6 +171,7 @@ namespace Ensage.SDK.Input
             if (data.Clicks > 0)
             {
                 this.MouseClick?.Invoke(this, data);
+                Messenger<MouseEventArgs>.Publish(data);
 
                 // update Process state
                 args.Process = args.Process && data.Process;

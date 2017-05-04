@@ -6,13 +6,17 @@ namespace Ensage.SDK.Orbwalker
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel.Composition;
+    using System.Linq;
     using System.Reflection;
 
-    using Ensage.Common.Menu;
     using Ensage.SDK.Extensions;
     using Ensage.SDK.Helpers;
     using Ensage.SDK.Orbwalker.Metadata;
     using Ensage.SDK.Prediction;
+    using Ensage.SDK.Prediction.Metadata;
+    using Ensage.SDK.Renderer.Particle;
+    using Ensage.SDK.Service;
 
     using log4net;
 
@@ -25,69 +29,58 @@ namespace Ensage.SDK.Orbwalker
     {
         private static readonly ILog Log = AssemblyLogs.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        public OrbwalkingMode Mode = OrbwalkingMode.None;
-
-        private readonly HashSet<NetworkActivity> attackActivityList =
-            new HashSet<NetworkActivity>
-            {
-                NetworkActivity.Attack,
-                NetworkActivity.Attack2,
-                NetworkActivity.AttackEvent
-            };
-
-        public Orbwalker(Unit owner)
+        [ImportingConstructor]
+        public Orbwalker([Import] IServiceContext context)
         {
-            this.Owner = owner;
+            Log.Debug($"Create Orbwalker:{context.Owner.GetDisplayName()}");
+            this.Context = context;
+            this.Owner = context.Owner;
+            this.Config = new OrbwalkerConfig(context);
+
+            UpdateManager.Subscribe(this.OnUpdate);
+            UpdateManager.Subscribe(this.OnUpdateDrawings, 1000);
+            Entity.OnInt32PropertyChange += this.Hero_OnInt32PropertyChange;
         }
 
-        public enum OrbwalkingMode
-        {
-            Combo,
+        public OrbwalkerConfig Config { get; }
 
-            LaneClear,
+        public IServiceContext Context { get; }
 
-            LastHit,
+        public float TurnEndTime { get; private set; }
 
-            Deny,
+        [ImportHealthPrediction]
+        protected Lazy<IHealthPrediction> HealthPrediction { get; set; }
 
-            Mixed,
+        [ImportMany(typeof(IOrbwalkingMode))]
+        protected IEnumerable<Lazy<IOrbwalkingMode, IOrbwalkingModeMetadata>> Modes { get; set; }
 
-            None
-        }
+        [Import(typeof(IParticleManager))]
+        protected Lazy<IParticleManager> ParticleManager { get; set; }
 
-        public MenuItem Clear { get; set; }
+        private float LastAttackOrderIssuedTime { get; set; }
 
-        public MenuItem Combo { get; set; }
+        private float LastAttackTime { get; set; }
 
-        public MenuItem Deny { get; set; }
+        private float LastMoveOrderIssuedTime { get; set; }
 
-        public MenuItem Farm { get; set; }
+        private Unit Owner { get; }
 
-        public bool LaneClearRateLimitResult { get; set; }
-
-        public float LaneClearRateLimitTime { get; set; }
-
-        public float LastAttackOrderIssuedTime { get; set; }
-
-        public float LastAttackTime { get; set; }
-
-        public float LastMoveOrderIssuedTime { get; set; }
-
-        public MenuItem Mixed { get; set; }
-
-        public Unit Owner { get; set; }
-
-        public float TurnEndTime { get; set; }
+        private float PingTime => Game.Ping / 2000f;
 
         public bool Attack(Unit unit)
         {
-            var time = Game.RawGameTime;
-            if ((time - this.LastAttackOrderIssuedTime) < 0.005f)
+            if (!this.Config.Settings.Attack.Value)
             {
                 return false;
             }
 
-            this.TurnEndTime = Game.RawGameTime + (Game.Ping / 2000f) + (float)this.Owner.TurnTime(unit.NetworkPosition) + 0.1f;
+            var time = Game.RawGameTime;
+            if ((time - this.LastAttackOrderIssuedTime) < (this.Config.Settings.AttackDelay.Value.Value / 1000f))
+            {
+                return false;
+            }
+
+            this.TurnEndTime = Game.RawGameTime + this.PingTime + (float)this.Owner.TurnTime(unit.NetworkPosition) + 0.1f;
             this.Owner.Attack(unit);
             return true;
         }
@@ -95,41 +88,35 @@ namespace Ensage.SDK.Orbwalker
         public bool CanAttack(Unit target)
         {
             var rotationTime = this.Owner.TurnTime(target.NetworkPosition);
-            return this.Owner.CanAttack() && ((Game.RawGameTime + 0.1f + rotationTime + (Game.Ping / 2000f)) - this.LastAttackTime) > (1f / this.Owner.AttacksPerSecond);
+            return this.Owner.CanAttack() && ((Game.RawGameTime + 0.1f + rotationTime + this.PingTime) - this.LastAttackTime) > (1f / this.Owner.AttacksPerSecond);
         }
 
         public bool CanMove()
         {
-            return (((Game.RawGameTime - 0.1f) + (Game.Ping / 2000f)) - this.LastAttackTime) > this.Owner.AttackPoint();
-        }
-
-        public bool Load()
-        {
-            Game.OnIngameUpdate += this.OnUpdate;
-            Entity.OnInt32PropertyChange += this.Hero_OnInt32PropertyChange;
-            return true;
+            return (((Game.RawGameTime - 0.1f) + this.PingTime) - this.LastAttackTime) > this.Owner.AttackPoint();
         }
 
         public bool Move(Vector3 position)
         {
-            var time = Game.RawGameTime;
-            if ((time - this.LastMoveOrderIssuedTime) < 0.005f)
+            if (!this.Config.Settings.Move.Value)
             {
                 return false;
             }
 
-            this.LastMoveOrderIssuedTime = Game.RawGameTime;
-            this.Owner.Move(position);
+            var time = Game.RawGameTime;
+            if ((time - this.LastMoveOrderIssuedTime) < (this.Config.Settings.MoveDelay.Value.Value / 1000f))
+            {
+                // 0.005f
+                return false;
+            }
 
-            return true;
-        }
+            if (this.Owner.Move(position))
+            {
+                this.LastMoveOrderIssuedTime = Game.RawGameTime;
+                return true;
+            }
 
-        public bool Unload()
-        {
-            Game.OnIngameUpdate -= this.OnUpdate;
-            Entity.OnInt32PropertyChange -= this.Hero_OnInt32PropertyChange;
-
-            return true;
+            return false;
         }
 
         private void Hero_OnInt32PropertyChange(Entity sender, Int32PropertyChangeEventArgs args)
@@ -146,71 +133,47 @@ namespace Ensage.SDK.Orbwalker
 
             var newNetworkActivity = (NetworkActivity)args.NewValue;
 
-            if (this.attackActivityList.Contains(newNetworkActivity))
+            switch (newNetworkActivity)
             {
-                var diff = Game.RawGameTime - this.LastAttackTime;
-                this.LastAttackTime = Game.RawGameTime - (Game.Ping / 2000f);
+                case NetworkActivity.Attack:
+                case NetworkActivity.Attack2:
+                case NetworkActivity.AttackEvent:
+                    // var diff = Game.RawGameTime - this.LastAttackTime;
+                    this.LastAttackTime = Game.RawGameTime - (Game.Ping / 2000f);
+                    break;
             }
         }
 
-        private void OnUpdate(EventArgs args)
+        private void OnUpdate()
         {
-            try
+            // no spamerino
+            if (Game.IsPaused || Game.IsChatOpen || !this.Owner.IsAlive || this.Owner.IsStunned())
             {
-                this.Mode = OrbwalkingMode.None;
-
-                // no spamerino
-                if (Game.IsPaused || Game.IsChatOpen)
-                {
-                    return;
-                }
-
-                // TODO: TARGET
-                Unit target = null;
-
-                // TODO: MODE
-                if (this.Mode == OrbwalkingMode.None)
-                {
-                    return;
-                }
-
-                // turning
-                if (this.TurnEndTime > Game.RawGameTime)
-                {
-                    return;
-                }
-
-                if ((target == null || !this.CanAttack(target)) && this.CanMove())
-                {
-                    this.Move(Game.MousePosition);
-                    return;
-                }
-
-                if (target != null && this.CanAttack(target))
-                {
-                    this.Attack(target);
-                }
+                return;
             }
-            catch (Exception e)
+
+            if (this.Modes == null)
             {
-                Log.Error(e);
+                return;
+            }
+
+            // modes
+            foreach (var mode in this.Modes.Where(e => e.Value.CanExecute))
+            {
+                mode.Value.Execute();
             }
         }
 
-        private bool ShouldWait()
+        private void OnUpdateDrawings()
         {
-            var time = 2f / this.Owner.AttacksPerSecond;
-
-            foreach (var unit in EntityManager<Creep>.Entities)
+            if (this.Config.Settings.DrawRange.Value)
             {
-                if (unit.Team != this.Owner.Team && this.Owner.IsValidOrbwalkingTarget(unit) &&
-                    HealthPredictionOLD.Instance().GetPredictedHealth(unit, time) < this.Owner.GetAttackDamage(unit, true))
-                {
-                    return true;
-                }
+                this.ParticleManager?.Value.DrawRange(this.Owner, "AttackRange", this.Owner.AttackRange(this.Owner), Color.LightGreen);
             }
-
-            return false;
+            else
+            {
+                this.ParticleManager?.Value.Remove("AttackRange");
+            }
         }
     }
 }

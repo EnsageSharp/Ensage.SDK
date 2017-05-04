@@ -12,7 +12,10 @@ namespace Ensage.SDK.Service
     using System.Reflection;
 
     using Ensage.SDK.Helpers;
+    using Ensage.SDK.Input;
+    using Ensage.SDK.Orbwalker;
     using Ensage.SDK.Service.Metadata;
+    using Ensage.SDK.TargetSelector;
 
     using log4net;
 
@@ -102,6 +105,21 @@ namespace Ensage.SDK.Service
             }
         }
 
+        private void ActivateServices()
+        {
+            try
+            {
+                IoC.Get<IInputManager>();
+                IoC.Get<ITargetSelectorManager>();
+                IoC.GetAll<ITargetSelector>()?.ToArray();
+                IoC.Get<IOrbwalker>();
+            }
+            catch (Exception e)
+            {
+                Log.Error(e);
+            }
+        }
+
         private void DeactivatePlugins()
         {
             foreach (var assembly in this.Assemblies)
@@ -155,6 +173,9 @@ namespace Ensage.SDK.Service
 
                 Log.Debug($">> Searching for IAssemblyLoader Plugins");
                 this.PrintPlugins();
+
+                Log.Debug($">> Activating Services");
+                this.ActivateServices();
 
                 Log.Debug($">> Activating Plugins");
                 this.ActivatePlugins();

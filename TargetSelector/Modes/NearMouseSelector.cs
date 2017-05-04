@@ -9,8 +9,10 @@ namespace Ensage.SDK.TargetSelector.Modes
     using System.ComponentModel.Composition;
     using System.Linq;
 
+    using Ensage.Common.Menu;
     using Ensage.SDK.Extensions;
     using Ensage.SDK.Helpers;
+    using Ensage.SDK.Menu;
     using Ensage.SDK.Renderer.Particle;
     using Ensage.SDK.Service;
     using Ensage.SDK.TargetSelector.Metadata;
@@ -21,11 +23,14 @@ namespace Ensage.SDK.TargetSelector.Modes
     public class NearMouseSelector : SelectorBase
     {
         [ImportingConstructor]
-        public NearMouseSelector([Import] IServiceContext context, [Import] IParticleManager particle)
+        public NearMouseSelector([Import] IServiceContext context, [Import] IParticleManager particle, [Import] TargetSelectorConfig parent)
             : base(context)
         {
             this.Particle = particle;
+            this.Config = new NearMouseConfig(parent.Factory);
         }
+
+        public NearMouseConfig Config { get; }
 
         private IParticleManager Particle { get; }
 
@@ -44,7 +49,7 @@ namespace Ensage.SDK.TargetSelector.Modes
                 this.Targets = EntityManager<Hero>
                     .Entities
                     .Where(e => e.IsAlive && !e.IsIllusion && e.Team != team)
-                    .Where(e => e.Position.Distance(pos) < 600)
+                    .Where(e => e.Position.Distance(pos) < this.Config.Range.Value.Value)
                     .OrderBy(e => e.Position.Distance(pos))
                     .ToImmutableList();
 
@@ -61,5 +66,18 @@ namespace Ensage.SDK.TargetSelector.Modes
 
             return this.Targets;
         }
+    }
+
+    public class NearMouseConfig
+    {
+        public NearMouseConfig(MenuFactory parent)
+        {
+            this.Factory = parent.Menu("Near Mouse");
+            this.Range = this.Factory.Item("Range", new Slider(800, 100, 2000));
+        }
+
+        public MenuFactory Factory { get; }
+
+        public MenuItem<Slider> Range { get; }
     }
 }

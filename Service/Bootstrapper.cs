@@ -39,8 +39,6 @@ namespace Ensage.SDK.Service
 
         public ContextContainer<IServiceContext> Default { get; private set; }
 
-        private bool ExportsChanged { get; set; }
-
         public void BuildUp(object instance)
         {
             this.Default.BuildUp(instance);
@@ -139,11 +137,6 @@ namespace Ensage.SDK.Service
             }
         }
 
-        private void OnExportsChanged(object sender, ExportsChangeEventArgs args)
-        {
-            this.ExportsChanged = true;
-        }
-
         private void OnLoad()
         {
             if (ObjectManager.LocalHero == null)
@@ -180,9 +173,6 @@ namespace Ensage.SDK.Service
                 Log.Debug($">> Activating Plugins");
                 this.ActivatePlugins();
 
-                UpdateManager.Subscribe(this.UpdateExportChange, 1000);
-                this.Default.Container.ExportsChanged += this.OnExportsChanged;
-
                 sw.Stop();
 
                 Log.Debug("====================================================");
@@ -214,15 +204,6 @@ namespace Ensage.SDK.Service
                 {
                     Log.Debug($"Found [{assembly.Metadata.Name}|{assembly.Metadata.Author}|{assembly.Metadata.Version}|{string.Join(", ", assembly.Metadata.Units)}]");
                 }
-            }
-        }
-
-        private void UpdateExportChange()
-        {
-            if (this.ExportsChanged)
-            {
-                this.ExportsChanged = false;
-                this.ActivatePlugins();
             }
         }
     }

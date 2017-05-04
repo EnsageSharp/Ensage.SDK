@@ -27,6 +27,11 @@ namespace Ensage.SDK.TargetSelector
         public TargetSelectorManager([Import] IServiceContext context)
         {
             this.Context = context;
+            this.Config = new TargetSelectorConfig();
+            this.Context.Container.BuildUp(this.Config);
+            this.Context.Container.RegisterValue(this.Config);
+
+            this.Config.Active.Item.ValueChanged += this.OnValueChanged;
         }
 
         public ITargetSelector Active { get; private set; }
@@ -34,22 +39,12 @@ namespace Ensage.SDK.TargetSelector
         [ImportManyTargetSelector]
         public IEnumerable<Lazy<ITargetSelector, ITargetSelectorMetadata>> Selectors { get; protected set; }
 
-        private TargetSelectorConfig Config { get; set; }
+        private TargetSelectorConfig Config { get; }
 
         private IServiceContext Context { get; }
 
         public void OnImportsSatisfied()
         {
-            if (this.Config == null)
-            {
-                this.Config = new TargetSelectorConfig(this.Context, this.Selectors.Select(s => s.Metadata.Name).ToArray());
-                this.Config.Active.Item.ValueChanged += this.OnValueChanged;
-            }
-            else
-            {
-                this.Config.UpdateModes(this.Selectors.Select(s => s.Metadata.Name).ToArray());
-            }
-
             this.UpdateActive(this.Config.Active.Value.SelectedValue);
         }
 

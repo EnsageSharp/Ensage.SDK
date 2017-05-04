@@ -49,11 +49,27 @@ namespace Ensage.SDK.Service
             var context = new EnsageServiceContext(owner);
             var container = new CompositionContainer(Loader.Catalog, flags);
             context.Container = new ContextContainer<IServiceContext>(context, container);
-            container.ExportsChanged += OnExportsChanged;
 
             Log.Debug($"Create {context} Container");
-            Log.Debug($"Catalogs {Loader.Catalog.Catalogs.Count}");
-            Log.Debug($"Parts {container.Catalog.Parts.Count()}");
+            Log.Debug($"====================================================");
+            Log.Debug($"Resolving Catalogs {Loader.Catalog.Catalogs.Count}");
+            Log.Debug($"====================================================");
+
+            foreach (var catalog in Loader.Catalog.Catalogs.OfType<AssemblyCatalog>())
+            {
+                Log.Debug($"Assembly {catalog.Assembly.GetName().Name}");
+            }
+
+            Log.Debug($"====================================================");
+            Log.Debug($"Resolving Parts {container.Catalog.Parts.Count()}");
+            Log.Debug($"====================================================");
+
+            foreach (var part in container.Catalog.Parts)
+            {
+                Log.Debug($"{part}");
+            }
+
+            Log.Debug($"====================================================");
 
             container.ComposeExportedValue<IServiceContext>(context);
 
@@ -70,19 +86,6 @@ namespace Ensage.SDK.Service
             // throw new NotSupportedException($"RenderMode({Drawing.RenderMode}) not supported.");
             // }
             return context.Container;
-        }
-
-        private static void OnExportsChanged(object sender, ExportsChangeEventArgs args)
-        {
-            if (args.AddedExports.Any())
-            {
-                Log.Debug($"Added Exports {args.AddedExports.Count()}");
-            }
-
-            if (args.RemovedExports.Any())
-            {
-                Log.Debug($"Removed Exports {args.RemovedExports.Count()}");
-            }
         }
     }
 }

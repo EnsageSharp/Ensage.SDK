@@ -84,7 +84,7 @@ namespace Ensage.SDK.Service
                 return;
             }
 
-            Log.Debug($"Add SDK Catalog {assembly.GetName().Name}");
+            Log.Debug($"Create Catalog {assembly.GetName().Name}");
             this.Catalog.Catalogs.Add(new AssemblyCatalog(assembly));
             this.LoadedAssemblies.Add(assembly);
         }

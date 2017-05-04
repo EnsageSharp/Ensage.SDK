@@ -60,6 +60,7 @@ namespace Ensage.SDK.Service
                 throw new ArgumentNullException(nameof(instance));
             }
 
+            Log.Debug($"Satisfy {instance}");
             this.Container.SatisfyImportsOnce(instance);
         }
 
@@ -153,6 +154,24 @@ namespace Ensage.SDK.Service
             throw new Exception($"Could not locate any instances of contract {contract}.");
         }
 
+        public virtual void RegisterPart<T>([NotNull] T value, [CanBeNull] string contract = null)
+        {
+            if (value == null)
+            {
+                throw new ArgumentNullException(nameof(value));
+            }
+
+            Log.Debug($"{value} {contract}");
+            if (contract == null)
+            {
+                this.Container.ComposeParts(value);
+            }
+            else
+            {
+                this.Container.ComposeParts(contract, value);
+            }
+        }
+
         public virtual void RegisterValue<T>([NotNull] T value, [CanBeNull] string contract = null)
         {
             if (value == null)
@@ -160,13 +179,14 @@ namespace Ensage.SDK.Service
                 throw new ArgumentNullException(nameof(value));
             }
 
+            Log.Debug($"{value} {contract}");
             if (contract == null)
             {
-                this.Container.ComposeExportedValue(value);
+                this.Container.ComposeExportedValue<T>(value);
             }
             else
             {
-                this.Container.ComposeExportedValue(contract, value);
+                this.Container.ComposeExportedValue<T>(contract, value);
             }
         }
 

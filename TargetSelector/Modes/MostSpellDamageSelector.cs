@@ -43,7 +43,7 @@ namespace Ensage.SDK.TargetSelector.Modes
                 this.Targets = EntityManager<Hero>
                     .Entities
                     .Where(e => e.IsAlive && !e.IsIllusion && e.Team != team)
-                    .OrderBy(e => e.GetSpellAmplification())
+                    .OrderByDescending(e => e.GetSpellAmplification())
                     .ToImmutableList();
 
                 var target = this.Targets.FirstOrDefault();

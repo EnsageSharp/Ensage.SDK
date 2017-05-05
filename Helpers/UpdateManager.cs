@@ -25,7 +25,7 @@ namespace Ensage.SDK.Helpers
         {
             Game.OnIngameUpdate += OnUpdate;
 
-            Handler = new ReflectionEventHandler<Game, EventArgs>("OnPreUpdate");
+            Handler = new ReflectionEventHandler<Game, EventArgs>("OnPreIngameUpdate");
             Handler.Subscribe(OnPreUpdate);
         }
 

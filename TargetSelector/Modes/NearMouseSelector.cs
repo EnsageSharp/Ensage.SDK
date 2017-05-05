@@ -5,7 +5,6 @@
 namespace Ensage.SDK.TargetSelector.Modes
 {
     using System.Collections.Generic;
-    using System.Collections.Immutable;
     using System.ComponentModel.Composition;
     using System.Linq;
 
@@ -51,7 +50,7 @@ namespace Ensage.SDK.TargetSelector.Modes
                     .Where(e => e.IsAlive && !e.IsIllusion && e.Team != team)
                     .Where(e => e.Position.Distance(pos) < this.Config.Range.Value.Value)
                     .OrderBy(e => e.Position.Distance(pos))
-                    .ToImmutableList();
+                    .ToArray();
 
                 var target = this.Targets.FirstOrDefault();
                 if (target != null)

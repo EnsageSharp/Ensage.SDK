@@ -48,7 +48,6 @@
     <Reference Include="Ensage.Common">
       <HintPath>D:\Games\ps\References\Ensage.Common.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Build.Tasks.v4.0" />
     <Reference Include="Newtonsoft.Json">
       <HintPath>D:\Games\ps\References\Newtonsoft.Json.dll</HintPath>
     </Reference>
@@ -64,9 +63,6 @@
     <Reference Include="SharpDX.Direct3D11">
       <HintPath>D:\Games\ps\References\SharpDX.Direct3D11.dll</HintPath>
     </Reference>
-    <Reference Include="SharpDX.Direct3D9">
-      <HintPath>D:\Games\ps\References\SharpDX.Direct3D9.dll</HintPath>
-    </Reference>
     <Reference Include="SharpDX.DXGI">
       <HintPath>D:\Games\ps\References\SharpDX.DXGI.dll</HintPath>
     </Reference>
@@ -74,10 +70,6 @@
       <HintPath>D:\Games\ps\References\SharpDX.Mathematics.dll</HintPath>
     </Reference>
     <Reference Include="System" />
-    <Reference Include="System.Collections.Immutable, Version=1.1.37.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>D:\Games\ps\References\System.Collections.Immutable.dll</HintPath>
-    </Reference>
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
@@ -235,7 +227,9 @@
   <ItemGroup>
     <None Include="key.snk" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Resources\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -5,6 +5,7 @@
 namespace Ensage.SDK.Extensions
 {
     using System;
+    using System.Collections.Generic;
 
     public static class TypeExtensions
     {
@@ -28,6 +29,11 @@ namespace Ensage.SDK.Extensions
                 default:
                     return false;
             }
+        }
+
+        public static HashSet<T> ToHashSet<T>(this IEnumerable<T> collection)
+        {
+            return new HashSet<T>(collection);
         }
     }
 }

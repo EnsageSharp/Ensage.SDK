@@ -6,7 +6,6 @@ namespace Ensage.SDK.TargetSelector
 {
     using System;
     using System.Collections.Generic;
-    using System.Collections.Immutable;
 
     using Ensage.SDK.Helpers;
     using Ensage.SDK.Service;
@@ -23,7 +22,7 @@ namespace Ensage.SDK.TargetSelector
 
         protected Hero Owner { get; }
 
-        protected ImmutableList<Hero> Targets { get; set; } = ImmutableList<Hero>.Empty;
+        protected IReadOnlyList<Hero> Targets { get; set; }
 
         public virtual void Activate()
         {

@@ -6,12 +6,14 @@ namespace Ensage.SDK.Helpers
 {
     using System;
     using System.Collections.Generic;
-    using System.Collections.Immutable;
+
     using System.Linq;
+
+    using Ensage.SDK.Extensions;
 
     internal static class EntityManager
     {
-        private static ImmutableHashSet<Entity> entities;
+        private static HashSet<Entity> entities;
 
         static EntityManager()
         {
@@ -20,13 +22,13 @@ namespace Ensage.SDK.Helpers
 
         internal static event EventHandler PreUpdate;
 
-        internal static ImmutableHashSet<Entity> Entities
+        internal static HashSet<Entity> Entities
         {
             get
             {
                 if (entities == null)
                 {
-                    entities = ObjectManager.GetEntities<Entity>().ToImmutableHashSet();
+                    entities = ObjectManager.GetEntities<Entity>().ToHashSet();
                 }
 
                 return entities;
@@ -43,7 +45,7 @@ namespace Ensage.SDK.Helpers
     public class EntityManager<T>
         where T : Entity, new()
     {
-        private static ImmutableHashSet<T> entities;
+        private static HashSet<T> entities;
 
         static EntityManager()
         {
@@ -56,7 +58,7 @@ namespace Ensage.SDK.Helpers
             {
                 if (entities == null)
                 {
-                    entities = EntityManager.Entities.OfType<T>().ToImmutableHashSet();
+                    entities = EntityManager.Entities.OfType<T>().ToHashSet();
                 }
 
                 return entities.Where(e => e.IsValid);

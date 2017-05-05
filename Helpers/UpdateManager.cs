@@ -5,7 +5,7 @@
 namespace Ensage.SDK.Helpers
 {
     using System;
-    using System.Collections.Immutable;
+    using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
 
@@ -24,16 +24,12 @@ namespace Ensage.SDK.Helpers
         static UpdateManager()
         {
             Game.OnIngameUpdate += OnUpdate;
-
-            Handler = new ReflectionEventHandler<Game, EventArgs>("OnPreUpdate");
-            Handler.Subscribe(OnPreUpdate);
+            Game.OnPreIngameUpdate += OnPreUpdate;
         }
 
-        private static ReflectionEventHandler<Game, EventArgs> Handler { get; }
+        private static List<IUpdateHandler> PreUpdateHandlers { get; } = new List<IUpdateHandler>();
 
-        private static ImmutableArray<IUpdateHandler> PreUpdateHandlers { get; set; } = ImmutableArray<IUpdateHandler>.Empty;
-
-        private static ImmutableArray<IUpdateHandler> UpdateHandlers { get; set; } = ImmutableArray<IUpdateHandler>.Empty;
+        private static List<IUpdateHandler> UpdateHandlers { get; } = new List<IUpdateHandler>();
 
         /// <summary>
         /// Subscribes <paramref name="callback"/> to OnIngameUpdate with a call timeout of <paramref name="timeout"/>
@@ -44,7 +40,7 @@ namespace Ensage.SDK.Helpers
         {
             lock (SyncRoot)
             {
-                UpdateHandlers = Subscribe(UpdateHandlers, callback, timeout);
+                Subscribe(UpdateHandlers, callback, timeout);
             }
         }
 
@@ -57,7 +53,7 @@ namespace Ensage.SDK.Helpers
         {
             lock (SyncRoot)
             {
-                PreUpdateHandlers = Subscribe(PreUpdateHandlers, callback, timeout);
+                Subscribe(PreUpdateHandlers, callback, timeout);
             }
         }
 
@@ -71,7 +67,7 @@ namespace Ensage.SDK.Helpers
                     handler = new TraceUpdateHandler(callback);
 
                     Log.Debug($"Create {handler}");
-                    UpdateHandlers = UpdateHandlers.Add(handler);
+                    UpdateHandlers.Add(handler);
                 }
             }
         }
@@ -80,7 +76,7 @@ namespace Ensage.SDK.Helpers
         {
             lock (SyncRoot)
             {
-                UpdateHandlers = Unsubscribe(UpdateHandlers, callback);
+                Unsubscribe(UpdateHandlers, callback);
             }
         }
 
@@ -88,11 +84,11 @@ namespace Ensage.SDK.Helpers
         {
             lock (SyncRoot)
             {
-                PreUpdateHandlers = Unsubscribe(PreUpdateHandlers, callback);
+                Unsubscribe(PreUpdateHandlers, callback);
             }
         }
 
-        private static void OnPreUpdate(object sender, EventArgs eventArgs)
+        private static void OnPreUpdate(EventArgs eventArgs)
         {
             foreach (var handler in PreUpdateHandlers)
             {
@@ -122,7 +118,7 @@ namespace Ensage.SDK.Helpers
             }
         }
 
-        private static ImmutableArray<IUpdateHandler> Subscribe(ImmutableArray<IUpdateHandler> handlers, Action callback, int timeout = 0)
+        private static void Subscribe(List<IUpdateHandler> handlers, Action callback, int timeout = 0)
         {
             var handler = handlers.FirstOrDefault(h => h.Callback == callback);
 
@@ -132,7 +128,7 @@ namespace Ensage.SDK.Helpers
                 timeoutHandler.Timeout = timeout;
 
                 Log.Debug($"Update {timeoutHandler}");
-                return handlers;
+                return;
             }
 
             if (timeout > 0)
@@ -140,25 +136,24 @@ namespace Ensage.SDK.Helpers
                 handler = new TimeoutUpdateHandler(callback, timeout);
 
                 Log.Debug($"Create {handler}");
-                return handlers.Add(handler);
+                handlers.Add(handler);
+                return;
             }
 
             handler = new UpdateHandler(callback);
 
             Log.Debug($"Create {handler}");
-            return handlers.Add(handler);
+            handlers.Add(handler);
         }
 
-        private static ImmutableArray<IUpdateHandler> Unsubscribe(ImmutableArray<IUpdateHandler> handlers, Action callback)
+        private static void Unsubscribe(List<IUpdateHandler> handlers, Action callback)
         {
             var handler = handlers.FirstOrDefault(h => h.Callback == callback);
             if (handler != null)
             {
                 Log.Debug($"Remove {handler}");
-                return handlers.Remove(handler);
+                handlers.Remove(handler);
             }
-
-            return handlers;
         }
     }
 }

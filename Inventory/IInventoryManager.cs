@@ -4,7 +4,7 @@
 
 namespace Ensage.SDK.Inventory
 {
-    using System.Collections.Immutable;
+    using System.Collections.Generic;
     using System.Collections.Specialized;
 
     using Inventory = Ensage.Inventory;
@@ -13,7 +13,7 @@ namespace Ensage.SDK.Inventory
     {
         Inventory Inventory { get; }
 
-        ImmutableHashSet<InventoryItem> Items { get; }
+        HashSet<InventoryItem> Items { get; }
 
         Hero Owner { get; }
     }

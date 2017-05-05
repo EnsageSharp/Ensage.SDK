@@ -5,7 +5,7 @@
 namespace Ensage.SDK.EventHandler
 {
     using System;
-    using System.Collections.Immutable;
+    using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
 
@@ -19,11 +19,11 @@ namespace Ensage.SDK.EventHandler
 
         private static readonly object SyncRoot = new object();
 
-        private static ImmutableArray<UpdateHandler<TMessage>> Handlers { get; set; } = ImmutableArray<UpdateHandler<TMessage>>.Empty;
+        private static List<UpdateHandler<TMessage>> Handlers { get; } = new List<UpdateHandler<TMessage>>();
 
         public static void Publish(TMessage message)
         {
-            foreach (var handler in Handlers)
+            foreach (var handler in Handlers.ToArray())
             {
                 try
                 {
@@ -48,7 +48,7 @@ namespace Ensage.SDK.EventHandler
                 var handler = new UpdateHandler<TMessage>(callback);
 
                 Log.Debug($"Create {handler}");
-                Handlers = Handlers.Add(handler);
+                Handlers.Add(handler);
             }
         }
 
@@ -60,7 +60,7 @@ namespace Ensage.SDK.EventHandler
                 if (handler != null)
                 {
                     Log.Debug($"Remove {handler}");
-                    Handlers = Handlers.Remove(handler);
+                    Handlers.Remove(handler);
                 }
             }
         }

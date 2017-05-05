@@ -5,7 +5,6 @@
 namespace Ensage.SDK.TargetSelector.Modes
 {
     using System.Collections.Generic;
-    using System.Collections.Immutable;
     using System.ComponentModel.Composition;
     using System.Linq;
 
@@ -43,7 +42,7 @@ namespace Ensage.SDK.TargetSelector.Modes
                     .Entities
                     .Where(e => e.IsAlive && !e.IsIllusion && e.Team != team && e.Health > 0)
                     .OrderBy(e => e.Health)
-                    .ToImmutableList();
+                    .ToArray();
 
                 var target = this.Targets.FirstOrDefault();
                 if (target != null)

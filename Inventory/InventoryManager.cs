@@ -5,12 +5,13 @@
 namespace Ensage.SDK.Inventory
 {
     using System;
-    using System.Collections.Immutable;
+    using System.Collections.Generic;
     using System.Collections.Specialized;
     using System.ComponentModel.Composition;
     using System.Linq;
     using System.Reflection;
 
+    using Ensage.SDK.Extensions;
     using Ensage.SDK.Helpers;
     using Ensage.SDK.Inventory.Metadata;
     using Ensage.SDK.Service;
@@ -26,13 +27,13 @@ namespace Ensage.SDK.Inventory
     {
         private static readonly ILog Log = AssemblyLogs.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        private ImmutableHashSet<InventoryItem> items;
+        private HashSet<InventoryItem> items;
 
         [ImportingConstructor]
         public InventoryManager([Import] IServiceContext context)
         {
             this.Owner = context.Owner;
-            this.LastItems = ImmutableHashSet<InventoryItem>.Empty;
+            this.LastItems = new HashSet<InventoryItem>();
 
             UpdateManager.Subscribe(this.OnInventoryUpdate, 500);
             UpdateManager.SubscribeService(this.OnInventoryClear);
@@ -42,13 +43,13 @@ namespace Ensage.SDK.Inventory
 
         public Inventory Inventory => this.Owner.Inventory;
 
-        public ImmutableHashSet<InventoryItem> Items
+        public HashSet<InventoryItem> Items
         {
             get
             {
                 if (this.items == null)
                 {
-                    this.items = this.Inventory.Items.Select(item => new InventoryItem(item)).ToImmutableHashSet();
+                    this.items = this.Inventory.Items.Select(item => new InventoryItem(item)).ToHashSet();
                 }
 
                 return this.items;
@@ -57,7 +58,7 @@ namespace Ensage.SDK.Inventory
 
         public Hero Owner { get; }
 
-        private ImmutableHashSet<InventoryItem> LastItems { get; set; }
+        private HashSet<InventoryItem> LastItems { get; set; }
 
         private void OnInventoryClear()
         {

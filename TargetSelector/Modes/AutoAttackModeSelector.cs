@@ -69,10 +69,7 @@ namespace Ensage.SDK.TargetSelector.Modes
         {
             if (this.Config.Farm.Value)
             {
-                var killableCreep = EntityManager<Creep>.Entities.FirstOrDefault(
-                    unit =>
-                        this.IsValid(unit) &&
-                        this.CanKill(unit));
+                var killableCreep = EntityManager<Creep>.Entities.FirstOrDefault(unit => this.IsValid(unit) && this.CanKill(unit));
 
                 if (killableCreep != null)
                 {
@@ -96,10 +93,7 @@ namespace Ensage.SDK.TargetSelector.Modes
 
             if (this.Config.Deny.Value)
             {
-                var denyCreep = EntityManager<Creep>.Entities.FirstOrDefault(
-                    unit => this.IsValid(unit, true) &&
-                            unit.HealthPercent() < 0.5f &&
-                            this.CanKill(unit));
+                var denyCreep = EntityManager<Creep>.Entities.FirstOrDefault(unit => this.IsValid(unit, true) && unit.HealthPercent() < 0.5f && this.CanKill(unit));
 
                 if (denyCreep != null)
                 {
@@ -109,8 +103,7 @@ namespace Ensage.SDK.TargetSelector.Modes
 
             if (this.Config.Hero.Value)
             {
-                var hero = this.Manager.Active.GetTargets()?.FirstOrDefault(
-                    unit => this.IsValid(unit));
+                var hero = this.Manager.Active.GetTargets()?.FirstOrDefault(unit => this.IsValid(unit));
 
                 if (hero != null)
                 {
@@ -158,8 +151,7 @@ namespace Ensage.SDK.TargetSelector.Modes
 
         private bool CanKill(Unit target)
         {
-            return this.Owner.GetAttackDamage(target, true) >
-                   this.HealthPrediction.GetPrediction(target, this.Owner.GetAutoAttackArrivalTime(target) + (Game.Ping / 2000f));
+            return this.Owner.GetAttackDamage(target, true) > this.HealthPrediction.GetPrediction(target, this.Owner.GetAutoAttackArrivalTime(target) + (Game.Ping / 2000f));
         }
 
         private bool IsValid(Unit target, bool myTeam = false)

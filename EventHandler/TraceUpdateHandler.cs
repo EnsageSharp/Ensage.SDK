@@ -6,40 +6,43 @@ namespace Ensage.SDK.EventHandler
 {
     using System;
     using System.Diagnostics;
-    using System.Reflection;
 
-    using log4net;
-
-    using PlaySharp.Toolkit.Logging;
-
-    public class TraceUpdateHandler : UpdateHandler
+    public class TraceUpdateHandler : TimeoutUpdateHandler
     {
-        private static readonly ILog Log = AssemblyLogs.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-
-        public TraceUpdateHandler(Action callback)
-            : base(callback)
+        public TraceUpdateHandler(Action callback, int timeout = 0)
+            : base(callback, timeout)
         {
         }
 
+        public TimeSpan Time { get; private set; }
+
         private Stopwatch Stopwatch { get; } = new Stopwatch();
 
-        public override void Invoke()
+        public override bool Invoke()
         {
+            if (!this.HasTimeout)
+            {
+                return false;
+            }
+
             try
             {
-                this.Stopwatch.Restart();
+                this.Stopwatch.Start();
                 base.Invoke();
                 this.Stopwatch.Stop();
             }
             finally
             {
-                Log.Debug($"{this} {this.Stopwatch.Elapsed}");
+                this.Time = this.Stopwatch.Elapsed;
+                this.Stopwatch.Reset();
             }
+
+            return true;
         }
 
         public override string ToString()
         {
-            return $"TraceHandler[{this.Callback?.Method.DeclaringType?.Name}.{this.Callback?.Method.Name}]";
+            return $"[{this.Timeout}] {this.Callback?.Method.DeclaringType?.Name}.{this.Callback?.Method.Name}";
         }
     }
 }

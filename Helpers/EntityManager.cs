@@ -6,39 +6,43 @@ namespace Ensage.SDK.Helpers
 {
     using System;
     using System.Collections.Generic;
-
     using System.Linq;
 
     using Ensage.SDK.Extensions;
 
     internal static class EntityManager
     {
-        private static HashSet<Entity> entities;
+        private static readonly FrameCache<HashSet<Entity>> Cache;
 
         static EntityManager()
         {
-            UpdateManager.SubscribeService(OnPreUpdate);
+            Cache = new FrameCache<HashSet<Entity>>(GetEntities);
         }
 
-        internal static event EventHandler PreUpdate;
+        public static event EventHandler FrameChanged
+        {
+            add
+            {
+                Cache.FrameChanged += value;
+            }
+
+            remove
+            {
+                Cache.FrameChanged -= value;
+            }
+        }
 
         internal static HashSet<Entity> Entities
         {
             get
             {
-                if (entities == null)
-                {
-                    entities = ObjectManager.GetEntities<Entity>().ToHashSet();
-                }
-
-                return entities;
+                return Cache.Value;
             }
         }
 
-        private static void OnPreUpdate()
+        private static HashSet<Entity> GetEntities()
         {
-            entities = null;
-            PreUpdate?.Invoke(null, EventArgs.Empty);
+            return ObjectManager.GetEntities<Entity>().ToHashSet();
         }
     }
 
@@ -49,7 +53,7 @@ namespace Ensage.SDK.Helpers
 
         static EntityManager()
         {
-            EntityManager.PreUpdate += OnPreUpdate;
+            EntityManager.FrameChanged += OnFrameChanged;
         }
 
         public static IEnumerable<T> Entities
@@ -65,7 +69,7 @@ namespace Ensage.SDK.Helpers
             }
         }
 
-        private static void OnPreUpdate(object sender, EventArgs args)
+        private static void OnFrameChanged(object sender, EventArgs args)
         {
             entities = null;
         }

@@ -15,17 +15,27 @@ namespace Ensage.SDK.EventHandler
             this.NextUpdate = DateTime.Now.AddMilliseconds(this.Timeout);
         }
 
+        public bool HasTimeout
+        {
+            get
+            {
+                return DateTime.Now > this.NextUpdate;
+            }
+        }
+
         public int Timeout { get; set; }
 
         private DateTime NextUpdate { get; set; }
 
-        public override void Invoke()
+        public override bool Invoke()
         {
-            if (DateTime.Now > this.NextUpdate)
+            if (this.HasTimeout)
             {
                 this.NextUpdate = DateTime.Now.AddMilliseconds(this.Timeout);
-                base.Invoke();
+                return base.Invoke();
             }
+
+            return false;
         }
 
         public override string ToString()

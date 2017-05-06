@@ -40,34 +40,34 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="clipper_library">
-      <HintPath>D:\Games\ps\References\clipper_library.dll</HintPath>
+      <HintPath>D:\Games\Loader\References\clipper_library.dll</HintPath>
     </Reference>
     <Reference Include="Ensage">
-      <HintPath>D:\Games\ps\References\Ensage.dll</HintPath>
+      <HintPath>D:\Games\Loader\References\Ensage.dll</HintPath>
     </Reference>
     <Reference Include="Ensage.Common">
-      <HintPath>D:\Games\ps\References\Ensage.Common.dll</HintPath>
+      <HintPath>D:\Games\Loader\References\Ensage.Common.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json">
-      <HintPath>D:\Games\ps\References\Newtonsoft.Json.dll</HintPath>
+      <HintPath>D:\Games\Loader\References\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="PlaySharp.Toolkit">
-      <HintPath>D:\Games\ps\References\PlaySharp.Toolkit.dll</HintPath>
+      <HintPath>D:\Games\Loader\References\PlaySharp.Toolkit.dll</HintPath>
     </Reference>
     <Reference Include="SharpDX">
-      <HintPath>D:\Games\ps\References\SharpDX.dll</HintPath>
+      <HintPath>D:\Games\Loader\References\SharpDX.dll</HintPath>
     </Reference>
     <Reference Include="SharpDX.Direct2D1">
-      <HintPath>D:\Games\ps\References\SharpDX.Direct2D1.dll</HintPath>
+      <HintPath>D:\Games\Loader\References\SharpDX.Direct2D1.dll</HintPath>
     </Reference>
     <Reference Include="SharpDX.Direct3D11">
-      <HintPath>D:\Games\ps\References\SharpDX.Direct3D11.dll</HintPath>
+      <HintPath>D:\Games\Loader\References\SharpDX.Direct3D11.dll</HintPath>
     </Reference>
     <Reference Include="SharpDX.DXGI">
-      <HintPath>D:\Games\ps\References\SharpDX.DXGI.dll</HintPath>
+      <HintPath>D:\Games\Loader\References\SharpDX.DXGI.dll</HintPath>
     </Reference>
     <Reference Include="SharpDX.Mathematics">
-      <HintPath>D:\Games\ps\References\SharpDX.Mathematics.dll</HintPath>
+      <HintPath>D:\Games\Loader\References\SharpDX.Mathematics.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
@@ -105,6 +105,7 @@
     <Compile Include="EventHandler\IUpdateHandler.cs" />
     <Compile Include="EventHandler\TimeoutUpdateHandler.cs" />
     <Compile Include="EventHandler\TraceUpdateHandler.cs" />
+    <Compile Include="Helpers\UpdateProfiler.cs" />
     <Compile Include="Inventory\InventoryItem.cs" />
     <Compile Include="Inventory\Metadata\ExportInventoryManagerAttribute.cs" />
     <Compile Include="Inventory\IInventoryManager.cs" />
@@ -211,9 +212,11 @@
     <Compile Include="Service\Metadata\IServiceMetadata.cs" />
     <Compile Include="TargetSelector\ITargetSelector.cs" />
     <Compile Include="Service\Metadata\ObjectProviderAttribute.cs" />
+    <Compile Include="Helpers\FrameCache.cs" />
     <Compile Include="TargetSelector\Modes\LowestHealthSelector.cs" />
     <Compile Include="TargetSelector\Modes\MostAttackDamageSelector.cs" />
     <Compile Include="TargetSelector\Modes\MostSpellDamageSelector.cs" />
+    <Compile Include="TargetSelector\Modes\NearMouseConfig.cs" />
     <Compile Include="TargetSelector\Modes\NearMouseSelector.cs" />
     <Compile Include="TargetSelector\SelectorBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

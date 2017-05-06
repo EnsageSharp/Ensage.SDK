@@ -20,9 +20,10 @@ namespace Ensage.SDK.EventHandler
 
         public Action Callback { get; }
 
-        public virtual void Invoke()
+        public virtual bool Invoke()
         {
             this.Callback?.Invoke();
+            return true;
         }
 
         public override string ToString()
@@ -45,9 +46,10 @@ namespace Ensage.SDK.EventHandler
 
         public Action<TEventArgs> Callback { get; }
 
-        public virtual void Invoke(TEventArgs args)
+        public virtual bool Invoke(TEventArgs args)
         {
             this.Callback?.Invoke(args);
+            return true;
         }
 
         public override string ToString()

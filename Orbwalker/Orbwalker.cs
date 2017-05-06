@@ -10,6 +10,7 @@ namespace Ensage.SDK.Orbwalker
     using System.Linq;
     using System.Reflection;
 
+    using Ensage.Common.Menu;
     using Ensage.SDK.Extensions;
     using Ensage.SDK.Helpers;
     using Ensage.SDK.Orbwalker.Metadata;
@@ -29,6 +30,8 @@ namespace Ensage.SDK.Orbwalker
     {
         private static readonly ILog Log = AssemblyLogs.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
+        private bool isActive;
+
         [ImportingConstructor]
         public Orbwalker([Import] IServiceContext context)
         {
@@ -36,10 +39,12 @@ namespace Ensage.SDK.Orbwalker
             this.Context = context;
             this.Owner = context.Owner;
             this.Config = new OrbwalkerConfig(context);
+            this.Config.Active.Item.ValueChanged += this.OnActiveValueChanged;
 
-            UpdateManager.Subscribe(this.OnUpdate);
-            UpdateManager.Subscribe(this.OnUpdateDrawings, 1000);
-            Entity.OnInt32PropertyChange += this.Hero_OnInt32PropertyChange;
+            if (this.Config.Active.Value)
+            {
+                this.Activate();
+            }
         }
 
         public OrbwalkerConfig Config { get; }
@@ -66,6 +71,20 @@ namespace Ensage.SDK.Orbwalker
         private Unit Owner { get; }
 
         private float PingTime => Game.Ping / 2000f;
+
+        public void Activate()
+        {
+            if (this.isActive)
+            {
+                return;
+            }
+
+            this.isActive = true;
+
+            UpdateManager.Subscribe(this.OnUpdate);
+            UpdateManager.Subscribe(this.OnUpdateDrawings, 1000);
+            Entity.OnInt32PropertyChange += this.Hero_OnInt32PropertyChange;
+        }
 
         public bool Attack(Unit unit)
         {
@@ -94,6 +113,20 @@ namespace Ensage.SDK.Orbwalker
         public bool CanMove()
         {
             return (((Game.RawGameTime - 0.1f) + this.PingTime) - this.LastAttackTime) > this.Owner.AttackPoint();
+        }
+
+        public void Deactivate()
+        {
+            if (!this.isActive)
+            {
+                return;
+            }
+
+            this.isActive = false;
+
+            UpdateManager.Unsubscribe(this.OnUpdate);
+            UpdateManager.Unsubscribe(this.OnUpdateDrawings);
+            Entity.OnInt32PropertyChange -= this.Hero_OnInt32PropertyChange;
         }
 
         public bool Move(Vector3 position)
@@ -141,6 +174,18 @@ namespace Ensage.SDK.Orbwalker
                     // var diff = Game.RawGameTime - this.LastAttackTime;
                     this.LastAttackTime = Game.RawGameTime - (Game.Ping / 2000f);
                     break;
+            }
+        }
+
+        private void OnActiveValueChanged(object sender, OnValueChangeEventArgs args)
+        {
+            if (args.GetNewValue<bool>())
+            {
+                this.Activate();
+            }
+            else
+            {
+                this.Deactivate();
             }
         }
 

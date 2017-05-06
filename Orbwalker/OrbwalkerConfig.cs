@@ -1,7 +1,3 @@
-// <copyright file="OrbwalkerConfig.cs" company="Ensage">
-//    Copyright (c) 2017 Ensage.
-// </copyright>
-
 namespace Ensage.SDK.Orbwalker
 {
     using Ensage.Common.Menu;
@@ -14,10 +10,13 @@ namespace Ensage.SDK.Orbwalker
         public OrbwalkerConfig(IServiceContext context)
         {
             this.Factory = MenuFactory.Create($"Orbwalker: {context.Owner.GetDisplayName()}", "Orbwalker");
+            this.Active = this.Factory.Item("Active", true);
             this.Settings = new OrbwalkerSettings(this.Factory);
 
             context.Container.RegisterValue(this);
         }
+
+        public MenuItem<bool> Active { get; }
 
         public MenuFactory Factory { get; }
 

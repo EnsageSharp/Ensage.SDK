@@ -17,12 +17,12 @@ namespace Ensage.SDK.TargetSelector
         protected SelectorBase(IServiceContext context)
         {
             this.Owner = context.Owner;
-            UpdateManager.SubscribeService(this.OnClear);
+            this.Targets = new FrameCache<IEnumerable<Unit>>(this.GetTargetsImpl);
         }
 
         protected Hero Owner { get; }
 
-        protected IReadOnlyList<Hero> Targets { get; set; }
+        protected FrameCache<IEnumerable<Unit>> Targets { get; }
 
         public virtual void Activate()
         {
@@ -38,9 +38,12 @@ namespace Ensage.SDK.TargetSelector
             GC.SuppressFinalize(this);
         }
 
-        public abstract IEnumerable<Unit> GetTargets();
+        public virtual IEnumerable<Unit> GetTargets()
+        {
+            return this.Targets.Value;
+        }
 
-        private void Dispose(bool disposing)
+        protected virtual void Dispose(bool disposing)
         {
             if (this.disposed)
             {
@@ -49,15 +52,12 @@ namespace Ensage.SDK.TargetSelector
 
             if (disposing)
             {
-                UpdateManager.UnsubscribeService(this.OnClear);
+                this.Targets.Dispose();
             }
 
             this.disposed = true;
         }
 
-        private void OnClear()
-        {
-            this.Targets = null;
-        }
+        protected abstract IEnumerable<Unit> GetTargetsImpl();
     }
 }

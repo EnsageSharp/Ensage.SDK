@@ -22,6 +22,12 @@ namespace Ensage.SDK.TargetSelector
     {
         private static readonly ILog Log = AssemblyLogs.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
+        private readonly string[] staticModes =
+            {
+                "None",
+                "Auto (Near Mouse)"
+            };
+
         public TargetSelectorConfig()
         {
             this.Factory = MenuFactory.Create("Target Selector");
@@ -36,12 +42,12 @@ namespace Ensage.SDK.TargetSelector
 
         public void OnImportsSatisfied()
         {
-            var modes = this.Selectors.Select(e => e.Metadata.Name).ToArray();
+            var modes = this.staticModes.Concat(this.Selectors.Select(e => e.Metadata.Name)).ToArray();
             Log.Debug($"Resolved Modes: {string.Join(" - ", modes)}");
 
             if (this.Active == null)
             {
-                this.Active = this.Factory.Item("Mode", new StringList(modes));
+                this.Active = this.Factory.Item("Mode", new StringList(modes, 1));
             }
             else
             {

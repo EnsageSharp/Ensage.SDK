@@ -59,7 +59,7 @@ namespace Ensage.SDK.Geometry
         /// <param name="width">The width.</param>
         public virtual void Draw(Color color, int width = 1)
         {
-            for (var i = 0; i <= this.Points.Count - 1; i++)
+            for (var i = 0; i <= (this.Points.Count - 1); i++)
             {
                 var nextIndex = this.Points.Count - 1 == i ? 0 : i + 1;
 
@@ -182,15 +182,15 @@ namespace Ensage.SDK.Geometry
             public void UpdatePolygon(int offset = 0)
             {
                 this.Points.Clear();
-                var outRadius = (this.Radius + offset) / (float)Math.Cos(2 * Math.PI / this._quality);
+                var outRadius = (this.Radius + offset) / (float)Math.Cos((2 * Math.PI) / this._quality);
                 var side1 = this.EndPos.Rotated(-this.Angle * 0.5f);
                 for (var i = 0; i <= this._quality; i++)
                 {
-                    var cDirection = side1.Rotated(i * this.Angle / this._quality).Normalized();
+                    var cDirection = side1.Rotated((i * this.Angle) / this._quality).Normalized();
                     this.Points.Add(
                         new Vector2(
-                            this.StartPos.X + outRadius * cDirection.X,
-                            this.StartPos.Y + outRadius * cDirection.Y));
+                            this.StartPos.X + (outRadius * cDirection.X),
+                            this.StartPos.Y + (outRadius * cDirection.Y)));
                 }
             }
         }
@@ -250,13 +250,13 @@ namespace Ensage.SDK.Geometry
                 this.Points.Clear();
                 var outRadius = overrideWidth > 0
                                     ? overrideWidth
-                                    : (offset + this.Radius) / (float)Math.Cos(2 * Math.PI / this._quality);
+                                    : (offset + this.Radius) / (float)Math.Cos((2 * Math.PI) / this._quality);
                 for (var i = 1; i <= this._quality; i++)
                 {
-                    var angle = i * 2 * Math.PI / this._quality;
+                    var angle = (i * 2 * Math.PI) / this._quality;
                     var point = new Vector2(
-                        this.Center.X + outRadius * (float)Math.Cos(angle),
-                        this.Center.Y + outRadius * (float)Math.Sin(angle));
+                        this.Center.X + (outRadius * (float)Math.Cos(angle)),
+                        this.Center.Y + (outRadius * (float)Math.Sin(angle)));
                     this.Points.Add(point);
                 }
             }
@@ -338,7 +338,7 @@ namespace Ensage.SDK.Geometry
 
                 set
                 {
-                    this.LineEnd = (this.LineEnd - this.LineStart).Normalized() * value + this.LineStart;
+                    this.LineEnd = ((this.LineEnd - this.LineStart).Normalized() * value) + this.LineStart;
                 }
             }
 
@@ -435,17 +435,17 @@ namespace Ensage.SDK.Geometry
             {
                 this.Points.Clear();
                 this.Points.Add(
-                    this.Start + (overrideWidth > 0 ? overrideWidth : this.Width + offset) * this.Perpendicular
-                    - offset * this.Direction);
+                    (this.Start + ((overrideWidth > 0 ? overrideWidth : this.Width + offset) * this.Perpendicular))
+                    - (offset * this.Direction));
                 this.Points.Add(
-                    this.Start - (overrideWidth > 0 ? overrideWidth : this.Width + offset) * this.Perpendicular
-                    - offset * this.Direction);
+                    this.Start - ((overrideWidth > 0 ? overrideWidth : this.Width + offset) * this.Perpendicular)
+                    - (offset * this.Direction));
                 this.Points.Add(
-                    this.End - (overrideWidth > 0 ? overrideWidth : this.Width + offset) * this.Perpendicular
-                    + offset * this.Direction);
+                    (this.End - ((overrideWidth > 0 ? overrideWidth : this.Width + offset) * this.Perpendicular))
+                    + (offset * this.Direction));
                 this.Points.Add(
-                    this.End + (overrideWidth > 0 ? overrideWidth : this.Width + offset) * this.Perpendicular
-                    + offset * this.Direction);
+                    this.End + ((overrideWidth > 0 ? overrideWidth : this.Width + offset) * this.Perpendicular)
+                    + (offset * this.Direction));
             }
         }
 
@@ -510,23 +510,23 @@ namespace Ensage.SDK.Geometry
             {
                 this.Points.Clear();
                 var outRadius = (offset + this.InnerRadius + this.OuterRadius)
-                                / (float)Math.Cos(2 * Math.PI / this._quality);
+                                / (float)Math.Cos((2 * Math.PI) / this._quality);
                 var innerRadius = this.InnerRadius - this.OuterRadius - offset;
                 for (var i = 0; i <= this._quality; i++)
                 {
-                    var angle = i * 2 * Math.PI / this._quality;
+                    var angle = (i * 2 * Math.PI) / this._quality;
                     var point = new Vector2(
-                        this.Center.X - outRadius * (float)Math.Cos(angle),
-                        this.Center.Y - outRadius * (float)Math.Sin(angle));
+                        this.Center.X - (outRadius * (float)Math.Cos(angle)),
+                        this.Center.Y - (outRadius * (float)Math.Sin(angle)));
                     this.Points.Add(point);
                 }
 
                 for (var i = 0; i <= this._quality; i++)
                 {
-                    var angle = i * 2 * Math.PI / this._quality;
+                    var angle = (i * 2 * Math.PI) / this._quality;
                     var point = new Vector2(
-                        this.Center.X + innerRadius * (float)Math.Cos(angle),
-                        this.Center.Y - innerRadius * (float)Math.Sin(angle));
+                        this.Center.X + (innerRadius * (float)Math.Cos(angle)),
+                        this.Center.Y - (innerRadius * (float)Math.Sin(angle)));
                     this.Points.Add(point);
                 }
             }
@@ -603,14 +603,14 @@ namespace Ensage.SDK.Geometry
             /// <returns></returns>
             public Vector2 RotateLineFromPoint(Vector2 point1, Vector2 point2, float value, bool radian = true)
             {
-                var angle = !radian ? value * Math.PI / 180 : value;
+                var angle = !radian ? (value * Math.PI) / 180 : value;
                 var line = Vector2.Subtract(point2, point1);
 
                 var newline = new Vector2
-                                  {
-                                      X = (float)(line.X * Math.Cos(angle) - line.Y * Math.Sin(angle)),
-                                      Y = (float)(line.X * Math.Sin(angle) + line.Y * Math.Cos(angle))
-                                  };
+                              {
+                                  X = (float)((line.X * Math.Cos(angle)) - (line.Y * Math.Sin(angle))),
+                                  Y = (float)((line.X * Math.Sin(angle)) + (line.Y * Math.Cos(angle)))
+                              };
 
                 return Vector2.Add(newline, point1);
             }
@@ -622,16 +622,16 @@ namespace Ensage.SDK.Geometry
             public void UpdatePolygon(int offset = 0)
             {
                 this.Points.Clear();
-                var outRadius = (this.Radius + offset) / (float)Math.Cos(2 * Math.PI / this._quality);
+                var outRadius = (this.Radius + offset) / (float)Math.Cos((2 * Math.PI) / this._quality);
                 this.Points.Add(this.Center);
                 var side1 = this.Direction.Rotated(-this.Angle * 0.5f);
                 for (var i = 0; i <= this._quality; i++)
                 {
-                    var cDirection = side1.Rotated(i * this.Angle / this._quality).Normalized();
+                    var cDirection = side1.Rotated((i * this.Angle) / this._quality).Normalized();
                     this.Points.Add(
                         new Vector2(
-                            this.Center.X + outRadius * cDirection.X,
-                            this.Center.Y + outRadius * cDirection.Y));
+                            this.Center.X + (outRadius * cDirection.X),
+                            this.Center.Y + (outRadius * cDirection.Y)));
                 }
             }
         }

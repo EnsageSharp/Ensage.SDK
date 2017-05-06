@@ -154,12 +154,12 @@ namespace Ensage.SDK.Helpers
                     return this._lastPossibleTarget;
                 }
 
-                var possibleTarget = CreepManager.Instance().GetCreeps()
-                                                 .FirstOrDefault(
-                                                     unit =>
-                                                         unit.IsValid && unit.Team != this.Team
-                                                         && this.Source.IsDirectlyFacing(unit)
-                                                         && this.Source.IsValidOrbwalkingTarget(unit));
+                var possibleTarget = EntityManager<Creep>.Entities
+                                                         .FirstOrDefault(
+                                                             unit =>
+                                                                 unit.IsValid && unit.Team != this.Team
+                                                                 && this.Source.IsDirectlyFacing(unit)
+                                                                 && this.Source.IsValidOrbwalkingTarget(unit));
 
                 if (possibleTarget != null)
                 {

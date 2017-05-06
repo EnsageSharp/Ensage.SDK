@@ -73,17 +73,17 @@ namespace Ensage.SDK.Geometry
             var D = center1.Distance(center2);
 
             // The Circles dont intersect:
-            if (D > radius1 + radius2 || D <= Math.Abs(radius1 - radius2))
+            if (D > (radius1 + radius2) || D <= Math.Abs(radius1 - radius2))
             {
                 return new Vector2[] { };
             }
 
-            var A = (radius1 * radius1 - radius2 * radius2 + D * D) / (2 * D);
-            var H = (float)Math.Sqrt(radius1 * radius1 - A * A);
+            var A = (((radius1 * radius1) - (radius2 * radius2)) + (D * D)) / (2 * D);
+            var H = (float)Math.Sqrt((radius1 * radius1) - (A * A));
             var Direction = (center2 - center1).Normalized();
-            var PA = center1 + A * Direction;
-            var S1 = PA + H * Direction.Perpendicular();
-            var S2 = PA - H * Direction.Perpendicular();
+            var PA = center1 + (A * Direction);
+            var S1 = PA + (H * Direction.Perpendicular());
+            var S2 = PA - (H * Direction.Perpendicular());
             return new[] { S1, S2 };
         }
 
@@ -159,7 +159,7 @@ namespace Ensage.SDK.Geometry
         /// <returns></returns>
         public static float CrossProduct(this Vector2 self, Vector2 other)
         {
-            return other.Y * self.X - other.X * self.Y;
+            return (other.Y * self.X) - (other.X * self.Y);
         }
 
         /// <summary>
@@ -169,7 +169,7 @@ namespace Ensage.SDK.Geometry
         /// <returns></returns>
         public static float DegreeToRadian(double angle)
         {
-            return (float)(Math.PI * angle / 180.0);
+            return (float)((Math.PI * angle) / 180.0);
         }
 
         /// <summary>
@@ -249,8 +249,8 @@ namespace Ensage.SDK.Geometry
             double deltaBAx = lineSegment1End.X - lineSegment1Start.X;
             double deltaBAy = lineSegment1End.Y - lineSegment1Start.Y;
 
-            var denominator = deltaBAx * deltaDCy - deltaBAy * deltaDCx;
-            var numerator = deltaACy * deltaDCx - deltaACx * deltaDCy;
+            var denominator = (deltaBAx * deltaDCy) - (deltaBAy * deltaDCx);
+            var numerator = (deltaACy * deltaDCx) - (deltaACx * deltaDCy);
 
             if (Math.Abs(denominator) < float.Epsilon)
             {
@@ -281,7 +281,7 @@ namespace Ensage.SDK.Geometry
                 return new IntersectionResult();
             }
 
-            var s = (deltaACy * deltaBAx - deltaACx * deltaBAy) / denominator;
+            var s = ((deltaACy * deltaBAx) - (deltaACx * deltaBAy)) / denominator;
             if (s < 0 || s > 1)
             {
                 return new IntersectionResult();
@@ -289,7 +289,7 @@ namespace Ensage.SDK.Geometry
 
             return new IntersectionResult(
                 true,
-                new Vector2((float)(lineSegment1Start.X + r * deltaBAx), (float)(lineSegment1Start.Y + r * deltaBAy)));
+                new Vector2((float)(lineSegment1Start.X + (r * deltaBAx)), (float)(lineSegment1Start.Y + (r * deltaBAy))));
         }
 
         // Vector2 class extended methods:
@@ -417,7 +417,7 @@ namespace Ensage.SDK.Geometry
         public static float PathLength(this List<Vector2> path)
         {
             var distance = 0f;
-            for (var i = 0; i < path.Count - 1; i++)
+            for (var i = 0; i < (path.Count - 1); i++)
             {
                 distance += path[i].Distance(path[i + 1]);
             }
@@ -486,15 +486,15 @@ namespace Ensage.SDK.Geometry
         /// <returns></returns>
         public static Vector2 PositionAfter(this List<Vector2> self, int t, int s, int delay = 0)
         {
-            var distance = Math.Max(0, t - delay) * s / 1000;
-            for (var i = 0; i <= self.Count - 2; i++)
+            var distance = (Math.Max(0, t - delay) * s) / 1000;
+            for (var i = 0; i <= (self.Count - 2); i++)
             {
                 var from = self[i];
                 var to = self[i + 1];
                 var d = (int)to.Distance(from);
                 if (d > distance)
                 {
-                    return from + distance * (to - from).Normalized();
+                    return from + (distance * (to - @from).Normalized());
                 }
 
                 distance -= d;
@@ -518,9 +518,9 @@ namespace Ensage.SDK.Geometry
             var ay = segmentStart.Y;
             var bx = segmentEnd.X;
             var by = segmentEnd.Y;
-            var rL = ((cx - ax) * (bx - ax) + (cy - ay) * (by - ay))
+            var rL = (((cx - ax) * (bx - ax)) + ((cy - ay) * (@by - ay)))
                      / ((float)Math.Pow(bx - ax, 2) + (float)Math.Pow(by - ay, 2));
-            var pointLine = new Vector2(ax + rL * (bx - ax), ay + rL * (by - ay));
+            var pointLine = new Vector2(ax + (rL * (bx - ax)), ay + (rL * (@by - ay)));
             float rS;
             if (rL < 0)
             {
@@ -536,7 +536,7 @@ namespace Ensage.SDK.Geometry
             }
 
             var isOnSegment = rS.CompareTo(rL) == 0;
-            var pointSegment = isOnSegment ? pointLine : new Vector2(ax + rS * (bx - ax), ay + rS * (by - ay));
+            var pointSegment = isOnSegment ? pointLine : new Vector2(ax + (rS * (bx - ax)), ay + (rS * (@by - ay)));
             return new ProjectionInfo(isOnSegment, pointSegment, pointLine);
         }
 
@@ -563,8 +563,8 @@ namespace Ensage.SDK.Geometry
             var sin = Math.Sin(angle);
             var cos = Math.Cos(angle);
 
-            var x = cos * (rotated.X - around.X) - sin * (rotated.Y - around.Y) + around.X;
-            var y = sin * (rotated.X - around.X) + cos * (rotated.Y - around.Y) + around.Y;
+            var x = ((cos * (rotated.X - around.X)) - (sin * (rotated.Y - around.Y))) + around.X;
+            var y = (sin * (rotated.X - around.X)) + (cos * (rotated.Y - around.Y)) + around.Y;
 
             return new Vector2((float)x, (float)y);
         }
@@ -580,7 +580,7 @@ namespace Ensage.SDK.Geometry
             var c = Math.Cos(angle);
             var s = Math.Sin(angle);
 
-            return new Vector2((float)(v.X * c - v.Y * s), (float)(v.Y * c + v.X * s));
+            return new Vector2((float)((v.X * c) - (v.Y * s)), (float)((v.Y * c) + (v.X * s)));
         }
 
         /// <summary>
@@ -627,7 +627,7 @@ namespace Ensage.SDK.Geometry
         /// <returns></returns>
         public static Vector2 Shorten(this Vector2 v, Vector2 to, float distance)
         {
-            return v - distance * (to - v).Normalized();
+            return v - (distance * (to - v).Normalized());
         }
 
         /// <summary>
@@ -639,7 +639,7 @@ namespace Ensage.SDK.Geometry
         /// <returns></returns>
         public static Vector3 Shorten(this Vector3 v, Vector3 to, float distance)
         {
-            return v - distance * (to - v).Normalized();
+            return v - (distance * (to - v).Normalized());
         }
 
         /// <summary>
@@ -726,19 +726,19 @@ namespace Ensage.SDK.Geometry
                   sP2y = startPoint2.Y;
 
             float d = eP1x - sP1x, e = eP1y - sP1y;
-            float dist = (float)Math.Sqrt(d * d + e * e), t1 = float.NaN;
-            float S = Math.Abs(dist) > float.Epsilon ? v1 * d / dist : 0,
-                  K = Math.Abs(dist) > float.Epsilon ? v1 * e / dist : 0f;
+            float dist = (float)Math.Sqrt((d * d) + (e * e)), t1 = float.NaN;
+            float S = Math.Abs(dist) > float.Epsilon ? (v1 * d) / dist : 0,
+                  K = Math.Abs(dist) > float.Epsilon ? (v1 * e) / dist : 0f;
 
             float r = sP2x - sP1x, j = sP2y - sP1y;
-            var c = r * r + j * j;
+            var c = (r * r) + (j * j);
 
             if (dist > 0f)
             {
                 if (Math.Abs(v1 - float.MaxValue) < float.Epsilon)
                 {
                     var t = dist / v1;
-                    t1 = v2 * t >= 0f ? t : float.NaN;
+                    t1 = (v2 * t) >= 0f ? t : float.NaN;
                 }
                 else if (Math.Abs(v2 - float.MaxValue) < float.Epsilon)
                 {
@@ -746,7 +746,7 @@ namespace Ensage.SDK.Geometry
                 }
                 else
                 {
-                    float a = S * S + K * K - v2 * v2, b = -r * S - j * K;
+                    float a = ((S * S) + (K * K)) - (v2 * v2), b = (-r * S) - (j * K);
 
                     if (Math.Abs(a) < float.Epsilon)
                     {
@@ -757,19 +757,19 @@ namespace Ensage.SDK.Geometry
                         else
                         {
                             var t = -c / (2 * b);
-                            t1 = v2 * t >= 0f ? t : float.NaN;
+                            t1 = (v2 * t) >= 0f ? t : float.NaN;
                         }
                     }
                     else
                     {
-                        var sqr = b * b - a * c;
+                        var sqr = (b * b) - (a * c);
                         if (sqr >= 0)
                         {
                             var nom = (float)Math.Sqrt(sqr);
                             var t = (-nom - b) / a;
-                            t1 = v2 * t >= 0f ? t : float.NaN;
+                            t1 = (v2 * t) >= 0f ? t : float.NaN;
                             t = (nom - b) / a;
-                            var t2 = v2 * t >= 0f ? t : float.NaN;
+                            var t2 = (v2 * t) >= 0f ? t : float.NaN;
 
                             if (!float.IsNaN(t2) && !float.IsNaN(t1))
                             {
@@ -790,7 +790,8 @@ namespace Ensage.SDK.Geometry
             {
                 t1 = 0f;
             }
-            return new Tuple<float, Vector2>(t1, !float.IsNaN(t1) ? new Vector2(sP1x + S * t1, sP1y + K * t1) : Vector2.Zero);
+
+            return new Tuple<float, Vector2>(t1, !float.IsNaN(t1) ? new Vector2(sP1x + (S * t1), sP1y + (K * t1)) : Vector2.Zero);
         }
     }
 }

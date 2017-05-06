@@ -7,6 +7,7 @@ namespace Ensage.SDK.Service
     using System;
     using System.ComponentModel.Composition;
     using System.ComponentModel.Composition.Hosting;
+    using System.Linq;
     using System.Reflection;
 
     using log4net;
@@ -49,9 +50,28 @@ namespace Ensage.SDK.Service
             var container = new CompositionContainer(Loader.Catalog, flags);
             context.Container = new ContextContainer<IServiceContext>(context, container);
 
-            Log.Debug($"Create Context({context}) Container");
+            Log.Debug($"Create {context} Container");
+            Log.Debug($"====================================================");
+            Log.Debug($"Resolving Catalogs {Loader.Catalog.Catalogs.Count}");
+            Log.Debug($"====================================================");
 
-            container.ComposeExportedValue(context);
+            foreach (var catalog in Loader.Catalog.Catalogs.OfType<AssemblyCatalog>())
+            {
+                Log.Debug($"Assembly {catalog.Assembly.GetName().Name}");
+            }
+
+            Log.Debug($"====================================================");
+            Log.Debug($"Resolving Parts {container.Catalog.Parts.Count()}");
+            Log.Debug($"====================================================");
+
+            foreach (var part in container.Catalog.Parts)
+            {
+                Log.Debug($"{part}");
+            }
+
+            Log.Debug($"====================================================");
+
+            container.ComposeExportedValue<IServiceContext>(context);
 
             // switch (Drawing.RenderMode)
             // {

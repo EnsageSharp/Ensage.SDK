@@ -15,10 +15,13 @@ namespace Ensage.SDK.Service
                 throw new ArgumentNullException(nameof(unit));
             }
 
+            this.Name = unit.Name;
             this.Owner = unit;
         }
 
         public ContextContainer<IServiceContext> Container { get; internal set; }
+
+        public string Name { get; }
 
         public Hero Owner { get; }
 
@@ -29,7 +32,7 @@ namespace Ensage.SDK.Service
 
         public override string ToString()
         {
-            return $"{this.Owner.Name}";
+            return $"Context({this.Name})";
         }
     }
 }

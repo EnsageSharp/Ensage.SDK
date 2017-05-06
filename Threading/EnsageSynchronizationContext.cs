@@ -8,7 +8,7 @@ namespace Ensage.SDK.Threading
     using System.Collections.Generic;
     using System.Threading;
 
-    public class EnsageSynchronizationContext : SynchronizationContext
+    internal class EnsageSynchronizationContext : SynchronizationContext
     {
         private static readonly object SyncRoot = new object();
 

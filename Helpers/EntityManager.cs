@@ -6,83 +6,72 @@ namespace Ensage.SDK.Helpers
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel.Composition;
     using System.Linq;
 
     using Ensage.SDK.Extensions;
-    using Ensage.SDK.Service;
 
-    [Export(typeof(EntityManager<>))]
-    public class EntityManager<TEntity> : IDisposable
-        where TEntity : Entity, new()
+    internal static class EntityManager
     {
-        private bool disposed;
+        private static readonly FrameCache<HashSet<Entity>> Cache;
 
-        public EntityManager(IServiceContext context)
+        static EntityManager()
         {
-            this.Context = context;
-            Game.OnIngameUpdate += this.OnUpdate;
+            Cache = new FrameCache<HashSet<Entity>>(GetEntities);
         }
 
-        public IServiceContext Context { get; }
-
-        public float Range { get; set; } = 3000;
-
-        public float UpdateRate { get; set; } = 250;
-
-        private TEntity[] Cache { get; set; }
-
-        private float LastUpdateTime { get; set; }
-
-        public void Dispose()
+        public static event EventHandler FrameChanged
         {
-            this.Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        public IEnumerable<TEntity> GetEntries()
-        {
-            return this.Cache;
-        }
-
-        public ParallelQuery<TEntity> GetEntriesParallel()
-        {
-            return this.Cache.AsParallel();
-        }
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (this.disposed)
+            add
             {
-                return;
+                Cache.FrameChanged += value;
             }
 
-            if (disposing)
+            remove
             {
-                Game.OnIngameUpdate -= this.OnUpdate;
+                Cache.FrameChanged -= value;
             }
-
-            this.disposed = true;
         }
 
-        protected virtual void OnUpdate(EventArgs args)
+        internal static HashSet<Entity> Entities
         {
-            if (this.UpdateRate > 0)
+            get
             {
-                var now = Game.RawGameTime;
-                if ((now - this.LastUpdateTime) < (this.UpdateRate / 1000))
+                return Cache.Value;
+            }
+        }
+
+        private static HashSet<Entity> GetEntities()
+        {
+            return ObjectManager.GetEntities<Entity>().ToHashSet();
+        }
+    }
+
+    public class EntityManager<T>
+        where T : Entity, new()
+    {
+        private static HashSet<T> entities;
+
+        static EntityManager()
+        {
+            EntityManager.FrameChanged += OnFrameChanged;
+        }
+
+        public static IEnumerable<T> Entities
+        {
+            get
+            {
+                if (entities == null)
                 {
-                    return;
+                    entities = EntityManager.Entities.OfType<T>().ToHashSet();
                 }
 
-                this.LastUpdateTime = now;
+                return entities.Where(e => e.IsValid);
             }
+        }
 
-            var position = this.Context.Owner.Position;
-
-            this.Cache = ObjectManager.GetEntitiesParallel<TEntity>()
-                                      .Where(e => e.IsValid && position.IsInRange(e, this.Range))
-                                      .ToArray();
+        private static void OnFrameChanged(object sender, EventArgs args)
+        {
+            entities = null;
         }
     }
 }

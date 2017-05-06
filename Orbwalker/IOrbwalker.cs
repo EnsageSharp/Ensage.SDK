@@ -4,23 +4,24 @@
 
 namespace Ensage.SDK.Orbwalker
 {
-    using System;
-    using System.Windows.Input;
+    using Ensage.SDK.Service;
 
     using SharpDX;
 
-    public interface IOrbwalker : IDisposable
+    public interface IOrbwalker
     {
-        event EventHandler<EventArgs> Attacked;
+        OrbwalkerConfig Config { get; }
 
-        event EventHandler<EventArgs> Attacking;
+        IServiceContext Context { get; }
 
-        bool IsOrbwalking { get; set; }
+        float TurnEndTime { get; }
 
-        Key Key { get; set; }
+        bool Attack(Unit target);
 
-        void Orbwalk(Vector3 position);
+        bool CanAttack(Unit target);
 
-        void Orbwalk(Unit target);
+        bool CanMove();
+
+        bool Move(Vector3 position);
     }
 }

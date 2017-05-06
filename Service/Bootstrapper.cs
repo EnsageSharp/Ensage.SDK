@@ -111,8 +111,6 @@ namespace Ensage.SDK.Service
                 IoC.Get<ITargetSelectorManager>();
                 IoC.GetAll<ITargetSelector>()?.ToArray();
                 IoC.Get<IOrbwalker>();
-
-                new UpdateProfiler();
             }
             catch (Exception e)
             {

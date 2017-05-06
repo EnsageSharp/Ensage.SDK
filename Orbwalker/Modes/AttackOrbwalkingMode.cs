@@ -9,10 +9,10 @@ namespace Ensage.SDK.Orbwalker.Modes
 
     internal abstract class AttackOrbwalkingMode : AutoAttackMode
     {
-        protected AttackOrbwalkingMode(IOrbwalker orbwalker, string name, uint key, bool hero, bool creep, bool neutral, bool building, bool deny, bool farm)
+        protected AttackOrbwalkingMode(IOrbwalker orbwalker, string name, uint key, bool hero, bool creep, bool neutral, bool building, bool deny, bool lasthit)
             : base(orbwalker)
         {
-            this.Config = new AutoAttackModeConfig(orbwalker.Config.Factory, name, key, hero, creep, neutral, building, deny, farm);
+            this.Config = new AutoAttackModeConfig(orbwalker.Config.Factory, name, key, hero, creep, neutral, building, deny, lasthit);
             this.Selector = new AutoAttackModeSelector(this.Owner, this.Config);
         }
 

@@ -13,7 +13,7 @@ namespace Ensage.SDK.Orbwalker.Modes
     {
         [ImportingConstructor]
         public Push([Import] IOrbwalker orbwalker)
-            : base(orbwalker, "Push", 'T', false, true, false, true, false, false)
+            : base(orbwalker, "Push", 'T', false, true, false, true, false, true)
         {
         }
     }

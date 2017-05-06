@@ -9,13 +9,13 @@ namespace Ensage.SDK.Orbwalker
 
     public class AutoAttackModeConfig
     {
-        public AutoAttackModeConfig(MenuFactory parent, string name, uint key, bool hero, bool creep, bool neutral, bool building, bool deny, bool farm)
+        public AutoAttackModeConfig(MenuFactory parent, string name, uint key, bool hero, bool creep, bool neutral, bool building, bool deny, bool lasthit)
         {
             this.Factory = parent.Menu(name);
 
             this.Key = this.Factory.Item("Key", new KeyBind(key, KeyBindType.Press));
             this.Deny = this.Factory.Item("Deny", deny);
-            this.Farm = this.Factory.Item("Farm", farm);
+            this.Farm = this.Factory.Item("Lasthit", lasthit);
             this.Hero = this.Factory.Item("Hero", hero);
             this.Building = this.Factory.Item("Building", building);
             this.Neutral = this.Factory.Item("Neutral", neutral);

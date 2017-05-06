@@ -11,6 +11,7 @@ namespace Ensage.SDK.Service
     using System.Linq;
     using System.Reflection;
 
+    using Ensage.SDK.EventHandler;
     using Ensage.SDK.Helpers;
     using Ensage.SDK.Input;
     using Ensage.SDK.Orbwalker;
@@ -107,7 +108,7 @@ namespace Ensage.SDK.Service
         {
             try
             {
-                IoC.Get<IInputManager>();
+                IoC.Get<IUpdateProfiler>();
                 IoC.Get<ITargetSelectorManager>();
                 IoC.Get<IOrbwalker>();
             }

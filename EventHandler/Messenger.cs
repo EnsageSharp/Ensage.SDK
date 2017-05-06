@@ -45,7 +45,7 @@ namespace Ensage.SDK.EventHandler
                     return;
                 }
 
-                var handler = new UpdateHandler<TMessage>(callback);
+                var handler = new UpdateHandler<TMessage>(callback, InvokeHandler<TMessage>.Default);
 
                 Log.Debug($"Create {handler}");
                 Handlers.Add(handler);

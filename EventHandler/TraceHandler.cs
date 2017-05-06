@@ -1,4 +1,4 @@
-// <copyright file="TraceUpdateHandler.cs" company="Ensage">
+// <copyright file="TraceHandler.cs" company="Ensage">
 //    Copyright (c) 2017 Ensage.
 // </copyright>
 
@@ -7,10 +7,10 @@ namespace Ensage.SDK.EventHandler
     using System;
     using System.Diagnostics;
 
-    public class TraceUpdateHandler : TimeoutUpdateHandler
+    public class TraceHandler : TimeoutHandler
     {
-        public TraceUpdateHandler(Action callback, int timeout = 0)
-            : base(callback, timeout)
+        public TraceHandler(int timeout = 0)
+            : base(timeout)
         {
         }
 
@@ -18,17 +18,17 @@ namespace Ensage.SDK.EventHandler
 
         private Stopwatch Stopwatch { get; } = new Stopwatch();
 
-        public override bool Invoke()
+        public override void Invoke(Action callback)
         {
             if (!this.HasTimeout)
             {
-                return false;
+                return;
             }
 
             try
             {
                 this.Stopwatch.Start();
-                base.Invoke();
+                callback.Invoke();
                 this.Stopwatch.Stop();
             }
             finally
@@ -37,12 +37,12 @@ namespace Ensage.SDK.EventHandler
                 this.Stopwatch.Reset();
             }
 
-            return true;
+            this.NextUpdate = DateTime.Now.AddMilliseconds(this.Timeout);
         }
 
         public override string ToString()
         {
-            return $"[{this.Timeout}] {this.Callback?.Method.DeclaringType?.Name}.{this.Callback?.Method.Name}";
+            return $"Trace[{this.Timeout}]";
         }
     }
 }

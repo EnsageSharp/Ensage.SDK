@@ -10,13 +10,21 @@ namespace Ensage.SDK.EventHandler
     {
         Action Callback { get; }
 
-        bool Invoke();
+        InvokeHandler Executor { get; set; }
+
+        string Name { get; }
+
+        void Invoke();
     }
 
-    public interface IUpdateHandler<in TEventArgs>
+    public interface IUpdateHandler<TEventArgs>
     {
         Action<TEventArgs> Callback { get; }
 
-        bool Invoke(TEventArgs args);
+        InvokeHandler<TEventArgs> Executor { get; set; }
+
+        string Name { get; }
+
+        void Invoke(TEventArgs args);
     }
 }

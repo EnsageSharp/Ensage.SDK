@@ -109,7 +109,6 @@ namespace Ensage.SDK.Service
             {
                 IoC.Get<IInputManager>();
                 IoC.Get<ITargetSelectorManager>();
-                IoC.GetAll<ITargetSelector>()?.ToArray();
                 IoC.Get<IOrbwalker>();
             }
             catch (Exception e)

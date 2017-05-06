@@ -137,10 +137,8 @@ namespace Ensage.SDK.Prediction
             return health;
         }
 
-        public bool ShouldWait()
+        public bool ShouldWait(float t = 2f)
         {
-            const float t = 2f;
-
             return EntityManager<Creep>
                 .Entities
                 .Any(

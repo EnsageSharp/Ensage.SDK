@@ -8,6 +8,6 @@ namespace Ensage.SDK.Prediction
     {
         float GetPrediction(Unit unit, float untilTime);
 
-        bool ShouldWait();
+        bool ShouldWait(float t = 2f);
     }
 }

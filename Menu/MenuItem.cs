@@ -14,6 +14,11 @@ namespace Ensage.SDK.Menu
             this.Item.SetValue(value);
         }
 
+        public MenuItem(string displayName, string name)
+        {
+            this.Item = new MenuItem(name, displayName);
+        }
+
         public MenuItem(MenuItem item)
         {
             this.Item = item;

@@ -20,5 +20,15 @@ namespace Ensage.SDK.Plugins
         }
 
         public ITargetSelectorManager Service { get; }
+
+        protected override void OnActivate()
+        {
+            this.Service.Activate();
+        }
+
+        protected override void OnDeactivate()
+        {
+            this.Service.Deactivate();
+        }
     }
 }

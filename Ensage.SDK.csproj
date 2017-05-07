@@ -111,6 +111,7 @@
     <Compile Include="Plugins\DeveloperTools.cs" />
     <Compile Include="Plugins\OrbwalkerPlugin.cs" />
     <Compile Include="Plugins\TargetSelectorPlugin.cs" />
+    <Compile Include="Plugins\CrazyEventHub.cs" />
     <Compile Include="Service\ControllableService.cs" />
     <Compile Include="Inventory\InventoryItem.cs" />
     <Compile Include="Inventory\Metadata\ExportInventoryManagerAttribute.cs" />
@@ -128,7 +129,6 @@
     <Compile Include="Service\Metadata\IPluginLoaderMetadata.cs" />
     <Compile Include="Service\Metadata\StartupMode.cs" />
     <Compile Include="TargetSelector\Modes\AutoAttackModeSelector.cs" />
-    <Compile Include="Orbwalker\Modes\Combo.cs" />
     <Compile Include="Orbwalker\Metadata\ExportOrbwalkingModeAttribute.cs" />
     <Compile Include="Orbwalker\Modes\Farm.cs" />
     <Compile Include="Orbwalker\IOrbwalkingMode.cs" />

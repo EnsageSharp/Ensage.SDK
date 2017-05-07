@@ -18,7 +18,7 @@ namespace Ensage.SDK.TargetSelector
 
     using PlaySharp.Toolkit.Logging;
 
-    public class TargetSelectorConfig : IPartImportsSatisfiedNotification
+    public class TargetSelectorConfig : IDisposable, IPartImportsSatisfiedNotification
     {
         private static readonly ILog Log = AssemblyLogs.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
@@ -27,6 +27,8 @@ namespace Ensage.SDK.TargetSelector
                 "None",
                 "Auto (Near Mouse)"
             };
+
+        private bool disposed;
 
         public TargetSelectorConfig()
         {
@@ -39,6 +41,12 @@ namespace Ensage.SDK.TargetSelector
 
         [ImportManyTargetSelector]
         protected IEnumerable<Lazy<ITargetSelector, ITargetSelectorMetadata>> Selectors { get; set; }
+
+        public void Dispose()
+        {
+            this.Dispose(true);
+            GC.SuppressFinalize(this);
+        }
 
         public void OnImportsSatisfied()
         {
@@ -53,6 +61,21 @@ namespace Ensage.SDK.TargetSelector
             {
                 this.Active.Value = new StringList(modes);
             }
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (this.disposed)
+            {
+                return;
+            }
+
+            if (disposing)
+            {
+                this.Factory.Dispose();
+            }
+
+            this.disposed = true;
         }
     }
 }

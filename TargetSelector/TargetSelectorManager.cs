@@ -32,29 +32,59 @@ namespace Ensage.SDK.TargetSelector
         {
             this.Context = context;
             this.Particle = particle;
-            this.Config = new TargetSelectorConfig();
-            this.Context.Container.BuildUp(this.Config);
-            this.Context.Container.RegisterValue(this.Config);
-
-            this.Config.Active.Item.ValueChanged += this.OnValueChanged;
-
-            UpdateManager.Subscribe(this.OnDrawingsUpdate, 250);
         }
 
         public ITargetSelector Active { get; private set; }
+
+        public bool IsActive { get; private set; }
 
         public IParticleManager Particle { get; }
 
         [ImportManyTargetSelector]
         public IEnumerable<Lazy<ITargetSelector, ITargetSelectorMetadata>> Selectors { get; protected set; }
 
-        private TargetSelectorConfig Config { get; }
+        private TargetSelectorConfig Config { get; set; }
 
         private IServiceContext Context { get; }
 
+        public void Activate()
+        {
+            if (this.IsActive)
+            {
+                return;
+            }
+
+            this.IsActive = true;
+
+            this.Config = new TargetSelectorConfig();
+            this.Context.Container.BuildUp(this.Config);
+            this.Context.Container.RegisterValue(this.Config);
+            this.Config.Active.Item.ValueChanged += this.OnValueChanged;
+
+            this.UpdateActive(this.Config.Active);
+
+            UpdateManager.Subscribe(this.OnDrawingsUpdate, 250);
+        }
+
+        public void Deactivate()
+        {
+            if (!this.IsActive)
+            {
+                return;
+            }
+
+            this.IsActive = false;
+
+            UpdateManager.Unsubscribe(this.OnDrawingsUpdate);
+            this.Config?.Dispose();
+        }
+
         public void OnImportsSatisfied()
         {
-            this.UpdateActive(this.Config.Active.Value.SelectedValue);
+            if (this.IsActive)
+            {
+                this.UpdateActive(this.Config.Active);
+            }
         }
 
         private void OnDrawingsUpdate()

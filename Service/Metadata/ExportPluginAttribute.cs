@@ -11,6 +11,11 @@ namespace Ensage.SDK.Service.Metadata
     [AttributeUsage(AttributeTargets.Class)]
     public class ExportPluginAttribute : ExportAttribute, IPluginLoaderMetadata
     {
+        public ExportPluginAttribute(string name, params HeroId[] units)
+            : this(name, "Ensage", "1.0.0.0", StartupMode.Auto, units)
+        {
+        }
+
         public ExportPluginAttribute(string name, StartupMode mode, params HeroId[] units)
             : this(name, "Ensage", "1.0.0.0", mode, units)
         {

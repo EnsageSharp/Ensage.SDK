@@ -217,7 +217,7 @@ namespace Ensage.SDK.Input
                     break;
 
                 case WM_MOUSEWHEEL:
-                    var delta = (short)(args.WParam >> 16) & 0xFFFF;
+                    var delta = (short)((args.WParam >> 16) & 0xFFFF);
                     this.MouseWheel?.Invoke(this, new MouseWheelEventArgs(delta));
                     break;
 

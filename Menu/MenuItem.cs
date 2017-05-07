@@ -34,9 +34,19 @@ namespace Ensage.SDK.Menu
             }
         }
 
-        public static implicit operator TType(MenuItem<TType> item)
+        public static implicit operator bool(MenuItem<TType> item)
         {
-            return item.Value;
+            return item.Item.IsActive();
+        }
+
+        public static implicit operator string(MenuItem<TType> item)
+        {
+            return item.Item.GetValue<StringList>().SelectedValue;
+        }
+
+        public static implicit operator int(MenuItem<TType> item)
+        {
+            return item.Item.GetValue<Slider>().Value;
         }
     }
 }

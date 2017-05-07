@@ -1,16 +1,17 @@
-// <copyright file="UpdateProfiler.cs" company="Ensage">
+﻿// <copyright file="DeveloperTools.cs" company="Ensage">
 //    Copyright (c) 2017 Ensage.
 // </copyright>
 
-namespace Ensage.SDK.Helpers
+namespace Ensage.SDK.Plugins
 {
     using System;
-    using System.ComponentModel.Composition;
     using System.Linq;
     using System.Reflection;
 
     using Ensage.SDK.EventHandler;
+    using Ensage.SDK.Helpers;
     using Ensage.SDK.Service;
+    using Ensage.SDK.Service.Metadata;
 
     using log4net;
 
@@ -18,61 +19,20 @@ namespace Ensage.SDK.Helpers
 
     using SharpDX;
 
-    [Export(typeof(IUpdateProfiler))]
-    public class UpdateProfiler : ControllableService, IUpdateProfiler, IDisposable
+    [ExportPlugin("Developer Tools", StartupMode.Manual)]
+    public class DeveloperTools : Plugin
     {
         private static readonly ILog Log = AssemblyLogs.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        private bool disposed;
-
-        [ImportingConstructor]
-        public UpdateProfiler([Import] SDKConfig config)
-            : base(config.Debug.Factory, "Enable Profiler", false, true)
-        {
-        }
-
-        public void Dispose()
-        {
-            this.Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (this.disposed)
-            {
-                return;
-            }
-
-            if (disposing)
-            {
-                this.OnDeactivate();
-            }
-
-            this.disposed = true;
-        }
-
         protected override void OnActivate()
         {
-            foreach (var handler in UpdateManager.Handlers)
-            {
-                var timeout = 0;
-                var timer = handler.Executor as TimeoutHandler;
-
-                if (timer != null)
-                {
-                    timeout = timer.Timeout;
-                }
-
-                handler.Executor = new TraceHandler(timeout);
-                Log.Debug($"Updated {handler}");
-            }
-
             Drawing.OnDraw += this.OnDraw;
+            UpdateManager.Subscribe(this.UpdateHandler, 1000);
         }
 
         protected override void OnDeactivate()
         {
+            UpdateManager.Unsubscribe(this.UpdateHandler);
             Drawing.OnDraw -= this.OnDraw;
 
             foreach (var handler in UpdateManager.Handlers.Where(e => e.Executor is TraceHandler))
@@ -112,8 +72,25 @@ namespace Ensage.SDK.Helpers
                 {
                     Drawing.DrawText($"{handler.Name}", new Vector2(x + 100, y), size, color, FontFlags.AntiAlias);
                 }
-                
+
                 y += 25;
+            }
+        }
+
+        private void UpdateHandler()
+        {
+            foreach (var handler in UpdateManager.Handlers.Where(e => !(e.Executor is TraceHandler)))
+            {
+                var timeout = 0;
+                var timer = handler.Executor as TimeoutHandler;
+
+                if (timer != null)
+                {
+                    timeout = timer.Timeout;
+                }
+
+                handler.Executor = new TraceHandler(timeout);
+                Log.Debug($"Updated {handler}");
             }
         }
     }

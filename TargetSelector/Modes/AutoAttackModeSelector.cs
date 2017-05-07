@@ -23,11 +23,10 @@ namespace Ensage.SDK.TargetSelector.Modes
 
         private IHealthPrediction healthPrediction;
 
-        private ITargetSelectorManager manager;
-
-        public AutoAttackModeSelector(Hero owner, AutoAttackModeConfig config)
+        public AutoAttackModeSelector(Hero owner, ITargetSelectorManager manager, AutoAttackModeConfig config)
         {
             this.Owner = owner;
+            this.Manager = manager;
             this.Config = config;
         }
 
@@ -44,18 +43,7 @@ namespace Ensage.SDK.TargetSelector.Modes
             }
         }
 
-        protected ITargetSelectorManager Manager
-        {
-            get
-            {
-                if (this.manager == null)
-                {
-                    this.manager = IoC.Get<ITargetSelectorManager>();
-                }
-
-                return this.manager;
-            }
-        }
+        protected ITargetSelectorManager Manager { get; }
 
         private static bool LaneClearRateLimitResult { get; set; }
 

@@ -7,13 +7,14 @@ namespace Ensage.SDK.Orbwalker.Modes
     using System.ComponentModel.Composition;
 
     using Ensage.SDK.Orbwalker.Metadata;
+    using Ensage.SDK.TargetSelector;
 
     [ExportOrbwalkingMode]
     internal class Farm : AttackOrbwalkingMode
     {
         [ImportingConstructor]
-        public Farm([Import] IOrbwalker orbwalker)
-            : base(orbwalker, "Farm", 'V', false, false, false, false, true, true)
+        public Farm([Import] IOrbwalker orbwalker, [Import] ITargetSelectorManager targetSelector)
+            : base(orbwalker, targetSelector, "Farm", 'V', false, false, false, false, true, true)
         {
         }
     }

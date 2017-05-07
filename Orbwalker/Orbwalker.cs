@@ -53,9 +53,6 @@ namespace Ensage.SDK.Orbwalker
 
         public float TurnEndTime { get; private set; }
 
-        [ImportHealthPrediction]
-        protected Lazy<IHealthPrediction> HealthPrediction { get; set; }
-
         [ImportMany(typeof(IOrbwalkingMode))]
         protected IEnumerable<Lazy<IOrbwalkingMode, IOrbwalkingModeMetadata>> Modes { get; set; }
 

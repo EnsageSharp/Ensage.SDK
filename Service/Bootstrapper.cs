@@ -6,17 +6,12 @@ namespace Ensage.SDK.Service
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel.Composition.Hosting;
     using System.Diagnostics;
     using System.Linq;
     using System.Reflection;
 
-    using Ensage.SDK.EventHandler;
     using Ensage.SDK.Helpers;
-    using Ensage.SDK.Input;
-    using Ensage.SDK.Orbwalker;
     using Ensage.SDK.Service.Metadata;
-    using Ensage.SDK.TargetSelector;
 
     using log4net;
 
@@ -28,17 +23,17 @@ namespace Ensage.SDK.Service
     {
         private static readonly ILog Log = AssemblyLogs.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        public IEnumerable<Lazy<IAssemblyLoader, IAssemblyLoaderMetadata>> Assemblies
-        {
-            get
-            {
-                return this.Default?.GetAll<IAssemblyLoader, IAssemblyLoaderMetadata>();
-            }
-        }
-
         public SDKConfig Config { get; private set; }
 
         public ContextContainer<IServiceContext> Default { get; private set; }
+
+        public IEnumerable<Lazy<IPluginLoader, IPluginLoaderMetadata>> Plugins
+        {
+            get
+            {
+                return this.Default?.GetAll<IPluginLoader, IPluginLoaderMetadata>();
+            }
+        }
 
         public void BuildUp(object instance)
         {
@@ -77,25 +72,28 @@ namespace Ensage.SDK.Service
         {
             var id = ObjectManager.LocalHero.HeroId;
 
-            foreach (var assembly in this.Assemblies)
+            foreach (var plugin in this.Plugins)
             {
                 try
                 {
-                    if (assembly.IsValueCreated)
+                    if (plugin.IsValueCreated && plugin.Value.IsActive)
                     {
                         continue;
                     }
 
-                    if (assembly.Metadata.Units != null && assembly.Metadata.Units.Length > 0)
+                    if (plugin.Metadata.Mode == StartupMode.Auto)
                     {
-                        if (!assembly.Metadata.Units.Contains(id))
+                        if (plugin.Metadata.Units != null && plugin.Metadata.Units.Length > 0)
                         {
-                            continue;
+                            if (!plugin.Metadata.Units.Contains(id))
+                            {
+                                continue;
+                            }
                         }
-                    }
 
-                    Log.Info($"Activate {assembly.Metadata.Name}");
-                    assembly.Value.Activate();
+                        Log.Info($"Activate {plugin.Metadata.Name}");
+                        plugin.Value.Activate();
+                    }
                 }
                 catch (Exception e)
                 {
@@ -104,23 +102,9 @@ namespace Ensage.SDK.Service
             }
         }
 
-        private void ActivateServices()
-        {
-            try
-            {
-                IoC.Get<IUpdateProfiler>();
-                IoC.Get<ITargetSelectorManager>();
-                IoC.Get<IOrbwalker>();
-            }
-            catch (Exception e)
-            {
-                Log.Error(e);
-            }
-        }
-
         private void DeactivatePlugins()
         {
-            foreach (var assembly in this.Assemblies)
+            foreach (var assembly in this.Plugins)
             {
                 try
                 {
@@ -167,9 +151,6 @@ namespace Ensage.SDK.Service
                 Log.Debug($">> Searching for IAssemblyLoader Plugins");
                 this.PrintPlugins();
 
-                Log.Debug($">> Activating Services");
-                this.ActivateServices();
-
                 Log.Debug($">> Activating Plugins");
                 this.ActivatePlugins();
 
@@ -194,15 +175,16 @@ namespace Ensage.SDK.Service
 
         private void PrintPlugins()
         {
-            foreach (var assembly in this.Assemblies)
+            foreach (var assembly in this.Plugins)
             {
                 if (assembly.Metadata.Units == null)
                 {
-                    Log.Debug($"Found [{assembly.Metadata.Name}|{assembly.Metadata.Author}|{assembly.Metadata.Version}]");
+                    Log.Debug($"Found [{assembly.Metadata.Mode}] {assembly.Metadata.Name} | {assembly.Metadata.Author} | {assembly.Metadata.Version}");
                 }
                 else
                 {
-                    Log.Debug($"Found [{assembly.Metadata.Name}|{assembly.Metadata.Author}|{assembly.Metadata.Version}|{string.Join(", ", assembly.Metadata.Units)}]");
+                    Log.Debug(
+                        $"Found [{assembly.Metadata.Mode}] {assembly.Metadata.Name} | {assembly.Metadata.Author} | {assembly.Metadata.Version} | {string.Join(", ", assembly.Metadata.Units)}");
                 }
             }
         }

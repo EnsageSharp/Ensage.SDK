@@ -17,8 +17,6 @@ namespace Ensage.SDK.EventHandler
     {
         private static readonly ILog Log = AssemblyLogs.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        private static readonly object SyncRoot = new object();
-
         private static List<UpdateHandler<TMessage>> Handlers { get; } = new List<UpdateHandler<TMessage>>();
 
         public static void Publish(TMessage message)
@@ -38,30 +36,24 @@ namespace Ensage.SDK.EventHandler
 
         public static void Subscribe(Action<TMessage> callback)
         {
-            lock (SyncRoot)
+            if (Handlers.Any(e => e.Callback == callback))
             {
-                if (Handlers.Any(e => e.Callback == callback))
-                {
-                    return;
-                }
-
-                var handler = new UpdateHandler<TMessage>(callback, InvokeHandler<TMessage>.Default);
-
-                Log.Debug($"Create {handler}");
-                Handlers.Add(handler);
+                return;
             }
+
+            var handler = new UpdateHandler<TMessage>(callback, InvokeHandler<TMessage>.Default);
+
+            Log.Debug($"Create {handler}");
+            Handlers.Add(handler);
         }
 
         public static void Unsubscribe(Action<TMessage> callback)
         {
-            lock (SyncRoot)
+            var handler = Handlers.FirstOrDefault(e => e.Callback == callback);
+            if (handler != null)
             {
-                var handler = Handlers.FirstOrDefault(e => e.Callback == callback);
-                if (handler != null)
-                {
-                    Log.Debug($"Remove {handler}");
-                    Handlers.Remove(handler);
-                }
+                Log.Debug($"Remove {handler}");
+                Handlers.Remove(handler);
             }
         }
     }

@@ -4,7 +4,6 @@
 
 namespace Ensage.SDK.Helpers
 {
-    using System;
     using System.Collections.Generic;
     using System.Linq;
 
@@ -12,66 +11,84 @@ namespace Ensage.SDK.Helpers
 
     internal static class EntityManager
     {
-        private static readonly FrameCache<HashSet<Entity>> Cache;
+        private static HashSet<Entity> cache = new HashSet<Entity>();
 
         static EntityManager()
         {
-            Cache = new FrameCache<HashSet<Entity>>(GetEntities);
-        }
-
-        public static event EventHandler FrameChanged
-        {
-            add
-            {
-                Cache.FrameChanged += value;
-            }
-
-            remove
-            {
-                Cache.FrameChanged -= value;
-            }
+            Refresh();
         }
 
         internal static HashSet<Entity> Entities
         {
             get
             {
-                return Cache.Value;
+                return cache;
             }
         }
 
-        private static HashSet<Entity> GetEntities()
+        internal static void Refresh()
         {
-            return ObjectManager.GetEntities<Entity>().ToHashSet();
+            ObjectManager.OnAddEntity -= OnAddEntity;
+            ObjectManager.OnRemoveEntity -= OnRemoveEntity;
+            cache = ObjectManager.GetEntities<Entity>().ToHashSet();
+            ObjectManager.OnAddEntity += OnAddEntity;
+            ObjectManager.OnRemoveEntity += OnRemoveEntity;
+        }
+
+        private static void OnAddEntity(EntityEventArgs args)
+        {
+            cache.Add(args.Entity);
+        }
+
+        private static void OnRemoveEntity(EntityEventArgs args)
+        {
+            cache.Remove(args.Entity);
         }
     }
 
     public class EntityManager<T>
         where T : Entity, new()
     {
-        private static HashSet<T> entities;
+        private static HashSet<T> cache = new HashSet<T>();
 
         static EntityManager()
         {
-            EntityManager.FrameChanged += OnFrameChanged;
+            Refresh();
         }
 
-        public static IEnumerable<T> Entities
+        public static HashSet<T> Entities
         {
             get
             {
-                if (entities == null)
-                {
-                    entities = EntityManager.Entities.OfType<T>().ToHashSet();
-                }
-
-                return entities.Where(e => e.IsValid);
+                return cache;
             }
         }
 
-        private static void OnFrameChanged(object sender, EventArgs args)
+        internal static void Refresh()
         {
-            entities = null;
+            ObjectManager.OnAddEntity -= OnAddEntity;
+            ObjectManager.OnRemoveEntity -= OnRemoveEntity;
+            cache = EntityManager.Entities.OfType<T>().ToHashSet();
+            ObjectManager.OnAddEntity += OnAddEntity;
+            ObjectManager.OnRemoveEntity += OnRemoveEntity;
+        }
+
+        private static void OnAddEntity(EntityEventArgs args)
+        {
+            var type = args.Entity as T;
+            if (type != null)
+            {
+                cache.Add(type);
+            }
+        }
+
+        private static void OnRemoveEntity(EntityEventArgs args)
+        {
+            var type = args.Entity as T;
+            if (type != null)
+            {
+                cache.Remove(type);
+            }
         }
     }
 }

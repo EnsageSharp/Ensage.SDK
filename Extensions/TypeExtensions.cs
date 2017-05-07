@@ -9,6 +9,19 @@ namespace Ensage.SDK.Extensions
 
     public static class TypeExtensions
     {
+        public static TValue GetOrCreate<TKey, TValue>(this IDictionary<TKey, TValue> dict, TKey key, Func<TValue> valueFactory)
+        {
+            TValue val;
+
+            if (!dict.TryGetValue(key, out val))
+            {
+                val = valueFactory();
+                dict.Add(key, val);
+            }
+
+            return val;
+        }
+
         public static bool IsNumericType(this Type type)
         {
             switch (Type.GetTypeCode(type))
@@ -23,11 +36,9 @@ namespace Ensage.SDK.Extensions
                 case TypeCode.Int64:
                 case TypeCode.Decimal:
                 case TypeCode.Double:
-                case TypeCode.Single:
-                    return true;
+                case TypeCode.Single: return true;
 
-                default:
-                    return false;
+                default: return false;
             }
         }
 

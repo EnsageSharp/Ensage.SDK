@@ -14,6 +14,7 @@ namespace Ensage.SDK.Orbwalker.Modes
             : base(orbwalker)
         {
             this.TargetSelector = targetSelector;
+            this.TargetSelector.Activate();
         }
 
         protected ITargetSelectorManager TargetSelector { get; }

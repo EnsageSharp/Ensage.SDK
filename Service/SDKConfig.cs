@@ -28,7 +28,7 @@ namespace Ensage.SDK.Service
         {
             public DebugConfig(MenuFactory parent)
             {
-                this.Factory = parent.Menu("Debug");
+                // this.Factory = parent.Menu("Debug");
             }
 
             public MenuFactory Factory { get; }
@@ -48,7 +48,7 @@ namespace Ensage.SDK.Service
         {
             public SettingsConfig(MenuFactory parent)
             {
-                this.Factory = parent.Menu("Settings");
+                // this.Factory = parent.Menu("Settings");
             }
 
             public MenuFactory Factory { get; }

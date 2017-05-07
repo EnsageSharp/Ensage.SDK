@@ -128,6 +128,7 @@
     <Compile Include="Service\IPluginLoader.cs" />
     <Compile Include="Service\Metadata\IPluginLoaderMetadata.cs" />
     <Compile Include="Service\Metadata\StartupMode.cs" />
+    <Compile Include="Service\PluginContainer.cs" />
     <Compile Include="TargetSelector\Modes\AutoAttackModeSelector.cs" />
     <Compile Include="Orbwalker\Metadata\ExportOrbwalkingModeAttribute.cs" />
     <Compile Include="Orbwalker\Modes\Farm.cs" />

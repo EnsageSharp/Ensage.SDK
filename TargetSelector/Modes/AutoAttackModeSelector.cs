@@ -55,7 +55,7 @@ namespace Ensage.SDK.TargetSelector.Modes
 
         public Unit GetTarget()
         {
-            if (this.Config.Farm)
+            if (this.Config.Farm.Value)
             {
                 var killableCreep = EntityManager<Creep>.Entities.FirstOrDefault(unit => this.IsValid(unit) && this.CanKill(unit));
 
@@ -65,7 +65,7 @@ namespace Ensage.SDK.TargetSelector.Modes
                 }
             }
 
-            if (this.Config.Farm)
+            if (this.Config.Farm.Value)
             {
                 if ((Game.RawGameTime - LaneClearRateLimitTime) > 0.25f)
                 {
@@ -79,7 +79,7 @@ namespace Ensage.SDK.TargetSelector.Modes
                 }
             }
 
-            if (this.Config.Deny)
+            if (this.Config.Deny.Value)
             {
                 var denyCreep = EntityManager<Creep>.Entities.FirstOrDefault(unit => this.IsValid(unit, true) && unit.HealthPercent() < 0.5f && this.CanKill(unit));
 
@@ -89,7 +89,7 @@ namespace Ensage.SDK.TargetSelector.Modes
                 }
             }
 
-            if (this.Config.Hero)
+            if (this.Config.Hero.Value)
             {
                 var hero = this.Manager.Active.GetTargets()?.FirstOrDefault(unit => this.IsValid(unit));
 
@@ -99,7 +99,7 @@ namespace Ensage.SDK.TargetSelector.Modes
                 }
             }
 
-            if (this.Config.Building)
+            if (this.Config.Building.Value)
             {
                 var barracks = EntityManager<Building>.Entities.FirstOrDefault(unit => this.IsValid(unit));
                 if (barracks != null)
@@ -114,7 +114,7 @@ namespace Ensage.SDK.TargetSelector.Modes
                 }
             }
 
-            if (this.Config.Neutral)
+            if (this.Config.Neutral.Value)
             {
                 var neutral = EntityManager<Creep>.Entities.FirstOrDefault(unit => unit.IsNeutral && this.IsValid(unit));
 
@@ -124,7 +124,7 @@ namespace Ensage.SDK.TargetSelector.Modes
                 }
             }
 
-            if (this.Config.Creep)
+            if (this.Config.Creep.Value)
             {
                 var neutral = EntityManager<Creep>.Entities.FirstOrDefault(unit => this.IsValid(unit));
 

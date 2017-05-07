@@ -33,5 +33,10 @@ namespace Ensage.SDK.Menu
                 this.Item.SetValue(value);
             }
         }
+
+        public static implicit operator TType(MenuItem<TType> item)
+        {
+            return item.Value;
+        }
     }
 }

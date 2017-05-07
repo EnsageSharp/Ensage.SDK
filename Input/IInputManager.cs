@@ -18,6 +18,8 @@ namespace Ensage.SDK.Input
 
         event EventHandler<MouseEventArgs> MouseMove;
 
+        event EventHandler<MouseWheelEventArgs> MouseWheel;
+
         MouseButtons ActiveButtons { get; }
 
         bool IsKeyDown(Key key);

@@ -107,6 +107,7 @@
     <Compile Include="EventHandler\TimeoutHandler.cs" />
     <Compile Include="EventHandler\TraceHandler.cs" />
     <Compile Include="EventHandler\InvokeHandler.cs" />
+    <Compile Include="Input\MouseWheelEventArgs.cs" />
     <Compile Include="Plugins\DeveloperTools.cs" />
     <Compile Include="Plugins\OrbwalkerPlugin.cs" />
     <Compile Include="Plugins\TargetSelectorPlugin.cs" />

@@ -36,6 +36,8 @@ namespace Ensage.SDK.Input
 
         private const uint WM_MOUSEMOVE = 0x0200;
 
+        private const uint WM_MOUSEWHEEL = 0x020A;
+
         private const uint WM_RBUTTONDBLCLK = 0x0206;
 
         private const uint WM_RBUTTONDOWN = 0x0204;
@@ -61,6 +63,8 @@ namespace Ensage.SDK.Input
         public event EventHandler<MouseEventArgs> MouseClick;
 
         public event EventHandler<MouseEventArgs> MouseMove;
+
+        public event EventHandler<MouseWheelEventArgs> MouseWheel;
 
         public MouseButtons ActiveButtons { get; private set; }
 
@@ -209,6 +213,12 @@ namespace Ensage.SDK.Input
             {
                 case WM_MOUSEMOVE:
                     this.FireMouseMove(args);
+
+                    break;
+
+                case WM_MOUSEWHEEL:
+                    var delta = (short)(args.WParam >> 16) & 0xFFFF;
+                    this.MouseWheel?.Invoke(this, new MouseWheelEventArgs(delta));
                     break;
 
                 case WM_LBUTTONUP:

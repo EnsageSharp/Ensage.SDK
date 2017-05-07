@@ -11,7 +11,7 @@ namespace Ensage.SDK.EventHandler
         public TimeoutHandler(int timeout)
         {
             this.Timeout = timeout;
-            this.NextUpdate = DateTime.Now.AddMilliseconds(this.Timeout);
+            this.NextUpdate = DateTime.Now;
         }
 
         public int Timeout { get; set; }

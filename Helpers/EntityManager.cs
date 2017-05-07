@@ -15,7 +15,7 @@ namespace Ensage.SDK.Helpers
 
         static EntityManager()
         {
-            Refresh();
+            UpdateManager.SubscribeService(OnUpdate, 1000);
         }
 
         internal static HashSet<Entity> Entities
@@ -44,6 +44,11 @@ namespace Ensage.SDK.Helpers
         {
             cache.Remove(args.Entity);
         }
+
+        private static void OnUpdate()
+        {
+            Refresh();
+        }
     }
 
     public class EntityManager<T>
@@ -53,7 +58,7 @@ namespace Ensage.SDK.Helpers
 
         static EntityManager()
         {
-            Refresh();
+            UpdateManager.SubscribeService(OnUpdate, 1000);
         }
 
         public static HashSet<T> Entities
@@ -62,6 +67,11 @@ namespace Ensage.SDK.Helpers
             {
                 return cache;
             }
+        }
+
+        public override string ToString()
+        {
+            return $"EntityManager<{typeof(T).Name}>";
         }
 
         internal static void Refresh()
@@ -89,6 +99,11 @@ namespace Ensage.SDK.Helpers
             {
                 cache.Remove(type);
             }
+        }
+
+        private static void OnUpdate()
+        {
+            Refresh();
         }
     }
 }

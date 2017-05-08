@@ -47,6 +47,7 @@ namespace Ensage.SDK.Service
                     if (unit == ObjectManager.LocalHero.HeroId)
                     {
                         item.Item.SetFontColor(Color.Green);
+                        this.Menu.Parent.SetFontColor(Color.Green);
                     }
                 }
 
@@ -54,6 +55,7 @@ namespace Ensage.SDK.Service
                 {
                     this.ActiveItem.Item.DisplayName = $"Activate ({ObjectManager.LocalHero.HeroId} not supported)";
                     this.ActiveItem.Item.SetFontColor(Color.Red);
+                    this.Menu.Parent.SetFontColor(Color.Red);
                 }
             }
         }

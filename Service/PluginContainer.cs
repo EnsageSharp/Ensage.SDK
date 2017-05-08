@@ -17,6 +17,8 @@ namespace Ensage.SDK.Service
     using PlaySharp.Toolkit.Helper;
     using PlaySharp.Toolkit.Logging;
 
+    using SharpDX;
+
     public class PluginContainer : IActivatable, IDeactivatable
     {
         private static readonly ILog Log = AssemblyLogs.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
@@ -36,11 +38,22 @@ namespace Ensage.SDK.Service
             this.Menu.Item<object>($"Assembly: {this.Assembly.GetName().Name}");
             this.Menu.Item<object>($"Mode: {part.Metadata.Mode}");
 
-            if (part.Metadata.Units != null)
+            if (this.Metadata.Units != null)
             {
-                foreach (var unit in part.Metadata.Units)
+                foreach (var unit in this.Metadata.Units)
                 {
-                    this.Menu.Item<object>($"Unit: {unit}");
+                    var item = this.Menu.Item<object>($"Unit: {unit}");
+
+                    if (unit == ObjectManager.LocalHero.HeroId)
+                    {
+                        item.Item.SetFontColor(Color.Green);
+                    }
+                }
+
+                if (!this.Metadata.Units.Contains(ObjectManager.LocalHero.HeroId))
+                {
+                    this.ActiveItem.Item.DisplayName = $"Activate ({ObjectManager.LocalHero.HeroId} not supported)";
+                    this.ActiveItem.Item.SetFontColor(Color.Red);
                 }
             }
         }

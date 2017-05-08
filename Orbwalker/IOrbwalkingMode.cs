@@ -4,7 +4,9 @@
 
 namespace Ensage.SDK.Orbwalker
 {
-    public interface IOrbwalkingMode
+    using PlaySharp.Toolkit.Helper;
+
+    public interface IOrbwalkingMode : IControllable
     {
         bool CanExecute { get; }
 

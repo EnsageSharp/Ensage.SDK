@@ -8,6 +8,8 @@ namespace Ensage.SDK.Service.Metadata
     {
         string Author { get; }
 
+        string Description { get; }
+
         StartupMode Mode { get; }
 
         string Name { get; }

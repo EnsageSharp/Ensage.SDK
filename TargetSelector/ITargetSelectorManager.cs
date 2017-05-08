@@ -7,13 +7,16 @@ namespace Ensage.SDK.TargetSelector
     using System;
     using System.Collections.Generic;
 
+    using Ensage.SDK.TargetSelector.Config;
     using Ensage.SDK.TargetSelector.Metadata;
 
     using PlaySharp.Toolkit.Helper;
 
     public interface ITargetSelectorManager : IControllable
     {
-        ITargetSelector Active { get; }
+        ITargetSelector Active { get; set; }
+
+        TargetSelectorConfig Config { get; }
 
         IEnumerable<Lazy<ITargetSelector, ITargetSelectorMetadata>> Selectors { get; }
     }

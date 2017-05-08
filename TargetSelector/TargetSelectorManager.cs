@@ -14,6 +14,7 @@ namespace Ensage.SDK.TargetSelector
     using Ensage.SDK.Helpers;
     using Ensage.SDK.Renderer.Particle;
     using Ensage.SDK.Service;
+    using Ensage.SDK.TargetSelector.Config;
     using Ensage.SDK.TargetSelector.Metadata;
 
     using log4net;
@@ -23,68 +24,78 @@ namespace Ensage.SDK.TargetSelector
     using SharpDX;
 
     [ExportTargetSelectorManager]
-    public class TargetSelectorManager : ITargetSelectorManager, IPartImportsSatisfiedNotification
+    public class TargetSelectorManager : ControllableService, ITargetSelectorManager
     {
         private static readonly ILog Log = AssemblyLogs.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
+        private ITargetSelector active;
+
         [ImportingConstructor]
-        public TargetSelectorManager([Import] IServiceContext context, [Import] IParticleManager particle)
+        public TargetSelectorManager([Import] IServiceContext context, [Import] Lazy<IParticleManager> particle)
         {
             this.Context = context;
             this.Particle = particle;
         }
 
-        public ITargetSelector Active { get; private set; }
+        public ITargetSelector Active
+        {
+            get
+            {
+                return this.active;
+            }
 
-        public bool IsActive { get; private set; }
+            set
+            {
+                if (value == null && this.active != null)
+                {
+                    Log.Debug($"Deactivate Selector {this.active}");
+                    this.active.Deactivate();
+                    this.active = null;
+                    return;
+                }
 
-        public IParticleManager Particle { get; }
+                if (EqualityComparer<ITargetSelector>.Default.Equals(this.active, value))
+                {
+                    return;
+                }
 
-        [ImportManyTargetSelector]
-        public IEnumerable<Lazy<ITargetSelector, ITargetSelectorMetadata>> Selectors { get; protected set; }
+                Log.Debug($"Activate Selector {value}");
+                this.active?.Deactivate();
+                this.active = value;
+                this.active?.Activate();
+            }
+        }
 
-        private TargetSelectorConfig Config { get; set; }
+        public TargetSelectorConfig Config { get; private set; }
+
+        public Lazy<IParticleManager> Particle { get; }
+
+        [ImportMany(typeof(ITargetSelector))]
+        public IEnumerable<Lazy<ITargetSelector, ITargetSelectorMetadata>> Selectors { get; private set; }
 
         private IServiceContext Context { get; }
 
-        public void Activate()
+        protected override void OnActivate()
         {
-            if (this.IsActive)
-            {
-                return;
-            }
+            this.Config = new TargetSelectorConfig(this.Selectors.Select(e => e.Metadata.Name));
+            this.Config.Selection.Item.ValueChanged += this.OnSelectionChanged;
 
-            this.IsActive = true;
-
-            this.Config = new TargetSelectorConfig();
-            this.Context.Container.BuildUp(this.Config);
-            this.Context.Container.RegisterValue(this.Config);
-            this.Config.Active.Item.ValueChanged += this.OnValueChanged;
-
-            this.UpdateActive(this.Config.Active);
+            // activate selection
+            this.UpdateActive(this.Config.Selection);
 
             UpdateManager.Subscribe(this.OnDrawingsUpdate, 250);
         }
 
-        public void Deactivate()
+        protected override void OnDeactivate()
         {
-            if (!this.IsActive)
-            {
-                return;
-            }
-
-            this.IsActive = false;
-
             UpdateManager.Unsubscribe(this.OnDrawingsUpdate);
-            this.Config?.Dispose();
-        }
+            this.Particle.Value.Remove("ActiveTargetSelectorTarget");
 
-        public void OnImportsSatisfied()
-        {
-            if (this.IsActive)
-            {
-                this.UpdateActive(this.Config.Active);
-            }
+            this.Active?.Deactivate();
+            this.Active = null;
+
+            this.Config.Selection.Item.ValueChanged -= this.OnSelectionChanged;
+            this.Config.Dispose();
         }
 
         private void OnDrawingsUpdate()
@@ -98,15 +109,15 @@ namespace Ensage.SDK.TargetSelector
 
             if (target != null)
             {
-                this.Particle.DrawRange(target, "ActiveTargetSelectorTarget", target.HullRadius * 4, Color.Yellow);
+                this.Particle.Value.DrawRange(target, "ActiveTargetSelectorTarget", target.HullRadius * 4, Color.Yellow);
             }
             else
             {
-                this.Particle.Remove("ActiveTargetSelectorTarget");
+                this.Particle.Value.Remove("ActiveTargetSelectorTarget");
             }
         }
 
-        private void OnValueChanged(object sender, OnValueChangeEventArgs args)
+        private void OnSelectionChanged(object sender, OnValueChangeEventArgs args)
         {
             this.UpdateActive(args.GetNewValue<StringList>().SelectedValue);
         }
@@ -126,9 +137,7 @@ namespace Ensage.SDK.TargetSelector
                 name = "Near Mouse";
             }
 
-            Log.Debug($"Activate Mode {name}");
             this.Active = this.Selectors.FirstOrDefault(s => s.Metadata.Name == name)?.Value;
-            this.Active?.Activate();
         }
     }
 }

@@ -14,8 +14,7 @@ namespace Ensage.SDK.Threading
 
         private static EnsageSynchronizationContext instance;
 
-        private readonly ConcurrentQueue<KeyValuePair<SendOrPostCallback, object>> queue =
-            new ConcurrentQueue<KeyValuePair<SendOrPostCallback, object>>();
+        private readonly ConcurrentQueue<KeyValuePair<SendOrPostCallback, object>> queue = new ConcurrentQueue<KeyValuePair<SendOrPostCallback, object>>();
 
         public static EnsageSynchronizationContext Instance
         {

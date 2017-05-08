@@ -19,7 +19,7 @@ namespace Ensage.SDK.Plugins
 
     using SharpDX;
 
-    [ExportPlugin("Developer Tools", StartupMode.Manual)]
+    [ExportPlugin("Developer Tools", StartupMode.Manual, description: "Display UpdateManager callback times in CPU Ticks")]
     public class DeveloperTools : Plugin
     {
         private static readonly ILog Log = AssemblyLogs.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);

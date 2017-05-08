@@ -9,6 +9,7 @@ namespace Ensage.SDK.Service
     using System.Diagnostics;
     using System.Reflection;
 
+    using Ensage.SDK.Extensions;
     using Ensage.SDK.Helpers;
     using Ensage.SDK.Service.Metadata;
 
@@ -65,7 +66,7 @@ namespace Ensage.SDK.Service
             }
             catch (Exception e)
             {
-                Log.Error(e);
+                Log.Warn(e);
             }
         }
 
@@ -73,14 +74,16 @@ namespace Ensage.SDK.Service
         {
             foreach (var plugin in this.PluginContainer)
             {
-                if (plugin.Mode == StartupMode.Manual && plugin.ActiveItem)
+                if (plugin.Menu)
                 {
-                    plugin.Activate();
-                }
-
-                if (plugin.Mode == StartupMode.Auto && plugin.ActiveItem)
-                {
-                    plugin.Activate();
+                    try
+                    {
+                        plugin.Activate();
+                    }
+                    catch (Exception e)
+                    {
+                        Log.Warn(e);
+                    }
                 }
             }
         }
@@ -89,7 +92,14 @@ namespace Ensage.SDK.Service
         {
             foreach (var plugin in this.PluginContainer)
             {
-                plugin.Deactivate();
+                try
+                {
+                    plugin.Deactivate();
+                }
+                catch (Exception e)
+                {
+                    Log.Warn(e);
+                }
             }
         }
 
@@ -97,17 +107,12 @@ namespace Ensage.SDK.Service
         {
             foreach (var assembly in this.Plugins)
             {
-                if (assembly.Metadata.Units == null)
-                {
-                    Log.Debug($"Found [{assembly.Metadata.Mode}] {assembly.Metadata.Name} | {assembly.Metadata.Author} | {assembly.Metadata.Version}");
-                }
-                else
-                {
-                    Log.Debug(
-                        $"Found [{assembly.Metadata.Mode}] {assembly.Metadata.Name} | {assembly.Metadata.Author} | {assembly.Metadata.Version} | {string.Join(", ", assembly.Metadata.Units)}");
-                }
+                Log.Debug($"Found {assembly.Metadata.Name}");
 
-                this.PluginContainer.Add(new PluginContainer(this.Config.Plugins.Factory, assembly));
+                if (assembly.Metadata.IsSupported())
+                {
+                    this.PluginContainer.Add(new PluginContainer(this.Config.Plugins.Factory, assembly));
+                }
             }
         }
 

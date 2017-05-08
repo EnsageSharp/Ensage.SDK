@@ -4,6 +4,7 @@
 
 namespace Ensage.SDK.Orbwalker
 {
+    using Ensage.SDK.Orbwalker.Config;
     using Ensage.SDK.Service;
 
     using PlaySharp.Toolkit.Helper;

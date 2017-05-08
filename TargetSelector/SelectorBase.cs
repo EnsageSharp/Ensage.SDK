@@ -10,7 +10,7 @@ namespace Ensage.SDK.TargetSelector
     using Ensage.SDK.Helpers;
     using Ensage.SDK.Service;
 
-    public abstract class SelectorBase : ITargetSelector, IDisposable
+    public abstract class SelectorBase : ControllableService, ITargetSelector, IDisposable
     {
         private bool disposed;
 
@@ -23,14 +23,6 @@ namespace Ensage.SDK.TargetSelector
         protected Hero Owner { get; }
 
         protected FrameCache<IEnumerable<Unit>> Targets { get; }
-
-        public virtual void Activate()
-        {
-        }
-
-        public virtual void Deactivate()
-        {
-        }
 
         public void Dispose()
         {

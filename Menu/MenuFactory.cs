@@ -59,16 +59,19 @@ namespace Ensage.SDK.Menu
         }
 
         public MenuItem<T> Item<T>(string displayName)
+            where T : struct
         {
             return this.Item<T>(displayName, GetName(displayName));
         }
 
         public MenuItem<T> Item<T>(string displayName, T value)
+            where T : struct
         {
             return this.Item<T>(displayName, GetName(displayName), value);
         }
 
         public MenuItem<T> Item<T>(string displayName, string name)
+            where T : struct
         {
             var ns = $"{this.Parent.Name}.{name}";
             var menuItem = this.Parent.Items.FirstOrDefault(e => e.Name == ns);
@@ -86,6 +89,7 @@ namespace Ensage.SDK.Menu
         }
 
         public MenuItem<T> Item<T>(string displayName, string name, T value)
+            where T : struct
         {
             var ns = $"{this.Parent.Name}.{name}";
             var menuItem = this.Parent.Items.FirstOrDefault(e => e.Name == ns);

@@ -20,6 +20,8 @@ namespace Ensage.SDK.Renderer.Particle
 
         void DrawRange(Unit unit, string id, float range, Color color);
 
+        bool HasParticle(string name);
+
         void Remove(string name);
 
         void ShowClick(Unit unit, string id, Vector3 position, Color color);

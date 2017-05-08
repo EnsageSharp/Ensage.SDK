@@ -4,31 +4,32 @@
 
 namespace Ensage.SDK.Plugins
 {
+    using System;
     using System.ComponentModel.Composition;
 
     using Ensage.SDK.Service;
     using Ensage.SDK.Service.Metadata;
     using Ensage.SDK.TargetSelector;
 
-    [ExportPlugin("Target Selector", StartupMode.Auto)]
+    [ExportPlugin("Target Selector", StartupMode.Auto, description: "SDK Target Selector Framework")]
     public class TargetSelectorPlugin : Plugin
     {
         [ImportingConstructor]
-        public TargetSelectorPlugin([Import] ITargetSelectorManager service)
+        public TargetSelectorPlugin([Import] Lazy<ITargetSelectorManager> service)
         {
             this.Service = service;
         }
 
-        public ITargetSelectorManager Service { get; }
+        public Lazy<ITargetSelectorManager> Service { get; }
 
         protected override void OnActivate()
         {
-            this.Service.Activate();
+            this.Service.Value.Activate();
         }
 
         protected override void OnDeactivate()
         {
-            this.Service.Deactivate();
+            this.Service.Value.Deactivate();
         }
     }
 }

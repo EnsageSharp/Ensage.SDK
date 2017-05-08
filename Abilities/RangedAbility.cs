@@ -31,8 +31,7 @@ namespace Ensage.SDK.Abilities
                     }
 
                     // talents
-                    foreach (var talent in
-                        unit.Spellbook.Spells.Where(x => x.Level > 0 && x.Name.StartsWith("special_bonus_cast_range_")))
+                    foreach (var talent in unit.Spellbook.Spells.Where(x => x.Level > 0 && x.Name.StartsWith("special_bonus_cast_range_")))
                     {
                         bonusRange += talent.GetAbilitySpecialData("value");
                     }

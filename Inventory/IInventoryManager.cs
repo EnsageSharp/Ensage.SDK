@@ -7,9 +7,11 @@ namespace Ensage.SDK.Inventory
     using System.Collections.Generic;
     using System.Collections.Specialized;
 
+    using PlaySharp.Toolkit.Helper;
+
     using Inventory = Ensage.Inventory;
 
-    public interface IInventoryManager : INotifyCollectionChanged
+    public interface IInventoryManager : IControllable, INotifyCollectionChanged
     {
         Inventory Inventory { get; }
 

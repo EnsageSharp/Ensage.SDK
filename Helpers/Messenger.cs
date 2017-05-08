@@ -2,12 +2,14 @@
 //    Copyright (c) 2017 Ensage.
 // </copyright>
 
-namespace Ensage.SDK.EventHandler
+namespace Ensage.SDK.Helpers
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
+
+    using Ensage.SDK.EventHandler;
 
     using log4net;
 

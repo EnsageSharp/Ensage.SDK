@@ -12,12 +12,14 @@ namespace Ensage.SDK.Orbwalker
 
     using Ensage.SDK.Extensions;
     using Ensage.SDK.Helpers;
+    using Ensage.SDK.Orbwalker.Config;
     using Ensage.SDK.Orbwalker.Metadata;
     using Ensage.SDK.Renderer.Particle;
     using Ensage.SDK.Service;
 
     using log4net;
 
+    using PlaySharp.Toolkit.Helper;
     using PlaySharp.Toolkit.Logging;
 
     using SharpDX;
@@ -28,13 +30,14 @@ namespace Ensage.SDK.Orbwalker
         private static readonly ILog Log = AssemblyLogs.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         [ImportingConstructor]
-        public Orbwalker([Import] IServiceContext context)
+        public Orbwalker([Import] IServiceContext context, [Import] Lazy<IOrbwalkerManager> manager)
         {
             this.Context = context;
+            this.Manager = manager;
             this.Owner = context.Owner;
         }
 
-        public OrbwalkerConfig Config { get; private set; }
+        public OrbwalkerConfig Config => this.Manager.Value.Config;
 
         public IServiceContext Context { get; }
 
@@ -43,7 +46,7 @@ namespace Ensage.SDK.Orbwalker
         public float TurnEndTime { get; private set; }
 
         [ImportMany(typeof(IOrbwalkingMode))]
-        protected IEnumerable<Lazy<IOrbwalkingMode, IOrbwalkingModeMetadata>> Modes { get; set; }
+        protected IEnumerable<Lazy<IOrbwalkingMode, IOrbwalkingModeMetadata>> DefaultModes { get; set; }
 
         [Import(typeof(IParticleManager))]
         protected Lazy<IParticleManager> ParticleManager { get; set; }
@@ -53,6 +56,10 @@ namespace Ensage.SDK.Orbwalker
         private float LastAttackTime { get; set; }
 
         private float LastMoveOrderIssuedTime { get; set; }
+
+        private Lazy<IOrbwalkerManager> Manager { get; }
+
+        private List<IOrbwalkingMode> Modes { get; } = new List<IOrbwalkingMode>();
 
         private Hero Owner { get; }
 
@@ -68,7 +75,6 @@ namespace Ensage.SDK.Orbwalker
             this.IsActive = true;
 
             Log.Debug($"Activate Orbwalker:{this.Owner.GetDisplayName()}");
-            this.Config = new OrbwalkerConfig(this.Context);
             UpdateManager.Subscribe(this.OnUpdate);
             UpdateManager.Subscribe(this.OnUpdateDrawings, 1000);
             Entity.OnInt32PropertyChange += this.Hero_OnInt32PropertyChange;
@@ -76,13 +82,13 @@ namespace Ensage.SDK.Orbwalker
 
         public bool Attack(Unit unit)
         {
-            if (!this.Config.Settings.Attack.Value)
+            if (!this.Config.Settings.Attack)
             {
                 return false;
             }
 
             var time = Game.RawGameTime;
-            if ((time - this.LastAttackOrderIssuedTime) < (this.Config.Settings.AttackDelay.Value.Value / 1000f))
+            if ((time - this.LastAttackOrderIssuedTime) < (this.Config.Settings.AttackDelay / 1000f))
             {
                 return false;
             }
@@ -113,21 +119,22 @@ namespace Ensage.SDK.Orbwalker
             this.IsActive = false;
 
             Log.Debug($"Deactivate Orbwalker:{this.Owner.GetDisplayName()}");
-            this.Config?.Dispose();
             UpdateManager.Unsubscribe(this.OnUpdate);
             UpdateManager.Unsubscribe(this.OnUpdateDrawings);
             Entity.OnInt32PropertyChange -= this.Hero_OnInt32PropertyChange;
+
+            this.ParticleManager?.Value.Remove("AttackRange");
         }
 
         public bool Move(Vector3 position)
         {
-            if (!this.Config.Settings.Move.Value)
+            if (!this.Config.Settings.Move)
             {
                 return false;
             }
 
             var time = Game.RawGameTime;
-            if ((time - this.LastMoveOrderIssuedTime) < (this.Config.Settings.MoveDelay.Value.Value / 1000f))
+            if ((time - this.LastMoveOrderIssuedTime) < (this.Config.Settings.MoveDelay / 1000f))
             {
                 // 0.005f
                 return false;
@@ -140,6 +147,37 @@ namespace Ensage.SDK.Orbwalker
             }
 
             return false;
+        }
+
+        public void RegisterMode(IOrbwalkingMode mode)
+        {
+            if (this.Modes.All(e => e != mode))
+            {
+                return;
+            }
+
+            this.Modes.Add(mode);
+
+            var contoller = mode as IControllable;
+            if (contoller != null && !contoller.IsActive)
+            {
+                contoller.Activate();
+            }
+        }
+
+        public void UnregisterMode(IOrbwalkingMode mode)
+        {
+            var oldMode = this.Modes.FirstOrDefault(e => e == mode);
+            if (oldMode != null)
+            {
+                this.Modes.Remove(oldMode);
+
+                var contoller = oldMode as IControllable;
+                if (contoller != null && !contoller.IsActive)
+                {
+                    contoller.Activate();
+                }
+            }
         }
 
         private void Hero_OnInt32PropertyChange(Entity sender, Int32PropertyChangeEventArgs args)
@@ -175,13 +213,18 @@ namespace Ensage.SDK.Orbwalker
                 return;
             }
 
-            if (this.Modes == null)
+            if (this.DefaultModes == null)
             {
                 return;
             }
 
             // modes
-            foreach (var mode in this.Modes.Where(e => e.Value.CanExecute))
+            foreach (var mode in this.Modes.Where(e => e.CanExecute))
+            {
+                mode.Execute();
+            }
+
+            foreach (var mode in this.DefaultModes.Where(e => e.Value.CanExecute))
             {
                 mode.Value.Execute();
             }

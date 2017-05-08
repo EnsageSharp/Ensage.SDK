@@ -9,7 +9,7 @@ namespace Ensage.SDK.TargetSelector.Modes
 
     using Ensage.SDK.Extensions;
     using Ensage.SDK.Helpers;
-    using Ensage.SDK.Orbwalker;
+    using Ensage.SDK.Orbwalker.Config;
     using Ensage.SDK.Prediction;
 
     using log4net;
@@ -55,7 +55,7 @@ namespace Ensage.SDK.TargetSelector.Modes
 
         public Unit GetTarget()
         {
-            if (this.Config.Farm.Value)
+            if (this.Config.Farm)
             {
                 var killableCreep = EntityManager<Creep>.Entities.FirstOrDefault(unit => this.IsValid(unit) && this.CanKill(unit));
 
@@ -65,7 +65,7 @@ namespace Ensage.SDK.TargetSelector.Modes
                 }
             }
 
-            if (this.Config.Farm.Value)
+            if (this.Config.Farm)
             {
                 if ((Game.RawGameTime - LaneClearRateLimitTime) > 0.25f)
                 {
@@ -79,7 +79,7 @@ namespace Ensage.SDK.TargetSelector.Modes
                 }
             }
 
-            if (this.Config.Deny.Value)
+            if (this.Config.Deny)
             {
                 var denyCreep = EntityManager<Creep>.Entities.FirstOrDefault(unit => this.IsValid(unit, true) && unit.HealthPercent() < 0.5f && this.CanKill(unit));
 
@@ -89,7 +89,7 @@ namespace Ensage.SDK.TargetSelector.Modes
                 }
             }
 
-            if (this.Config.Hero.Value)
+            if (this.Config.Hero)
             {
                 var hero = this.Manager.Active.GetTargets()?.FirstOrDefault(unit => this.IsValid(unit));
 
@@ -99,7 +99,7 @@ namespace Ensage.SDK.TargetSelector.Modes
                 }
             }
 
-            if (this.Config.Building.Value)
+            if (this.Config.Building)
             {
                 var barracks = EntityManager<Building>.Entities.FirstOrDefault(unit => this.IsValid(unit));
                 if (barracks != null)
@@ -114,7 +114,7 @@ namespace Ensage.SDK.TargetSelector.Modes
                 }
             }
 
-            if (this.Config.Neutral.Value)
+            if (this.Config.Neutral)
             {
                 var neutral = EntityManager<Creep>.Entities.FirstOrDefault(unit => unit.IsNeutral && this.IsValid(unit));
 
@@ -124,7 +124,7 @@ namespace Ensage.SDK.TargetSelector.Modes
                 }
             }
 
-            if (this.Config.Creep.Value)
+            if (this.Config.Creep)
             {
                 var neutral = EntityManager<Creep>.Entities.FirstOrDefault(unit => this.IsValid(unit));
 

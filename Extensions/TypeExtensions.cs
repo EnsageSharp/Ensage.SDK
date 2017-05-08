@@ -36,9 +36,11 @@ namespace Ensage.SDK.Extensions
                 case TypeCode.Int64:
                 case TypeCode.Decimal:
                 case TypeCode.Double:
-                case TypeCode.Single: return true;
+                case TypeCode.Single:
+                    return true;
 
-                default: return false;
+                default:
+                    return false;
             }
         }
 

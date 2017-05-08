@@ -12,8 +12,9 @@ namespace Ensage.SDK.Input
     using System.Windows.Forms;
     using System.Windows.Input;
 
-    using Ensage.SDK.EventHandler;
+    using Ensage.SDK.Helpers;
     using Ensage.SDK.Input.Metadata;
+    using Ensage.SDK.Service;
 
     using log4net;
 
@@ -22,7 +23,7 @@ namespace Ensage.SDK.Input
     [ExportInputManager]
     [SuppressMessage("ReSharper", "InconsistentNaming")]
     [SuppressMessage("ReSharper", "StyleCop.SA1310")]
-    public class InputManager : IInputManager, IDisposable
+    public class InputManager : ControllableService, IInputManager
     {
         private const uint WM_KEYDOWN = 0x0100;
 
@@ -48,14 +49,6 @@ namespace Ensage.SDK.Input
 
         private readonly List<Hotkey> hotkeys = new List<Hotkey>();
 
-        private bool disposed;
-
-        public InputManager()
-        {
-            Game.OnWndProc += this.OnWndProc;
-            this.KeyDown += this.HotkeyHandler;
-        }
-
         public event EventHandler<KeyEventArgs> KeyDown;
 
         public event EventHandler<KeyEventArgs> KeyUp;
@@ -69,12 +62,6 @@ namespace Ensage.SDK.Input
         public MouseButtons ActiveButtons { get; private set; }
 
         public IEnumerable<Hotkey> Hotkeys => this.hotkeys.AsReadOnly();
-
-        public void Dispose()
-        {
-            this.Dispose(true);
-            GC.SuppressFinalize(this);
-        }
 
         public bool IsKeyDown(Key key)
         {
@@ -100,19 +87,16 @@ namespace Ensage.SDK.Input
             this.hotkeys.RemoveAll(h => h.Name == name);
         }
 
-        protected virtual void Dispose(bool disposing)
+        protected override void OnActivate()
         {
-            if (this.disposed)
-            {
-                return;
-            }
+            Game.OnWndProc += this.OnWndProc;
+            this.KeyDown += this.HotkeyHandler;
+        }
 
-            if (disposing)
-            {
-                Game.OnWndProc -= this.OnWndProc;
-            }
-
-            this.disposed = true;
+        protected override void OnDeactivate()
+        {
+            Game.OnWndProc -= this.OnWndProc;
+            this.KeyDown -= this.HotkeyHandler;
         }
 
         private void FireKeyDown(WndEventArgs args)

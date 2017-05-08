@@ -46,13 +46,15 @@
     <Reference Include="Ensage">
       <HintPath>D:\Games\Loader\References\Ensage.dll</HintPath>
     </Reference>
-    <Reference Include="Ensage.Common">
+    <Reference Include="Ensage.Common, Version=1.2.8.5, Culture=neutral, PublicKeyToken=9849de8727708dde, processorArchitecture=AMD64">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>D:\Games\Loader\References\Ensage.Common.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json">
       <HintPath>D:\Games\Loader\References\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="PlaySharp.Toolkit">
+    <Reference Include="PlaySharp.Toolkit, Version=1.0.0.0, Culture=neutral, PublicKeyToken=7e3dc52b16ce4f66, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>D:\Games\Loader\References\PlaySharp.Toolkit.dll</HintPath>
     </Reference>
     <Reference Include="SharpDX">
@@ -102,12 +104,18 @@
     <Compile Include="Abilities\RangedAbility.cs" />
     <Compile Include="Abilities\TargetAbility.cs" />
     <Compile Include="Abilities\npc_dota_hero_vengefulspirit\vengefulspirit_magic_missile.cs" />
-    <Compile Include="EventHandler\Messenger.cs" />
+    <Compile Include="Helpers\Messenger.cs" />
     <Compile Include="EventHandler\IUpdateHandler.cs" />
     <Compile Include="EventHandler\TimeoutHandler.cs" />
     <Compile Include="EventHandler\TraceHandler.cs" />
     <Compile Include="EventHandler\InvokeHandler.cs" />
     <Compile Include="Input\MouseWheelEventArgs.cs" />
+    <Compile Include="Orbwalker\IOrbwalkerManager.cs" />
+    <Compile Include="Orbwalker\Metadata\ExportOrbwalkerManagerAttribute.cs" />
+    <Compile Include="Orbwalker\Metadata\ImportOrbwalkerManagerAttribute.cs" />
+    <Compile Include="Orbwalker\Metadata\IOrbwalkerManagerMetadata.cs" />
+    <Compile Include="Orbwalker\Modes\Combo.cs" />
+    <Compile Include="Orbwalker\OrbwalkerManager.cs" />
     <Compile Include="Plugins\DeveloperTools.cs" />
     <Compile Include="Plugins\OrbwalkerPlugin.cs" />
     <Compile Include="Plugins\TargetSelectorPlugin.cs" />
@@ -124,6 +132,7 @@
     <Compile Include="Input\Metadata\ImportInputManagerAttribute.cs" />
     <Compile Include="Orbwalker\Modes\AttackOrbwalkingMode.cs" />
     <Compile Include="Orbwalker\Modes\AutoAttackMode.cs" />
+    <Compile Include="Extensions\MetadataExtensions.cs" />
     <Compile Include="Service\Metadata\ExportPluginAttribute.cs" />
     <Compile Include="Service\IPluginLoader.cs" />
     <Compile Include="Service\Metadata\IPluginLoaderMetadata.cs" />
@@ -138,7 +147,6 @@
     <Compile Include="Orbwalker\Modes\Support.cs" />
     <Compile Include="Service\SDKConfig.cs" />
     <Compile Include="Orbwalker\Metadata\ExportOrbwalkerAttribute.cs" />
-    <Compile Include="Orbwalker\Metadata\ImportManyOrbwalkerAttribute.cs" />
     <Compile Include="Orbwalker\Metadata\ImportOrbwalkerAttribute.cs" />
     <Compile Include="Orbwalker\Metadata\IOrbwalkerMetadata.cs" />
     <Compile Include="Prediction\Metadata\ExportHealthPredictionAttribute.cs" />
@@ -176,17 +184,16 @@
     <Compile Include="Prediction\HealthPrediction.cs" />
     <Compile Include="Orbwalker\IOrbwalker.cs" />
     <Compile Include="Orbwalker\Orbwalker.cs" />
-    <Compile Include="Orbwalker\OrbwalkerConfig.cs" />
+    <Compile Include="Orbwalker\Config\OrbwalkerConfig.cs" />
     <Compile Include="Orbwalker\Modes\OrbwalkingMode.cs" />
     <Compile Include="TargetSelector\Metadata\ExportTargetSelectorManagerAttribute.cs" />
     <Compile Include="TargetSelector\Modes\FocusTargetSelector.cs" />
     <Compile Include="TargetSelector\Metadata\ImportTargetSelectorManagerAttribute.cs" />
     <Compile Include="TargetSelector\ITargetSelectorManager.cs" />
     <Compile Include="TargetSelector\Metadata\ITargetSelectorManagerMetadata.cs" />
-    <Compile Include="TargetSelector\Metadata\ImportManyTargetSelectorAttribute.cs" />
     <Compile Include="TargetSelector\Metadata\ImportTargetSelectorAttribute.cs" />
     <Compile Include="TargetSelector\Metadata\ITargetSelectorMetadata.cs" />
-    <Compile Include="Orbwalker\AutoAttackModeConfig.cs" />
+    <Compile Include="Orbwalker\Config\AutoAttackModeConfig.cs" />
     <Compile Include="Persistence\CacheEntry.cs" />
     <Compile Include="Persistence\ObjectValue.cs" />
     <Compile Include="Persistence\PersistenceCache.cs" />
@@ -225,12 +232,12 @@
     <Compile Include="TargetSelector\Modes\LowestHealthSelector.cs" />
     <Compile Include="TargetSelector\Modes\MostAttackDamageSelector.cs" />
     <Compile Include="TargetSelector\Modes\MostSpellDamageSelector.cs" />
-    <Compile Include="TargetSelector\Modes\NearMouseConfig.cs" />
+    <Compile Include="TargetSelector\Config\NearMouseConfig.cs" />
     <Compile Include="TargetSelector\Modes\NearMouseSelector.cs" />
     <Compile Include="TargetSelector\SelectorBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Extensions\UnitExtensions.cs" />
-    <Compile Include="TargetSelector\TargetSelectorConfig.cs" />
+    <Compile Include="TargetSelector\Config\TargetSelectorConfig.cs" />
     <Compile Include="TargetSelector\TargetSelectorManager.cs" />
     <Compile Include="Threading\EnsageDispatcher.cs" />
     <Compile Include="Threading\EnsageSynchronizationContext.cs" />
@@ -240,6 +247,7 @@
     <None Include="key.snk" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Managers\" />
     <Folder Include="Resources\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

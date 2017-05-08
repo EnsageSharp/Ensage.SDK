@@ -69,11 +69,7 @@ namespace Ensage.SDK.Extensions
         /// <param name="radius1">Circle 1 Radius</param>
         /// <param name="radius2">Circle 2 Radius</param>
         /// <returns>Array of <see cref="Vector2" /> that contains the intersection points.</returns>
-        public static Vector2[] CircleCircleIntersection(
-            this Vector2 center1,
-            Vector2 center2,
-            float radius1,
-            float radius2)
+        public static Vector2[] CircleCircleIntersection(this Vector2 center1, Vector2 center2, float radius1, float radius2)
         {
             var d = center1.Distance(center2);
 
@@ -254,17 +250,11 @@ namespace Ensage.SDK.Extensions
         /// <param name="segmentEnd">Vector2 Segment End</param>
         /// <param name="onlyIfOnSegment">Only if Segment</param>
         /// <returns>The squared distance between the point and the segment.</returns>
-        public static float DistanceSquared(
-            this Vector2 point,
-            Vector2 segmentStart,
-            Vector2 segmentEnd,
-            bool onlyIfOnSegment = false)
+        public static float DistanceSquared(this Vector2 point, Vector2 segmentStart, Vector2 segmentEnd, bool onlyIfOnSegment = false)
         {
             var objects = point.ProjectOn(segmentStart, segmentEnd);
 
-            return objects.IsOnSegment || onlyIfOnSegment == false
-                       ? Vector2.DistanceSquared(objects.SegmentPoint, point)
-                       : float.MaxValue;
+            return objects.IsOnSegment || onlyIfOnSegment == false ? Vector2.DistanceSquared(objects.SegmentPoint, point) : float.MaxValue;
         }
 
         /// <summary>
@@ -275,17 +265,11 @@ namespace Ensage.SDK.Extensions
         /// <param name="segmentEnd">Vector2 Segment End</param>
         /// <param name="onlyIfOnSegment">Only if Segment</param>
         /// <returns>The distance between the point and the segment.</returns>
-        public static float DistanceToLineSegment(
-            this Vector2 point,
-            Vector2 segmentStart,
-            Vector2 segmentEnd,
-            bool onlyIfOnSegment = false)
+        public static float DistanceToLineSegment(this Vector2 point, Vector2 segmentStart, Vector2 segmentEnd, bool onlyIfOnSegment = false)
         {
             var objects = point.ProjectOn(segmentStart, segmentEnd);
 
-            return objects.IsOnSegment || onlyIfOnSegment == false
-                       ? Vector2.Distance(objects.SegmentPoint, point)
-                       : float.MaxValue;
+            return objects.IsOnSegment || onlyIfOnSegment == false ? Vector2.Distance(objects.SegmentPoint, point) : float.MaxValue;
         }
 
         /// <summary>
@@ -349,11 +333,7 @@ namespace Ensage.SDK.Extensions
         /// <param name="lineSegment2Start">Line Segment 2 (Start)></param>
         /// <param name="lineSegment2End">Line Segment 2 (End)</param>
         /// <returns>The intersection result, <seealso cref="IntersectionResult" /></returns>
-        public static IntersectionResult Intersection(
-            this Vector2 lineSegment1Start,
-            Vector2 lineSegment1End,
-            Vector2 lineSegment2Start,
-            Vector2 lineSegment2End)
+        public static IntersectionResult Intersection(this Vector2 lineSegment1Start, Vector2 lineSegment1End, Vector2 lineSegment2Start, Vector2 lineSegment2End)
         {
             double deltaACy = lineSegment1Start.Y - lineSegment2Start.Y;
             double deltaDCx = lineSegment2End.X - lineSegment2Start.X;
@@ -400,9 +380,7 @@ namespace Ensage.SDK.Extensions
                 return new IntersectionResult();
             }
 
-            return new IntersectionResult(
-                true,
-                new Vector2((float)(lineSegment1Start.X + (r * deltaBAx)), (float)(lineSegment1Start.Y + (r * deltaBAy))));
+            return new IntersectionResult(true, new Vector2((float)(lineSegment1Start.X + (r * deltaBAx)), (float)(lineSegment1Start.Y + (r * deltaBAy))));
         }
 
         /// <summary>
@@ -629,8 +607,7 @@ namespace Ensage.SDK.Extensions
             var ay = segmentStart.Y;
             var bx = segmentEnd.X;
             var by = segmentEnd.Y;
-            var rL = (((cx - ax) * (bx - ax)) + ((cy - ay) * (@by - ay)))
-                     / ((float)Math.Pow(bx - ax, 2) + (float)Math.Pow(by - ay, 2));
+            var rL = (((cx - ax) * (bx - ax)) + ((cy - ay) * (@by - ay))) / ((float)Math.Pow(bx - ax, 2) + (float)Math.Pow(by - ay, 2));
             var pointLine = new Vector2(ax + (rL * (bx - ax)), ay + (rL * (@by - ay)));
             float rS;
             if (rL < 0)
@@ -748,11 +725,7 @@ namespace Ensage.SDK.Extensions
             float pointVelocityB,
             float delay = 0f)
         {
-            return new[] { pointStartA, pointEndA }.VectorMovementCollision(
-                pointVelocityA,
-                pointB,
-                pointVelocityB,
-                delay);
+            return new[] { pointStartA, pointEndA }.VectorMovementCollision(pointVelocityA, pointB, pointVelocityB, delay);
         }
 
         /// <summary>
@@ -776,29 +749,18 @@ namespace Ensage.SDK.Extensions
         /// <returns>
         ///     The <see cref="MovementCollisionInfo" />.
         /// </returns>
-        public static MovementCollisionInfo VectorMovementCollision(
-            this Vector2[] pointA,
-            float pointVelocityA,
-            Vector2 pointB,
-            float pointVelocityB,
-            float delay = 0f)
+        public static MovementCollisionInfo VectorMovementCollision(this Vector2[] pointA, float pointVelocityA, Vector2 pointB, float pointVelocityB, float delay = 0f)
         {
             if (pointA.Length < 1)
             {
                 return new MovementCollisionInfo();
             }
 
-            float sP1X = pointA[0].X,
-                  sP1Y = pointA[0].Y,
-                  eP1X = pointA[1].X,
-                  eP1Y = pointA[1].Y,
-                  sP2X = pointB.X,
-                  sP2Y = pointB.Y;
+            float sP1X = pointA[0].X, sP1Y = pointA[0].Y, eP1X = pointA[1].X, eP1Y = pointA[1].Y, sP2X = pointB.X, sP2Y = pointB.Y;
 
             float d = eP1X - sP1X, e = eP1Y - sP1Y;
             float dist = (float)Math.Sqrt((d * d) + (e * e)), t1 = float.NaN;
-            float s = Math.Abs(dist) > float.Epsilon ? (pointVelocityA * d) / dist : 0,
-                  k = Math.Abs(dist) > float.Epsilon ? (pointVelocityA * e) / dist : 0f;
+            float s = Math.Abs(dist) > float.Epsilon ? (pointVelocityA * d) / dist : 0, k = Math.Abs(dist) > float.Epsilon ? (pointVelocityA * e) / dist : 0f;
 
             float r = sP2X - sP1X, j = sP2Y - sP1Y;
             var c = (r * r) + (j * j);
@@ -835,9 +797,7 @@ namespace Ensage.SDK.Extensions
                         var sqr = (b * b) - (a * c);
                         if (!(sqr >= 0))
                         {
-                            return new MovementCollisionInfo(
-                                t1,
-                                !float.IsNaN(t1) ? new Vector2(sP1X + (s * t1), sP1Y + (k * t1)) : new Vector2());
+                            return new MovementCollisionInfo(t1, !float.IsNaN(t1) ? new Vector2(sP1X + (s * t1), sP1Y + (k * t1)) : new Vector2());
                         }
 
                         var nom = (float)Math.Sqrt(sqr);
@@ -865,9 +825,7 @@ namespace Ensage.SDK.Extensions
                 t1 = 0f;
             }
 
-            return new MovementCollisionInfo(
-                t1,
-                !float.IsNaN(t1) ? new Vector2(sP1X + (s * t1), sP1Y + (k * t1)) : new Vector2());
+            return new MovementCollisionInfo(t1, !float.IsNaN(t1) ? new Vector2(sP1X + (s * t1), sP1Y + (k * t1)) : new Vector2());
         }
     }
 }

@@ -6,12 +6,10 @@ namespace Ensage.SDK.TargetSelector
 {
     using System.Collections.Generic;
 
-    public interface ITargetSelector
+    using PlaySharp.Toolkit.Helper;
+
+    public interface ITargetSelector : IControllable
     {
-        void Activate();
-
-        void Deactivate();
-
         IEnumerable<Unit> GetTargets();
     }
 }

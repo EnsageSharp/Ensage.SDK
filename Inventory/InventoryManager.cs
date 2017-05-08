@@ -23,7 +23,7 @@ namespace Ensage.SDK.Inventory
     using Inventory = Ensage.Inventory;
 
     [ExportInventoryManager]
-    public class InventoryManager : IInventoryManager
+    public class InventoryManager : ControllableService, IInventoryManager
     {
         private static readonly ILog Log = AssemblyLogs.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
@@ -34,9 +34,6 @@ namespace Ensage.SDK.Inventory
         {
             this.Owner = context.Owner;
             this.LastItems = new HashSet<InventoryItem>();
-
-            UpdateManager.Subscribe(this.OnInventoryUpdate, 500);
-            UpdateManager.SubscribeService(this.OnInventoryClear);
         }
 
         public event NotifyCollectionChangedEventHandler CollectionChanged;
@@ -59,6 +56,18 @@ namespace Ensage.SDK.Inventory
         public Hero Owner { get; }
 
         private HashSet<InventoryItem> LastItems { get; set; }
+
+        protected override void OnActivate()
+        {
+            UpdateManager.Subscribe(this.OnInventoryUpdate, 500);
+            UpdateManager.SubscribeService(this.OnInventoryClear);
+        }
+
+        protected override void OnDeactivate()
+        {
+            UpdateManager.Unsubscribe(this.OnInventoryUpdate);
+            UpdateManager.Unsubscribe(this.OnInventoryClear);
+        }
 
         private void OnInventoryClear()
         {

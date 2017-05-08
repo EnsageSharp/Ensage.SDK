@@ -6,7 +6,7 @@ namespace Ensage.SDK.Orbwalker.Modes
 {
     using Ensage.SDK.Service;
 
-    public abstract class OrbwalkingMode : IOrbwalkingMode
+    public abstract class OrbwalkingMode : ControllableService, IOrbwalkingMode
     {
         protected OrbwalkingMode(IOrbwalker orbwalker)
         {

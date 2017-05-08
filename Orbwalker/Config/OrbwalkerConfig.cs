@@ -2,28 +2,27 @@
 //    Copyright (c) 2017 Ensage.
 // </copyright>
 
-namespace Ensage.SDK.Orbwalker
+namespace Ensage.SDK.Orbwalker.Config
 {
     using System;
 
     using Ensage.Common.Menu;
-    using Ensage.SDK.Extensions;
     using Ensage.SDK.Menu;
-    using Ensage.SDK.Service;
 
     public class OrbwalkerConfig : IDisposable
     {
         private bool disposed;
 
-        public OrbwalkerConfig(IServiceContext context)
+        public OrbwalkerConfig(string name, string[] orbwalkers)
         {
-            this.Factory = MenuFactory.Create($"Orbwalker: {context.Owner.GetDisplayName()}", "Orbwalker");
+            this.Factory = MenuFactory.Create($"Orbwalker: {name}", "Orbwalker");
+            this.Selection = this.Factory.Item("Active Orbwalker", new StringList(orbwalkers));
             this.Settings = new OrbwalkerSettings(this.Factory);
-
-            context.Container.RegisterValue(this);
         }
 
         public MenuFactory Factory { get; }
+
+        public MenuItem<StringList> Selection { get; }
 
         public OrbwalkerSettings Settings { get; }
 

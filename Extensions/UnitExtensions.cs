@@ -17,31 +17,32 @@ namespace Ensage.SDK.Extensions
 
     public static class UnitExtensions
     {
-        private static readonly HashSet<string> ChannelAnimations = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
-                                                                    {
-                                                                        "death_ward_anim",
-                                                                        "powershot_cast_anim",
-                                                                        string.Empty,
-                                                                        "rearm1_anim",
-                                                                        "warlock_cast3_upheaval",
-                                                                        "warlock_cast3_upheaval_channel_anim",
-                                                                        "cast_channel_shackles_anim",
-                                                                        "channel_shackles",
-                                                                        "sand_king_epicast_anim",
-                                                                        "cast4_tricks_trade",
-                                                                        "life drain_anim",
-                                                                        "pudge_dismember_start",
-                                                                        "pudge_dismember_mid_anim",
-                                                                        "cast1_FortunesEnd_anim_anim",
-                                                                        "cast04_spring",
-                                                                        "Illuminate_anim",
-                                                                        "cast1_echo_stomp_anim",
-                                                                        "cast4_black_hole_anim",
-                                                                        "freezing_field_anim_10s",
-                                                                        "fiends_grip_cast_anim",
-                                                                        "fiends_grip_loop_anim",
-                                                                        "drain_anim"
-                                                                    };
+        private static readonly HashSet<string> ChannelAnimations =
+            new HashSet<string>(StringComparer.OrdinalIgnoreCase)
+            {
+                "death_ward_anim",
+                "powershot_cast_anim",
+                string.Empty,
+                "rearm1_anim",
+                "warlock_cast3_upheaval",
+                "warlock_cast3_upheaval_channel_anim",
+                "cast_channel_shackles_anim",
+                "channel_shackles",
+                "sand_king_epicast_anim",
+                "cast4_tricks_trade",
+                "life drain_anim",
+                "pudge_dismember_start",
+                "pudge_dismember_mid_anim",
+                "cast1_FortunesEnd_anim_anim",
+                "cast04_spring",
+                "Illuminate_anim",
+                "cast1_echo_stomp_anim",
+                "cast4_black_hole_anim",
+                "freezing_field_anim_10s",
+                "fiends_grip_cast_anim",
+                "fiends_grip_loop_anim",
+                "drain_anim"
+            };
 
         private static readonly ILog Log = AssemblyLogs.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
@@ -49,10 +50,7 @@ namespace Ensage.SDK.Extensions
         {
             try
             {
-                var attackAnimationPoint =
-                    Game.FindKeyValues(
-                        $"{unit.Name}/AttackAnimationPoint",
-                        unit is Hero ? KeyValueSource.Hero : KeyValueSource.Unit).FloatValue;
+                var attackAnimationPoint = Game.FindKeyValues($"{unit.Name}/AttackAnimationPoint", unit is Hero ? KeyValueSource.Hero : KeyValueSource.Unit).FloatValue;
 
                 return attackAnimationPoint / (1 + ((unit.AttackSpeedValue() - 100) / 100));
             }
@@ -80,8 +78,7 @@ namespace Ensage.SDK.Extensions
             if (unit is Hero)
             {
                 // test for items with bonus range
-                var bonusRangeItem = unit.GetItemById(AbilityId.item_dragon_lance)
-                                     ?? unit.GetItemById(AbilityId.item_hurricane_pike);
+                var bonusRangeItem = unit.GetItemById(AbilityId.item_dragon_lance) ?? unit.GetItemById(AbilityId.item_hurricane_pike);
                 if (bonusRangeItem != null)
                 {
                     result += bonusRangeItem.GetAbilitySpecialData("base_attack_range");
@@ -101,8 +98,7 @@ namespace Ensage.SDK.Extensions
                 }
 
                 // test for talents with bonus range
-                foreach (
-                    var ability in unit.Spellbook.Spells.Where(x => x.Name.StartsWith("special_bonus_attack_range_")))
+                foreach (var ability in unit.Spellbook.Spells.Where(x => x.Name.StartsWith("special_bonus_attack_range_")))
                 {
                     if (ability.Level > 0)
                     {
@@ -290,17 +286,9 @@ namespace Ensage.SDK.Extensions
         /// <param name="source">The attacker</param>
         /// <param name="target">The target</param>
         /// <returns></returns>
-        public static float GetAutoAttackArrivalTime(
-            this Unit source,
-            Unit target,
-            bool takeRotationTimeIntoAccount = true)
+        public static float GetAutoAttackArrivalTime(this Unit source, Unit target, bool takeRotationTimeIntoAccount = true)
         {
-            var result = GetProjectileArrivalTime(
-                source,
-                target,
-                source.AttackPoint(),
-                source.IsMelee ? float.MaxValue : source.ProjectileSpeed(),
-                takeRotationTimeIntoAccount);
+            var result = GetProjectileArrivalTime(source, target, source.AttackPoint(), source.IsMelee ? float.MaxValue : source.ProjectileSpeed(), takeRotationTimeIntoAccount);
 
             if (!(source is Tower))
             {
@@ -329,12 +317,7 @@ namespace Ensage.SDK.Extensions
         /// <param name="missileSpeed"></param>
         /// <param name="takeRotationIntoAccount"></param>
         /// <returns></returns>
-        public static float GetProjectileArrivalTime(
-            this Unit source,
-            Unit target,
-            float delay,
-            float missileSpeed,
-            bool takeRotationTimeIntoAccount = true)
+        public static float GetProjectileArrivalTime(this Unit source, Unit target, float delay, float missileSpeed, bool takeRotationTimeIntoAccount = true)
         {
             var result = 0f;
 
@@ -367,8 +350,7 @@ namespace Ensage.SDK.Extensions
                 spellAmp += aether.AbilitySpecialData.First(x => x.Name == "spell_amp").Value / 100.0f;
             }
 
-            var talents =
-                source.Spellbook.Spells.Where(x => x.Level > 0 && x.Name.StartsWith("special_bonus_spell_amplify_"));
+            var talents = source.Spellbook.Spells.Where(x => x.Level > 0 && x.Name.StartsWith("special_bonus_spell_amplify_"));
             foreach (var talent in talents)
             {
                 spellAmp += talent.AbilitySpecialData.First(x => x.Name == "value").Value / 100.0f;
@@ -474,9 +456,7 @@ namespace Ensage.SDK.Extensions
         /// <returns></returns>
         public static bool IsInRange(this Unit source, Unit target, float range, bool centerToCenter = false)
         {
-            return source.NetworkPosition.IsInRange(
-                target,
-                centerToCenter ? range : Math.Max(0, range + source.HullRadius + target.HullRadius));
+            return source.NetworkPosition.IsInRange(target, centerToCenter ? range : Math.Max(0, range + source.HullRadius + target.HullRadius));
         }
 
         public static bool IsInvulnerable(this Unit unit)
@@ -511,8 +491,7 @@ namespace Ensage.SDK.Extensions
 
         public static bool IsValidOrbwalkingTarget(this Unit attacker, Unit target)
         {
-            return target.IsValid && target.IsVisible && target.IsAlive && target.IsSpawned && !target.IsIllusion &&
-                   attacker.IsInAttackRange(target) && !target.IsInvulnerable();
+            return target.IsValid && target.IsVisible && target.IsAlive && target.IsSpawned && !target.IsIllusion && attacker.IsInAttackRange(target) && !target.IsInvulnerable();
         }
 
         /// <summary>
@@ -523,11 +502,7 @@ namespace Ensage.SDK.Extensions
         /// <param name="checkTeam"></param>
         /// <param name="from"></param>
         /// <returns></returns>
-        public static bool IsValidTarget(
-            this Unit unit,
-            float range = float.MaxValue,
-            bool checkTeam = true,
-            Vector3? from = null)
+        public static bool IsValidTarget(this Unit unit, float range = float.MaxValue, bool checkTeam = true, Vector3? from = null)
         {
             if (unit == null || !unit.IsValid || !unit.IsAlive || !unit.IsVisible || !unit.IsSpawned || unit.IsInvulnerable())
             {
@@ -556,10 +531,7 @@ namespace Ensage.SDK.Extensions
         {
             try
             {
-                return
-                    Game.FindKeyValues(
-                        $"{unit.Name}/ProjectileSpeed",
-                        unit is Hero ? KeyValueSource.Hero : KeyValueSource.Unit).IntValue;
+                return Game.FindKeyValues($"{unit.Name}/ProjectileSpeed", unit is Hero ? KeyValueSource.Hero : KeyValueSource.Unit).IntValue;
             }
             catch (KeyValuesNotFoundException)
             {
@@ -572,10 +544,7 @@ namespace Ensage.SDK.Extensions
         {
             try
             {
-                var turnRate =
-                    Game.FindKeyValues(
-                        $"{unit.Name}/MovementTurnRate",
-                        unit is Hero ? KeyValueSource.Hero : KeyValueSource.Unit).FloatValue;
+                var turnRate = Game.FindKeyValues($"{unit.Name}/MovementTurnRate", unit is Hero ? KeyValueSource.Hero : KeyValueSource.Unit).FloatValue;
 
                 if (currentTurnRate)
                 {

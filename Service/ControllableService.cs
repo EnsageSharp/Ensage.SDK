@@ -4,31 +4,19 @@
 
 namespace Ensage.SDK.Service
 {
-    using Ensage.Common.Menu;
-    using Ensage.SDK.Menu;
+    using Ensage.Common;
 
     using PlaySharp.Toolkit.Helper;
-    using PlaySharp.Toolkit.Helper.Annotations;
 
     public abstract class ControllableService : IControllable
     {
-        protected ControllableService([NotNull] MenuFactory factory, [NotNull] string name = "Active", bool @default = true, bool forceDisabled = false)
+        protected ControllableService(bool activateOnCreation = true)
         {
-            this.Active = factory.Item(name, @default);
-            this.Active.Item.ValueChanged += this.OnActiveValueChanged;
-
-            if (forceDisabled)
+            if (activateOnCreation)
             {
-                this.Active.Value = false;
-            }
-
-            if (this.Active.Value)
-            {
-                this.Activate();
+                DelayAction.Add(0, this.Activate);
             }
         }
-
-        public MenuItem<bool> Active { get; }
 
         public bool IsActive { get; private set; }
 
@@ -60,18 +48,6 @@ namespace Ensage.SDK.Service
 
         protected virtual void OnDeactivate()
         {
-        }
-
-        private void OnActiveValueChanged(object sender, OnValueChangeEventArgs args)
-        {
-            if (args.GetNewValue<bool>())
-            {
-                this.Activate();
-            }
-            else
-            {
-                this.Deactivate();
-            }
         }
     }
 }

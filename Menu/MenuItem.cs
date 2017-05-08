@@ -7,6 +7,7 @@ namespace Ensage.SDK.Menu
     using Ensage.Common.Menu;
 
     public class MenuItem<TType>
+        where TType : struct
     {
         public MenuItem(string displayName, string name, TType value)
         {
@@ -41,6 +42,11 @@ namespace Ensage.SDK.Menu
 
         public static implicit operator bool(MenuItem<TType> item)
         {
+            if (item?.Item == null)
+            {
+                return false;
+            }
+
             return item.Item.IsActive();
         }
 

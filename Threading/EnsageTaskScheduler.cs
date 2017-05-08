@@ -17,11 +17,7 @@ namespace Ensage.SDK.Threading
 
         private EnsageTaskScheduler()
         {
-            this.Factory = new TaskFactory(
-                CancellationToken.None,
-                TaskCreationOptions.DenyChildAttach,
-                TaskContinuationOptions.None,
-                this);
+            this.Factory = new TaskFactory(CancellationToken.None, TaskCreationOptions.DenyChildAttach, TaskContinuationOptions.None, this);
         }
 
         public static EnsageTaskScheduler Instance

@@ -9,7 +9,7 @@ namespace Ensage.SDK.TargetSelector.Metadata
 
     [MetadataAttribute]
     [AttributeUsage(AttributeTargets.Class)]
-    public class ExportTargetSelectorManagerAttribute : ExportAttribute, ITargetSelectorManagerMetadata
+    internal class ExportTargetSelectorManagerAttribute : ExportAttribute, ITargetSelectorManagerMetadata
     {
         public ExportTargetSelectorManagerAttribute()
             : base(typeof(ITargetSelectorManager))

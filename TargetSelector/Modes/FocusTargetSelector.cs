@@ -19,57 +19,34 @@ namespace Ensage.SDK.TargetSelector.Modes
     using MouseEventArgs = Ensage.SDK.Input.MouseEventArgs;
 
     [ExportTargetSelector("Focus Target")]
-    public class FocusTargetSelector : ITargetSelector, IDisposable
+    public class FocusTargetSelector : ControllableService, ITargetSelector
     {
-        private bool disposed;
-
         [ImportingConstructor]
-        public FocusTargetSelector([Import] IServiceContext context, [Import] IInputManager input)
+        public FocusTargetSelector([Import] IServiceContext context, [Import] Lazy<IInputManager> input)
         {
             this.Owner = context.Owner;
             this.Input = input;
         }
 
-        private IInputManager Input { get; }
+        private Lazy<IInputManager> Input { get; }
 
         private Hero Owner { get; }
 
         private Unit[] Targets { get; set; }
-
-        public void Activate()
-        {
-            this.Input.MouseClick += this.OnMouseClick;
-        }
-
-        public void Deactivate()
-        {
-            this.Input.MouseClick -= this.OnMouseClick;
-        }
-
-        public void Dispose()
-        {
-            this.Dispose(true);
-            GC.SuppressFinalize(this);
-        }
 
         public IEnumerable<Unit> GetTargets()
         {
             return this.Targets?.Where(e => e.IsValid);
         }
 
-        private void Dispose(bool disposing)
+        protected override void OnActivate()
         {
-            if (this.disposed)
-            {
-                return;
-            }
+            this.Input.Value.MouseClick += this.OnMouseClick;
+        }
 
-            if (disposing)
-            {
-                this.Input.MouseClick -= this.OnMouseClick;
-            }
-
-            this.disposed = true;
+        protected override void OnDeactivate()
+        {
+            this.Input.Value.MouseClick -= this.OnMouseClick;
         }
 
         private void OnMouseClick(object sender, MouseEventArgs args)
@@ -80,7 +57,9 @@ namespace Ensage.SDK.TargetSelector.Modes
             }
 
             this.Targets = EntityManager<Hero>.Entities.Where(e => e.IsAlive && !e.IsIllusion && e.Team != this.Owner.Team)
-                                              .Where(e => e.Position.Distance(Game.MousePosition) < 400).OrderBy(e => e.Position.Distance(Game.MousePosition)).ToArray();
+                                              .Where(e => e.Position.Distance(Game.MousePosition) < 400)
+                                              .OrderBy(e => e.Position.Distance(Game.MousePosition))
+                                              .ToArray();
         }
     }
 }

@@ -26,11 +26,7 @@ namespace Ensage.SDK.Persistence
 
         public PersistenceCache()
         {
-            this.StoreFile = Path.Combine(
-                AppDomain.CurrentDomain.BaseDirectory,
-                "Config",
-                "Assemblies",
-                "ensage.sdk.json");
+            this.StoreFile = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Config", "Assemblies", "ensage.sdk.json");
 
             this.Load();
         }
@@ -58,7 +54,8 @@ namespace Ensage.SDK.Persistence
             }
         }
 
-        public T Attach<T>(T target = null) where T : class, new()
+        public T Attach<T>(T target = null)
+            where T : class, new()
         {
             return (T)this.Attach(typeof(T).Name, target ?? new T());
         }
@@ -145,10 +142,7 @@ namespace Ensage.SDK.Persistence
 
                     foreach (var entry in data)
                     {
-                        this.Cache[entry.Key] = new CacheEntry(
-                            this,
-                            entry.Key,
-                            Convert.ChangeType(entry.Value.Value, entry.Value.Type));
+                        this.Cache[entry.Key] = new CacheEntry(this, entry.Key, Convert.ChangeType(entry.Value.Value, entry.Value.Type));
                     }
                 }
             }
@@ -162,8 +156,7 @@ namespace Ensage.SDK.Persistence
         {
             try
             {
-                var data = this.Cache.Where(e => e.Value.GetValue() != null)
-                               .ToDictionary(e => e.Key, e => new ObjectValue(e.Value.GetValue()));
+                var data = this.Cache.Where(e => e.Value.GetValue() != null).ToDictionary(e => e.Key, e => new ObjectValue(e.Value.GetValue()));
 
                 JsonFactory.ToFile(this.StoreFile, data);
             }

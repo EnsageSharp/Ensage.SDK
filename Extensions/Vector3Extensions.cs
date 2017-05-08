@@ -411,9 +411,7 @@ namespace Ensage.SDK.Extensions
         /// <returns>Perpendicular Vector3</returns>
         public static Vector3 Perpendicular(this Vector3 vector3, int offset = 0)
         {
-            return offset == 0
-                       ? new Vector3(-vector3.Y, vector3.X, vector3.Z)
-                       : new Vector3(vector3.Y, -vector3.X, vector3.Z);
+            return offset == 0 ? new Vector3(-vector3.Y, vector3.X, vector3.Z) : new Vector3(vector3.Y, -vector3.X, vector3.Z);
         }
 
         /// <summary>
@@ -465,10 +463,7 @@ namespace Ensage.SDK.Extensions
             var cos = Math.Cos(angle);
             var sin = Math.Sin(angle);
 
-            return new Vector3(
-                (float)((vector3.X * cos) - (vector3.Y * sin)),
-                (float)((vector3.Y * cos) + (vector3.X * sin)),
-                vector3.Z);
+            return new Vector3((float)((vector3.X * cos) - (vector3.Y * sin)), (float)((vector3.Y * cos) + (vector3.X * sin)), vector3.Z);
         }
 
         /// <summary>

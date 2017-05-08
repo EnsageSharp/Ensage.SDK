@@ -38,9 +38,10 @@ namespace Ensage.SDK.EventHandler
                 var handler = Delegate.CreateDelegate(this.Event.EventHandlerType, this, method);
 
                 Log.Debug($"Create [{this.Event.Name}] {action.Method}");
-                this.Event.GetAddMethod(true).Invoke(
-                    this.Event,
-                    new object[]
+                this.Event.GetAddMethod(true)
+                    .Invoke(
+                        this.Event,
+                        new object[]
                         {
                             handler
                         });

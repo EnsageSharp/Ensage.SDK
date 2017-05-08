@@ -8,7 +8,9 @@ namespace Ensage.SDK.Input
     using System.Windows.Forms;
     using System.Windows.Input;
 
-    public interface IInputManager
+    using PlaySharp.Toolkit.Helper;
+
+    public interface IInputManager : IControllable
     {
         event EventHandler<KeyEventArgs> KeyDown;
 

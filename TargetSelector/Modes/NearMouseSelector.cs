@@ -11,16 +11,17 @@ namespace Ensage.SDK.TargetSelector.Modes
     using Ensage.SDK.Extensions;
     using Ensage.SDK.Helpers;
     using Ensage.SDK.Service;
+    using Ensage.SDK.TargetSelector.Config;
     using Ensage.SDK.TargetSelector.Metadata;
 
     [ExportTargetSelector("Near Mouse")]
     public class NearMouseSelector : SelectorBase
     {
         [ImportingConstructor]
-        public NearMouseSelector([Import] IServiceContext context, [Import] TargetSelectorConfig parent)
+        public NearMouseSelector([Import] IServiceContext context, [Import] ITargetSelectorManager manager)
             : base(context)
         {
-            this.Config = new NearMouseConfig(parent.Factory);
+            this.Config = new NearMouseConfig(manager.Config.Factory);
         }
 
         public NearMouseConfig Config { get; }
@@ -30,8 +31,10 @@ namespace Ensage.SDK.TargetSelector.Modes
             var pos = Game.MousePosition;
             var team = this.Owner.Team;
 
-            return EntityManager<Hero>.Entities.Where(e => e.IsAlive && !e.IsIllusion && e.Team != team).Where(e => e.Position.Distance(pos) < this.Config.Range.Value.Value)
-                                      .OrderBy(e => e.Position.Distance(pos)).ToArray();
+            return EntityManager<Hero>.Entities.Where(e => e.IsAlive && !e.IsIllusion && e.Team != team)
+                                      .Where(e => e.Position.Distance(pos) < this.Config.Range.Value.Value)
+                                      .OrderBy(e => e.Position.Distance(pos))
+                                      .ToArray();
         }
     }
 }

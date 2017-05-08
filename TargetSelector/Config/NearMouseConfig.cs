@@ -2,7 +2,7 @@
 //    Copyright (c) 2017 Ensage.
 // </copyright>
 
-namespace Ensage.SDK.TargetSelector.Modes
+namespace Ensage.SDK.TargetSelector.Config
 {
     using Ensage.Common.Menu;
     using Ensage.SDK.Menu;

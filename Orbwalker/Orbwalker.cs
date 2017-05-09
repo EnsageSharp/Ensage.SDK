@@ -43,7 +43,7 @@ namespace Ensage.SDK.Orbwalker
         public bool IsActive { get; private set; }
 
         [ImportMany(typeof(IOrbwalkingMode))]
-        protected IEnumerable<Lazy<IOrbwalkingMode, IOrbwalkingModeMetadata>> DefaultModes { get; set; }
+        protected IEnumerable<Lazy<IOrbwalkingMode, IOrbwalkingModeMetadata>> ImportedModes { get; set; }
 
         [Import(typeof(IParticleManager))]
         protected Lazy<IParticleManager> ParticleManager { get; set; }
@@ -92,9 +92,15 @@ namespace Ensage.SDK.Orbwalker
                 return false;
             }
 
-            this.TurnEndTime = Game.RawGameTime + this.PingTime + (float)this.Owner.TurnTime(unit.NetworkPosition) + 0.1f;
-            this.Owner.Attack(unit);
-            return true;
+            this.TurnEndTime = time + this.PingTime + (float)this.Owner.TurnTime(unit.NetworkPosition) + 0.1f;
+
+            if (this.Owner.Attack(unit))
+            {
+                this.LastAttackOrderIssuedTime = time;
+                return true;
+            }
+
+            return false;
         }
 
         public bool CanAttack(Unit target)
@@ -141,7 +147,7 @@ namespace Ensage.SDK.Orbwalker
 
             if (this.Owner.Move(position))
             {
-                this.LastMoveOrderIssuedTime = Game.RawGameTime;
+                this.LastMoveOrderIssuedTime = time;
                 return true;
             }
 
@@ -159,7 +165,8 @@ namespace Ensage.SDK.Orbwalker
             // move
             if ((target == null || !this.CanAttack(target)) && this.CanMove())
             {
-                return this.Move(Game.MousePosition);
+                this.Move(Game.MousePosition);
+                return false;
             }
 
             // attack
@@ -234,7 +241,7 @@ namespace Ensage.SDK.Orbwalker
                 mode.Execute();
             }
 
-            foreach (var mode in this.DefaultModes.Where(e => e.Value.CanExecute))
+            foreach (var mode in this.ImportedModes.Where(e => e.Value.CanExecute))
             {
                 mode.Value.Execute();
             }

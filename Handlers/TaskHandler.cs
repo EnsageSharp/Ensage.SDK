@@ -5,37 +5,25 @@
 namespace Ensage.SDK.Handlers
 {
     using System;
-    using System.Reflection;
     using System.Threading;
     using System.Threading.Tasks;
 
-    using Ensage.SDK.Threading;
-
-    using log4net;
+    using Ensage.SDK.Helpers;
 
     using PlaySharp.Toolkit.Helper.Annotations;
-    using PlaySharp.Toolkit.Logging;
 
     public class TaskHandler
     {
-        private static readonly ILog Log = AssemblyLogs.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-
         private bool isRunning;
 
-        public TaskHandler([NotNull] Func<CancellationToken, Task> factory, [NotNull] CancellationTokenSource token = default(CancellationTokenSource))
+        public TaskHandler([NotNull] Func<CancellationToken, Task> factory)
         {
             if (factory == null)
             {
                 throw new ArgumentNullException(nameof(factory));
             }
 
-            if (token == null)
-            {
-                throw new ArgumentNullException(nameof(token));
-            }
-
             this.TaskFactory = factory;
-            this.Token = token;
         }
 
         public bool IsRunning
@@ -46,41 +34,54 @@ namespace Ensage.SDK.Handlers
             }
         }
 
-        public Task Task { get; private set; }
+        public Task RunningTask { get; private set; }
 
-        public Func<CancellationToken, Task> TaskFactory { get; }
+        private Func<CancellationToken, Task> TaskFactory { get; }
 
-        public CancellationTokenSource Token { get; }
+        private CancellationTokenSource TokenSource { get; set; }
 
-        public void Cancel()
+        public void Cancel(bool throwOnFirstException = false)
         {
-            this.Token.Cancel();
+            this.TokenSource.Cancel(throwOnFirstException);
+        }
+
+        public void CancelAfter(TimeSpan delay)
+        {
+            this.TokenSource.CancelAfter(delay);
+        }
+
+        public void CancelAfter(int millisecondsDelay)
+        {
+            this.TokenSource.CancelAfter(millisecondsDelay);
+        }
+
+        public TaskHandler CreateCopy()
+        {
+            return new TaskHandler(this.TaskFactory);
         }
 
         public void RunAsync()
         {
+            if (this.isRunning)
+            {
+                return;
+            }
+
             this.isRunning = true;
-            EnsageDispatcher.BeginInvoke(this.RunOnce);
+
+            this.TokenSource = new CancellationTokenSource();
+            this.RunningTask = UpdateManager
+                .Factory
+                .StartNew(() => this.TaskFactory(this.TokenSource.Token), this.TokenSource.Token)
+                .ContinueWith(this.Complete);
         }
 
-        private async void RunOnce()
+        private void Complete(Task<Task> task)
         {
-            try
-            {
-                this.Task = this.TaskFactory(this.Token.Token);
-                await this.Task.ConfigureAwait(true);
-            }
-            catch (TaskCanceledException)
-            {
-            }
-            catch (Exception e)
-            {
-                Log.Error(e);
-            }
-            finally
-            {
-                this.isRunning = false;
-            }
+            this.TokenSource = null;
+            this.RunningTask = null;
+
+            this.isRunning = false;
         }
     }
 }

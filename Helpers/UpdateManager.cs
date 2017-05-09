@@ -25,20 +25,43 @@ namespace Ensage.SDK.Helpers
 
         static UpdateManager()
         {
+            Context = new EnsageSynchronizationContext();
+
+            SynchronizationContext.SetSynchronizationContext(Context);
+
+            Factory = new TaskFactory(
+                CancellationToken.None,
+                TaskCreationOptions.DenyChildAttach,
+                TaskContinuationOptions.None,
+                TaskScheduler.FromCurrentSynchronizationContext());
+
+            Subscribe(Context.ProcessCallbacks);
+
             Game.OnIngameUpdate += OnUpdate;
             Game.OnPreIngameUpdate += OnPreUpdate;
         }
+
+        public static EnsageSynchronizationContext Context { get; }
+
+        public static TaskFactory Factory { get; }
 
         internal static List<IUpdateHandler> Handlers { get; } = new List<IUpdateHandler>();
 
         internal static List<IUpdateHandler> ServiceHandlers { get; } = new List<IUpdateHandler>();
 
-        public static TaskHandler Run(
-            [NotNull] Func<CancellationToken, Task> factory,
-            CancellationTokenSource token = default(CancellationTokenSource))
+        public static TaskHandler Run([NotNull] Func<CancellationToken, Task> factory, bool autostart = true)
         {
-            var task = new TaskHandler(factory, token);
-            task.RunAsync();
+            if (factory == null)
+            {
+                throw new ArgumentNullException(nameof(factory));
+            }
+
+            var task = new TaskHandler(factory);
+
+            if (autostart)
+            {
+                task.RunAsync();
+            }
 
             return task;
         }
@@ -75,7 +98,7 @@ namespace Ensage.SDK.Helpers
 
         private static void OnPreUpdate(EventArgs eventArgs)
         {
-            SynchronizationContext.SetSynchronizationContext(EnsageSynchronizationContext.Instance);
+            SynchronizationContext.SetSynchronizationContext(Context);
 
             foreach (var handler in ServiceHandlers.ToArray())
             {
@@ -92,7 +115,7 @@ namespace Ensage.SDK.Helpers
 
         private static void OnUpdate(EventArgs args)
         {
-            SynchronizationContext.SetSynchronizationContext(EnsageSynchronizationContext.Instance);
+            SynchronizationContext.SetSynchronizationContext(Context);
 
             foreach (var handler in Handlers.ToArray())
             {
@@ -124,6 +147,11 @@ namespace Ensage.SDK.Helpers
                 Log.Debug($"Create {handler}");
                 handlers.Add(handler);
             }
+        }
+
+        private static async Task Test()
+        {
+            throw new NotImplementedException();
         }
 
         private static void Unsubscribe(ICollection<IUpdateHandler> handlers, Action callback)

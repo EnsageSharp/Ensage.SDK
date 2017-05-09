@@ -29,10 +29,11 @@ namespace Ensage.SDK.Orbwalker
         private static readonly ILog Log = AssemblyLogs.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         [ImportingConstructor]
-        public Orbwalker([Import] IServiceContext context, [Import] Lazy<IOrbwalkerManager> manager)
+        public Orbwalker([Import] IServiceContext context, [Import] Lazy<IOrbwalkerManager> manager, [Import] Lazy<IParticleManager> particle)
         {
             this.Context = context;
             this.Manager = manager;
+            this.Particle = particle;
             this.Owner = context.Owner;
         }
 
@@ -45,9 +46,6 @@ namespace Ensage.SDK.Orbwalker
         [ImportMany(typeof(IOrbwalkingMode))]
         protected IEnumerable<Lazy<IOrbwalkingMode, IOrbwalkingModeMetadata>> ImportedModes { get; set; }
 
-        [Import(typeof(IParticleManager))]
-        protected Lazy<IParticleManager> ParticleManager { get; set; }
-
         private float LastAttackOrderIssuedTime { get; set; }
 
         private float LastAttackTime { get; set; }
@@ -59,6 +57,8 @@ namespace Ensage.SDK.Orbwalker
         private List<IOrbwalkingMode> Modes { get; } = new List<IOrbwalkingMode>();
 
         private Hero Owner { get; }
+
+        private Lazy<IParticleManager> Particle { get; }
 
         private float PingTime => Game.Ping / 2000f;
 
@@ -127,7 +127,12 @@ namespace Ensage.SDK.Orbwalker
             UpdateManager.Unsubscribe(this.OnUpdateDrawings);
             Entity.OnInt32PropertyChange -= this.Hero_OnInt32PropertyChange;
 
-            this.ParticleManager?.Value.Remove("AttackRange");
+            this.Particle?.Value.Remove("AttackRange");
+        }
+
+        public float GetTurnTime(Entity unit)
+        {
+            return Game.RawGameTime + this.PingTime + this.Owner.TurnTime(unit.NetworkPosition) + (this.Config.Settings.TurnDelay / 1000f);
         }
 
         public bool Move(Vector3 position)
@@ -140,7 +145,6 @@ namespace Ensage.SDK.Orbwalker
             var time = Game.RawGameTime;
             if ((time - this.LastMoveOrderIssuedTime) < (this.Config.Settings.MoveDelay / 1000f))
             {
-                // 0.005f
                 return false;
             }
 
@@ -201,11 +205,6 @@ namespace Ensage.SDK.Orbwalker
             }
         }
 
-        public float GetTurnTime(Entity unit)
-        {
-            return Game.RawGameTime + this.PingTime + (float)this.Owner.TurnTime(unit.NetworkPosition) + (this.Config.Settings.TurnDelay / 1000f);
-        }
-
         private void Hero_OnInt32PropertyChange(Entity sender, Int32PropertyChangeEventArgs args)
         {
             if (sender != this.Owner)
@@ -255,11 +254,11 @@ namespace Ensage.SDK.Orbwalker
         {
             if (this.Config.Settings.DrawRange.Value)
             {
-                this.ParticleManager?.Value.DrawRange(this.Owner, "AttackRange", this.Owner.AttackRange(this.Owner), Color.LightGreen);
+                this.Particle?.Value.DrawRange(this.Owner, "AttackRange", this.Owner.AttackRange(this.Owner), Color.LightGreen);
             }
             else
             {
-                this.ParticleManager?.Value.Remove("AttackRange");
+                this.Particle?.Value.Remove("AttackRange");
             }
         }
     }

@@ -4,7 +4,6 @@
 
 namespace Ensage.SDK.Plugins
 {
-    using System;
     using System.ComponentModel.Composition;
 
     using Ensage.SDK.Orbwalker;
@@ -15,21 +14,21 @@ namespace Ensage.SDK.Plugins
     public class OrbwalkerPlugin : Plugin
     {
         [ImportingConstructor]
-        public OrbwalkerPlugin([Import] Lazy<IOrbwalkerManager> service)
+        public OrbwalkerPlugin(IOrbwalkerManager service)
         {
             this.Service = service;
         }
 
-        public Lazy<IOrbwalkerManager> Service { get; }
+        public IOrbwalkerManager Service { get; }
 
         protected override void OnActivate()
         {
-            this.Service.Value.Activate();
+            this.Service.Activate();
         }
 
         protected override void OnDeactivate()
         {
-            this.Service.Value.Deactivate();
+            this.Service.Deactivate();
         }
     }
 }

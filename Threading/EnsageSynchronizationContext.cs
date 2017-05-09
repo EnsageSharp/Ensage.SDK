@@ -10,44 +10,18 @@ namespace Ensage.SDK.Threading
     using System.Reflection;
     using System.Threading;
 
-    using Ensage.SDK.Helpers;
-
     using log4net;
 
     using PlaySharp.Toolkit.Logging;
 
-    internal class EnsageSynchronizationContext : SynchronizationContext
+    public sealed class EnsageSynchronizationContext : SynchronizationContext
     {
         private static readonly ILog Log = AssemblyLogs.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        private static readonly object SyncRoot = new object();
-
-        private static EnsageSynchronizationContext instance;
-
         private readonly ConcurrentQueue<KeyValuePair<SendOrPostCallback, object>> queue = new ConcurrentQueue<KeyValuePair<SendOrPostCallback, object>>();
 
-        private EnsageSynchronizationContext()
+        internal EnsageSynchronizationContext()
         {
-            UpdateManager.Subscribe(this.Run);
-        }
-
-        public static EnsageSynchronizationContext Instance
-        {
-            get
-            {
-                if (instance == null)
-                {
-                    lock (SyncRoot)
-                    {
-                        if (instance == null)
-                        {
-                            instance = new EnsageSynchronizationContext();
-                        }
-                    }
-                }
-
-                return instance;
-            }
         }
 
         public override void Post(SendOrPostCallback d, object state)
@@ -55,7 +29,7 @@ namespace Ensage.SDK.Threading
             this.queue.Enqueue(new KeyValuePair<SendOrPostCallback, object>(d, state));
         }
 
-        private void Run()
+        internal void ProcessCallbacks()
         {
             KeyValuePair<SendOrPostCallback, object> workItem;
 

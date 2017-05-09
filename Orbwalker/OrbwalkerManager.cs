@@ -78,8 +78,6 @@ namespace Ensage.SDK.Orbwalker
 
                 // activate selection
                 this.Active = this.Orbwalkers.FirstOrDefault(e => e.Metadata.Name == this.Config.Selection)?.Value;
-
-                Log.Warn($"selection: {this.Active}");
             }
             catch (Exception e)
             {

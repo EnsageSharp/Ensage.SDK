@@ -8,8 +8,10 @@ namespace Ensage.SDK.Helpers
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
+    using System.Threading;
 
     using Ensage.SDK.EventHandler;
+    using Ensage.SDK.Threading;
 
     using log4net;
 
@@ -61,6 +63,8 @@ namespace Ensage.SDK.Helpers
 
         private static void OnPreUpdate(EventArgs eventArgs)
         {
+            SynchronizationContext.SetSynchronizationContext(EnsageSynchronizationContext.Instance);
+
             foreach (var handler in ServiceHandlers.ToArray())
             {
                 try
@@ -76,6 +80,8 @@ namespace Ensage.SDK.Helpers
 
         private static void OnUpdate(EventArgs args)
         {
+            SynchronizationContext.SetSynchronizationContext(EnsageSynchronizationContext.Instance);
+
             foreach (var handler in Handlers.ToArray())
             {
                 try

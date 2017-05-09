@@ -116,10 +116,12 @@
     <Compile Include="Orbwalker\Metadata\IOrbwalkerManagerMetadata.cs" />
     <Compile Include="Orbwalker\Modes\Combo.cs" />
     <Compile Include="Orbwalker\OrbwalkerManager.cs" />
+    <Compile Include="Helpers\TaskAwaiter.cs" />
     <Compile Include="Plugins\DeveloperTools.cs" />
     <Compile Include="Plugins\OrbwalkerPlugin.cs" />
     <Compile Include="Plugins\TargetSelectorPlugin.cs" />
     <Compile Include="Plugins\CrazyEventHub.cs" />
+    <Compile Include="Plugins\ExamplePlugin.cs" />
     <Compile Include="Service\ControllableService.cs" />
     <Compile Include="Inventory\InventoryItem.cs" />
     <Compile Include="Inventory\Metadata\ExportInventoryManagerAttribute.cs" />
@@ -241,7 +243,6 @@
     <Compile Include="TargetSelector\TargetSelectorManager.cs" />
     <Compile Include="Threading\EnsageDispatcher.cs" />
     <Compile Include="Threading\EnsageSynchronizationContext.cs" />
-    <Compile Include="Threading\EnsageTaskScheduler.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="key.snk" />

@@ -9,12 +9,14 @@ namespace Ensage.SDK.Helpers
     using System.Linq;
     using System.Reflection;
     using System.Threading;
+    using System.Threading.Tasks;
 
-    using Ensage.SDK.EventHandler;
+    using Ensage.SDK.Handlers;
     using Ensage.SDK.Threading;
 
     using log4net;
 
+    using PlaySharp.Toolkit.Helper.Annotations;
     using PlaySharp.Toolkit.Logging;
 
     public static class UpdateManager
@@ -30,6 +32,16 @@ namespace Ensage.SDK.Helpers
         internal static List<IUpdateHandler> Handlers { get; } = new List<IUpdateHandler>();
 
         internal static List<IUpdateHandler> ServiceHandlers { get; } = new List<IUpdateHandler>();
+
+        public static TaskHandler Run(
+            [NotNull] Func<CancellationToken, Task> factory,
+            CancellationTokenSource token = default(CancellationTokenSource))
+        {
+            var task = new TaskHandler(factory, token);
+            task.RunAsync();
+
+            return task;
+        }
 
         /// <summary>
         /// Subscribes <paramref name="callback"/> to OnIngameUpdate with a call timeout of <paramref name="timeout"/>

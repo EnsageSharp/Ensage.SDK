@@ -48,8 +48,6 @@ namespace Ensage.SDK.Orbwalker
         [Import(typeof(IParticleManager))]
         protected Lazy<IParticleManager> ParticleManager { get; set; }
 
-        private List<IOrbwalkingModeAsync> AsyncModes { get; } = new List<IOrbwalkingModeAsync>();
-
         private float LastAttackOrderIssuedTime { get; set; }
 
         private float LastAttackTime { get; set; }
@@ -66,23 +64,6 @@ namespace Ensage.SDK.Orbwalker
 
         private float TurnEndTime { get; set; }
 
-        public static void Await(IOrbwalkingModeAsync mode)
-        {
-            var name = mode.ToString();
-
-            if (TaskAwaiter.IsRunning(name))
-            {
-                return;
-            }
-
-            if (!mode.CanExecute)
-            {
-                return;
-            }
-
-            TaskAwaiter.Await(name, mode.ExecuteAsync);
-        }
-
         public void Activate()
         {
             if (this.IsActive)
@@ -92,10 +73,8 @@ namespace Ensage.SDK.Orbwalker
 
             this.IsActive = true;
 
-            Log.Debug($"Activate Orbwalker:{this.Owner.GetDisplayName()}");
+            Log.Debug($"Activate Orbwalker: {this.Owner.GetDisplayName()}");
             UpdateManager.Subscribe(this.OnUpdate);
-            UpdateManager.Subscribe(this.OnUpdateAsync);
-
             UpdateManager.Subscribe(this.OnUpdateDrawings, 1000);
             Entity.OnInt32PropertyChange += this.Hero_OnInt32PropertyChange;
         }
@@ -138,9 +117,8 @@ namespace Ensage.SDK.Orbwalker
 
             this.IsActive = false;
 
-            Log.Debug($"Deactivate Orbwalker:{this.Owner.GetDisplayName()}");
+            Log.Debug($"Deactivate Orbwalker: {this.Owner.GetDisplayName()}");
             UpdateManager.Unsubscribe(this.OnUpdate);
-            UpdateManager.Unsubscribe(this.OnUpdateAsync);
             UpdateManager.Unsubscribe(this.OnUpdateDrawings);
             Entity.OnInt32PropertyChange -= this.Hero_OnInt32PropertyChange;
 
@@ -193,18 +171,6 @@ namespace Ensage.SDK.Orbwalker
             return false;
         }
 
-        public void RegisterMode(IOrbwalkingModeAsync mode)
-        {
-            if (this.AsyncModes.Any(e => e == mode))
-            {
-                return;
-            }
-
-            Log.Info($"Register Mode {mode}");
-            this.AsyncModes.Add(mode);
-            mode.Activate();
-        }
-
         public void RegisterMode(IOrbwalkingMode mode)
         {
             if (this.Modes.Any(e => e == mode))
@@ -215,18 +181,6 @@ namespace Ensage.SDK.Orbwalker
             Log.Info($"Register Mode {mode}");
             this.Modes.Add(mode);
             mode.Activate();
-        }
-
-        public void UnregisterMode(IOrbwalkingModeAsync mode)
-        {
-            var oldMode = this.AsyncModes.FirstOrDefault(e => e == mode);
-            if (oldMode != null)
-            {
-                mode.Deactivate();
-                this.AsyncModes.Remove(oldMode);
-
-                Log.Info($"Unregister Mode {mode}");
-            }
         }
 
         public void UnregisterMode(IOrbwalkingMode mode)
@@ -283,21 +237,6 @@ namespace Ensage.SDK.Orbwalker
             foreach (var mode in this.DefaultModes.Where(e => e.Value.CanExecute))
             {
                 mode.Value.Execute();
-            }
-        }
-
-        private void OnUpdateAsync()
-        {
-            // no spamerino
-            if (Game.IsPaused || Game.IsChatOpen || !this.Owner.IsAlive || this.Owner.IsStunned())
-            {
-                return;
-            }
-
-            // modes
-            foreach (var mode in this.AsyncModes)
-            {
-                Await(mode);
             }
         }
 

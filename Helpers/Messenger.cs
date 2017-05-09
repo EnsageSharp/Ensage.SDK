@@ -9,7 +9,7 @@ namespace Ensage.SDK.Helpers
     using System.Linq;
     using System.Reflection;
 
-    using Ensage.SDK.EventHandler;
+    using Ensage.SDK.Handlers;
 
     using log4net;
 

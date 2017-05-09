@@ -2,15 +2,20 @@
 //    Copyright (c) 2017 Ensage.
 // </copyright>
 
-namespace Ensage.SDK.EventHandler
+namespace Ensage.SDK.Handlers
 {
     using System;
 
     public class UpdateHandler : IUpdateHandler
     {
         public UpdateHandler(Action callback, InvokeHandler executor)
+            : this($"{callback?.Method.DeclaringType?.Name}.{callback?.Method.Name}", callback, executor)
         {
-            this.Name = $"{callback?.Method.DeclaringType?.Name}.{callback?.Method.Name}";
+        }
+
+        public UpdateHandler(string name, Action callback, InvokeHandler executor)
+        {
+            this.Name = name;
             this.Callback = callback;
             this.Executor = executor;
         }

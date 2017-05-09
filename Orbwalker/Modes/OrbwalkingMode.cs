@@ -4,6 +4,9 @@
 
 namespace Ensage.SDK.Orbwalker.Modes
 {
+    using System.Windows.Input;
+
+    using Ensage.SDK.Input;
     using Ensage.SDK.Service;
 
     public abstract class OrbwalkingMode : ControllableService, IOrbwalkingMode

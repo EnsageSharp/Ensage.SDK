@@ -105,10 +105,10 @@
     <Compile Include="Abilities\TargetAbility.cs" />
     <Compile Include="Abilities\npc_dota_hero_vengefulspirit\vengefulspirit_magic_missile.cs" />
     <Compile Include="Helpers\Messenger.cs" />
-    <Compile Include="EventHandler\IUpdateHandler.cs" />
-    <Compile Include="EventHandler\TimeoutHandler.cs" />
-    <Compile Include="EventHandler\TraceHandler.cs" />
-    <Compile Include="EventHandler\InvokeHandler.cs" />
+    <Compile Include="Handlers\IUpdateHandler.cs" />
+    <Compile Include="Handlers\TimeoutHandler.cs" />
+    <Compile Include="Handlers\TraceHandler.cs" />
+    <Compile Include="Handlers\InvokeHandler.cs" />
     <Compile Include="Input\MouseWheelEventArgs.cs" />
     <Compile Include="Orbwalker\IOrbwalkerManager.cs" />
     <Compile Include="Orbwalker\Metadata\ExportOrbwalkerManagerAttribute.cs" />
@@ -116,7 +116,7 @@
     <Compile Include="Orbwalker\Metadata\IOrbwalkerManagerMetadata.cs" />
     <Compile Include="Orbwalker\Modes\Combo.cs" />
     <Compile Include="Orbwalker\OrbwalkerManager.cs" />
-    <Compile Include="Helpers\TaskAwaiter.cs" />
+    <Compile Include="Handlers\TaskHandler.cs" />
     <Compile Include="Plugins\DeveloperTools.cs" />
     <Compile Include="Plugins\OrbwalkerPlugin.cs" />
     <Compile Include="Plugins\TargetSelectorPlugin.cs" />
@@ -134,6 +134,8 @@
     <Compile Include="Orbwalker\Modes\AttackOrbwalkingMode.cs" />
     <Compile Include="Orbwalker\Modes\AutoAttackMode.cs" />
     <Compile Include="Extensions\MetadataExtensions.cs" />
+    <Compile Include="Service\IExecutable.cs" />
+    <Compile Include="Service\IExecutableAsync.cs" />
     <Compile Include="Service\Metadata\ExportPluginAttribute.cs" />
     <Compile Include="Service\IPluginLoader.cs" />
     <Compile Include="Service\Metadata\IPluginLoaderMetadata.cs" />
@@ -160,7 +162,7 @@
     <Compile Include="Renderer\Particle\Metadata\IParticleManagerMetadata.cs" />
     <Compile Include="Renderer\Particle\ParticleManager.cs" />
     <Compile Include="Renderer\Particle\ParticleEffectContainer.cs" />
-    <Compile Include="EventHandler\ReflectionEventHandler.cs" />
+    <Compile Include="Handlers\ReflectionEventHandler.cs" />
     <Compile Include="Extensions\AnimationExtensions.cs" />
     <Compile Include="Extensions\HeroExtensions.cs" />
     <Compile Include="Extensions\TypeExtensions.cs" />
@@ -175,7 +177,7 @@
     <Compile Include="Geometry\ProjectionInfo.cs" />
     <Compile Include="Helpers\DamageHelpers.cs" />
     <Compile Include="Helpers\EntityOrPosition.cs" />
-    <Compile Include="EventHandler\UpdateHandler.cs" />
+    <Compile Include="Handlers\UpdateHandler.cs" />
     <Compile Include="Helpers\UpdateManager.cs" />
     <Compile Include="Input\Hotkey.cs" />
     <Compile Include="Menu\MenuFactory.cs" />

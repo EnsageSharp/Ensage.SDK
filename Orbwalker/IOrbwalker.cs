@@ -29,10 +29,6 @@ namespace Ensage.SDK.Orbwalker
 
         void RegisterMode(IOrbwalkingMode mode);
 
-        void RegisterMode(IOrbwalkingModeAsync mode);
-
         void UnregisterMode(IOrbwalkingMode mode);
-
-        void UnregisterMode(IOrbwalkingModeAsync mode);
     }
 }

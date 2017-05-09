@@ -8,7 +8,7 @@ namespace Ensage.SDK.Plugins
     using System.Linq;
     using System.Reflection;
 
-    using Ensage.SDK.EventHandler;
+    using Ensage.SDK.Handlers;
     using Ensage.SDK.Helpers;
     using Ensage.SDK.Service;
     using Ensage.SDK.Service.Metadata;

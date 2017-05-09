@@ -92,7 +92,7 @@ namespace Ensage.SDK.Orbwalker
                 return false;
             }
 
-            this.TurnEndTime = time + this.PingTime + (float)this.Owner.TurnTime(unit.NetworkPosition) + 0.1f;
+            this.TurnEndTime = this.GetTurnTime(unit);
 
             if (this.Owner.Attack(unit))
             {
@@ -105,8 +105,7 @@ namespace Ensage.SDK.Orbwalker
 
         public bool CanAttack(Unit target)
         {
-            var rotationTime = this.Owner.TurnTime(target.NetworkPosition);
-            return this.Owner.CanAttack() && ((Game.RawGameTime + 0.1f + rotationTime + this.PingTime) - this.LastAttackTime) > (1f / this.Owner.AttacksPerSecond);
+            return this.Owner.CanAttack() && (this.GetTurnTime(target) - this.LastAttackTime) > (1f / this.Owner.AttacksPerSecond);
         }
 
         public bool CanMove()
@@ -200,6 +199,11 @@ namespace Ensage.SDK.Orbwalker
 
                 Log.Info($"Unregister Mode {mode}");
             }
+        }
+
+        public float GetTurnTime(Entity unit)
+        {
+            return Game.RawGameTime + this.PingTime + (float)this.Owner.TurnTime(unit.NetworkPosition) + (this.Config.Settings.TurnDelay / 1000f);
         }
 
         private void Hero_OnInt32PropertyChange(Entity sender, Int32PropertyChangeEventArgs args)

@@ -59,6 +59,7 @@ namespace Ensage.SDK.Orbwalker.Config
 
                 this.MoveDelay = this.Factory.Item("Move Delay", new Slider(5, 0, 250));
                 this.AttackDelay = this.Factory.Item("Attack Delay", new Slider(5, 0, 250));
+                this.TurnDelay = this.Factory.Item("Turn Delay", new Slider(100, -250, 250));
             }
 
             public MenuItem<bool> Attack { get; }
@@ -72,6 +73,8 @@ namespace Ensage.SDK.Orbwalker.Config
             public MenuItem<bool> Move { get; }
 
             public MenuItem<Slider> MoveDelay { get; }
+
+            public MenuItem<Slider> TurnDelay { get; }
         }
     }
 }

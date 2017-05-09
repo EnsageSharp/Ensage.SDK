@@ -125,6 +125,59 @@ namespace Ensage.SDK.Plugins
         }
     }
 
+    public static class Async
+    {
+        public static async Task OrbwalkToAsync(this IOrbwalker orbwalker, Unit target, CancellationToken token = default(CancellationToken))
+        {
+            while (!token.IsCancellationRequested)
+            {
+                if (!target.IsValid || !target.IsAlive)
+                {
+                    break;
+                }
+
+                if (orbwalker.OrbwalkTo(target))
+                {
+                    break;
+                }
+
+                await Task.Delay(50, token);
+            }
+        }
+    }
+
+    [ExportPlugin("Example Async Plugin")]
+    public class AsyncPlugin : Plugin
+    {
+        private static readonly ILog Log = AssemblyLogs.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
+        public AsyncPlugin()
+        {
+            UpdateManager.Subscribe(this.OnUpdate);
+        }
+
+        private TaskHandler Handler { get; set; }
+
+        private async Task ExecuteAsync(CancellationToken token)
+        {
+            Log.Debug($"Delay 1000");
+            await Task.Delay(1000, token);
+
+            Log.Debug($"another Delay 1000");
+            await Task.Delay(1000, token);
+        }
+
+        private void OnUpdate()
+        {
+            if (this.Handler?.IsRunning == true)
+            {
+                return;
+            }
+
+            this.Handler = UpdateManager.Run(this.ExecuteAsync);
+        }
+    }
+
     [ExportPlugin("Example Plugin Async", HeroId.npc_dota_hero_sniper)]
     public class ExamplePluginAsync : Plugin
     {

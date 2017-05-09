@@ -23,6 +23,8 @@ namespace Ensage.SDK.Orbwalker
 
         bool CanMove();
 
+        float GetTurnTime(Entity unit);
+
         bool Move(Vector3 position);
 
         bool OrbwalkTo(Unit target);

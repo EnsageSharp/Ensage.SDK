@@ -43,8 +43,6 @@ namespace Ensage.SDK.Orbwalker
 
         public bool IsActive { get; private set; }
 
-        public float TurnEndTime { get; private set; }
-
         [ImportMany(typeof(IOrbwalkingMode))]
         protected IEnumerable<Lazy<IOrbwalkingMode, IOrbwalkingModeMetadata>> DefaultModes { get; set; }
 
@@ -64,6 +62,8 @@ namespace Ensage.SDK.Orbwalker
         private Hero Owner { get; }
 
         private float PingTime => Game.Ping / 2000f;
+
+        private float TurnEndTime { get; set; }
 
         public void Activate()
         {
@@ -144,6 +144,23 @@ namespace Ensage.SDK.Orbwalker
             {
                 this.LastMoveOrderIssuedTime = Game.RawGameTime;
                 return true;
+            }
+
+            return false;
+        }
+
+        public bool OrbwalkTo(Unit target)
+        {
+            // move
+            if ((target == null || !this.CanAttack(target)) && this.CanMove())
+            {
+                return this.Move(Game.MousePosition);
+            }
+
+            // attack
+            if (target != null && this.CanAttack(target))
+            {
+                return this.Attack(target);
             }
 
             return false;

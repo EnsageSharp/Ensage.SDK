@@ -21,26 +21,7 @@ namespace Ensage.SDK.Orbwalker.Modes
 
         public override void Execute()
         {
-            // turning
-            if (this.Orbwalker.TurnEndTime > Game.RawGameTime)
-            {
-                return;
-            }
-
-            var target = this.GetTarget();
-
-            // move
-            if ((target == null || !this.Orbwalker.CanAttack(target)) && this.Orbwalker.CanMove())
-            {
-                this.Orbwalker.Move(Game.MousePosition);
-                return;
-            }
-
-            // attack
-            if (target != null && this.Orbwalker.CanAttack(target))
-            {
-                this.Orbwalker.Attack(target);
-            }
+            this.Orbwalker.OrbwalkTo(this.GetTarget());
         }
 
         protected virtual Unit GetTarget()

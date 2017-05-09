@@ -17,8 +17,6 @@ namespace Ensage.SDK.Orbwalker
 
         IServiceContext Context { get; }
 
-        float TurnEndTime { get; }
-
         bool Attack(Unit target);
 
         bool CanAttack(Unit target);
@@ -26,5 +24,11 @@ namespace Ensage.SDK.Orbwalker
         bool CanMove();
 
         bool Move(Vector3 position);
+
+        bool OrbwalkTo(Unit target);
+
+        void RegisterMode(IOrbwalkingMode mode);
+
+        void UnregisterMode(IOrbwalkingMode mode);
     }
 }

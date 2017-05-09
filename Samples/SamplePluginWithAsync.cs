@@ -24,7 +24,7 @@ namespace Ensage.SDK.Samples
 
         public SamplePluginWithAsync()
         {
-            this.Handler = UpdateManager.Run(this.ExecuteAsync);
+            this.Handler = UpdateManager.Run(this.ExecuteAsync, false);
         }
 
         private TaskHandler Handler { get; }
@@ -59,6 +59,7 @@ namespace Ensage.SDK.Samples
         protected override void OnDeactivate()
         {
             UpdateManager.Unsubscribe(this.OnUpdate);
+            this.Handler?.Cancel();
         }
 
         private async Task ExecuteAsync(CancellationToken token)

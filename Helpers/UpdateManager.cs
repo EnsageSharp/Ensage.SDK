@@ -149,11 +149,6 @@ namespace Ensage.SDK.Helpers
             }
         }
 
-        private static async Task Test()
-        {
-            throw new NotImplementedException();
-        }
-
         private static void Unsubscribe(ICollection<IUpdateHandler> handlers, Action callback)
         {
             var handler = handlers.FirstOrDefault(h => h.Callback == callback);

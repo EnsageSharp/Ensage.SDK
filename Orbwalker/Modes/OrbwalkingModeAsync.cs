@@ -24,7 +24,7 @@ namespace Ensage.SDK.Orbwalker.Modes
         {
             if (this.Handler == null)
             {
-                this.Handler = UpdateManager.Run(this.ExecuteAsync);
+                this.Handler = UpdateManager.Run(this.ExecuteAsync, false);
             }
 
             this.Handler.RunAsync();

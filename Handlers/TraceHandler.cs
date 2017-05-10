@@ -7,6 +7,8 @@ namespace Ensage.SDK.Handlers
     using System;
     using System.Diagnostics;
 
+    using Ensage.SDK.Helpers;
+
     public class TraceHandler : TimeoutHandler
     {
         public TraceHandler(int timeout = 0)
@@ -16,28 +18,35 @@ namespace Ensage.SDK.Handlers
 
         public TimeSpan Time { get; private set; }
 
+        public CircularBuffer<TimeSpan> TimeHistory { get; } = new CircularBuffer<TimeSpan>(100);
+
         private Stopwatch Stopwatch { get; } = new Stopwatch();
 
-        public override void Invoke(Action callback)
+        public override bool Invoke(Action callback)
         {
             if (!this.HasTimeout)
             {
-                return;
+                return false;
             }
+
+            this.Stopwatch.Start();
 
             try
             {
-                this.Stopwatch.Start();
                 callback.Invoke();
-                this.Stopwatch.Stop();
             }
             finally
             {
+                this.Stopwatch.Stop();
+
                 this.Time = this.Stopwatch.Elapsed;
+                this.TimeHistory.Enqueue(this.Stopwatch.Elapsed);
+
                 this.Stopwatch.Reset();
             }
 
             this.NextUpdate = DateTime.Now.AddMilliseconds(this.Timeout);
+            return true;
         }
 
         public override string ToString()

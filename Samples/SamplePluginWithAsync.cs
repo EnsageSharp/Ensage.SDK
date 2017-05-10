@@ -5,10 +5,8 @@
 namespace Ensage.SDK.Samples
 {
     using System.Reflection;
-    using System.Threading;
     using System.Threading.Tasks;
 
-    using Ensage.SDK.Handlers;
     using Ensage.SDK.Helpers;
     using Ensage.SDK.Service;
     using Ensage.SDK.Service.Metadata;
@@ -17,79 +15,23 @@ namespace Ensage.SDK.Samples
 
     using PlaySharp.Toolkit.Logging;
 
-    [ExportPlugin("SamplePluginWithAsync")]
+    [ExportPlugin("SamplePluginWithAsync", StartupMode.Manual)]
     public class SamplePluginWithAsync : Plugin
     {
         private static readonly ILog Log = AssemblyLogs.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        public SamplePluginWithAsync()
-        {
-            this.Handler = UpdateManager.Run(this.ExecuteAsync, false);
-        }
-
-        private TaskHandler Handler { get; }
-
-        private TaskHandler IllusionHandler { get; set; }
-
         protected override void OnActivate()
         {
-            var source = new CancellationTokenSource();
-            var tk = source.Token;
-
-            Log.Debug($"UpdateManager.Factory.StartNew");
-            var task = UpdateManager.Factory.StartNew(
-                async () =>
-                {
-                    Log.Debug($"UpdateManager.Factory: pre-inner");
-                    await Task.Delay(1000, tk);
-                    Log.Debug($"UpdateManager.Factory: post-inner");
-                },
-                tk);
-
-            Log.Debug($"UpdateManager.Run");
-            var handler = UpdateManager.Run(
-                async token =>
-                {
-                    Log.Debug($"UpdateManager.Run: pre-inner");
-                    await Task.Delay(2000, tk);
-                    Log.Debug($"UpdateManager.Run: post-inner");
-                });
-
-            UpdateManager.Subscribe(this.OnUpdate);
-
-            this.IllusionHandler = UpdateManager.Run(token => { return this.MoveIllusionsAsync(token, "hello world"); }, false);
-            UpdateManager.Subscribe(this.MoveIllusions, 100);
+            UpdateManager.BeginInvoke(this.TestLoop);
         }
 
-        protected override void OnDeactivate()
+        private async void TestLoop()
         {
-            UpdateManager.Unsubscribe(this.OnUpdate);
-            this.Handler?.Cancel();
-        }
-
-        private async Task ExecuteAsync(CancellationToken token)
-        {
-            Log.Debug($"Plugin.ExecuteAsync: Delay 1000");
-            await Task.Delay(1000, token);
-
-            Log.Debug($"Plugin.ExecuteAsync: another Delay 1000");
-            await Task.Delay(1000, token);
-        }
-
-        private void MoveIllusions()
-        {
-            this.IllusionHandler.RunAsync();
-        }
-
-        private async Task MoveIllusionsAsync(CancellationToken tk, string param)
-        {
-            // move
-            await Task.Delay(100, tk);
-        }
-
-        private void OnUpdate()
-        {
-            this.Handler.RunAsync();
+            while (this.IsActive)
+            {
+                Log.Debug($"Loop");
+                await Task.Delay(1000);
+            }
         }
     }
 }

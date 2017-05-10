@@ -19,7 +19,7 @@ namespace Ensage.SDK.Plugins
 
     using SharpDX;
 
-    [ExportPlugin("Developer Tools", StartupMode.Manual, description: "Display UpdateManager callback times in CPU Ticks")]
+    [ExportPlugin("Developer Tools", StartupMode.Manual, priority: 1000, description: "Display UpdateManager callback times in CPU Ticks")]
     public class DeveloperTools : Plugin
     {
         private static readonly ILog Log = AssemblyLogs.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
@@ -58,20 +58,24 @@ namespace Ensage.SDK.Plugins
             var color = Color.Orange;
             var size = new Vector2(25);
 
+            Drawing.DrawText($"Ticks", new Vector2(x, y), size, color, FontFlags.AntiAlias);
+            Drawing.DrawText($"Average", new Vector2(x + 100, y), size, color, FontFlags.AntiAlias);
+            Drawing.DrawText($"Min", new Vector2(x + 200, y), size, color, FontFlags.AntiAlias);
+            Drawing.DrawText($"Max", new Vector2(x + 300, y), size, color, FontFlags.AntiAlias);
+            Drawing.DrawText($"Time", new Vector2(x + 400, y), size, color, FontFlags.AntiAlias);
+            Drawing.DrawText($"Name", new Vector2(x + 500, y), size, color, FontFlags.AntiAlias);
+            y += 25;
+
             foreach (var handler in UpdateManager.Handlers.Where(e => e.Executor is TraceHandler))
             {
                 var tracer = (TraceHandler)handler.Executor;
 
                 Drawing.DrawText($"{tracer.Time.Ticks:n0}", new Vector2(x, y), size, color, FontFlags.AntiAlias);
-
-                if (tracer.Timeout > 0)
-                {
-                    Drawing.DrawText($"{handler.Name} t#{tracer.Timeout}", new Vector2(x + 100, y), size, color, FontFlags.AntiAlias);
-                }
-                else
-                {
-                    Drawing.DrawText($"{handler.Name}", new Vector2(x + 100, y), size, color, FontFlags.AntiAlias);
-                }
+                Drawing.DrawText($"{tracer.TimeHistory.Average(e => e.Ticks):n0}", new Vector2(x + 100, y), size, color, FontFlags.AntiAlias);
+                Drawing.DrawText($"{tracer.TimeHistory.Min(e => e.Ticks):n0}", new Vector2(x + 200, y), size, color, FontFlags.AntiAlias);
+                Drawing.DrawText($"{tracer.TimeHistory.Max(e => e.Ticks):n0}", new Vector2(x + 300, y), size, color, FontFlags.AntiAlias);
+                Drawing.DrawText($"{tracer.Timeout}", new Vector2(x + 400, y), size, color, FontFlags.AntiAlias);
+                Drawing.DrawText($"{handler.Name}", new Vector2(x + 500, y), size, color, FontFlags.AntiAlias);
 
                 y += 25;
             }

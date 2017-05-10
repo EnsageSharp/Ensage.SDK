@@ -17,6 +17,7 @@ namespace Ensage.SDK.Service.Metadata
             string author = "Ensage",
             string version = "1.0.0.0",
             string description = "",
+            int priority = 250,
             params HeroId[] units)
             : base(typeof(IPluginLoader))
         {
@@ -25,6 +26,7 @@ namespace Ensage.SDK.Service.Metadata
             this.Author = author;
             this.Version = version;
             this.Description = description;
+            this.Priority = priority;
             this.Units = units?.Length > 0 ? units : null;
         }
 
@@ -40,6 +42,8 @@ namespace Ensage.SDK.Service.Metadata
         public StartupMode Mode { get; }
 
         public string Name { get; }
+
+        public int Priority { get; }
 
         public HeroId[] Units { get; }
 

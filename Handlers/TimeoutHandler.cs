@@ -8,10 +8,10 @@ namespace Ensage.SDK.Handlers
 
     public class TimeoutHandler : InvokeHandler
     {
-        public TimeoutHandler(int timeout)
+        public TimeoutHandler(int timeout, bool fromNow = false)
         {
             this.Timeout = timeout;
-            this.NextUpdate = DateTime.Now;
+            this.NextUpdate = fromNow ? DateTime.Now.AddMilliseconds(this.Timeout) : DateTime.Now;
         }
 
         public int Timeout { get; set; }
@@ -31,13 +31,16 @@ namespace Ensage.SDK.Handlers
 
         protected DateTime NextUpdate { get; set; }
 
-        public override void Invoke(Action callback)
+        public override bool Invoke(Action callback)
         {
             if (this.HasTimeout)
             {
                 this.NextUpdate = DateTime.Now.AddMilliseconds(this.Timeout);
                 callback.Invoke();
+                return true;
             }
+
+            return false;
         }
 
         public override string ToString()

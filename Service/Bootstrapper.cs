@@ -7,6 +7,7 @@ namespace Ensage.SDK.Service
     using System;
     using System.Collections.Generic;
     using System.Diagnostics;
+    using System.Linq;
     using System.Reflection;
 
     using Ensage.SDK.Extensions;
@@ -70,27 +71,25 @@ namespace Ensage.SDK.Service
             }
         }
 
+        private void ActivatePlugin(PluginContainer plugin)
+        {
+            if (plugin.Menu)
+            {
+                UpdateManager.BeginInvoke(plugin.Activate, plugin.Metadata.Priority);
+            }
+        }
+
         private void ActivatePlugins()
         {
-            foreach (var plugin in this.PluginContainer)
+            foreach (var plugin in this.PluginContainer.OrderBy(e => e.Metadata.Priority))
             {
-                if (plugin.Menu)
-                {
-                    try
-                    {
-                        plugin.Activate();
-                    }
-                    catch (Exception e)
-                    {
-                        Log.Warn(e);
-                    }
-                }
+                this.ActivatePlugin(plugin);
             }
         }
 
         private void DeactivatePlugins()
         {
-            foreach (var plugin in this.PluginContainer)
+            foreach (var plugin in this.PluginContainer.OrderByDescending(e => e.Metadata.Priority))
             {
                 try
                 {

@@ -18,7 +18,7 @@ namespace Ensage.SDK.Samples
 
     using PlaySharp.Toolkit.Logging;
 
-    [ExportPlugin("SamplePluginWithAsync")]
+    [ExportPlugin("SamplePluginWithAsyncOrbwalkingMode", StartupMode.Manual)]
     public class SamplePluginWithAsyncOrbwalkingMode : Plugin
     {
         private static readonly ILog Log = AssemblyLogs.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);

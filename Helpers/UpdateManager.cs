@@ -47,11 +47,19 @@ namespace Ensage.SDK.Helpers
 
         internal static List<IUpdateHandler> Handlers { get; } = new List<IUpdateHandler>();
 
+        internal static List<IUpdateHandler> InvokeHandlers { get; } = new List<IUpdateHandler>();
+
         internal static List<IUpdateHandler> ServiceHandlers { get; } = new List<IUpdateHandler>();
 
-        public static void BeginInvoke(Action action)
+        public static void BeginInvoke(Action callback, int timeout = 0)
         {
-            Context.Post(state => action(), null);
+            if (timeout == 0)
+            {
+                Context.Post(state => callback(), null);
+                return;
+            }
+
+            InvokeHandlers.Add(new UpdateHandler(callback, new TimeoutHandler(timeout, true)));
         }
 
         public static TaskHandler Run([NotNull] Func<CancellationToken, Task> factory, bool autostart = true)
@@ -121,6 +129,22 @@ namespace Ensage.SDK.Helpers
         private static void OnUpdate(EventArgs args)
         {
             SynchronizationContext.SetSynchronizationContext(Context);
+
+            foreach (var handler in InvokeHandlers.ToArray())
+            {
+                try
+                {
+                    if (handler.Invoke())
+                    {
+                        InvokeHandlers.Remove(handler);
+                    }
+                }
+                catch (Exception e)
+                {
+                    InvokeHandlers.Remove(handler);
+                    Log.Error(e);
+                }
+            }
 
             foreach (var handler in Handlers.ToArray())
             {

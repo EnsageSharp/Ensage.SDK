@@ -104,6 +104,7 @@
     <Compile Include="Abilities\RangedAbility.cs" />
     <Compile Include="Abilities\TargetAbility.cs" />
     <Compile Include="Abilities\npc_dota_hero_vengefulspirit\vengefulspirit_magic_missile.cs" />
+    <Compile Include="Helpers\CircularBuffer.cs" />
     <Compile Include="Helpers\Messenger.cs" />
     <Compile Include="Handlers\IUpdateHandler.cs" />
     <Compile Include="Handlers\TimeoutHandler.cs" />

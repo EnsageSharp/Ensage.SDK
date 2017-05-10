@@ -13,6 +13,7 @@ namespace Ensage.SDK.Plugins
     [ExportPlugin(
         "Crazy Event Hub",
         StartupMode.Manual,
+        priority: 0,
         description: "CAN lead to high FPS reduction! - Publishes tons of data from Ensages event layer to Messenger<(EventName)EventArgs")]
     public class CrazyEventHub : Plugin
     {

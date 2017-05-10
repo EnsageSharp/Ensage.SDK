@@ -14,7 +14,7 @@ namespace Ensage.SDK.Handlers
 
         string Name { get; }
 
-        void Invoke();
+        bool Invoke();
     }
 
     public interface IUpdateHandler<TEventArgs>
@@ -25,6 +25,6 @@ namespace Ensage.SDK.Handlers
 
         string Name { get; }
 
-        void Invoke(TEventArgs args);
+        bool Invoke(TEventArgs args);
     }
 }

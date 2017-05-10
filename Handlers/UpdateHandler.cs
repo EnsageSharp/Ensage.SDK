@@ -26,9 +26,9 @@ namespace Ensage.SDK.Handlers
 
         public string Name { get; }
 
-        public virtual void Invoke()
+        public virtual bool Invoke()
         {
-            this.Executor.Invoke(this.Callback);
+            return this.Executor.Invoke(this.Callback);
         }
 
         public override string ToString()
@@ -52,9 +52,9 @@ namespace Ensage.SDK.Handlers
 
         public string Name { get; }
 
-        public virtual void Invoke(TEventArgs args)
+        public virtual bool Invoke(TEventArgs args)
         {
-            this.Executor.Invoke(this.Callback, args);
+            return this.Executor.Invoke(this.Callback, args);
         }
 
         public override string ToString()

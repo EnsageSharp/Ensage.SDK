@@ -11,7 +11,7 @@ namespace Ensage.SDK.Plugins
     using Ensage.SDK.Service.Metadata;
     using Ensage.SDK.TargetSelector;
 
-    [ExportPlugin("Target Selector", StartupMode.Auto, description: "SDK Target Selector Framework")]
+    [ExportPlugin("Target Selector", StartupMode.Auto, priority: 0, description: "SDK Target Selector Framework")]
     public class TargetSelectorPlugin : Plugin
     {
         [ImportingConstructor]

@@ -86,8 +86,7 @@ namespace Ensage.SDK.Handlers
 
                             this.isRunning = false;
                         }
-                    },
-                    this.TokenSource.Token);
+                    });
         }
     }
 }

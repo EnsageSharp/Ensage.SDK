@@ -55,27 +55,28 @@ namespace Ensage.SDK.Plugins
         {
             var x = 20;
             var y = 130;
-            var color = Color.Orange;
-            var size = new Vector2(25);
+            var flag = FontFlags.DropShadow | FontFlags.AntiAlias;
+            var color = Color.Beige;
+            var size = new Vector2(22);
 
-            Drawing.DrawText($"Ticks", new Vector2(x, y), size, color, FontFlags.AntiAlias);
-            Drawing.DrawText($"Average", new Vector2(x + 100, y), size, color, FontFlags.AntiAlias);
-            Drawing.DrawText($"Min", new Vector2(x + 200, y), size, color, FontFlags.AntiAlias);
-            Drawing.DrawText($"Max", new Vector2(x + 300, y), size, color, FontFlags.AntiAlias);
-            Drawing.DrawText($"Time", new Vector2(x + 400, y), size, color, FontFlags.AntiAlias);
-            Drawing.DrawText($"Name", new Vector2(x + 500, y), size, color, FontFlags.AntiAlias);
+            Drawing.DrawText($"Ticks", new Vector2(x, y), size, color, flag);
+            Drawing.DrawText($"Average", new Vector2(x + 100, y), size, color, flag);
+            Drawing.DrawText($"Min", new Vector2(x + 200, y), size, color, flag);
+            Drawing.DrawText($"Max", new Vector2(x + 300, y), size, color, flag);
+            Drawing.DrawText($"Time", new Vector2(x + 400, y), size, color, flag);
+            Drawing.DrawText($"Name", new Vector2(x + 500, y), size, color, flag);
             y += 25;
 
             foreach (var handler in UpdateManager.Handlers.Where(e => e.Executor is TraceHandler))
             {
                 var tracer = (TraceHandler)handler.Executor;
 
-                Drawing.DrawText($"{tracer.Time.Ticks:n0}", new Vector2(x, y), size, color, FontFlags.AntiAlias);
-                Drawing.DrawText($"{tracer.TimeHistory.Average(e => e.Ticks):n0}", new Vector2(x + 100, y), size, color, FontFlags.AntiAlias);
-                Drawing.DrawText($"{tracer.TimeHistory.Min(e => e.Ticks):n0}", new Vector2(x + 200, y), size, color, FontFlags.AntiAlias);
-                Drawing.DrawText($"{tracer.TimeHistory.Max(e => e.Ticks):n0}", new Vector2(x + 300, y), size, color, FontFlags.AntiAlias);
-                Drawing.DrawText($"{tracer.Timeout}", new Vector2(x + 400, y), size, color, FontFlags.AntiAlias);
-                Drawing.DrawText($"{handler.Name}", new Vector2(x + 500, y), size, color, FontFlags.AntiAlias);
+                Drawing.DrawText($"{tracer.Time.Ticks:n0}", new Vector2(x, y), size, color, flag);
+                Drawing.DrawText($"{tracer.TimeHistory.Average(e => e.Ticks):n0}", new Vector2(x + 100, y), size, color, flag);
+                Drawing.DrawText($"{tracer.TimeHistory.Min(e => e.Ticks):n0}", new Vector2(x + 200, y), size, color, flag);
+                Drawing.DrawText($"{tracer.TimeHistory.Max(e => e.Ticks):n0}", new Vector2(x + 300, y), size, color, flag);
+                Drawing.DrawText($"{tracer.Timeout}", new Vector2(x + 400, y), size, color, flag);
+                Drawing.DrawText($"{handler.Name}", new Vector2(x + 500, y), size, color, flag);
 
                 y += 25;
             }

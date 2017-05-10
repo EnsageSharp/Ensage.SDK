@@ -47,8 +47,6 @@ namespace Ensage.SDK.Menu
             var menu = new Menu(displayName, $"{parent.Name}.{name ?? GetName(displayName)}");
             parent.AddSubMenu(menu);
 
-            Log.Debug($"Created {menu.Name}");
-
             return new MenuFactory(menu);
         }
 

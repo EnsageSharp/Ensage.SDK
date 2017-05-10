@@ -25,7 +25,7 @@ namespace Ensage.SDK.Service
             this.Part = part;
             this.Assembly = part.Value.GetType().Assembly;
             this.Menu = factory.Item(this.Part.Metadata.Name, this.Mode == StartupMode.Auto);
-            this.Menu.Item.SetTooltip($"Author[{part.Metadata.Author}]   Version[{part.Metadata.Version}]   Assembly[{this.Assembly.GetName().Name}]");
+            this.Menu.Item.SetTooltip($"{part.Metadata.Author} - {part.Metadata.Version} - {this.Assembly.GetName().Name}");
             this.Menu.Item.ValueChanged += this.OnActiveValueChanged;
 
             Log.Info($"Created {this}");
@@ -81,10 +81,10 @@ namespace Ensage.SDK.Service
         {
             if (this.Metadata.Units != null)
             {
-                return $"Plugin[{this.Mode}] {this.Metadata.Name} | {this.Metadata.Author} | {this.Metadata.Version} | {string.Join(", ", this.Metadata.Units)}";
+                return $"Plugin {this.Metadata.Name} | {this.Mode} | {this.Metadata.Author} | {this.Metadata.Version} | {string.Join(", ", this.Metadata.Units)}";
             }
 
-            return $"Plugin[{this.Mode}] {this.Metadata.Name} | {this.Metadata.Author} | {this.Metadata.Version}";
+            return $"Plugin {this.Metadata.Name} | {this.Mode} | {this.Metadata.Author} | {this.Metadata.Version}";
         }
 
         private void OnActiveValueChanged(object sender, OnValueChangeEventArgs args)

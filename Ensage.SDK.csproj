@@ -80,10 +80,12 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Abilities\AbilityCastType.cs" />
     <Compile Include="Abilities\ActiveAbility.cs" />
     <Compile Include="Abilities\AuraAbility.cs" />
     <Compile Include="Abilities\BaseAbility.cs" />
     <Compile Include="Abilities\CircleAbility.cs" />
+    <Compile Include="Abilities\PredictionAbility.cs" />
     <Compile Include="Abilities\ConeAbility.cs" />
     <Compile Include="Abilities\IActiveAbility.cs" />
     <Compile Include="Abilities\IDotAbility.cs" />
@@ -104,6 +106,8 @@
     <Compile Include="Abilities\RangedAbility.cs" />
     <Compile Include="Abilities\TargetAbility.cs" />
     <Compile Include="Abilities\npc_dota_hero_vengefulspirit\vengefulspirit_magic_missile.cs" />
+    <Compile Include="Extensions\EnumerableExtensions.cs" />
+    <Compile Include="Geometry\MEC.cs" />
     <Compile Include="Helpers\CircularBuffer.cs" />
     <Compile Include="Helpers\Messenger.cs" />
     <Compile Include="Handlers\IUpdateHandler.cs" />
@@ -113,8 +117,10 @@
     <Compile Include="Input\MouseWheelEventArgs.cs" />
     <Compile Include="Orbwalker\IOrbwalkerManager.cs" />
     <Compile Include="Orbwalker\Metadata\ExportOrbwalkerManagerAttribute.cs" />
+    <Compile Include="Prediction\Metadata\ExportPredictionAttribute.cs" />
     <Compile Include="Orbwalker\Metadata\ImportOrbwalkerManagerAttribute.cs" />
     <Compile Include="Orbwalker\Metadata\IOrbwalkerManagerMetadata.cs" />
+    <Compile Include="Prediction\Metadata\IPredictionMetadata.cs" />
     <Compile Include="Orbwalker\Modes\Combo.cs" />
     <Compile Include="Orbwalker\OrbwalkerManager.cs" />
     <Compile Include="Handlers\TaskHandler.cs" />
@@ -124,6 +130,16 @@
     <Compile Include="Plugins\OrbwalkerPlugin.cs" />
     <Compile Include="Orbwalker\Modes\OrbwalkingModeAsync.cs" />
     <Compile Include="Plugins\TargetSelectorPlugin.cs" />
+    <Compile Include="Prediction\Collision\Collision.cs" />
+    <Compile Include="Prediction\Collision\CollisionObject.cs" />
+    <Compile Include="Prediction\Collision\CollisionResult.cs" />
+    <Compile Include="Prediction\Collision\CollisionTypes.cs" />
+    <Compile Include="Prediction\HitChance.cs" />
+    <Compile Include="Prediction\IPrediction.cs" />
+    <Compile Include="Prediction\Prediction.cs" />
+    <Compile Include="Prediction\PredictionInput.cs" />
+    <Compile Include="Prediction\PredictionOutput.cs" />
+    <Compile Include="Prediction\PredictionSkillshotType.cs" />
     <Compile Include="Service\ControllableService.cs" />
     <Compile Include="Inventory\InventoryItem.cs" />
     <Compile Include="Inventory\Metadata\ExportInventoryManagerAttribute.cs" />

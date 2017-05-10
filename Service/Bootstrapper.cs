@@ -71,19 +71,14 @@ namespace Ensage.SDK.Service
             }
         }
 
-        private void ActivatePlugin(PluginContainer plugin)
-        {
-            if (plugin.Menu)
-            {
-                UpdateManager.BeginInvoke(plugin.Activate, plugin.Metadata.Priority);
-            }
-        }
-
         private void ActivatePlugins()
         {
             foreach (var plugin in this.PluginContainer.OrderBy(e => e.Metadata.Priority))
             {
-                this.ActivatePlugin(plugin);
+                if (plugin.Menu)
+                {
+                    UpdateManager.BeginInvoke(plugin.Activate, plugin.Metadata.Priority);
+                }
             }
         }
 

@@ -4,7 +4,6 @@
 
 namespace Ensage.SDK.Service
 {
-    using Ensage.Common;
     using Ensage.SDK.Helpers;
 
     using PlaySharp.Toolkit.Helper;

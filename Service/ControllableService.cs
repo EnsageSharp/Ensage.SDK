@@ -5,6 +5,7 @@
 namespace Ensage.SDK.Service
 {
     using Ensage.Common;
+    using Ensage.SDK.Helpers;
 
     using PlaySharp.Toolkit.Helper;
 
@@ -14,7 +15,7 @@ namespace Ensage.SDK.Service
         {
             if (activateOnCreation)
             {
-                DelayAction.Add(0, this.Activate);
+                UpdateManager.BeginInvoke(this.Activate);
             }
         }
 

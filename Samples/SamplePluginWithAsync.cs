@@ -29,6 +29,8 @@ namespace Ensage.SDK.Samples
 
         private TaskHandler Handler { get; }
 
+        private TaskHandler IllusionHandler { get; set; }
+
         protected override void OnActivate()
         {
             var source = new CancellationTokenSource();
@@ -54,6 +56,9 @@ namespace Ensage.SDK.Samples
                 });
 
             UpdateManager.Subscribe(this.OnUpdate);
+
+            this.IllusionHandler = UpdateManager.Run(token => { return this.MoveIllusionsAsync(token, "hello world"); }, false);
+            UpdateManager.Subscribe(this.MoveIllusions, 100);
         }
 
         protected override void OnDeactivate()
@@ -69,6 +74,17 @@ namespace Ensage.SDK.Samples
 
             Log.Debug($"Plugin.ExecuteAsync: another Delay 1000");
             await Task.Delay(1000, token);
+        }
+
+        private void MoveIllusions()
+        {
+            this.IllusionHandler.RunAsync();
+        }
+
+        private async Task MoveIllusionsAsync(CancellationToken tk, string param)
+        {
+            // move
+            await Task.Delay(100, tk);
         }
 
         private void OnUpdate()

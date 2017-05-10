@@ -49,6 +49,11 @@ namespace Ensage.SDK.Helpers
 
         internal static List<IUpdateHandler> ServiceHandlers { get; } = new List<IUpdateHandler>();
 
+        public static void BeginInvoke(Action action)
+        {
+            Context.Post(state => action(), null);
+        }
+
         public static TaskHandler Run([NotNull] Func<CancellationToken, Task> factory, bool autostart = true)
         {
             if (factory == null)

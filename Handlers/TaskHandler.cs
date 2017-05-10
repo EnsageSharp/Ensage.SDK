@@ -42,17 +42,17 @@ namespace Ensage.SDK.Handlers
 
         public void Cancel(bool throwOnFirstException = false)
         {
-            this.TokenSource.Cancel(throwOnFirstException);
+            this.TokenSource?.Cancel(throwOnFirstException);
         }
 
         public void CancelAfter(TimeSpan delay)
         {
-            this.TokenSource.CancelAfter(delay);
+            this.TokenSource?.CancelAfter(delay);
         }
 
         public void CancelAfter(int millisecondsDelay)
         {
-            this.TokenSource.CancelAfter(millisecondsDelay);
+            this.TokenSource?.CancelAfter(millisecondsDelay);
         }
 
         public TaskHandler CreateCopy()

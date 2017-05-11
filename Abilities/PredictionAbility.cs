@@ -7,9 +7,15 @@ namespace Ensage.SDK.Abilities
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Reflection;
 
     using Ensage.SDK.Extensions;
     using Ensage.SDK.Prediction;
+    using Ensage.SDK.Prediction.Collision;
+
+    using log4net;
+
+    using PlaySharp.Toolkit.Logging;
 
     using SharpDX;
 
@@ -29,15 +35,16 @@ namespace Ensage.SDK.Abilities
 
         private float speed = -1f;
 
-        public PredictionAbility(Hero owner, Ability ability, IPrediction prediction)
+        public PredictionAbility(Hero owner, Ability ability, IPrediction prediction, PredictionSkillshotType type = PredictionSkillshotType.SkillshotLine)
         {
             this.Owner = owner;
             this.Ability = ability;
             this.Prediction = prediction;
+            this.PredictionSkillshotType = type;
         }
 
-        public PredictionAbility(Hero owner, AbilityId abilityId, IPrediction prediction)
-            : this(owner, owner.GetAbilityById(abilityId), prediction)
+        public PredictionAbility(Hero owner, AbilityId abilityId, IPrediction prediction, PredictionSkillshotType type = PredictionSkillshotType.SkillshotLine)
+            : this(owner, owner.GetAbilityById(abilityId), prediction, type)
         {
         }
 
@@ -320,9 +327,10 @@ namespace Ensage.SDK.Abilities
             result += "Damage = " + this.Damage + "\n";
             result += "DamageType = " + this.DamageType + "\n";
             result += "Special Data ====================\n";
-            foreach (var specialData in this.SpecialDataList)
+
+            foreach (var data in this.SpecialDataList)
             {
-                result += specialData.Name + " = " + specialData.Value + "\n";
+                result += data.Name + " = " + data.Value + "\n";
             }
 
             result += "====================================================================================\n";
@@ -344,6 +352,8 @@ namespace Ensage.SDK.Abilities
             return this.UseInternal(null, position);
         }
 
+        private static readonly ILog Log = AssemblyLogs.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
         private bool UseInternal(Unit target = null, Vector3? position = null)
         {
             var now = Game.RawGameTime;
@@ -355,6 +365,7 @@ namespace Ensage.SDK.Abilities
 
             if (!this.IsReady())
             {
+                Log.Debug($"Not Ready");
                 return false;
             }
 
@@ -362,30 +373,39 @@ namespace Ensage.SDK.Abilities
 
             if (position == null && target == null)
             {
-                this.Ability.UseAbility();
-                casted = true;
+                casted = this.Ability.UseAbility();
             }
             else if (position != null)
             {
-                this.Ability.UseAbility((Vector3)position);
-                casted = true;
+                casted = this.Ability.UseAbility((Vector3)position);
             }
             else if (target != null)
             {
                 if (this.CastType == AbilityCastType.Unit)
                 {
-                    this.Ability.UseAbility(target);
-                    casted = true;
+                    casted = this.Ability.UseAbility(target);
                 }
                 else if (this.CastType == AbilityCastType.Position)
                 {
-                    var input = new PredictionInput(this.Owner, target, this.Delay, this.Speed, this.Radius, this.PredictionSkillshotType, this.AreaOfEffect);
+                    var input = new PredictionInput(this.Owner, target, this.Delay, this.Speed, this.Range, this.Radius, this.PredictionSkillshotType, this.AreaOfEffect);
+                    input.CollisionTypes = CollisionTypes.AllyCreeps | CollisionTypes.EnemyCreeps | CollisionTypes.AllyHeroes | CollisionTypes.EnemyHeroes;
+                    input.Speed = 1000;
+                    input.Radius = 100;
+
+                    // Log.Debug($"Owner: {input.Owner.Name}");
+                    // Log.Debug($"Delay: {input.Delay}");
+                    // Log.Debug($"Range: {input.Range}");
+                    // Log.Debug($"Speed: {input.Speed}");
+                    // Log.Debug($"Radius: {input.Radius}");
+                    // Log.Debug($"Type: {input.PredictionSkillshotType}");
+
                     var output = this.Prediction.GetPrediction(input);
+
+                    // Log.Debug($"Output: {output.HitChance}");
 
                     if (output.HitChance >= HitChance.Medium)
                     {
-                        this.Ability.UseAbility(output.CastPosition);
-                        casted = true;
+                        casted = this.Ability.UseAbility(output.CastPosition);
                     }
                 }
             }

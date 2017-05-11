@@ -54,7 +54,7 @@ namespace Ensage.SDK.Prediction
             // check collision
             if (input.CollisionTypes != CollisionTypes.None)
             {
-                var scanRange = input.Caster.Distance2D(result.CastPosition);
+                var scanRange = input.Owner.Distance2D(result.CastPosition);
                 var movingObjects = new List<Unit>();
                 var collisionObjects = new List<CollisionObject>();
 
@@ -62,33 +62,33 @@ namespace Ensage.SDK.Prediction
                 {
                     movingObjects.AddRange(
                         EntityManager<Creep>.Entities.Where(
-                            unit => unit.IsAlly(input.Caster) && unit.IsValidTarget(float.MaxValue, false) && input.Caster.IsInRange(unit, scanRange)));
+                            unit => unit.IsAlly(input.Owner) && unit.IsValidTarget(float.MaxValue, false) && input.Owner.IsInRange(unit, scanRange)));
                 }
 
                 if (input.CollisionTypes.HasFlag(CollisionTypes.EnemyCreeps))
                 {
                     movingObjects.AddRange(
                         EntityManager<Creep>.Entities.Where(
-                            unit => unit.IsEnemy(input.Caster) && unit.IsValidTarget(float.MaxValue, false) && input.Caster.IsInRange(unit, scanRange)));
+                            unit => unit.IsEnemy(input.Owner) && unit.IsValidTarget(float.MaxValue, false) && input.Owner.IsInRange(unit, scanRange)));
                 }
 
                 if (input.CollisionTypes.HasFlag(CollisionTypes.AllyHeroes))
                 {
                     movingObjects.AddRange(
                         EntityManager<Hero>.Entities.Where(
-                            unit => unit.IsAlly(input.Caster) &&
+                            unit => unit.IsAlly(input.Owner) &&
                                     unit.IsValidTarget(float.MaxValue, false) &&
-                                    input.Caster.IsInRange(unit, scanRange) &&
-                                    unit != input.Caster));
+                                    input.Owner.IsInRange(unit, scanRange) &&
+                                    unit != input.Owner));
                 }
 
                 if (input.CollisionTypes.HasFlag(CollisionTypes.EnemyHeroes))
                 {
                     movingObjects.AddRange(
                         EntityManager<Hero>.Entities.Where(
-                            unit => unit.IsEnemy(input.Caster) &&
+                            unit => unit.IsEnemy(input.Owner) &&
                                     unit.IsValidTarget(float.MaxValue, false) &&
-                                    input.Caster.IsInRange(unit, scanRange) &&
+                                    input.Owner.IsInRange(unit, scanRange) &&
                                     unit != input.Target));
                 }
 
@@ -103,13 +103,13 @@ namespace Ensage.SDK.Prediction
                 // add trees and buildings, use NavMeshCellFlags for less lag?
                 if (input.CollisionTypes.HasFlag(CollisionTypes.Trees))
                 {
-                    foreach (var tree in EntityManager<Tree>.Entities.Where(unit => input.Caster.IsInRange(unit, scanRange)))
+                    foreach (var tree in EntityManager<Tree>.Entities.Where(unit => input.Owner.IsInRange(unit, scanRange)))
                     {
                         collisionObjects.Add(new CollisionObject(tree, tree.NetworkPosition, 75f));
                     }
                 }
 
-                var collisionResult = Collision.Collision.GetCollision(input.Caster.NetworkPosition.ToVector2(), result.CastPosition.ToVector2(), input.Radius, collisionObjects);
+                var collisionResult = Collision.Collision.GetCollision(input.Owner.NetworkPosition.ToVector2(), result.CastPosition.ToVector2(), input.Radius, collisionObjects);
                 if (collisionResult.Collides)
                 {
                     result.HitChance = HitChance.Collision;
@@ -219,7 +219,7 @@ namespace Ensage.SDK.Prediction
         {
             var target = input.Target;
             var targetPosition = input.Target.NetworkPosition;
-            var caster = input.Caster;
+            var caster = input.Owner;
 
             var totalDelay = caster.TurnTime(targetPosition) + input.Delay + (Game.Ping / 1000f) + 0.06f;
             var totalArrivalTime = totalDelay + (caster.Distance2D(target, true) / input.Speed);
@@ -285,7 +285,7 @@ namespace Ensage.SDK.Prediction
 
         private bool IsInRange(PredictionInput input, Vector3 Position, bool addRadius = true)
         {
-            return input.Caster.IsInRange(Position, input.Range + (input.PredictionSkillshotType == PredictionSkillshotType.SkillshotCircle && addRadius ? input.Radius : 0f));
+            return input.Owner.IsInRange(Position, input.Range + (input.PredictionSkillshotType == PredictionSkillshotType.SkillshotCircle && addRadius ? input.Radius : 0f));
         }
     }
 }

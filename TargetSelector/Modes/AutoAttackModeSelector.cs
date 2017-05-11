@@ -17,7 +17,7 @@ namespace Ensage.SDK.TargetSelector.Modes
     using PlaySharp.Toolkit.Helper;
     using PlaySharp.Toolkit.Logging;
 
-    internal class AutoAttackModeSelector
+    internal class AutoAttackModeSelectorYCWH6N6ngOUq
     {
         private static readonly ILog Log = AssemblyLogs.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
@@ -139,7 +139,7 @@ namespace Ensage.SDK.TargetSelector.Modes
 
         private bool CanKill(Unit target)
         {
-            return this.Owner.GetAttackDamage(target, true) > this.HealthPrediction.GetPrediction(target, this.Owner.GetAutoAttackArrivalTime(target) + (Game.Ping / 2000f));
+            return this.Owner.GetAttackDamage(target, true) > this.HealthPrediction.GetPrediction(target, this.Owner.GetAutoAttackArrivalTime(target) + (Game.Ping / 2000f) - 0.15f);
         }
 
         private bool IsValid(Unit target, bool myTeam = false)

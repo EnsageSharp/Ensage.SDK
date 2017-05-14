@@ -24,7 +24,7 @@ namespace Ensage.SDK.Abilities
         {
             var start = this.Ability.Owner.NetworkPosition;
             var dir = (position - start).Normalized();
-            var end = start + dir * this.Range;
+            var end = start + (dir * this.Range);
 
             return new Polygon.Cone(start, end, this.StartWidth, this.EndWidth);
         }
@@ -38,9 +38,9 @@ namespace Ensage.SDK.Abilities
 
             var start = this.Ability.Owner.NetworkPosition;
             var dir = (position - start).Normalized();
-            var end = start + dir * range;
+            var end = start + (dir * range);
 
-            endRadius = startRadius + (endRadius - startRadius) / this.GetTravelTime() * time;
+            endRadius = startRadius + (((endRadius - startRadius) / this.GetTravelTime()) * time);
 
             return new Polygon.Cone(start, end, startRadius, endRadius);
         }

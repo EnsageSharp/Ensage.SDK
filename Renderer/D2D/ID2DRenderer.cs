@@ -17,24 +17,9 @@ namespace Ensage.SDK.Renderer.D2D
 
         ID2DFontContainer Fonts { get; }
 
-        void DrawBox2D(
-            float x,
-            float y,
-            float width,
-            float height,
-            float stroke,
-            SolidColorBrush brush,
-            SolidColorBrush floateriorBrush);
+        void DrawBox2D(float x, float y, float width, float height, float stroke, SolidColorBrush brush, SolidColorBrush floateriorBrush);
 
-        void DrawBox3D(
-            float x,
-            float y,
-            float width,
-            float height,
-            float length,
-            float stroke,
-            SolidColorBrush brush,
-            SolidColorBrush floateriorBrush);
+        void DrawBox3D(float x, float y, float width, float height, float length, float stroke, SolidColorBrush brush, SolidColorBrush floateriorBrush);
 
         void DrawCircle(float x, float y, float radius, float stroke, SolidColorBrush brush);
 
@@ -44,14 +29,7 @@ namespace Ensage.SDK.Renderer.D2D
 
         void DrawRectangle(float x, float y, float width, float height, float stroke, SolidColorBrush brush);
 
-        void DrawRectangle3D(
-            float x,
-            float y,
-            float width,
-            float height,
-            float length,
-            float stroke,
-            SolidColorBrush brush);
+        void DrawRectangle3D(float x, float y, float width, float height, float length, float stroke, SolidColorBrush brush);
 
         void DrawText(float x, float y, string text, TextFormat font, SolidColorBrush brush);
 

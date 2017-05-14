@@ -7,9 +7,8 @@ namespace Ensage.SDK.Service
     using System;
     using System.ComponentModel.Composition;
     using System.ComponentModel.Composition.Hosting;
+    using System.Linq;
     using System.Reflection;
-
-    using Ensage.SDK.Renderer.D2D;
 
     using log4net;
 
@@ -34,41 +33,59 @@ namespace Ensage.SDK.Service
             }
         }
 
-        public static ContextContainer<IEnsageServiceContext> CreateContainer(
-            IEnsageServiceContext context,
-            bool disableSilent = true)
+        public static ContextContainer<IServiceContext> CreateContainer(Hero owner, bool disableSilentRejection = true)
         {
-            if (context == null)
+            if (owner == null)
             {
-                throw new ArgumentNullException(nameof(context));
+                throw new ArgumentNullException(nameof(owner));
             }
 
-            Log.Debug($"Create Context({context}) Container");
-
             var flags = CompositionOptions.IsThreadSafe;
-            if (disableSilent)
+            if (disableSilentRejection)
             {
                 flags |= CompositionOptions.DisableSilentRejection;
             }
 
+            var context = new EnsageServiceContext(owner);
             var container = new CompositionContainer(Loader.Catalog, flags);
+            context.Container = new ContextContainer<IServiceContext>(context, container);
 
-            container.ComposeExportedValue(context);
+            Log.Debug($"Create {context} Container");
+            Log.Debug($"====================================================");
+            Log.Debug($"Resolving Catalogs {Loader.Catalog.Catalogs.Count}");
+            Log.Debug($"====================================================");
 
-            switch (Drawing.RenderMode)
+            foreach (var catalog in Loader.Catalog.Catalogs.OfType<AssemblyCatalog>())
             {
-                case RenderMode.Dx11:
-                    container.ComposeExportedValue<ID2DContext>(new D2DContext());
-                    container.ComposeExportedValue<ID2DRenderer>(new D2DRenderer());
-                    break;
-
-                case RenderMode.Dx9:
-                case RenderMode.OpenGL:
-                case RenderMode.Vulkan:
-                    throw new NotSupportedException($"RenderMode({Drawing.RenderMode}) not supported.");
+                Log.Debug($"Assembly {catalog.Assembly.GetName().Name}");
             }
 
-            return new ContextContainer<IEnsageServiceContext>(context, container);
+            Log.Debug($"====================================================");
+            Log.Debug($"Resolving Parts {container.Catalog.Parts.Count()}");
+            Log.Debug($"====================================================");
+
+            foreach (var part in container.Catalog.Parts)
+            {
+                Log.Debug($"{part}");
+            }
+
+            Log.Debug($"====================================================");
+
+            container.ComposeExportedValue<IServiceContext>(context);
+
+            // switch (Drawing.RenderMode)
+            // {
+            // case RenderMode.Dx11:
+            // container.ComposeExportedValue<ID2DContext>(new D2DContext());
+            // container.ComposeExportedValue<ID2DRenderer>(new D2DRenderer());
+            // break;
+
+            // case RenderMode.Dx9:
+            // case RenderMode.OpenGL:
+            // case RenderMode.Vulkan:
+            // throw new NotSupportedException($"RenderMode({Drawing.RenderMode}) not supported.");
+            // }
+            return context.Container;
         }
     }
 }

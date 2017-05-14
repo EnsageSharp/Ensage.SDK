@@ -4,63 +4,45 @@
 
 namespace Ensage.SDK.Threading
 {
+    using System;
+    using System.Collections.Concurrent;
     using System.Collections.Generic;
+    using System.Reflection;
     using System.Threading;
 
-    public class EnsageSynchronizationContext : SynchronizationContext
+    using log4net;
+
+    using PlaySharp.Toolkit.Logging;
+
+    public sealed class EnsageSynchronizationContext : SynchronizationContext
     {
-        private static readonly object SyncRoot = new object();
+        private static readonly ILog Log = AssemblyLogs.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        private static EnsageSynchronizationContext instance;
+        private readonly ConcurrentQueue<KeyValuePair<SendOrPostCallback, object>> queue = new ConcurrentQueue<KeyValuePair<SendOrPostCallback, object>>();
 
-        private Queue<KeyValuePair<SendOrPostCallback, object>> queue =
-            new Queue<KeyValuePair<SendOrPostCallback, object>>();
-
-        public static EnsageSynchronizationContext Instance
+        internal EnsageSynchronizationContext()
         {
-            get
-            {
-                if (instance == null)
-                {
-                    lock (SyncRoot)
-                    {
-                        if (instance == null)
-                        {
-                            instance = new EnsageSynchronizationContext();
-                        }
-                    }
-                }
-
-                return instance;
-            }
-        }
-
-        public override SynchronizationContext CreateCopy()
-        {
-            return new EnsageSynchronizationContext();
         }
 
         public override void Post(SendOrPostCallback d, object state)
         {
-            lock (SyncRoot)
-            {
-                this.queue.Enqueue(new KeyValuePair<SendOrPostCallback, object>(d, state));
-            }
+            this.queue.Enqueue(new KeyValuePair<SendOrPostCallback, object>(d, state));
         }
 
-        internal void RunOnCurrentThread()
+        internal void ProcessCallbacks()
         {
-            KeyValuePair<SendOrPostCallback, object>[] items;
+            KeyValuePair<SendOrPostCallback, object> workItem;
 
-            lock (SyncRoot)
+            while (!this.queue.IsEmpty && this.queue.TryDequeue(out workItem))
             {
-                items = this.queue.ToArray();
-                this.queue = new Queue<KeyValuePair<SendOrPostCallback, object>>();
-            }
-
-            foreach (var item in items)
-            {
-                item.Key(item.Value);
+                try
+                {
+                    workItem.Key(workItem.Value);
+                }
+                catch (Exception e)
+                {
+                    Log.Warn(e);
+                }
             }
         }
     }

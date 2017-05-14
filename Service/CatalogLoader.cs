@@ -7,6 +7,7 @@ namespace Ensage.SDK.Service
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.Composition.Hosting;
+    using System.Linq;
     using System.Reflection;
 
     using log4net;
@@ -16,6 +17,25 @@ namespace Ensage.SDK.Service
     public class CatalogLoader : IDisposable
     {
         private static readonly ILog Log = AssemblyLogs.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
+        private readonly string[] blacklist =
+        {
+            "PlaySharp.Service",
+            "Newtonsoft.Json",
+            "clipper_library",
+            "System.Collections.Immutable",
+            "SharpDX",
+            "SharpDX.Direct2D1",
+            "SharpDX.Direct3D9",
+            "SharpDX.Direct3D11",
+            "SharpDX.SharpDX",
+            "SharpDX.DXGI",
+            "SharpDX.Mathematics",
+            "Ensage",
+            "EnsageSharp.Sandbox",
+            "Ensage.Common",
+            "Anonymously Hosted DynamicMethods Assembly"
+        };
 
         private bool disposed;
 
@@ -52,7 +72,19 @@ namespace Ensage.SDK.Service
                 return;
             }
 
-            Log.Debug($"Add Catalog {assembly.GetName().Name}");
+            var name = assembly.GetName().Name;
+
+            if (this.blacklist.Contains(name))
+            {
+                return;
+            }
+
+            if (name.StartsWith("MetadataViewProxies_"))
+            {
+                return;
+            }
+
+            Log.Debug($"Create Catalog {assembly.GetName().Name}");
             this.Catalog.Catalogs.Add(new AssemblyCatalog(assembly));
             this.LoadedAssemblies.Add(assembly);
         }

@@ -91,10 +91,7 @@ namespace Ensage.SDK.Persistence
         {
             try
             {
-                var binding = this.bindings.FirstOrDefault(
-                    b =>
-                        b.PropertyInfo.Name == args.PropertyName &&
-                        b.Reference.Target == sender);
+                var binding = this.bindings.FirstOrDefault(b => b.PropertyInfo.Name == args.PropertyName && b.Reference.Target == sender);
 
                 if (binding != null)
                 {

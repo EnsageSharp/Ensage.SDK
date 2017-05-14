@@ -19,10 +19,7 @@ namespace Ensage.SDK.Renderer.D2D
 
         public D2DContext()
         {
-            this.Target = new RenderTarget(
-                this.D2D1,
-                this.Surface,
-                new RenderTargetProperties(new PixelFormat(Format.Unknown, AlphaMode.Premultiplied)));
+            this.Target = new RenderTarget(this.D2D1, this.Surface, new RenderTargetProperties(new PixelFormat(Format.Unknown, AlphaMode.Premultiplied)));
         }
 
         public Texture2D BackBuffer => this.SwapChain.GetBackBuffer<Texture2D>(0);

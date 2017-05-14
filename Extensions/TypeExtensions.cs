@@ -5,9 +5,23 @@
 namespace Ensage.SDK.Extensions
 {
     using System;
+    using System.Collections.Generic;
 
     public static class TypeExtensions
     {
+        public static TValue GetOrCreate<TKey, TValue>(this IDictionary<TKey, TValue> dict, TKey key, Func<TValue> valueFactory)
+        {
+            TValue val;
+
+            if (!dict.TryGetValue(key, out val))
+            {
+                val = valueFactory();
+                dict.Add(key, val);
+            }
+
+            return val;
+        }
+
         public static bool IsNumericType(this Type type)
         {
             switch (Type.GetTypeCode(type))
@@ -28,6 +42,11 @@ namespace Ensage.SDK.Extensions
                 default:
                     return false;
             }
+        }
+
+        public static HashSet<T> ToHashSet<T>(this IEnumerable<T> collection)
+        {
+            return new HashSet<T>(collection);
         }
     }
 }

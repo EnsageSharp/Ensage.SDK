@@ -26,31 +26,14 @@ namespace Ensage.SDK.Renderer.D2D
         public ID2DFontContainer Fonts { get; private set; }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void DrawBox2D(
-            float x,
-            float y,
-            float width,
-            float height,
-            float stroke,
-            SolidColorBrush brush,
-            SolidColorBrush interiorBrush)
+        public void DrawBox2D(float x, float y, float width, float height, float stroke, SolidColorBrush brush, SolidColorBrush interiorBrush)
         {
             this.Context.Target.DrawRectangle(new RawRectangleF(x, y, x + width, y + height), brush, stroke);
-            this.Context.Target.FillRectangle(
-                new RawRectangleF(x + stroke, y + stroke, x + width - stroke, y + height - stroke),
-                interiorBrush);
+            this.Context.Target.FillRectangle(new RawRectangleF(x + stroke, y + stroke, (x + width) - stroke, (y + height) - stroke), interiorBrush);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void DrawBox3D(
-            float x,
-            float y,
-            float width,
-            float height,
-            float length,
-            float stroke,
-            SolidColorBrush brush,
-            SolidColorBrush interiorBrush)
+        public void DrawBox3D(float x, float y, float width, float height, float length, float stroke, SolidColorBrush brush, SolidColorBrush interiorBrush)
         {
             var target = this.Context.Target;
 
@@ -109,14 +92,7 @@ namespace Ensage.SDK.Renderer.D2D
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void DrawRectangle3D(
-            float x,
-            float y,
-            float width,
-            float height,
-            float length,
-            float stroke,
-            SolidColorBrush brush)
+        public void DrawRectangle3D(float x, float y, float width, float height, float length, float stroke, SolidColorBrush brush)
         {
             var target = this.Context.Target;
 

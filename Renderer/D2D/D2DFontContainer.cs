@@ -27,12 +27,7 @@ namespace Ensage.SDK.Renderer.D2D
 
         public TextFormat Create(string name, string familyName, float size, bool bold = false, bool italic = false)
         {
-            var format = new TextFormat(
-                this.Context.DirectWrite,
-                familyName,
-                bold ? FontWeight.Bold : FontWeight.Normal,
-                italic ? FontStyle.Italic : FontStyle.Normal,
-                size);
+            var format = new TextFormat(this.Context.DirectWrite, familyName, bold ? FontWeight.Bold : FontWeight.Normal, italic ? FontStyle.Italic : FontStyle.Normal, size);
 
             Log.Debug($"Create Font {name} {familyName}-{size}");
             this.Add(name, format);

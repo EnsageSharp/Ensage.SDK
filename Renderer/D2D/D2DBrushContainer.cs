@@ -57,9 +57,7 @@ namespace Ensage.SDK.Renderer.D2D
                 color = Color.FromArgb(255, color);
             }
 
-            var brush = new SolidColorBrush(
-                this.Context.Target,
-                new RawColor4(color.R, color.G, color.B, color.A / 255.0f));
+            var brush = new SolidColorBrush(this.Context.Target, new RawColor4(color.R, color.G, color.B, color.A / 255.0f));
 
             Log.Debug($"Create Brush {name} {color.R}-{color.G}-{color.B}-{color.A}");
             this.Add(name, brush);

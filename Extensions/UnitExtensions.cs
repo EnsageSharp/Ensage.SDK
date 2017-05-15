@@ -341,7 +341,7 @@ namespace Ensage.SDK.Extensions
             var spellAmp = 0.0f;
             if (source is Hero)
             {
-                spellAmp += (source as Hero).TotalIntelligence / 16.0f / 100.0f;
+                spellAmp += (source as Hero).TotalIntelligence / 14.0f / 100.0f;
             }
 
             var aether = source.GetItemById(AbilityId.item_aether_lens);

@@ -76,10 +76,14 @@ namespace Ensage.SDK.Input
             }
 
             var hotkey = new Hotkey(name, key, callback);
-
             this.hotkeys.Add(hotkey);
 
             return hotkey;
+        }
+
+        public Hotkey RegisterHotkey(string name, uint key, Action<KeyEventArgs> callback)
+        {
+            return this.RegisterHotkey(name, KeyInterop.KeyFromVirtualKey((int)key), callback);
         }
 
         public void UnregisterHotkey(string name)

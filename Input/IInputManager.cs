@@ -28,6 +28,8 @@ namespace Ensage.SDK.Input
 
         Hotkey RegisterHotkey(string name, Key key, Action<KeyEventArgs> callback);
 
+        Hotkey RegisterHotkey(string name, uint key, Action<KeyEventArgs> callback);
+
         void UnregisterHotkey(string name);
     }
 }

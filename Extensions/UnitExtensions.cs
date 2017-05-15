@@ -245,7 +245,7 @@ namespace Ensage.SDK.Extensions
             }
             else if (damageType == AttackDamageType.Siege && armorType == ArmorType.Structure)
             {
-                mult *= 1.50f;
+                mult *= 2.50f;
             }
 
             if (target.IsNeutral || target is Creep)

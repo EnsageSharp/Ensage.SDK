@@ -71,6 +71,11 @@ namespace Ensage.SDK.Plugins
             {
                 var tracer = (TraceHandler)handler.Executor;
 
+                if (tracer.TimeHistory.Count == 0)
+                {
+                    continue;
+                }
+
                 Drawing.DrawText($"{tracer.Time.Ticks:n0}", new Vector2(x, y), size, color, flag);
                 Drawing.DrawText($"{tracer.TimeHistory.Average(e => e.Ticks):n0}", new Vector2(x + 100, y), size, color, flag);
                 Drawing.DrawText($"{tracer.TimeHistory.Min(e => e.Ticks):n0}", new Vector2(x + 200, y), size, color, flag);

@@ -84,9 +84,9 @@ namespace Ensage.SDK.Helpers
         /// </summary>
         /// <param name="callback">callback</param>
         /// <param name="timeout">in ms</param>
-        public static void Subscribe(Action callback, int timeout = 0)
+        public static IUpdateHandler Subscribe(Action callback, int timeout = 0)
         {
-            Subscribe(Handlers, callback, timeout);
+           return Subscribe(Handlers, callback, timeout);
         }
 
         /// <summary>
@@ -94,9 +94,9 @@ namespace Ensage.SDK.Helpers
         /// </summary>
         /// <param name="callback">callback</param>
         /// <param name="timeout">in ms</param>
-        public static void SubscribeService(Action callback, int timeout = 0)
+        public static IUpdateHandler SubscribeService(Action callback, int timeout = 0)
         {
-            Subscribe(ServiceHandlers, callback, timeout);
+           return Subscribe(ServiceHandlers, callback, timeout);
         }
 
         public static void Unsubscribe(Action callback)
@@ -159,7 +159,7 @@ namespace Ensage.SDK.Helpers
             }
         }
 
-        private static void Subscribe(ICollection<IUpdateHandler> handlers, Action callback, int timeout = 0)
+        private static IUpdateHandler Subscribe(ICollection<IUpdateHandler> handlers, Action callback, int timeout = 0)
         {
             var handler = handlers.FirstOrDefault(h => h.Callback == callback);
             if (handler == null)
@@ -175,7 +175,11 @@ namespace Ensage.SDK.Helpers
 
                 Log.Debug($"Create {handler}");
                 handlers.Add(handler);
+
+                return handler;
             }
+
+            return null;
         }
 
         private static void Unsubscribe(ICollection<IUpdateHandler> handlers, Action callback)

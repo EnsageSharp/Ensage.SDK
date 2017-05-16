@@ -12,6 +12,8 @@ namespace Ensage.SDK.Handlers
 
         InvokeHandler Executor { get; set; }
 
+        bool IsEnabled { get; set; }
+
         string Name { get; }
 
         bool Invoke();
@@ -22,6 +24,8 @@ namespace Ensage.SDK.Handlers
         Action<TEventArgs> Callback { get; }
 
         InvokeHandler<TEventArgs> Executor { get; set; }
+
+        bool IsEnabled { get; set; }
 
         string Name { get; }
 

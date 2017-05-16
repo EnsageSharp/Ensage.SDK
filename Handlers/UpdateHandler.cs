@@ -18,16 +18,24 @@ namespace Ensage.SDK.Handlers
             this.Name = name;
             this.Callback = callback;
             this.Executor = executor;
+            this.IsEnabled = true;
         }
 
         public Action Callback { get; }
 
         public InvokeHandler Executor { get; set; }
 
+        public bool IsEnabled { get; set; }
+
         public string Name { get; }
 
         public virtual bool Invoke()
         {
+            if (!this.IsEnabled)
+            {
+                return false;
+            }
+
             return this.Executor.Invoke(this.Callback);
         }
 
@@ -50,10 +58,17 @@ namespace Ensage.SDK.Handlers
 
         public InvokeHandler<TEventArgs> Executor { get; set; }
 
+        public bool IsEnabled { get; set; }
+
         public string Name { get; }
 
         public virtual bool Invoke(TEventArgs args)
         {
+            if (!this.IsEnabled)
+            {
+                return false;
+            }
+
             return this.Executor.Invoke(this.Callback, args);
         }
 

@@ -175,11 +175,9 @@ namespace Ensage.SDK.Helpers
 
                 Log.Debug($"Create {handler}");
                 handlers.Add(handler);
-
-                return handler;
             }
 
-            return null;
+            return handler;
         }
 
         private static void Unsubscribe(ICollection<IUpdateHandler> handlers, Action callback)

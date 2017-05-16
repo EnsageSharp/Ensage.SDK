@@ -8,17 +8,17 @@ namespace Ensage.SDK.Handlers
 
     public class UpdateHandler : IUpdateHandler
     {
-        public UpdateHandler(Action callback, InvokeHandler executor)
-            : this($"{callback?.Method.DeclaringType?.Name}.{callback?.Method.Name}", callback, executor)
+        public UpdateHandler(Action callback, InvokeHandler executor, bool isEnabled = true)
+            : this($"{callback?.Method.DeclaringType?.Name}.{callback?.Method.Name}", callback, executor, isEnabled)
         {
         }
 
-        public UpdateHandler(string name, Action callback, InvokeHandler executor)
+        public UpdateHandler(string name, Action callback, InvokeHandler executor, bool isEnabled = true)
         {
             this.Name = name;
             this.Callback = callback;
             this.Executor = executor;
-            this.IsEnabled = true;
+            this.IsEnabled = isEnabled;
         }
 
         public Action Callback { get; }

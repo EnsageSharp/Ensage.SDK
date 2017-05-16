@@ -84,9 +84,10 @@ namespace Ensage.SDK.Helpers
         /// </summary>
         /// <param name="callback">callback</param>
         /// <param name="timeout">in ms</param>
-        public static IUpdateHandler Subscribe(Action callback, int timeout = 0)
+        /// <param name="isEnabled">startup IsEnabled state</param>
+        public static IUpdateHandler Subscribe(Action callback, int timeout = 0, bool isEnabled = true)
         {
-           return Subscribe(Handlers, callback, timeout);
+            return Subscribe(Handlers, callback, timeout, isEnabled);
         }
 
         /// <summary>
@@ -94,9 +95,10 @@ namespace Ensage.SDK.Helpers
         /// </summary>
         /// <param name="callback">callback</param>
         /// <param name="timeout">in ms</param>
-        public static IUpdateHandler SubscribeService(Action callback, int timeout = 0)
+        /// <param name="isEnabled">startup IsEnabled state</param>
+        public static IUpdateHandler SubscribeService(Action callback, int timeout = 0, bool isEnabled = true)
         {
-           return Subscribe(ServiceHandlers, callback, timeout);
+            return Subscribe(ServiceHandlers, callback, timeout, isEnabled);
         }
 
         public static void Unsubscribe(Action callback)
@@ -159,18 +161,18 @@ namespace Ensage.SDK.Helpers
             }
         }
 
-        private static IUpdateHandler Subscribe(ICollection<IUpdateHandler> handlers, Action callback, int timeout = 0)
+        private static IUpdateHandler Subscribe(ICollection<IUpdateHandler> handlers, Action callback, int timeout = 0, bool isEnabled = true)
         {
             var handler = handlers.FirstOrDefault(h => h.Callback == callback);
             if (handler == null)
             {
                 if (timeout > 0)
                 {
-                    handler = new UpdateHandler(callback, new TimeoutHandler(timeout));
+                    handler = new UpdateHandler(callback, new TimeoutHandler(timeout), isEnabled);
                 }
                 else
                 {
-                    handler = new UpdateHandler(callback, InvokeHandler.Default);
+                    handler = new UpdateHandler(callback, InvokeHandler.Default, isEnabled);
                 }
 
                 Log.Debug($"Create {handler}");

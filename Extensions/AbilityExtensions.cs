@@ -38,5 +38,26 @@ namespace Ensage.SDK.Extensions
 
             return data.GetValue(level - 1);
         }
+
+        public static float GetCastPoint(this Ability ability)
+        {
+            if (ability is Item)
+            {
+                return 0;
+            }
+
+            var level = ability.Level;
+            if (level == 0)
+            {
+                return 0;
+            }
+
+            if (ability.OverrideCastPoint != -1)
+            {
+                return 0.1f;
+            }
+
+            return ability.GetCastPoint(level - 1);
+        }
     }
 }

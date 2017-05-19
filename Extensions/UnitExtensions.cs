@@ -364,23 +364,14 @@ namespace Ensage.SDK.Extensions
             return unit.Modifiers.Any(modifier => modifier.Name == modifierName);
         }
 
+        public static bool HasAnyModifiers(this Unit unit, params string[] modifierNames)
+        {
+            return unit.Modifiers.Any(x => modifierNames.Contains(x.Name));
+        }
+
         public static bool HasModifiers(this Unit unit, IEnumerable<string> modifierNames, bool hasAll = true)
         {
-            var counter = 0;
-
-            foreach (var modifier in unit.Modifiers)
-            {
-                if (modifierNames.Contains(modifier.Name))
-                {
-                    counter++;
-                    if (hasAll)
-                    {
-                        return true;
-                    }
-                }
-            }
-
-            return hasAll ? counter == modifierNames.Count() : false;
+            return hasAll ? modifierNames.All(x => unit.Modifiers.Any(y => y.Name == x)) : unit.Modifiers.Any(x => modifierNames.Contains(x.Name));
         }
 
         public static float HealthPercent(this Unit unit)
@@ -608,6 +599,33 @@ namespace Ensage.SDK.Extensions
         public static Vector3 Vector3FromPolarAngle(this Unit unit, float delta = 0f, float radial = 1f)
         {
             return Vector2FromPolarAngle(unit, delta, radial).ToVector3();
+        }
+
+        public static bool IsLinkensProtected(this Unit unit)
+        {
+            var linkens = unit.GetItemById(AbilityId.item_sphere);
+            return (linkens != null && linkens.Cooldown <= 0) || unit.HasModifier("modifier_item_sphere_target");
+        }
+
+        public static bool HasAghanimsScepter(this Unit unit)
+        {
+            return unit.HasAnyModifiers("modifier_item_ultimate_scepter", "modifier_item_ultimate_scepter_consumed");
+        }
+
+        public static bool IsReflectingAbilities(this Unit unit)
+        {
+            if (unit.HasModifier("modifier_item_lotus_orb_active"))
+            {
+                return true;
+            }
+
+            var spellShield = unit.GetAbilityById(AbilityId.antimage_spell_shield);
+            if (spellShield?.Cooldown <= 0 && unit.HasAghanimsScepter())
+            {
+                return true;
+            }
+
+            return false;
         }
     }
 }

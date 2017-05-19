@@ -117,6 +117,7 @@
     <Compile Include="Input\MouseWheelEventArgs.cs" />
     <Compile Include="Orbwalker\IOrbwalkerManager.cs" />
     <Compile Include="Orbwalker\Metadata\ExportOrbwalkerManagerAttribute.cs" />
+    <Compile Include="Plugins\ModifiersTools.cs" />
     <Compile Include="Prediction\Metadata\ExportPredictionAttribute.cs" />
     <Compile Include="Orbwalker\Metadata\ImportOrbwalkerManagerAttribute.cs" />
     <Compile Include="Orbwalker\Metadata\IOrbwalkerManagerMetadata.cs" />
@@ -125,7 +126,7 @@
     <Compile Include="Orbwalker\OrbwalkerManager.cs" />
     <Compile Include="Handlers\TaskHandler.cs" />
     <Compile Include="Plugins\CrazyEventHub.cs" />
-    <Compile Include="Plugins\DeveloperTools.cs" />
+    <Compile Include="Plugins\CallbackTools.cs" />
     <Compile Include="Orbwalker\Modes\KeyPressOrbwalkingModeAsync.cs" />
     <Compile Include="Plugins\OrbwalkerPlugin.cs" />
     <Compile Include="Orbwalker\Modes\OrbwalkingModeAsync.cs" />

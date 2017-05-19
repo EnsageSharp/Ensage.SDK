@@ -78,6 +78,7 @@ namespace Ensage.SDK.Inventory
         {
             if (this.CollectionChanged != null)
             {
+                // TODO: investigate arc ult item changes
                 var added = this.Items.Except(this.LastItems);
                 var removed = this.LastItems.Except(this.Items);
 

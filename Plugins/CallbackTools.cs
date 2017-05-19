@@ -1,4 +1,4 @@
-﻿// <copyright file="DeveloperTools.cs" company="Ensage">
+﻿// <copyright file="CallbackTools.cs" company="Ensage">
 //    Copyright (c) 2017 Ensage.
 // </copyright>
 
@@ -19,8 +19,8 @@ namespace Ensage.SDK.Plugins
 
     using SharpDX;
 
-    [ExportPlugin("Developer Tools", StartupMode.Manual, priority: 1000, description: "Display UpdateManager callback times in CPU Ticks")]
-    public class DeveloperTools : Plugin
+    [ExportPlugin("Callback Tools", StartupMode.Manual, priority: 1000, description: "Display UpdateManager callback times in CPU Ticks")]
+    public class CallbackTools : Plugin
     {
         private static readonly ILog Log = AssemblyLogs.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
@@ -64,24 +64,25 @@ namespace Ensage.SDK.Plugins
             Drawing.DrawText($"Min", new Vector2(x + 200, y), size, color, flag);
             Drawing.DrawText($"Max", new Vector2(x + 300, y), size, color, flag);
             Drawing.DrawText($"Time", new Vector2(x + 400, y), size, color, flag);
-            Drawing.DrawText($"Name", new Vector2(x + 500, y), size, color, flag);
+            Drawing.DrawText($"Name", new Vector2(x + 460, y), size, color, flag);
             y += 25;
 
             foreach (var handler in UpdateManager.Handlers.Where(e => e.Executor is TraceHandler))
             {
                 var tracer = (TraceHandler)handler.Executor;
 
+                Drawing.DrawText($"{tracer.Time.Ticks:n0}", new Vector2(x, y), size, color, flag);
+                Drawing.DrawText($"{tracer.Timeout}", new Vector2(x + 400, y), size, color, flag);
+                Drawing.DrawText($"{handler.Name}", new Vector2(x + 460, y), size, color, flag);
+
                 if (tracer.TimeHistory.Count == 0)
                 {
                     continue;
                 }
 
-                Drawing.DrawText($"{tracer.Time.Ticks:n0}", new Vector2(x, y), size, color, flag);
                 Drawing.DrawText($"{tracer.TimeHistory.Average(e => e.Ticks):n0}", new Vector2(x + 100, y), size, color, flag);
                 Drawing.DrawText($"{tracer.TimeHistory.Min(e => e.Ticks):n0}", new Vector2(x + 200, y), size, color, flag);
                 Drawing.DrawText($"{tracer.TimeHistory.Max(e => e.Ticks):n0}", new Vector2(x + 300, y), size, color, flag);
-                Drawing.DrawText($"{tracer.Timeout}", new Vector2(x + 400, y), size, color, flag);
-                Drawing.DrawText($"{handler.Name}", new Vector2(x + 500, y), size, color, flag);
 
                 y += 25;
             }

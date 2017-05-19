@@ -210,6 +210,7 @@
     <Compile Include="Orbwalker\Config\OrbwalkerConfig.cs" />
     <Compile Include="Orbwalker\Modes\OrbwalkingMode.cs" />
     <Compile Include="TargetSelector\Metadata\ExportTargetSelectorManagerAttribute.cs" />
+    <Compile Include="TargetSelector\Modes\DummyTargetSelector.cs" />
     <Compile Include="TargetSelector\Modes\FocusTargetSelector.cs" />
     <Compile Include="TargetSelector\Metadata\ImportTargetSelectorManagerAttribute.cs" />
     <Compile Include="TargetSelector\ITargetSelectorManager.cs" />

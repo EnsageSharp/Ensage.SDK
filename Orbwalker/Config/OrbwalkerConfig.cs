@@ -76,7 +76,7 @@ namespace Ensage.SDK.Orbwalker.Config
             this.AttackDelay = this.Factory.Item("Attack Delay", new Slider(5, 0, 200));
             this.TurnDelay = this.Factory.Item("Turn Delay", new Slider(100, -200, 200));
 
-            this.HoldRange = this.Factory.Item("Hold Position Range", new Slider((int)(owner.HullRadius * 2.5), 0, (int)(owner.HullRadius * 5)));
+            this.HoldRange = this.Factory.Item("Hold Position Range", new Slider(60, 0, 300));
         }
 
         public MenuItem<bool> Attack { get; }

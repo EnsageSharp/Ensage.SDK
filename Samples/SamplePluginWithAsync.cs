@@ -21,7 +21,7 @@ namespace Ensage.SDK.Samples
 
     using PlaySharp.Toolkit.Logging;
 
-    [ExportPlugin("SamplePluginWithAsync", StartupMode.Manual)]
+    [ExportPlugin("SamplePluginWithAsync (pudge_meat_hook)", HeroId.npc_dota_hero_pudge)]
     public class SamplePluginWithAsync : Plugin
     {
         private static readonly ILog Log = AssemblyLogs.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
@@ -31,7 +31,7 @@ namespace Ensage.SDK.Samples
         {
             this.Selector = selector;
             this.Prediction = prediction;
-            this.Ability = new PredictionAbility(context.Owner, AbilityId.pudge_meat_hook, prediction);
+            this.Ability = new PredictionAbility(context.Owner as Hero, AbilityId.pudge_meat_hook, prediction);
         }
 
         private PredictionAbility Ability { get; }
@@ -62,7 +62,7 @@ namespace Ensage.SDK.Samples
                 {
                     Log.Error(e);
                 }
-                
+
                 await Task.Delay(100);
             }
         }

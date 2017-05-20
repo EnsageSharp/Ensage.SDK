@@ -32,7 +32,7 @@ namespace Ensage.SDK.Prediction
 
         private Dictionary<uint, CreepStatus> CreepStatuses { get; } = new Dictionary<uint, CreepStatus>();
 
-        private Hero Owner { get; }
+        private Unit Owner { get; }
 
         public void Dispose()
         {

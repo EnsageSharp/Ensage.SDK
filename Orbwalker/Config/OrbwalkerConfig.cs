@@ -17,14 +17,14 @@ namespace Ensage.SDK.Orbwalker.Config
         {
             this.Factory = MenuFactory.Create($"Orbwalker: {name}", "Orbwalker");
             this.Selection = this.Factory.Item("Active Orbwalker", new StringList(orbwalkers));
-            this.Settings = new OrbwalkerSettings(this.Factory);
+            this.TickRate = this.Factory.Item("TickRate", new Slider(100, 0, 200));
         }
 
         public MenuFactory Factory { get; }
 
         public MenuItem<StringList> Selection { get; }
 
-        public OrbwalkerSettings Settings { get; }
+        public MenuItem<Slider> TickRate { get; }
 
         public void Dispose()
         {
@@ -46,35 +46,72 @@ namespace Ensage.SDK.Orbwalker.Config
 
             this.disposed = true;
         }
+    }
 
-        public class OrbwalkerSettings
+    public class OrbwalkerSettings : IDisposable
+    {
+        private bool disposed;
+
+        public OrbwalkerSettings(MenuFactory parent, Unit owner)
         {
-            public OrbwalkerSettings(MenuFactory parent)
+            if (owner == ObjectManager.LocalHero)
             {
-                this.Factory = parent.Menu("Settings");
-
-                this.Move = this.Factory.Item("Move", true);
-                this.Attack = this.Factory.Item("Attack", true);
-                this.DrawRange = this.Factory.Item("Draw Attack Range", true);
-
-                this.MoveDelay = this.Factory.Item("Move Delay", new Slider(60, 0, 200));
-                this.AttackDelay = this.Factory.Item("Attack Delay", new Slider(5, 0, 200));
-                this.TurnDelay = this.Factory.Item("Turn Delay", new Slider(100, -200, 200));
+                this.Factory = parent.Menu($"Settings");
+            }
+            else
+            {
+                this.Factory = parent.Menu($"Settings ({owner.Name})");
             }
 
-            public MenuItem<bool> Attack { get; }
+            this.Move = this.Factory.Item("Move", true);
+            this.Attack = this.Factory.Item("Attack", true);
+            this.DrawRange = this.Factory.Item("Draw Attack Range", true);
+            this.DrawHoldRange = this.Factory.Item("Draw Hold Range", true);
 
-            public MenuItem<Slider> AttackDelay { get; }
+            this.MoveDelay = this.Factory.Item("Move Delay", new Slider(60, 0, 200));
+            this.AttackDelay = this.Factory.Item("Attack Delay", new Slider(5, 0, 200));
+            this.TurnDelay = this.Factory.Item("Turn Delay", new Slider(100, -200, 200));
 
-            public MenuItem<bool> DrawRange { get; }
+            this.HoldRange = this.Factory.Item("Hold Position Range", new Slider((int)(owner.HullRadius * 2.5), 0, (int)(owner.HullRadius * 5)));
+        }
 
-            public MenuFactory Factory { get; }
+        public MenuItem<bool> Attack { get; }
 
-            public MenuItem<bool> Move { get; }
+        public MenuItem<Slider> AttackDelay { get; }
 
-            public MenuItem<Slider> MoveDelay { get; }
+        public MenuItem<bool> DrawHoldRange { get; }
 
-            public MenuItem<Slider> TurnDelay { get; }
+        public MenuItem<bool> DrawRange { get; }
+
+        public MenuFactory Factory { get; }
+
+        public MenuItem<Slider> HoldRange { get; }
+
+        public MenuItem<bool> Move { get; }
+
+        public MenuItem<Slider> MoveDelay { get; }
+
+        public MenuItem<Slider> TurnDelay { get; }
+
+        public void Dispose()
+        {
+            this.Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (this.disposed)
+            {
+                return;
+            }
+
+            if (disposing)
+            {
+                this.Factory.Dispose();
+            }
+
+            this.disposed = true;
         }
     }
 }

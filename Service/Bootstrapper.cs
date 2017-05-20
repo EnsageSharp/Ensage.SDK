@@ -34,9 +34,11 @@ namespace Ensage.SDK.Service
         {
             get
             {
-                return this.Default?.GetAll<IPluginLoader, IPluginLoaderMetadata>();
+                return this.Default.GetExports<IPluginLoader, IPluginLoaderMetadata>();
             }
         }
+
+        private EnsageServiceContext Context { get; set; }
 
         public void BuildUp(object instance)
         {
@@ -130,9 +132,11 @@ namespace Ensage.SDK.Service
                 Log.Debug($">> Building Menu");
                 this.Config = new SDKConfig();
 
-                Log.Debug($">> Building Container for LocalHero");
-                this.Default = ContainerFactory.CreateContainer(ObjectManager.LocalHero);
-                this.Default.RegisterValue(this.Config);
+                Log.Debug($">> Building Context for LocalHero");
+                this.Context = new EnsageServiceContext(ObjectManager.LocalHero);
+
+                this.Default = this.Context.Container;
+                this.Default.RegisterValue(this);
 
                 Log.Debug($">> Initializing Services");
                 IoC.Initialize(this.BuildUp, this.GetInstance, this.GetAllInstances);

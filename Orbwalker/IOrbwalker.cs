@@ -13,7 +13,7 @@ namespace Ensage.SDK.Orbwalker
 
     public interface IOrbwalker : IControllable
     {
-        OrbwalkerConfig Config { get; }
+        OrbwalkerSettings Settings { get; }
 
         IServiceContext Context { get; }
 
@@ -28,9 +28,5 @@ namespace Ensage.SDK.Orbwalker
         bool Move(Vector3 position);
 
         bool OrbwalkTo(Unit target);
-
-        void RegisterMode(IOrbwalkingMode mode);
-
-        void UnregisterMode(IOrbwalkingMode mode);
     }
 }

@@ -16,7 +16,5 @@ namespace Ensage.SDK.Inventory
         Inventory Inventory { get; }
 
         HashSet<InventoryItem> Items { get; }
-
-        Hero Owner { get; }
     }
 }

@@ -44,19 +44,17 @@ namespace Ensage.SDK.Samples
 
         public SamplePluginConfig Config { get; private set; }
 
-        private IOrbwalker Orbwalker => this.orbwalkerManager.Value.Active;
-
         protected override void OnActivate()
         {
             this.Config = new SamplePluginConfig();
-            this.ComboTest = new SampleOrbwalkingModeWithAsync(this.Orbwalker, this.input.Value);
+            this.ComboTest = new SampleOrbwalkingModeWithAsync(this.orbwalkerManager.Value, this.input.Value);
 
-            this.Orbwalker.RegisterMode(this.ComboTest);
+            this.orbwalkerManager.Value.RegisterMode(this.ComboTest);
         }
 
         protected override void OnDeactivate()
         {
-            this.Orbwalker.UnregisterMode(this.ComboTest);
+            this.orbwalkerManager.Value.UnregisterMode(this.ComboTest);
             this.Config.Dispose();
         }
     }

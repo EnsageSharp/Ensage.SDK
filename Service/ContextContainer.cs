@@ -121,7 +121,7 @@ namespace Ensage.SDK.Service
             return this.Container.GetExportedValues<T>(contract);
         }
 
-        public virtual IEnumerable<Lazy<T, TMetadata>> GetAll<T, TMetadata>([CanBeNull] string contract = null)
+        public virtual IEnumerable<Lazy<T, TMetadata>> GetExports<T, TMetadata>([CanBeNull] string contract = null)
         {
             if (contract == null)
             {
@@ -134,6 +134,16 @@ namespace Ensage.SDK.Service
         public IEnumerable<object> GetAllInstances(Type serviceType)
         {
             return this.Container.GetExportedValues<object>(AttributedModelServices.GetContractName(serviceType));
+        }
+
+        public virtual Lazy<T> GetExport<T>([CanBeNull] string contract = null)
+        {
+            if (contract == null)
+            {
+                return this.Container.GetExport<T>();
+            }
+
+            return this.Container.GetExport<T>(contract);
         }
 
         public override int GetHashCode()

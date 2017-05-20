@@ -5,13 +5,15 @@
 namespace Ensage.SDK.Menu
 {
     using System;
-    using System.Linq;
+    using System.Collections.Generic;
+    using System.IO;
     using System.Reflection;
 
     using Ensage.Common.Menu;
 
     using log4net;
 
+    using PlaySharp.Toolkit.Helper;
     using PlaySharp.Toolkit.Logging;
 
     public class MenuFactory : IDisposable
@@ -20,34 +22,72 @@ namespace Ensage.SDK.Menu
 
         private bool disposed;
 
-        public MenuFactory(Menu parent)
+        static MenuFactory()
         {
-            this.Parent = parent;
+            AppDomain.CurrentDomain.DomainUnload += OnDomainUnload;
         }
 
-        public Menu Parent { get; }
+        public MenuFactory(Menu parent)
+        {
+            this.parent = parent;
+        }
+
+        public MenuFactory Parent
+        {
+            get
+            {
+                return Attach(this.parent.Parent);
+            }
+        }
+
+        private static Dictionary<string, MenuItem> Items { get; } = new Dictionary<string, MenuItem>();
+
+        private static Dictionary<string, Menu> Menus { get; } = new Dictionary<string, Menu>();
+
+        private Menu parent { get; }
 
         public static MenuFactory Attach(Menu parent)
         {
             return new MenuFactory(parent);
         }
 
-        public static MenuFactory Create(string displayName, string name = null)
+        public static MenuItem<T> Attach<T>(MenuItem item)
+            where T : struct
         {
-            var menu = new Menu(displayName, $"{name ?? GetName(displayName)}", true);
-            menu.AddToMainMenu(Assembly.GetExecutingAssembly());
-
-            Log.Debug($"Created {menu.Name}");
-
-            return new MenuFactory(menu);
+            return new MenuItem<T>(item);
         }
 
-        public static MenuFactory Create(Menu parent, string displayName, string name = null)
+        public static MenuFactory Attach(string name)
         {
-            var menu = new Menu(displayName, $"{parent.Name}.{name ?? GetName(displayName)}");
-            parent.AddSubMenu(menu);
+            return new MenuFactory(Common.Menu.Menu.GetMenu("Ensage.SDK", name));
+        }
 
-            return new MenuFactory(menu);
+        public static MenuFactory Create(string displayName, string name = null)
+        {
+            name = name ?? GetName(displayName);
+
+            if (!Menus.ContainsKey(name))
+            {
+                var menu = new Menu(displayName, name, true);
+                menu.AddToMainMenu(Assembly.GetExecutingAssembly());
+
+                Menus[name] = menu;
+            }
+
+            return Attach(Menus[name]);
+        }
+
+        public static void Save()
+        {
+            var file = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Cache", "game", "sdk.json");
+            var data = new Dictionary<string, object>();
+
+            foreach (var item in Items)
+            {
+                data[item.Key] = item.Value.GetValue<object>();
+            }
+
+            JsonFactory.ToFile(file, data);
         }
 
         public void Dispose()
@@ -56,57 +96,57 @@ namespace Ensage.SDK.Menu
             GC.SuppressFinalize(this);
         }
 
-        public MenuItem<T> Item<T>(string displayName)
-            where T : struct
-        {
-            return this.Item<T>(displayName, GetName(displayName));
-        }
-
         public MenuItem<T> Item<T>(string displayName, T value)
             where T : struct
         {
-            return this.Item<T>(displayName, GetName(displayName), value);
+            return this.Item<T>(displayName, null, value);
         }
 
-        public MenuItem<T> Item<T>(string displayName, string name)
+        public MenuItem<T> Item<T>(string displayName, string name = null)
             where T : struct
         {
-            var ns = $"{this.Parent.Name}.{name}";
-            var menuItem = this.Parent.Items.FirstOrDefault(e => e.Name == ns);
+            name = $"{this.parent.Name}.{name ?? GetName(displayName)}";
 
-            if (menuItem != null)
+            if (!Items.ContainsKey(name))
             {
-                Log.Debug($"Attached {menuItem.Name}");
-                return new MenuItem<T>(menuItem);
+                var item = new MenuItem<T>(displayName, name);
+                this.parent.AddItem(item.Item);
+
+                Items[name] = item.Item;
             }
 
-            var item = new MenuItem<T>(displayName, ns);
-            this.Parent.AddItem(item.Item);
-
-            return item;
+            return Attach<T>(Items[name]);
         }
 
         public MenuItem<T> Item<T>(string displayName, string name, T value)
             where T : struct
         {
-            var ns = $"{this.Parent.Name}.{name}";
-            var menuItem = this.Parent.Items.FirstOrDefault(e => e.Name == ns);
+            name = $"{this.parent.Name}.{name ?? GetName(displayName)}";
 
-            if (menuItem != null)
+            if (!Items.ContainsKey(name))
             {
-                Log.Debug($"Attached {menuItem.Name}");
-                return new MenuItem<T>(menuItem);
+                var item = new MenuItem<T>(displayName, name, value);
+                this.parent.AddItem(item.Item);
+
+                Items[name] = item.Item;
             }
 
-            var item = new MenuItem<T>(displayName, ns, value);
-            this.Parent.AddItem(item.Item);
-
-            return item;
+            return Attach<T>(Items[name]);
         }
 
         public MenuFactory Menu(string displayName, string name = null)
         {
-            return Create(this.Parent, displayName, name ?? displayName);
+            name = $"{this.parent.Name}.{name ?? GetName(displayName)}";
+
+            if (!Menus.ContainsKey(name))
+            {
+                var menu = new Menu(displayName, name);
+                this.parent.AddSubMenu(menu);
+
+                Menus[name] = menu;
+            }
+
+            return Attach(Menus[name]);
         }
 
         protected virtual void Dispose(bool disposing)
@@ -118,8 +158,8 @@ namespace Ensage.SDK.Menu
 
             if (disposing)
             {
-                Log.Debug($"Dispose {this.Parent.Name}");
-                this.Parent.RemoveFromMainMenu(Assembly.GetExecutingAssembly());
+                Log.Debug($"Dispose {this.parent.Name}");
+                this.parent.RemoveFromMainMenu(Assembly.GetExecutingAssembly());
             }
 
             this.disposed = true;
@@ -129,6 +169,11 @@ namespace Ensage.SDK.Menu
         {
             displayName = displayName.Replace(" ", string.Empty);
             return displayName;
+        }
+
+        private static void OnDomainUnload(object sender, EventArgs args)
+        {
+            Save();
         }
     }
 }

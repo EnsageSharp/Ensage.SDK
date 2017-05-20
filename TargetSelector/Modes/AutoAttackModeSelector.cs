@@ -23,7 +23,7 @@ namespace Ensage.SDK.TargetSelector.Modes
 
         private IHealthPrediction healthPrediction;
 
-        public AutoAttackModeSelector(Hero owner, ITargetSelectorManager manager, AutoAttackModeConfig config)
+        public AutoAttackModeSelector(Unit owner, ITargetSelectorManager manager, AutoAttackModeConfig config)
         {
             this.Owner = owner;
             this.Manager = manager;
@@ -51,7 +51,7 @@ namespace Ensage.SDK.TargetSelector.Modes
 
         private AutoAttackModeConfig Config { get; }
 
-        private Hero Owner { get; }
+        private Unit Owner { get; }
 
         public Unit GetTarget()
         {

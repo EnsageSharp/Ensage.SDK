@@ -19,7 +19,7 @@ namespace Ensage.SDK.Orbwalker.Modes
 
         protected IOrbwalker Orbwalker { get; }
 
-        protected Hero Owner => this.Context.Owner;
+        protected Unit Owner => this.Context.Owner;
 
         public abstract void Execute();
     }

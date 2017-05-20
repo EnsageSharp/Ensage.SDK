@@ -4,26 +4,36 @@
 
 namespace Ensage.SDK.Menu
 {
-    using Ensage.Common.Menu;
+    using System.ComponentModel;
 
-    public class MenuItem<TType>
+    using Ensage.Common.Menu;
+    using Ensage.SDK.Helpers;
+
+    using PlaySharp.Toolkit.Helper.Annotations;
+
+    public class MenuItem<TType> : INotifyPropertyChanged
         where TType : struct
     {
         public MenuItem(string displayName, string name, TType value)
         {
             this.Item = new MenuItem(name, displayName);
             this.Item.SetValue(value);
+            this.Item.ValueChanged += this.ItemOnValueChanged;
         }
 
         public MenuItem(string displayName, string name)
         {
             this.Item = new MenuItem(name, displayName);
+            this.Item.ValueChanged += this.ItemOnValueChanged;
         }
 
         public MenuItem(MenuItem item)
         {
             this.Item = item;
+            this.Item.ValueChanged += this.ItemOnValueChanged;
         }
+
+        public event PropertyChangedEventHandler PropertyChanged;
 
         public MenuItem Item { get; }
 
@@ -58,6 +68,17 @@ namespace Ensage.SDK.Menu
         public static implicit operator int(MenuItem<TType> item)
         {
             return item.Item.GetValue<Slider>().Value;
+        }
+
+        [NotifyPropertyChangedInvocator]
+        protected virtual void OnPropertyChanged()
+        {
+            this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Value"));
+        }
+
+        private void ItemOnValueChanged(object sender, OnValueChangeEventArgs args)
+        {
+            UpdateManager.BeginInvoke(this.OnPropertyChanged);
         }
     }
 }

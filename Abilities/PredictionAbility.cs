@@ -138,8 +138,9 @@ namespace Ensage.SDK.Abilities
                 {
                     return this.SpecialData("damage");
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
+                    // ignored
                 }
 
                 return this.Ability.GetDamage(this.Ability.Level - 1);

@@ -53,7 +53,7 @@ namespace Ensage.SDK.Inventory
             }
         }
 
-        public Hero Owner { get; }
+        public Unit Owner { get; }
 
         private HashSet<InventoryItem> LastItems { get; set; }
 

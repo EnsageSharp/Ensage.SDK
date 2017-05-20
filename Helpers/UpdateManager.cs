@@ -106,6 +106,16 @@ namespace Ensage.SDK.Helpers
             Unsubscribe(Handlers, callback);
         }
 
+        public static void Unsubscribe(IUpdateHandler handler)
+        {
+            Handlers.Remove(handler);
+        }
+
+        public static void UnsubscribeService(IUpdateHandler handler)
+        {
+            ServiceHandlers.Remove(handler);
+        }
+
         public static void UnsubscribeService(Action callback)
         {
             Unsubscribe(ServiceHandlers, callback);

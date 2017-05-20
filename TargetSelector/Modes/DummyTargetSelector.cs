@@ -22,7 +22,7 @@ namespace Ensage.SDK.TargetSelector.Modes
             this.Owner = context.Owner;
         }
 
-        private Hero Owner { get; }
+        private Unit Owner { get; }
 
         public IEnumerable<Unit> GetTargets()
         {

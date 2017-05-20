@@ -22,7 +22,7 @@ namespace Ensage.SDK.Plugins
             this.Owner = context.Owner;
         }
 
-        private Hero Owner { get; }
+        private Unit Owner { get; }
 
         protected override void OnActivate()
         {

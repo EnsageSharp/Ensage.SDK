@@ -30,7 +30,7 @@ namespace Ensage.SDK.TargetSelector.Modes
 
         private Lazy<IInputManager> Input { get; }
 
-        private Hero Owner { get; }
+        private Unit Owner { get; }
 
         private Unit[] Targets { get; set; }
 

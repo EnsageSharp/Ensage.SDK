@@ -29,7 +29,7 @@ namespace Ensage.SDK.Extensions
             }
         }
 
-        public static string GetDisplayName(this Hero hero)
+        public static string GetDisplayName(this Unit hero)
         {
             var classId = hero.ClassId;
             switch (classId)

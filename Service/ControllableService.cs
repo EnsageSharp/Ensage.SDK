@@ -4,12 +4,16 @@
 
 namespace Ensage.SDK.Service
 {
+    using System;
+
     using Ensage.SDK.Helpers;
 
     using PlaySharp.Toolkit.Helper;
 
-    public abstract class ControllableService : IControllable
+    public abstract class ControllableService : IControllable, IDisposable
     {
+        private bool disposed;
+
         protected ControllableService(bool activateOnCreation = true)
         {
             if (activateOnCreation)
@@ -40,6 +44,27 @@ namespace Ensage.SDK.Service
 
             this.IsActive = false;
             this.OnDeactivate();
+        }
+
+        public void Dispose()
+        {
+            this.Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (this.disposed)
+            {
+                return;
+            }
+
+            if (disposing)
+            {
+                this.Deactivate();
+            }
+
+            this.disposed = true;
         }
 
         protected virtual void OnActivate()

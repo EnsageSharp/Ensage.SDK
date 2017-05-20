@@ -20,7 +20,7 @@ namespace Ensage.SDK.TargetSelector
             this.Targets = new FrameCache<IEnumerable<Unit>>(this.GetTargetsImpl);
         }
 
-        protected Hero Owner { get; }
+        protected Unit Owner { get; }
 
         protected FrameCache<IEnumerable<Unit>> Targets { get; }
 

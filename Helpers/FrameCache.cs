@@ -9,7 +9,6 @@ namespace Ensage.SDK.Helpers
     using PlaySharp.Toolkit.Helper.Annotations;
 
     public class FrameCache<TValue> : IDisposable
-        where TValue : class
     {
         private bool disposed;
 
@@ -23,21 +22,16 @@ namespace Ensage.SDK.Helpers
 
         public event EventHandler FrameChanged;
 
-        public bool HasValue
-        {
-            get
-            {
-                return this.value != null;
-            }
-        }
+        public bool HasValue { get; private set; }
 
         public TValue Value
         {
             get
             {
-                if (this.value == null)
+                if (!this.HasValue)
                 {
                     this.value = this.Factory();
+                    this.HasValue = true;
                 }
 
                 return this.value;
@@ -69,7 +63,7 @@ namespace Ensage.SDK.Helpers
 
         private void OnFrameChanged()
         {
-            this.value = null;
+            this.HasValue = false;
             this.FrameChanged?.Invoke(this, EventArgs.Empty);
         }
     }

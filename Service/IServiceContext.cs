@@ -4,10 +4,23 @@
 
 namespace Ensage.SDK.Service
 {
-    public interface IServiceContext
+    using System;
+    using System.Collections.Generic;
+
+    using PlaySharp.Toolkit.Helper.Annotations;
+
+    public interface IServiceContext : IDisposable
     {
         ContextContainer<IServiceContext> Container { get; }
 
-        Hero Owner { get; }
+        Unit Owner { get; }
+
+        T Get<T>([CanBeNull] string contract = null);
+
+        IEnumerable<T> GetAll<T>([CanBeNull] string contract = null);
+
+        Lazy<T> GetExport<T>([CanBeNull] string contract = null);
+
+        IEnumerable<Lazy<T, TMetadata>> GetExports<T, TMetadata>([CanBeNull] string contract = null);
     }
 }

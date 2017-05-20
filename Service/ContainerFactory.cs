@@ -33,11 +33,11 @@ namespace Ensage.SDK.Service
             }
         }
 
-        public static ContextContainer<IServiceContext> CreateContainer(Hero owner, bool disableSilentRejection = true)
+        internal static ContextContainer<IServiceContext> CreateContainer(IServiceContext context, bool disableSilentRejection = true)
         {
-            if (owner == null)
+            if (context == null)
             {
-                throw new ArgumentNullException(nameof(owner));
+                throw new ArgumentNullException(nameof(context));
             }
 
             var flags = CompositionOptions.IsThreadSafe;
@@ -46,30 +46,31 @@ namespace Ensage.SDK.Service
                 flags |= CompositionOptions.DisableSilentRejection;
             }
 
-            var context = new EnsageServiceContext(owner);
             var container = new CompositionContainer(Loader.Catalog, flags);
-            context.Container = new ContextContainer<IServiceContext>(context, container);
 
             Log.Debug($"Create {context} Container");
-            Log.Debug($"====================================================");
-            Log.Debug($"Resolving Catalogs {Loader.Catalog.Catalogs.Count}");
-            Log.Debug($"====================================================");
-
-            foreach (var catalog in Loader.Catalog.Catalogs.OfType<AssemblyCatalog>())
+            if (context.Owner == ObjectManager.LocalHero)
             {
-                Log.Debug($"Assembly {catalog.Assembly.GetName().Name}");
+                Log.Debug($"====================================================");
+                Log.Debug($"Resolving Catalogs {Loader.Catalog.Catalogs.Count}");
+                Log.Debug($"====================================================");
+
+                foreach (var catalog in Loader.Catalog.Catalogs.OfType<AssemblyCatalog>())
+                {
+                    Log.Debug($"Assembly {catalog.Assembly.GetName().Name}");
+                }
+
+                Log.Debug($"====================================================");
+                Log.Debug($"Resolving Parts {container.Catalog.Parts.Count()}");
+                Log.Debug($"====================================================");
+
+                foreach (var part in container.Catalog.Parts)
+                {
+                    Log.Debug($"{part}");
+                }
+
+                Log.Debug($"====================================================");
             }
-
-            Log.Debug($"====================================================");
-            Log.Debug($"Resolving Parts {container.Catalog.Parts.Count()}");
-            Log.Debug($"====================================================");
-
-            foreach (var part in container.Catalog.Parts)
-            {
-                Log.Debug($"{part}");
-            }
-
-            Log.Debug($"====================================================");
 
             container.ComposeExportedValue<IServiceContext>(context);
 
@@ -85,7 +86,7 @@ namespace Ensage.SDK.Service
             // case RenderMode.Vulkan:
             // throw new NotSupportedException($"RenderMode({Drawing.RenderMode}) not supported.");
             // }
-            return context.Container;
+            return new ContextContainer<IServiceContext>(context, container);
         }
     }
 }

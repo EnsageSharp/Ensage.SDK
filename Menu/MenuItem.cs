@@ -12,7 +12,6 @@ namespace Ensage.SDK.Menu
     using PlaySharp.Toolkit.Helper.Annotations;
 
     public class MenuItem<TType> : INotifyPropertyChanged
-        where TType : struct
     {
         public MenuItem(string displayName, string name, TType value)
         {

@@ -141,6 +141,7 @@ namespace Ensage.SDK.Orbwalker
             this.Inventory.Value.CollectionChanged -= this.OnItemsChanged;
             this.Particle?.Value.Remove("AttackRange");
             this.Settings.DrawRange.PropertyChanged -= this.OnDrawRangeChanged;
+            this.Settings.DrawHoldRange.PropertyChanged -= this.OnDrawHoldRangeChanged;
             this.Settings.Dispose();
         }
 

@@ -17,7 +17,7 @@ namespace Ensage.SDK.Orbwalker.Config
         {
             this.Factory = MenuFactory.Create($"Orbwalker: {name}", "Orbwalker");
             this.Selection = this.Factory.Item("Active Orbwalker", new StringList(orbwalkers));
-            this.TickRate = this.Factory.Item("TickRate", new Slider(100, 0, 200));
+            this.TickRate = this.Factory.Item("Tickrate", new Slider(100, 0, 200));
         }
 
         public MenuFactory Factory { get; }
@@ -57,6 +57,10 @@ namespace Ensage.SDK.Orbwalker.Config
             if (owner == ObjectManager.LocalHero)
             {
                 this.Factory = parent.Menu($"Settings");
+            }
+            else if (owner.IsIllusion)
+            {
+                this.Factory = parent.Menu($"Settings (Illusion)");
             }
             else
             {

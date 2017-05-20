@@ -11,44 +11,37 @@ namespace Ensage.SDK.Menu
 
     using Ensage.Common.Menu;
 
-    using log4net;
-
     using PlaySharp.Toolkit.Helper;
-    using PlaySharp.Toolkit.Logging;
 
     public class MenuFactory : IDisposable
     {
-        private static readonly ILog Log = AssemblyLogs.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-
-        private bool disposed;
-
         static MenuFactory()
         {
             AppDomain.CurrentDomain.DomainUnload += OnDomainUnload;
         }
 
-        public MenuFactory(Menu parent)
+        public MenuFactory(Menu target)
         {
-            this.parent = parent;
+            this.Target = target;
         }
 
         public MenuFactory Parent
         {
             get
             {
-                return Attach(this.parent.Parent);
+                return Attach(this.Target.Parent);
             }
         }
 
-        private static Dictionary<string, MenuItem> Items { get; } = new Dictionary<string, MenuItem>();
+        public Menu Target { get; }
 
-        private static Dictionary<string, Menu> Menus { get; } = new Dictionary<string, Menu>();
+        private static Dictionary<string, object> Items { get; } = new Dictionary<string, object>();
 
-        private Menu parent { get; }
+        private static Dictionary<string, MenuFactory> Menus { get; } = new Dictionary<string, MenuFactory>();
 
-        public static MenuFactory Attach(Menu parent)
+        public static MenuFactory Attach(Menu target)
         {
-            return new MenuFactory(parent);
+            return new MenuFactory(target);
         }
 
         public static MenuItem<T> Attach<T>(MenuItem item)
@@ -59,7 +52,7 @@ namespace Ensage.SDK.Menu
 
         public static MenuFactory Attach(string name)
         {
-            return new MenuFactory(Common.Menu.Menu.GetMenu("Ensage.SDK", name));
+            return new MenuFactory(Common.Menu.Menu.GetMenu(Assembly.GetExecutingAssembly().GetName().Name, name));
         }
 
         public static MenuFactory Create(string displayName, string name = null)
@@ -68,13 +61,17 @@ namespace Ensage.SDK.Menu
 
             if (!Menus.ContainsKey(name))
             {
-                var menu = new Menu(displayName, name, true);
-                menu.AddToMainMenu(Assembly.GetExecutingAssembly());
-
-                Menus[name] = menu;
+                Menus[name] = Attach(new Menu(displayName, name, true));
             }
 
-            return Attach(Menus[name]);
+            var menu = Menus[name];
+
+            if (!Common.Menu.Menu.RootMenus.ContainsValue(menu.Target))
+            {
+                menu.Target.AddToMainMenu(Assembly.GetExecutingAssembly());
+            }
+
+            return menu;
         }
 
         public static void Save()
@@ -84,7 +81,7 @@ namespace Ensage.SDK.Menu
 
             foreach (var item in Items)
             {
-                data[item.Key] = item.Value.GetValue<object>();
+                data[item.Key] = ((dynamic)item.Value).Value;
             }
 
             JsonFactory.ToFile(file, data);
@@ -99,70 +96,74 @@ namespace Ensage.SDK.Menu
         public MenuItem<T> Item<T>(string displayName, T value)
             where T : struct
         {
-            return this.Item<T>(displayName, null, value);
+            return this.Item(displayName, null, value);
         }
 
         public MenuItem<T> Item<T>(string displayName, string name = null)
             where T : struct
         {
-            name = $"{this.parent.Name}.{name ?? GetName(displayName)}";
+            name = $"{this.Target.Name}.{name ?? GetName(displayName)}";
 
             if (!Items.ContainsKey(name))
             {
-                var item = new MenuItem<T>(displayName, name);
-                this.parent.AddItem(item.Item);
-
-                Items[name] = item.Item;
+                Items[name] = new MenuItem<T>(displayName, name);
             }
 
-            return Attach<T>(Items[name]);
+            var item = (MenuItem<T>)Items[name];
+
+            if (!this.Target.Items.Contains(item.Item))
+            {
+                this.Target.AddItem(item.Item);
+            }
+
+            return item;
         }
 
         public MenuItem<T> Item<T>(string displayName, string name, T value)
             where T : struct
         {
-            name = $"{this.parent.Name}.{name ?? GetName(displayName)}";
+            name = $"{this.Target.Name}.{name ?? GetName(displayName)}";
 
             if (!Items.ContainsKey(name))
             {
-                var item = new MenuItem<T>(displayName, name, value);
-                this.parent.AddItem(item.Item);
-
-                Items[name] = item.Item;
+                Items[name] = new MenuItem<T>(displayName, name, value);
             }
 
-            return Attach<T>(Items[name]);
+            var item = (MenuItem<T>)Items[name];
+
+            if (!this.Target.Items.Contains(item.Item))
+            {
+                this.Target.AddItem(item.Item);
+            }
+
+            return item;
         }
 
         public MenuFactory Menu(string displayName, string name = null)
         {
-            name = $"{this.parent.Name}.{name ?? GetName(displayName)}";
+            name = $"{this.Target.Name}.{name ?? GetName(displayName)}";
 
             if (!Menus.ContainsKey(name))
             {
-                var menu = new Menu(displayName, name);
-                this.parent.AddSubMenu(menu);
-
-                Menus[name] = menu;
+                Menus[name] = Attach(new Menu(displayName, name));
             }
 
-            return Attach(Menus[name]);
+            var menu = Menus[name];
+
+            if (!this.Target.Children.Contains(menu.Target))
+            {
+                this.Target.AddSubMenu(menu.Target);
+            }
+
+            return menu;
         }
 
         protected virtual void Dispose(bool disposing)
         {
-            if (this.disposed)
-            {
-                return;
-            }
-
             if (disposing)
             {
-                Log.Debug($"Dispose {this.parent.Name}");
-                this.parent.RemoveFromMainMenu(Assembly.GetExecutingAssembly());
+                this.Target.RemoveFromMainMenu(Assembly.GetExecutingAssembly());
             }
-
-            this.disposed = true;
         }
 
         private static string GetName(string displayName)

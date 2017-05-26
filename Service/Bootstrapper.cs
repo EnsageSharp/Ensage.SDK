@@ -101,7 +101,7 @@ namespace Ensage.SDK.Service
 
         private void DiscoverPlugins()
         {
-            foreach (var assembly in this.Plugins)
+            foreach (var assembly in this.Plugins.OrderBy(e => e.Metadata.Priority))
             {
                 Log.Debug($"Found {assembly.Metadata.Name}");
 
@@ -144,8 +144,7 @@ namespace Ensage.SDK.Service
                 Log.Debug($">> Searching for Plugins");
                 this.DiscoverPlugins();
 
-                Log.Debug($">> Activating Plugins");
-                this.ActivatePlugins();
+                UpdateManager.BeginInvoke(this.ActivatePlugins, 250);
 
                 sw.Stop();
 

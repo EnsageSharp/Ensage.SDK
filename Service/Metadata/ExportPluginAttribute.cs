@@ -17,7 +17,7 @@ namespace Ensage.SDK.Service.Metadata
             string author = "Ensage",
             string version = "1.0.0.0",
             string description = "",
-            int priority = 250,
+            int priority = 500,
             params HeroId[] units)
             : base(typeof(IPluginLoader))
         {

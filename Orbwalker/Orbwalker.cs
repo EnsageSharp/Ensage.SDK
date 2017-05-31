@@ -23,6 +23,7 @@ namespace Ensage.SDK.Orbwalker
 
     using log4net;
 
+    using PlaySharp.Toolkit.Helper.Annotations;
     using PlaySharp.Toolkit.Logging;
 
     using SharpDX;
@@ -177,10 +178,16 @@ namespace Ensage.SDK.Orbwalker
             return false;
         }
 
-        public bool OrbwalkTo(Unit target)
+        public bool OrbwalkTo([CanBeNull] Unit target)
         {
             // turning
             if (this.TurnEndTime > Game.RawGameTime)
+            {
+                return false;
+            }
+
+            // owner disabled
+            if (this.Owner.IsChanneling() || !this.Owner.IsAlive || this.Owner.IsStunned())
             {
                 return false;
             }

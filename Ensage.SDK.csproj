@@ -109,6 +109,10 @@
     <Compile Include="Abilities\npc_dota_hero_vengefulspirit\vengefulspirit_magic_missile.cs" />
     <Compile Include="Extensions\EnumerableExtensions.cs" />
     <Compile Include="Geometry\MEC.cs" />
+    <Compile Include="Handlers\Weak\IExecuteWithObject.cs" />
+    <Compile Include="Handlers\Weak\IExecuteWithObjectAndResult.cs" />
+    <Compile Include="Handlers\Weak\WeakAction.cs" />
+    <Compile Include="Handlers\Weak\WeakFunc.cs" />
     <Compile Include="Helpers\CircularBuffer.cs" />
     <Compile Include="Helpers\Messenger.cs" />
     <Compile Include="Handlers\IUpdateHandler.cs" />

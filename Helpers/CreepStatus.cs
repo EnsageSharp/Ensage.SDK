@@ -8,7 +8,7 @@ namespace Ensage.SDK.Helpers
 
     using Ensage.SDK.Extensions;
 
-    class CreepStatus
+    internal class CreepStatus
     {
         private float _attackPoint;
 
@@ -147,19 +147,15 @@ namespace Ensage.SDK.Helpers
                     return this._target;
                 }
 
-                if (this._lastPossibleTarget != null && this._lastPossibleTarget.IsValid
-                    && this.Source.IsDirectlyFacing(this._lastPossibleTarget)
+                if (this._lastPossibleTarget != null && this._lastPossibleTarget.IsValid && this.Source.IsDirectlyFacing(this._lastPossibleTarget)
                     && this.Source.IsValidOrbwalkingTarget(this._lastPossibleTarget))
                 {
                     return this._lastPossibleTarget;
                 }
 
-                var possibleTarget = EntityManager<Creep>.Entities
-                                                         .FirstOrDefault(
-                                                             unit =>
-                                                                 unit.IsValid && unit.Team != this.Team
-                                                                 && this.Source.IsDirectlyFacing(unit)
-                                                                 && this.Source.IsValidOrbwalkingTarget(unit));
+                var possibleTarget = EntityManager<Creep>.Entities.FirstOrDefault(
+                    unit => unit.IsValid && unit.Team != this.Team && this.Source.IsDirectlyFacing(unit)
+                            && this.Source.IsValidOrbwalkingTarget(unit));
 
                 if (possibleTarget != null)
                 {
@@ -204,11 +200,7 @@ namespace Ensage.SDK.Helpers
 
         public float GetAutoAttackArrivalTime(Unit target)
         {
-            var result = this.Source.GetProjectileArrivalTime(
-                target,
-                this.AttackPoint,
-                this.MissileSpeed,
-                !this.IsTower);
+            var result = this.Source.GetProjectileArrivalTime(target, this.AttackPoint, this.MissileSpeed, !this.IsTower);
 
             if (!this.IsTower && !this.IsSiege)
             {

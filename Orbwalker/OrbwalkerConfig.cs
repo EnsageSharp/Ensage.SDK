@@ -1,26 +1,52 @@
+// <copyright file="OrbwalkerConfig.cs" company="Ensage">
+//    Copyright (c) 2017 Ensage.
+// </copyright>
+
 namespace Ensage.SDK.Orbwalker
 {
+    using System;
+
     using Ensage.Common.Menu;
     using Ensage.SDK.Extensions;
     using Ensage.SDK.Menu;
     using Ensage.SDK.Service;
 
-    public class OrbwalkerConfig
+    public class OrbwalkerConfig : IDisposable
     {
+        private bool disposed;
+
         public OrbwalkerConfig(IServiceContext context)
         {
             this.Factory = MenuFactory.Create($"Orbwalker: {context.Owner.GetDisplayName()}", "Orbwalker");
-            this.Active = this.Factory.Item("Active", true);
             this.Settings = new OrbwalkerSettings(this.Factory);
 
             context.Container.RegisterValue(this);
         }
 
-        public MenuItem<bool> Active { get; }
-
         public MenuFactory Factory { get; }
 
         public OrbwalkerSettings Settings { get; }
+
+        public void Dispose()
+        {
+            this.Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (this.disposed)
+            {
+                return;
+            }
+
+            if (disposing)
+            {
+                this.Factory.Dispose();
+            }
+
+            this.disposed = true;
+        }
 
         public class OrbwalkerSettings
         {

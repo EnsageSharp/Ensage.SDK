@@ -6,9 +6,11 @@ namespace Ensage.SDK.Orbwalker
 {
     using Ensage.SDK.Service;
 
+    using PlaySharp.Toolkit.Helper;
+
     using SharpDX;
 
-    public interface IOrbwalker
+    public interface IOrbwalker : IControllable
     {
         OrbwalkerConfig Config { get; }
 

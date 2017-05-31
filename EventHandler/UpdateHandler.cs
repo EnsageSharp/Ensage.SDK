@@ -8,53 +8,53 @@ namespace Ensage.SDK.EventHandler
 
     public class UpdateHandler : IUpdateHandler
     {
-        public UpdateHandler(Action callback)
+        public UpdateHandler(Action callback, InvokeHandler executor)
         {
-            if (callback == null)
-            {
-                throw new ArgumentNullException(nameof(callback));
-            }
-
+            this.Name = $"{callback?.Method.DeclaringType?.Name}.{callback?.Method.Name}";
             this.Callback = callback;
+            this.Executor = executor;
         }
 
         public Action Callback { get; }
 
-        public virtual bool Invoke()
+        public InvokeHandler Executor { get; set; }
+
+        public string Name { get; }
+
+        public virtual void Invoke()
         {
-            this.Callback?.Invoke();
-            return true;
+            this.Executor.Invoke(this.Callback);
         }
 
         public override string ToString()
         {
-            return $"{this.Callback?.Method.DeclaringType?.Name}.{this.Callback?.Method.Name}";
+            return $"{this.Executor}[{this.Name}]";
         }
     }
 
     public class UpdateHandler<TEventArgs> : IUpdateHandler<TEventArgs>
     {
-        public UpdateHandler(Action<TEventArgs> callback)
+        public UpdateHandler(Action<TEventArgs> callback, InvokeHandler<TEventArgs> executor)
         {
-            if (callback == null)
-            {
-                throw new ArgumentNullException(nameof(callback));
-            }
-
+            this.Name = $"{callback?.Method.DeclaringType?.Name}.{callback?.Method.Name}";
             this.Callback = callback;
+            this.Executor = executor;
         }
 
         public Action<TEventArgs> Callback { get; }
 
-        public virtual bool Invoke(TEventArgs args)
+        public InvokeHandler<TEventArgs> Executor { get; set; }
+
+        public string Name { get; }
+
+        public virtual void Invoke(TEventArgs args)
         {
-            this.Callback?.Invoke(args);
-            return true;
+            this.Executor.Invoke(this.Callback, args);
         }
 
         public override string ToString()
         {
-            return $"Handler[{this.Callback?.Method.DeclaringType?.Name}.{this.Callback?.Method.Name}]";
+            return $"{this.Executor}[{this.Name}]";
         }
     }
 }

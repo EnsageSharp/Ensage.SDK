@@ -35,7 +35,7 @@ namespace Ensage.SDK.Menu
         public static MenuFactory Create(string displayName, string name = null)
         {
             var menu = new Menu(displayName, $"{name ?? GetName(displayName)}", true);
-            menu.AddToMainMenu(Assembly.GetCallingAssembly());
+            menu.AddToMainMenu(Assembly.GetExecutingAssembly());
 
             Log.Debug($"Created {menu.Name}");
 
@@ -58,9 +58,31 @@ namespace Ensage.SDK.Menu
             GC.SuppressFinalize(this);
         }
 
+        public MenuItem<T> Item<T>(string displayName)
+        {
+            return this.Item<T>(displayName, GetName(displayName));
+        }
+
         public MenuItem<T> Item<T>(string displayName, T value)
         {
             return this.Item<T>(displayName, GetName(displayName), value);
+        }
+
+        public MenuItem<T> Item<T>(string displayName, string name)
+        {
+            var ns = $"{this.Parent.Name}.{name}";
+            var menuItem = this.Parent.Items.FirstOrDefault(e => e.Name == ns);
+
+            if (menuItem != null)
+            {
+                Log.Debug($"Attached {menuItem.Name}");
+                return new MenuItem<T>(menuItem);
+            }
+
+            var item = new MenuItem<T>(displayName, ns);
+            this.Parent.AddItem(item.Item);
+
+            return item;
         }
 
         public MenuItem<T> Item<T>(string displayName, string name, T value)
@@ -94,7 +116,8 @@ namespace Ensage.SDK.Menu
 
             if (disposing)
             {
-                this.Parent.RemoveFromMainMenu(Assembly.GetCallingAssembly());
+                Log.Debug($"Dispose {this.Parent.Name}");
+                this.Parent.RemoveFromMainMenu(Assembly.GetExecutingAssembly());
             }
 
             this.disposed = true;
@@ -102,9 +125,7 @@ namespace Ensage.SDK.Menu
 
         private static string GetName(string displayName)
         {
-            displayName = displayName.Replace(".", "_");
             displayName = displayName.Replace(" ", string.Empty);
-
             return displayName;
         }
     }

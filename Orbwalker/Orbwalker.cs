@@ -10,12 +10,9 @@ namespace Ensage.SDK.Orbwalker
     using System.Linq;
     using System.Reflection;
 
-    using Ensage.Common.Menu;
     using Ensage.SDK.Extensions;
     using Ensage.SDK.Helpers;
     using Ensage.SDK.Orbwalker.Metadata;
-    using Ensage.SDK.Prediction;
-    using Ensage.SDK.Prediction.Metadata;
     using Ensage.SDK.Renderer.Particle;
     using Ensage.SDK.Service;
 
@@ -30,31 +27,20 @@ namespace Ensage.SDK.Orbwalker
     {
         private static readonly ILog Log = AssemblyLogs.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        private bool isActive;
-
         [ImportingConstructor]
         public Orbwalker([Import] IServiceContext context)
         {
-            Log.Debug($"Create Orbwalker:{context.Owner.GetDisplayName()}");
             this.Context = context;
             this.Owner = context.Owner;
-            this.Config = new OrbwalkerConfig(context);
-            this.Config.Active.Item.ValueChanged += this.OnActiveValueChanged;
-
-            if (this.Config.Active.Value)
-            {
-                this.Activate();
-            }
         }
 
-        public OrbwalkerConfig Config { get; }
+        public OrbwalkerConfig Config { get; private set; }
 
         public IServiceContext Context { get; }
 
-        public float TurnEndTime { get; private set; }
+        public bool IsActive { get; private set; }
 
-        [ImportHealthPrediction]
-        protected Lazy<IHealthPrediction> HealthPrediction { get; set; }
+        public float TurnEndTime { get; private set; }
 
         [ImportMany(typeof(IOrbwalkingMode))]
         protected IEnumerable<Lazy<IOrbwalkingMode, IOrbwalkingModeMetadata>> Modes { get; set; }
@@ -68,19 +54,21 @@ namespace Ensage.SDK.Orbwalker
 
         private float LastMoveOrderIssuedTime { get; set; }
 
-        private Unit Owner { get; }
+        private Hero Owner { get; }
 
         private float PingTime => Game.Ping / 2000f;
 
         public void Activate()
         {
-            if (this.isActive)
+            if (this.IsActive)
             {
                 return;
             }
 
-            this.isActive = true;
+            this.IsActive = true;
 
+            Log.Debug($"Activate Orbwalker:{this.Owner.GetDisplayName()}");
+            this.Config = new OrbwalkerConfig(this.Context);
             UpdateManager.Subscribe(this.OnUpdate);
             UpdateManager.Subscribe(this.OnUpdateDrawings, 1000);
             Entity.OnInt32PropertyChange += this.Hero_OnInt32PropertyChange;
@@ -117,13 +105,15 @@ namespace Ensage.SDK.Orbwalker
 
         public void Deactivate()
         {
-            if (!this.isActive)
+            if (!this.IsActive)
             {
                 return;
             }
 
-            this.isActive = false;
+            this.IsActive = false;
 
+            Log.Debug($"Deactivate Orbwalker:{this.Owner.GetDisplayName()}");
+            this.Config?.Dispose();
             UpdateManager.Unsubscribe(this.OnUpdate);
             UpdateManager.Unsubscribe(this.OnUpdateDrawings);
             Entity.OnInt32PropertyChange -= this.Hero_OnInt32PropertyChange;
@@ -174,18 +164,6 @@ namespace Ensage.SDK.Orbwalker
                     // var diff = Game.RawGameTime - this.LastAttackTime;
                     this.LastAttackTime = Game.RawGameTime - (Game.Ping / 2000f);
                     break;
-            }
-        }
-
-        private void OnActiveValueChanged(object sender, OnValueChangeEventArgs args)
-        {
-            if (args.GetNewValue<bool>())
-            {
-                this.Activate();
-            }
-            else
-            {
-                this.Deactivate();
             }
         }
 

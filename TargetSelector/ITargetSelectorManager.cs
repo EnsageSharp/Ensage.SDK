@@ -9,7 +9,9 @@ namespace Ensage.SDK.TargetSelector
 
     using Ensage.SDK.TargetSelector.Metadata;
 
-    public interface ITargetSelectorManager
+    using PlaySharp.Toolkit.Helper;
+
+    public interface ITargetSelectorManager : IControllable
     {
         ITargetSelector Active { get; }
 

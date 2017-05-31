@@ -11,6 +11,7 @@ namespace Ensage.SDK.Service
         public SDKConfig()
         {
             this.Factory = MenuFactory.Create("Ensage.SDK");
+            this.Plugins = new PluginsConfig(this.Factory);
             this.Settings = new SettingsConfig(this.Factory);
             this.Debug = new DebugConfig(this.Factory);
         }
@@ -19,13 +20,25 @@ namespace Ensage.SDK.Service
 
         public MenuFactory Factory { get; }
 
+        public PluginsConfig Plugins { get; }
+
         public SettingsConfig Settings { get; }
 
         public class DebugConfig
         {
             public DebugConfig(MenuFactory parent)
             {
-                this.Factory = parent.Menu("Debug");
+                // this.Factory = parent.Menu("Debug");
+            }
+
+            public MenuFactory Factory { get; }
+        }
+
+        public class PluginsConfig
+        {
+            public PluginsConfig(MenuFactory parent)
+            {
+                this.Factory = parent.Menu("Plugins");
             }
 
             public MenuFactory Factory { get; }
@@ -35,7 +48,7 @@ namespace Ensage.SDK.Service
         {
             public SettingsConfig(MenuFactory parent)
             {
-                this.Factory = parent.Menu("Settings");
+                // this.Factory = parent.Menu("Settings");
             }
 
             public MenuFactory Factory { get; }

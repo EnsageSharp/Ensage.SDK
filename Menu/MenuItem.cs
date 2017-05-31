@@ -14,6 +14,11 @@ namespace Ensage.SDK.Menu
             this.Item.SetValue(value);
         }
 
+        public MenuItem(string displayName, string name)
+        {
+            this.Item = new MenuItem(name, displayName);
+        }
+
         public MenuItem(MenuItem item)
         {
             this.Item = item;
@@ -32,6 +37,21 @@ namespace Ensage.SDK.Menu
             {
                 this.Item.SetValue(value);
             }
+        }
+
+        public static implicit operator bool(MenuItem<TType> item)
+        {
+            return item.Item.IsActive();
+        }
+
+        public static implicit operator string(MenuItem<TType> item)
+        {
+            return item.Item.GetValue<StringList>().SelectedValue;
+        }
+
+        public static implicit operator int(MenuItem<TType> item)
+        {
+            return item.Item.GetValue<Slider>().Value;
         }
     }
 }

@@ -22,6 +22,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <PlatformTarget>x64</PlatformTarget>
+    <LangVersion>7</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -103,9 +104,15 @@
     <Compile Include="Abilities\npc_dota_hero_vengefulspirit\vengefulspirit_magic_missile.cs" />
     <Compile Include="EventHandler\Messenger.cs" />
     <Compile Include="EventHandler\IUpdateHandler.cs" />
-    <Compile Include="EventHandler\TimeoutUpdateHandler.cs" />
-    <Compile Include="EventHandler\TraceUpdateHandler.cs" />
-    <Compile Include="Helpers\UpdateProfiler.cs" />
+    <Compile Include="EventHandler\TimeoutHandler.cs" />
+    <Compile Include="EventHandler\TraceHandler.cs" />
+    <Compile Include="EventHandler\InvokeHandler.cs" />
+    <Compile Include="Input\MouseWheelEventArgs.cs" />
+    <Compile Include="Plugins\DeveloperTools.cs" />
+    <Compile Include="Plugins\OrbwalkerPlugin.cs" />
+    <Compile Include="Plugins\TargetSelectorPlugin.cs" />
+    <Compile Include="Plugins\CrazyEventHub.cs" />
+    <Compile Include="Service\ControllableService.cs" />
     <Compile Include="Inventory\InventoryItem.cs" />
     <Compile Include="Inventory\Metadata\ExportInventoryManagerAttribute.cs" />
     <Compile Include="Inventory\IInventoryManager.cs" />
@@ -117,8 +124,12 @@
     <Compile Include="Input\Metadata\ImportInputManagerAttribute.cs" />
     <Compile Include="Orbwalker\Modes\AttackOrbwalkingMode.cs" />
     <Compile Include="Orbwalker\Modes\AutoAttackMode.cs" />
+    <Compile Include="Service\Metadata\ExportPluginAttribute.cs" />
+    <Compile Include="Service\IPluginLoader.cs" />
+    <Compile Include="Service\Metadata\IPluginLoaderMetadata.cs" />
+    <Compile Include="Service\Metadata\StartupMode.cs" />
+    <Compile Include="Service\PluginContainer.cs" />
     <Compile Include="TargetSelector\Modes\AutoAttackModeSelector.cs" />
-    <Compile Include="Orbwalker\Modes\Combo.cs" />
     <Compile Include="Orbwalker\Metadata\ExportOrbwalkingModeAttribute.cs" />
     <Compile Include="Orbwalker\Modes\Farm.cs" />
     <Compile Include="Orbwalker\IOrbwalkingMode.cs" />
@@ -200,9 +211,7 @@
     <Compile Include="Renderer\D3D\ID3DRenderer.cs" />
     <Compile Include="Renderer\D2D\ID2DContext.cs" />
     <Compile Include="Renderer\D2D\ID2DRenderer.cs" />
-    <Compile Include="Service\Metadata\ExportAssemblyAttribute.cs" />
-    <Compile Include="Service\IAssemblyLoader.cs" />
-    <Compile Include="Service\Metadata\IAssemblyLoaderMetadata.cs" />
+    <Compile Include="Service\Plugin.cs" />
     <Compile Include="TargetSelector\Metadata\ExportTargetSelectorAttribute.cs" />
     <Compile Include="Extensions\AbilityExtensions.cs" />
     <Compile Include="Service\EnsageServiceContext.cs" />

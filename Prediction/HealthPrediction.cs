@@ -47,51 +47,32 @@ namespace Ensage.SDK.Prediction
             untilTime = Math.Max(0f, untilTime);
             untilTime = now + untilTime;
 
+            var handle = unit.Handle;
             var team = unit.Team;
-            foreach (var creepStatusValuePair in this.CreepStatuses)
+
+            foreach (var pair in this.CreepStatuses.Where(e => e.Value.IsValid && e.Value.Team != team && e.Value.Target?.Handle == handle))
             {
-                var creepStatus = creepStatusValuePair.Value;
-
-                if (!creepStatus.IsValid)
-                {
-                    continue;
-                }
-
-                if (creepStatus.Team == team)
-                {
-                    continue;
-                }
-
-                var targetCreep = creepStatus.Target;
-                if (targetCreep == null || targetCreep.Handle != unit.Handle)
-                {
-                    continue;
-                }
-
-                var damage = creepStatus.Source.GetAttackDamage(unit);
+                var entry = pair.Value;
+                var damage = entry.Source.GetAttackDamage(unit);
 
                 float attackHitTime;
 
-                if (creepStatus.LastAttackAnimationTime == 0f
-                    || (now - creepStatus.LastAttackAnimationTime) > (creepStatus.TimeBetweenAttacks + 0.2))
+                if (entry.LastAttackAnimationTime == 0f || (now - entry.LastAttackAnimationTime) > (entry.TimeBetweenAttacks + 0.2))
                 {
                     continue;
                 }
 
-                // handle melee creeps
-                if (creepStatus.IsMelee)
+                if (entry.IsMelee)
                 {
-                    attackHitTime = creepStatus.LastAttackAnimationTime + creepStatus.AttackPoint;
+                    // melee creeps
+                    attackHitTime = entry.LastAttackAnimationTime + entry.AttackPoint;
                 }
-
-                // ranged creeps
                 else
                 {
-                    attackHitTime = (creepStatus.LastAttackAnimationTime - creepStatus.TimeBetweenAttacks)
-                                    + creepStatus.GetAutoAttackArrivalTime(unit);
+                    // ranged creeps
+                    attackHitTime = (entry.LastAttackAnimationTime - entry.TimeBetweenAttacks) + entry.GetAutoAttackArrivalTime(unit);
                 }
 
-                var i = 0;
                 while (attackHitTime <= untilTime)
                 {
                     if (attackHitTime > now)
@@ -99,18 +80,14 @@ namespace Ensage.SDK.Prediction
                         health -= damage;
                     }
 
-                    attackHitTime += creepStatus.TimeBetweenAttacks;
-                    i++;
+                    attackHitTime += entry.TimeBetweenAttacks;
                 }
             }
 
             if (health > 0f)
             {
                 // towers
-                var closestTower =
-                    EntityManager<Tower>.Entities
-                                        .OrderBy(tower => tower.IsValid ? tower.Distance2D(this.Owner) : float.MaxValue)
-                                        .FirstOrDefault(t => t.IsValid);
+                var closestTower = EntityManager<Tower>.Entities.OrderBy(tower => tower.Distance2D(this.Owner)).FirstOrDefault();
                 if (closestTower != null)
                 {
                     var towerTarget = closestTower.AttackTarget;
@@ -118,8 +95,7 @@ namespace Ensage.SDK.Prediction
                     {
                         var creepStatus = this.GetCreepStatusEntry(closestTower);
                         var damage = closestTower.GetAttackDamage(unit);
-                        var attackHitTime = (creepStatus.LastAttackAnimationTime - creepStatus.TimeBetweenAttacks)
-                                            + creepStatus.GetAutoAttackArrivalTime(unit);
+                        var attackHitTime = (creepStatus.LastAttackAnimationTime - creepStatus.TimeBetweenAttacks) + creepStatus.GetAutoAttackArrivalTime(unit);
 
                         while (attackHitTime <= untilTime)
                         {
@@ -139,12 +115,9 @@ namespace Ensage.SDK.Prediction
 
         public bool ShouldWait(float t = 2f)
         {
-            return EntityManager<Creep>
-                .Entities
-                .Any(
-                    unit => unit.Team != this.Owner.Team &&
-                            this.Owner.IsValidOrbwalkingTarget(unit) &&
-                            this.GetPrediction(unit, t / this.Owner.AttacksPerSecond) < this.Owner.GetAttackDamage(unit, true));
+            return EntityManager<Creep>.Entities.Any(
+                unit => unit.Team != this.Owner.Team && this.Owner.IsValidOrbwalkingTarget(unit)
+                        && this.GetPrediction(unit, t / this.Owner.AttacksPerSecond) < this.Owner.GetAttackDamage(unit, true));
         }
 
         protected virtual void Dispose(bool disposing)
@@ -179,35 +152,37 @@ namespace Ensage.SDK.Prediction
 
         private void OnAnimationChanged(Entity sender, EventArgs args)
         {
-            if (!(sender is Creep))
+            var creep = sender as Creep;
+
+            if (creep == null)
             {
                 return;
             }
 
-            if (this.Owner.Distance2D(sender) > 3000)
+            if (this.Owner.Distance2D(creep) > 3000)
             {
                 return;
             }
 
-            var senderCreep = sender as Creep;
-
-            if (senderCreep.IsNeutral)
+            if (creep.IsNeutral)
             {
                 return;
             }
 
-            if (!senderCreep.Animation.Name.ToLowerInvariant().Contains("attack"))
+            if (!creep.Animation.Name.ToLowerInvariant().Contains("attack"))
             {
                 return;
             }
 
-            var creepStatus = this.GetCreepStatusEntry(senderCreep);
+            var creepStatus = this.GetCreepStatusEntry(creep);
             creepStatus.LastAttackAnimationTime = Game.RawGameTime - (Game.Ping / 2000f);
         }
 
         private void OnHandleChanged(Entity sender, HandlePropertyChangeEventArgs args)
         {
-            if (!(sender is Tower))
+            var tower = sender as Tower;
+
+            if (tower == null)
             {
                 return;
             }
@@ -217,12 +192,11 @@ namespace Ensage.SDK.Prediction
                 return;
             }
 
-            if (this.Owner.Distance2D(sender) > 3000)
+            if (this.Owner.Distance2D(tower) > 3000)
             {
                 return;
             }
 
-            var tower = sender as Tower;
             var creepStatus = this.GetCreepStatusEntry(tower);
             creepStatus.LastAttackAnimationTime = Game.RawGameTime - (Game.Ping / 2000f);
         }
@@ -261,9 +235,7 @@ namespace Ensage.SDK.Prediction
 
         private void OnUpdate()
         {
-            var toRemove = this.CreepStatuses
-                               .Where(pair => !pair.Value.IsValid || this.Owner.Distance2D(pair.Value.Source) > 4000)
-                               .ToList();
+            var toRemove = this.CreepStatuses.Where(pair => !pair.Value.IsValid || this.Owner.Distance2D(pair.Value.Source) > 4000).ToList();
 
             foreach (var remove in toRemove)
             {

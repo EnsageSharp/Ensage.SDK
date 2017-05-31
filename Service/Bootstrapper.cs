@@ -6,16 +6,11 @@ namespace Ensage.SDK.Service
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel.Composition.Hosting;
     using System.Diagnostics;
-    using System.Linq;
     using System.Reflection;
 
     using Ensage.SDK.Helpers;
-    using Ensage.SDK.Input;
-    using Ensage.SDK.Orbwalker;
     using Ensage.SDK.Service.Metadata;
-    using Ensage.SDK.TargetSelector;
 
     using log4net;
 
@@ -27,17 +22,19 @@ namespace Ensage.SDK.Service
     {
         private static readonly ILog Log = AssemblyLogs.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        public IEnumerable<Lazy<IAssemblyLoader, IAssemblyLoaderMetadata>> Assemblies
-        {
-            get
-            {
-                return this.Default?.GetAll<IAssemblyLoader, IAssemblyLoaderMetadata>();
-            }
-        }
-
         public SDKConfig Config { get; private set; }
 
         public ContextContainer<IServiceContext> Default { get; private set; }
+
+        public List<PluginContainer> PluginContainer { get; } = new List<PluginContainer>();
+
+        public IEnumerable<Lazy<IPluginLoader, IPluginLoaderMetadata>> Plugins
+        {
+            get
+            {
+                return this.Default?.GetAll<IPluginLoader, IPluginLoaderMetadata>();
+            }
+        }
 
         public void BuildUp(object instance)
         {
@@ -74,65 +71,43 @@ namespace Ensage.SDK.Service
 
         private void ActivatePlugins()
         {
-            var id = ObjectManager.LocalHero.HeroId;
-
-            foreach (var assembly in this.Assemblies)
+            foreach (var plugin in this.PluginContainer)
             {
-                try
+                if (plugin.Mode == StartupMode.Manual && plugin.ActiveItem)
                 {
-                    if (assembly.IsValueCreated)
-                    {
-                        continue;
-                    }
-
-                    if (assembly.Metadata.Units != null && assembly.Metadata.Units.Length > 0)
-                    {
-                        if (!assembly.Metadata.Units.Contains(id))
-                        {
-                            continue;
-                        }
-                    }
-
-                    Log.Info($"Activate {assembly.Metadata.Name}");
-                    assembly.Value.Activate();
+                    plugin.Activate();
                 }
-                catch (Exception e)
+
+                if (plugin.Mode == StartupMode.Auto && plugin.ActiveItem)
                 {
-                    Log.Error(e);
+                    plugin.Activate();
                 }
-            }
-        }
-
-        private void ActivateServices()
-        {
-            try
-            {
-                IoC.Get<IInputManager>();
-                IoC.Get<ITargetSelectorManager>();
-                IoC.Get<IOrbwalker>();
-            }
-            catch (Exception e)
-            {
-                Log.Error(e);
             }
         }
 
         private void DeactivatePlugins()
         {
-            foreach (var assembly in this.Assemblies)
+            foreach (var plugin in this.PluginContainer)
             {
-                try
+                plugin.Deactivate();
+            }
+        }
+
+        private void DiscoverPlugins()
+        {
+            foreach (var assembly in this.Plugins)
+            {
+                if (assembly.Metadata.Units == null)
                 {
-                    if (assembly.IsValueCreated)
-                    {
-                        Log.Info($"Deactivate {assembly.Metadata.Name}");
-                        assembly.Value.Deactivate();
-                    }
+                    Log.Debug($"Found [{assembly.Metadata.Mode}] {assembly.Metadata.Name} | {assembly.Metadata.Author} | {assembly.Metadata.Version}");
                 }
-                catch (Exception e)
+                else
                 {
-                    Log.Error(e);
+                    Log.Debug(
+                        $"Found [{assembly.Metadata.Mode}] {assembly.Metadata.Name} | {assembly.Metadata.Author} | {assembly.Metadata.Version} | {string.Join(", ", assembly.Metadata.Units)}");
                 }
+
+                this.PluginContainer.Add(new PluginContainer(this.Config.Plugins.Factory, assembly));
             }
         }
 
@@ -163,11 +138,8 @@ namespace Ensage.SDK.Service
                 Log.Debug($">> Initializing Services");
                 IoC.Initialize(this.BuildUp, this.GetInstance, this.GetAllInstances);
 
-                Log.Debug($">> Searching for IAssemblyLoader Plugins");
-                this.PrintPlugins();
-
-                Log.Debug($">> Activating Services");
-                this.ActivateServices();
+                Log.Debug($">> Searching for Plugins");
+                this.DiscoverPlugins();
 
                 Log.Debug($">> Activating Plugins");
                 this.ActivatePlugins();
@@ -188,21 +160,6 @@ namespace Ensage.SDK.Service
             catch (Exception e)
             {
                 Log.Error(e);
-            }
-        }
-
-        private void PrintPlugins()
-        {
-            foreach (var assembly in this.Assemblies)
-            {
-                if (assembly.Metadata.Units == null)
-                {
-                    Log.Debug($"Found [{assembly.Metadata.Name}|{assembly.Metadata.Author}|{assembly.Metadata.Version}]");
-                }
-                else
-                {
-                    Log.Debug($"Found [{assembly.Metadata.Name}|{assembly.Metadata.Author}|{assembly.Metadata.Version}|{string.Join(", ", assembly.Metadata.Units)}]");
-                }
             }
         }
     }

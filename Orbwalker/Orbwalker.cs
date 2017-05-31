@@ -170,7 +170,7 @@ namespace Ensage.SDK.Orbwalker
         private void OnUpdate()
         {
             // no spamerino
-            if (Game.IsPaused || Game.IsChatOpen || !this.Owner.IsAlive || this.Owner.IsStunned())
+            if (Game.IsPaused || Game.IsChatOpen || !this.Owner.IsAlive || this.Owner.IsStunned() || this.Owner.IsChanneling())
             {
                 return;
             }

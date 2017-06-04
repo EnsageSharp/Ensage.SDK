@@ -5,15 +5,21 @@
 namespace Ensage.SDK.Handlers
 {
     using System;
+    using System.Reflection;
     using System.Threading;
     using System.Threading.Tasks;
 
     using Ensage.SDK.Helpers;
 
+    using log4net;
+
     using PlaySharp.Toolkit.Helper.Annotations;
+    using PlaySharp.Toolkit.Logging;
 
     public class TaskHandler
     {
+        private static readonly ILog Log = AssemblyLogs.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
         private bool isRunning;
 
         public TaskHandler([NotNull] Func<CancellationToken, Task> factory)
@@ -78,6 +84,14 @@ namespace Ensage.SDK.Handlers
                         try
                         {
                             await this.TaskFactory(this.TokenSource.Token);
+                        }
+                        catch (TaskCanceledException)
+                        {
+                            // canceled
+                        }
+                        catch (Exception e)
+                        {
+                            Log.Error(e);
                         }
                         finally
                         {

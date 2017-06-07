@@ -71,22 +71,26 @@ namespace Ensage.SDK.Orbwalker
 
         public IServiceContext Context { get; }
 
+        public IEnumerable<IOrbwalkingMode> CustomOrbwalkingModes => this.Modes;
+
         [ImportMany(typeof(IOrbwalker))]
         public IEnumerable<Lazy<IOrbwalker, IOrbwalkerMetadata>> Orbwalkers { get; private set; }
 
-        OrbwalkerSettings IOrbwalker.Settings
-        {
-            get
-            {
-                return this.Active.Settings;
-            }
-        }
+        public IEnumerable<Lazy<IOrbwalkingMode, IOrbwalkingModeMetadata>> OrbwalkingModes => this.ImportedModes;
 
         IServiceContext IOrbwalker.Context
         {
             get
             {
                 return this.active.Context;
+            }
+        }
+
+        OrbwalkerSettings IOrbwalker.Settings
+        {
+            get
+            {
+                return this.Active.Settings;
             }
         }
 

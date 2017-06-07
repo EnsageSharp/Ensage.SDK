@@ -78,6 +78,19 @@ namespace Ensage.SDK.Orbwalker
 
         public IEnumerable<Lazy<IOrbwalkingMode, IOrbwalkingModeMetadata>> OrbwalkingModes => this.ImportedModes;
 
+        public Vector3 OrbwalkingPoint
+        {
+            get
+            {
+                return this.Active.OrbwalkingPoint;
+            }
+
+            set
+            {
+                this.Active.OrbwalkingPoint = value;
+            }
+        }
+
         IServiceContext IOrbwalker.Context
         {
             get

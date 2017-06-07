@@ -13,9 +13,11 @@ namespace Ensage.SDK.Orbwalker
 
     public interface IOrbwalker : IControllable
     {
-        OrbwalkerSettings Settings { get; }
-
         IServiceContext Context { get; }
+
+        Vector3 OrbwalkingPoint { get; set; }
+
+        OrbwalkerSettings Settings { get; }
 
         bool Attack(Unit target);
 

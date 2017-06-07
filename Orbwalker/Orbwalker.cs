@@ -49,6 +49,8 @@ namespace Ensage.SDK.Orbwalker
 
         public bool IsActive { get; private set; }
 
+        public Vector3 OrbwalkingPoint { get; set; } = Vector3.Zero;
+
         public OrbwalkerSettings Settings { get; private set; }
 
         private InventoryItem EchoSabre { get; set; }
@@ -195,8 +197,12 @@ namespace Ensage.SDK.Orbwalker
             // move
             if ((target == null || !this.CanAttack(target)) && this.CanMove())
             {
-                this.Move(Game.MousePosition);
-                return false;
+                if (this.OrbwalkingPoint != Vector3.Zero)
+                {
+                    return this.Move(this.OrbwalkingPoint);
+                }
+
+                return this.Move(Game.MousePosition);
             }
 
             // attack

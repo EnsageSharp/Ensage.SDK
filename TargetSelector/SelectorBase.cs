@@ -4,16 +4,13 @@
 
 namespace Ensage.SDK.TargetSelector
 {
-    using System;
     using System.Collections.Generic;
 
     using Ensage.SDK.Helpers;
     using Ensage.SDK.Service;
 
-    public abstract class SelectorBase : ControllableService, ITargetSelector, IDisposable
+    public abstract class SelectorBase : ControllableService, ITargetSelector
     {
-        private bool disposed;
-
         protected SelectorBase(IServiceContext context)
         {
             this.Owner = context.Owner;
@@ -24,30 +21,19 @@ namespace Ensage.SDK.TargetSelector
 
         protected FrameCache<IEnumerable<Unit>> Targets { get; }
 
-        public void Dispose()
-        {
-            this.Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
         public virtual IEnumerable<Unit> GetTargets()
         {
             return this.Targets.Value;
         }
 
-        protected virtual void Dispose(bool disposing)
+        protected override void Dispose(bool disposing)
         {
-            if (this.disposed)
-            {
-                return;
-            }
-
             if (disposing)
             {
-                this.Targets.Dispose();
+                this.Targets?.Dispose();
             }
 
-            this.disposed = true;
+            base.Dispose(disposing);
         }
 
         protected abstract IEnumerable<Unit> GetTargetsImpl();

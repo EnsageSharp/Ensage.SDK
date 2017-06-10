@@ -2,14 +2,14 @@
 //    Copyright (c) 2017 Ensage.
 // </copyright>
 
-namespace Ensage.SDK.Abilities.npc_dota_hero_obsidian_destroyer
+namespace Ensage.SDK.Abilities.npc_dota_hero_huskar
 {
-
-    using Ensage.Common.Extensions;
 
     using Ensage.SDK.Extensions;
 
     using Ensage.SDK.Helpers;
+
+    using Ensage.Common.Extensions;
 
     public class huskar_burning_spear : OrbAbility, IHasTargetModifier
     {
@@ -26,17 +26,22 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_obsidian_destroyer
 
             var talent = this.Owner.FindSpell("special_bonus_unique_huskar_2");
 
-            var spearDamage = this.GetRawDamage() * (1.0f + this.Owner.GetSpellAmplification()) * 8;
+            // var talent = this.Owner.GetAbilityById(AbilityId.special_bonus_unique_huskar_2); // missing AbilityId
+
+            var spearDamage = this.GetRawDamage() * (1.0f + this.Owner.GetSpellAmplification());
 
             foreach (var target in targets)
             {
                 var reduction = this.Ability.GetDamageReduction(target);
-                damage += spearDamage * (1.0f - reduction);
 
                 if (talent != null)
                 {
                     var talentDamage = talent.GetAbilitySpecialData("value");
-                    damage += (talentDamage * (1.0f - reduction)) * 8;
+                    damage += ((talentDamage + spearDamage) * (1.0f - reduction)) * 8;
+                }
+                else
+                {
+                    damage += (spearDamage * (1.0f - reduction)) * 8;
                 }
             }
 

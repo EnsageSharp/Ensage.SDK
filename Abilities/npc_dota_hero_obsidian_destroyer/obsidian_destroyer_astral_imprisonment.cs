@@ -1,4 +1,7 @@
-﻿
+﻿// <copyright file="obsidian_destroyer_astral_imprisonment.cs" company="Ensage">
+//    Copyright (c) 2017 Ensage.
+// </copyright>
+
 namespace Ensage.SDK.Abilities.npc_dota_hero_obsidian_destroyer
 {
 

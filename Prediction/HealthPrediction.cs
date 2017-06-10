@@ -116,9 +116,9 @@ namespace Ensage.SDK.Prediction
         public bool ShouldWait(float t = 2f)
         {
             return EntityManager<Creep>.Entities.Any(
-                unit => unit.Team != this.Owner.Team &&
-                        this.Owner.IsValidOrbwalkingTarget(unit) &&
-                        this.GetPrediction(unit, t / this.Owner.AttacksPerSecond) < this.Owner.GetAttackDamage(unit, true));
+                unit => unit.Team != this.Owner.Team
+                        && this.Owner.IsValidOrbwalkingTarget(unit)
+                        && this.GetPrediction(unit, t / this.Owner.AttacksPerSecond) < this.Owner.GetAttackDamage(unit, true));
         }
 
         protected virtual void Dispose(bool disposing)

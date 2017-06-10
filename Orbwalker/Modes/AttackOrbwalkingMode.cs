@@ -73,7 +73,16 @@ namespace Ensage.SDK.Orbwalker.Modes
 
         protected override void OnActivate()
         {
-            this.Config = new AutoAttackModeConfig(this.Orbwalker.Settings.Factory.Parent, this.name, this.key, this.hero, this.creep, this.neutral, this.building, this.deny, this.lasthit);
+            this.Config = new AutoAttackModeConfig(
+                this.Orbwalker.Settings.Factory.Parent,
+                this.name,
+                this.key,
+                this.hero,
+                this.creep,
+                this.neutral,
+                this.building,
+                this.deny,
+                this.lasthit);
             this.Selector = new AutoAttackModeSelector(this.Owner, this.TargetSelector, this.Config);
 
             base.OnActivate();

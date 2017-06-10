@@ -9,18 +9,17 @@ namespace Ensage.SDK.Extensions
 
     public static class AbilityExtensions
     {
-        public static readonly List<AbilityId> UniqueAttackModifiers =
-            new List<AbilityId>
-            {
-                AbilityId.drow_ranger_frost_arrows,
-                AbilityId.obsidian_destroyer_arcane_orb,
-                AbilityId.silencer_glaives_of_wisdom,
-                AbilityId.jakiro_liquid_fire,
-                AbilityId.viper_poison_attack,
-                AbilityId.enchantress_impetus,
-                AbilityId.clinkz_searing_arrows,
-                AbilityId.huskar_burning_spear
-            };
+        public static readonly List<AbilityId> UniqueAttackModifiers = new List<AbilityId>
+                                                                           {
+                                                                               AbilityId.drow_ranger_frost_arrows,
+                                                                               AbilityId.obsidian_destroyer_arcane_orb,
+                                                                               AbilityId.silencer_glaives_of_wisdom,
+                                                                               AbilityId.jakiro_liquid_fire,
+                                                                               AbilityId.viper_poison_attack,
+                                                                               AbilityId.enchantress_impetus,
+                                                                               AbilityId.clinkz_searing_arrows,
+                                                                               AbilityId.huskar_burning_spear
+                                                                           };
 
         public static float GetAbilitySpecialData(this Ability ability, string name, uint level = 0)
         {
@@ -34,6 +33,11 @@ namespace Ensage.SDK.Extensions
             if (level == 0)
             {
                 level = ability.Level;
+            }
+
+            if (level == 0)
+            {
+                return 0;
             }
 
             return data.GetValue(level - 1);
@@ -58,6 +62,27 @@ namespace Ensage.SDK.Extensions
             }
 
             return ability.GetCastPoint(level - 1);
+        }
+
+        public static float GetCastRange(this Ability ability)
+        {
+            var castRange = (float)ability.CastRange;
+            var owner = (Unit)ability.Owner;
+
+            // items
+            var aetherLense = owner.GetItemById(AbilityId.item_aether_lens);
+            if (aetherLense != null)
+            {
+                castRange += aetherLense.GetAbilitySpecialData("cast_range_bonus");
+            }
+
+            // talents
+            foreach (var talent in owner.Spellbook.Spells.Where(x => x.Level > 0 && x.Name.StartsWith("special_bonus_cast_range_")))
+            {
+                castRange += talent.GetAbilitySpecialData("value");
+            }
+
+            return castRange;
         }
     }
 }

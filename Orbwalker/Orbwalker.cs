@@ -34,10 +34,7 @@ namespace Ensage.SDK.Orbwalker
         private static readonly ILog Log = AssemblyLogs.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         [ImportingConstructor]
-        public Orbwalker(
-            [Import] IServiceContext context,
-            [Import] Lazy<IParticleManager> particle,
-            [Import] Lazy<IInventoryManager> inventory)
+        public Orbwalker([Import] IServiceContext context, [Import] Lazy<IParticleManager> particle, [Import] Lazy<IInventoryManager> inventory)
         {
             this.Context = context;
             this.Particle = particle;

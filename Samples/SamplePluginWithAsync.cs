@@ -31,10 +31,10 @@ namespace Ensage.SDK.Samples
         {
             this.Selector = selector;
             this.Prediction = prediction;
-            this.Ability = new PredictionAbility(context.Owner as Hero, AbilityId.pudge_meat_hook, prediction);
+            //this.Ability = new PredictionAbility(context.Owner as Hero, AbilityId.pudge_meat_hook, prediction);
         }
 
-        private PredictionAbility Ability { get; }
+        //private PredictionAbility Ability { get; }
 
         private IPrediction Prediction { get; }
 
@@ -55,7 +55,7 @@ namespace Ensage.SDK.Samples
 
                     if (target != null)
                     {
-                        this.Ability.Use(target);
+                       // this.Ability.Use(target);
                     }
                 }
                 catch (Exception e)

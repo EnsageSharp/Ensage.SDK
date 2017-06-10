@@ -63,11 +63,7 @@ namespace Ensage.SDK.Extensions
                 throw new ArgumentException("Type " + $"{typeof(T).FullName}" + " doesn't have the 'Flags' attribute.");
             }
 
-            return
-                (T)
-                Enum.ToObject(
-                    typeof(T),
-                    flags.Aggregate(0L, (current, flag) => current | Convert.ToInt64((object)flag)));
+            return (T)Enum.ToObject(typeof(T), flags.Aggregate(0L, (current, flag) => current | Convert.ToInt64((object)flag)));
         }
 
         /// <summary>
@@ -176,8 +172,7 @@ namespace Ensage.SDK.Extensions
                 throw new ArgumentException("Type " + $"{typeof(T).FullName}" + " doesn't have the 'Flags' attribute.");
             }
 
-            return
-                Enum.GetValues(typeof(T)).Cast<T>().Where(flag => (Convert.ToInt64(value) & Convert.ToInt64(flag)) != 0);
+            return Enum.GetValues(typeof(T)).Cast<T>().Where(flag => (Convert.ToInt64(value) & Convert.ToInt64(flag)) != 0);
         }
 
         /// <summary>
@@ -285,13 +280,7 @@ namespace Ensage.SDK.Extensions
                 throw new ArgumentException("Type " + $"{typeof(T).FullName}" + " doesn't have the 'Flags' attribute.");
             }
 
-            return
-                (T)
-                Enum.ToObject(
-                    typeof(T),
-                    status
-                        ? Convert.ToInt64(flags) | Convert.ToInt64(value)
-                        : ~Convert.ToInt64(flags) & Convert.ToInt64(value));
+            return (T)Enum.ToObject(typeof(T), status ? Convert.ToInt64(flags) | Convert.ToInt64(value) : ~Convert.ToInt64(flags) & Convert.ToInt64(value));
         }
 
         /// <summary>

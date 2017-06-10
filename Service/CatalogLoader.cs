@@ -19,23 +19,23 @@ namespace Ensage.SDK.Service
         private static readonly ILog Log = AssemblyLogs.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         private readonly string[] blacklist =
-        {
-            "PlaySharp.Service",
-            "Newtonsoft.Json",
-            "clipper_library",
-            "System.Collections.Immutable",
-            "SharpDX",
-            "SharpDX.Direct2D1",
-            "SharpDX.Direct3D9",
-            "SharpDX.Direct3D11",
-            "SharpDX.SharpDX",
-            "SharpDX.DXGI",
-            "SharpDX.Mathematics",
-            "Ensage",
-            "EnsageSharp.Sandbox",
-            "Ensage.Common",
-            "Anonymously Hosted DynamicMethods Assembly"
-        };
+            {
+                "PlaySharp.Service",
+                "Newtonsoft.Json",
+                "clipper_library",
+                "System.Collections.Immutable",
+                "SharpDX",
+                "SharpDX.Direct2D1",
+                "SharpDX.Direct3D9",
+                "SharpDX.Direct3D11",
+                "SharpDX.SharpDX",
+                "SharpDX.DXGI",
+                "SharpDX.Mathematics",
+                "Ensage",
+                "EnsageSharp.Sandbox",
+                "Ensage.Common",
+                "Anonymously Hosted DynamicMethods Assembly"
+            };
 
         private bool disposed;
 

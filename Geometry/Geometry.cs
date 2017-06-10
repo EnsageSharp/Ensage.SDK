@@ -76,8 +76,8 @@ namespace Ensage.SDK.Geometry
             if (D > (radius1 + radius2) || D <= Math.Abs(radius1 - radius2))
             {
                 return new Vector2[]
-                       {
-                       };
+                           {
+                           };
             }
 
             var A = (((radius1 * radius1) - (radius2 * radius2)) + (D * D)) / (2 * D);
@@ -87,10 +87,10 @@ namespace Ensage.SDK.Geometry
             var S1 = PA + (H * Direction.Perpendicular());
             var S2 = PA - (H * Direction.Perpendicular());
             return new[]
-                   {
-                       S1,
-                       S2
-                   };
+                       {
+                           S1,
+                           S2
+                       };
         }
 
         /// <summary>

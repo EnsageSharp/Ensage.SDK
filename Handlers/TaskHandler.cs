@@ -76,10 +76,8 @@ namespace Ensage.SDK.Handlers
             this.isRunning = true;
 
             this.TokenSource = new CancellationTokenSource();
-            this.RunningTask = UpdateManager
-                .Factory
-                .StartNew(
-                    async () =>
+            this.RunningTask = UpdateManager.Factory.StartNew(
+                async () =>
                     {
                         try
                         {

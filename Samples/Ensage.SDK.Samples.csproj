@@ -33,16 +33,16 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Ensage">
-      <HintPath>D:\Games\Loader\References\Ensage.dll</HintPath>
+      <HintPath>C:\EnsageSharp\References\Ensage.dll</HintPath>
     </Reference>
     <Reference Include="Ensage.Common">
-      <HintPath>D:\Games\Loader\References\Ensage.Common.dll</HintPath>
+      <HintPath>C:\EnsageSharp\References\Ensage.Common.dll</HintPath>
     </Reference>
     <Reference Include="PlaySharp.Toolkit">
-      <HintPath>D:\Games\Loader\References\PlaySharp.Toolkit.dll</HintPath>
+      <HintPath>C:\EnsageSharp\References\PlaySharp.Toolkit.dll</HintPath>
     </Reference>
     <Reference Include="SharpDX.Mathematics">
-      <HintPath>D:\Games\Loader\References\SharpDX.Mathematics.dll</HintPath>
+      <HintPath>C:\EnsageSharp\References\SharpDX.Mathematics.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
@@ -52,10 +52,13 @@
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SampleIllusionOrbwalker.cs" />
+    <Compile Include="SampleOrbOrbwalkingModeWithAsync.cs" />
     <Compile Include="SampleOrbwalkingModeWithAsync.cs" />
     <Compile Include="SamplePluginConfig.cs" />
     <Compile Include="SamplePluginWithAsync.cs" />
     <Compile Include="SamplePluginWithAsyncOrbwalkingMode.cs" />
+    <Compile Include="SamplePluginWithOrbOrbwalkingModeAsync.cs" />
+    <Compile Include="SamplePredictionSkillshot.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Ensage.SDK.csproj">

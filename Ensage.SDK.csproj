@@ -41,37 +41,37 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="clipper_library">
-      <HintPath>D:\Games\Loader\References\clipper_library.dll</HintPath>
+      <HintPath>C:\EnsageSharp\References\clipper_library.dll</HintPath>
     </Reference>
     <Reference Include="Ensage">
-      <HintPath>D:\Games\Loader\References\Ensage.dll</HintPath>
+      <HintPath>C:\EnsageSharp\References\Ensage.dll</HintPath>
     </Reference>
     <Reference Include="Ensage.Common, Version=1.2.8.5, Culture=neutral, PublicKeyToken=9849de8727708dde, processorArchitecture=AMD64">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>D:\Games\Loader\References\Ensage.Common.dll</HintPath>
+      <HintPath>C:\EnsageSharp\References\Ensage.Common.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Newtonsoft.Json">
-      <HintPath>D:\Games\Loader\References\Newtonsoft.Json.dll</HintPath>
+      <HintPath>C:\EnsageSharp\References\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="PlaySharp.Toolkit, Version=1.0.0.0, Culture=neutral, PublicKeyToken=7e3dc52b16ce4f66, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>D:\Games\Loader\References\PlaySharp.Toolkit.dll</HintPath>
+      <HintPath>C:\EnsageSharp\References\PlaySharp.Toolkit.dll</HintPath>
     </Reference>
     <Reference Include="SharpDX">
-      <HintPath>D:\Games\Loader\References\SharpDX.dll</HintPath>
+      <HintPath>C:\EnsageSharp\References\SharpDX.dll</HintPath>
     </Reference>
     <Reference Include="SharpDX.Direct2D1">
-      <HintPath>D:\Games\Loader\References\SharpDX.Direct2D1.dll</HintPath>
+      <HintPath>C:\EnsageSharp\References\SharpDX.Direct2D1.dll</HintPath>
     </Reference>
     <Reference Include="SharpDX.Direct3D11">
-      <HintPath>D:\Games\Loader\References\SharpDX.Direct3D11.dll</HintPath>
+      <HintPath>C:\EnsageSharp\References\SharpDX.Direct3D11.dll</HintPath>
     </Reference>
     <Reference Include="SharpDX.DXGI">
-      <HintPath>D:\Games\Loader\References\SharpDX.DXGI.dll</HintPath>
+      <HintPath>C:\EnsageSharp\References\SharpDX.DXGI.dll</HintPath>
     </Reference>
     <Reference Include="SharpDX.Mathematics">
-      <HintPath>D:\Games\Loader\References\SharpDX.Mathematics.dll</HintPath>
+      <HintPath>C:\EnsageSharp\References\SharpDX.Mathematics.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
@@ -81,32 +81,30 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Abilities\AbilityCastType.cs" />
     <Compile Include="Abilities\ActiveAbility.cs" />
-    <Compile Include="Abilities\AuraAbility.cs" />
+    <Compile Include="Abilities\AutocastAbility.cs" />
     <Compile Include="Abilities\BaseAbility.cs" />
-    <Compile Include="Abilities\CircleAbility.cs" />
-    <Compile Include="Abilities\PredictionAbility.cs" />
-    <Compile Include="Abilities\ConeAbility.cs" />
-    <Compile Include="Abilities\IActiveAbility.cs" />
-    <Compile Include="Abilities\IDotAbility.cs" />
-    <Compile Include="Abilities\IPolygonAbility.cs" />
-    <Compile Include="Abilities\LineAbility.cs" />
-    <Compile Include="Abilities\npc_dota_hero_enigma\enigma_black_hole.cs" />
-    <Compile Include="Abilities\npc_dota_hero_enigma\enigma_demonic_conversion.cs" />
+    <Compile Include="Abilities\npc_dota_hero_drow_ranger\drow_ranger_frost_arrows.cs" />
+    <Compile Include="Abilities\IHasModifier.cs" />
+    <Compile Include="Abilities\IHasTargetModifier.cs" />
     <Compile Include="Abilities\npc_dota_hero_enigma\enigma_malefice.cs" />
-    <Compile Include="Abilities\npc_dota_hero_enigma\enigma_midnight_pulse.cs" />
+    <Compile Include="Abilities\IHasDot.cs" />
+    <Compile Include="Abilities\npc_dota_hero_obsidian_destroyer\obsidian_destroyer_arcane_orb.cs" />
+    <Compile Include="Abilities\LineAbility.cs" />
+    <Compile Include="Abilities\AuraAbility.cs" />
+    <Compile Include="Abilities\npc_dota_hero_drow_ranger\drow_ranger_trueshot.cs" />
+    <Compile Include="Abilities\AreaOfEffectAbility.cs" />
     <Compile Include="Abilities\npc_dota_hero_queenofpain\queenofpain_blink.cs" />
     <Compile Include="Abilities\npc_dota_hero_queenofpain\queenofpain_scream_of_pain.cs" />
-    <Compile Include="Abilities\npc_dota_hero_queenofpain\queenofpain_shadow_strike.cs" />
-    <Compile Include="Abilities\npc_dota_hero_queenofpain\queenofpain_sonic_wave.cs" />
     <Compile Include="Abilities\npc_dota_hero_vengefulspirit\vengefulspirit_command_aura.cs" />
+    <Compile Include="Abilities\npc_dota_hero_vengefulspirit\vengefulspirit_magic_missile.cs" />
     <Compile Include="Abilities\npc_dota_hero_vengefulspirit\vengefulspirit_nether_swap.cs" />
     <Compile Include="Abilities\npc_dota_hero_vengefulspirit\vengefulspirit_wave_of_terror.cs" />
-    <Compile Include="Abilities\PointAbility.cs" />
+    <Compile Include="Abilities\PredictionAbility.cs" />
+    <Compile Include="Abilities\OrbAbility.cs" />
+    <Compile Include="Abilities\PassiveAbility.cs" />
     <Compile Include="Abilities\RangedAbility.cs" />
-    <Compile Include="Abilities\TargetAbility.cs" />
-    <Compile Include="Abilities\npc_dota_hero_vengefulspirit\vengefulspirit_magic_missile.cs" />
+    <Compile Include="Abilities\npc_dota_hero_pudge\pudge_meat_hook.cs" />
     <Compile Include="Extensions\EnumerableExtensions.cs" />
     <Compile Include="Geometry\MEC.cs" />
     <Compile Include="Handlers\Weak\IExecuteWithObject.cs" />
@@ -252,7 +250,6 @@
     <Compile Include="Extensions\AbilityExtensions.cs" />
     <Compile Include="Service\EnsageServiceContext.cs" />
     <Compile Include="Extensions\EntityExtensions.cs" />
-    <Compile Include="Abilities\IAbility.cs" />
     <Compile Include="Service\IServiceContext.cs" />
     <Compile Include="Service\Metadata\IServiceMetadata.cs" />
     <Compile Include="TargetSelector\ITargetSelector.cs" />

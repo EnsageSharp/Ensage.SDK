@@ -9,20 +9,40 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_enigma
     using Ensage.SDK.Extensions;
     using Ensage.SDK.Helpers;
 
-    public class enigma_malefice : TargetAbility, IDotAbility
+    public class enigma_malefice : RangedAbility, IHasDot
     {
         public enigma_malefice(Ability ability)
             : base(ability)
         {
         }
 
-        public float Duration => this.Ability.GetAbilitySpecialData("duration");
+        public float Duration
+        {
+            get
+            {
+                return this.Ability.GetAbilitySpecialData("duration");
+            }
+        }
 
-        public string ModifierName { get; } = "TODO";
+        public bool HasInitialDamage { get; } = false;
 
-        public float TickDamage => this.Ability.GetAbilitySpecialData("damage");
+        public string TargetModifierName { get; } = "modifier_enigma_malefice"; // TODO: confirm
 
-        public float TickRate => this.Ability.GetAbilitySpecialData("tick_rate");
+        public float TickDamage
+        {
+            get
+            {
+                return this.Ability.GetAbilitySpecialData("damage");
+            }
+        }
+
+        public float TickRate
+        {
+            get
+            {
+                return this.Ability.GetAbilitySpecialData("tick_rate");
+            }
+        }
 
         public override float GetDamage(params Unit[] targets)
         {
@@ -32,16 +52,16 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_enigma
         public float GetTickDamage(params Unit[] targets)
         {
             var target = targets.First();
-            if (!this.CanAffectTarget(target))
-            {
-                return 0;
-            }
 
+            // if (!this.CanAffectTarget(target)) // TODO
+            // {
+            // return 0;
+            // }
             var damage = this.TickDamage;
             var amplify = this.Ability.SpellAmplification();
             var reduction = this.Ability.GetDamageReduction(target);
 
-            return damage * (1.0f + amplify) * (1.0f - reduction);
+            return DamageHelpers.GetSpellDamage(damage, amplify, reduction);
         }
 
         public float GetTotalDamage(params Unit[] target)

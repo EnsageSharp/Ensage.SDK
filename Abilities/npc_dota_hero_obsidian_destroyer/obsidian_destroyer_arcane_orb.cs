@@ -19,7 +19,7 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_obsidian_destroyer
         {
             var damage = base.GetDamage(targets);
 
-            var manaPoolDamage = this.Ability.GetAbilitySpecialData("mana_pool_damage_pct") / 100.0f; // TODO: Spell Amp?
+            var manaPoolDamage = this.Ability.GetAbilitySpecialData("mana_pool_damage_pct") / 100.0f * (1.00f + this.Owner.GetSpellAmplification());
             damage += this.Owner.Mana * manaPoolDamage;
 
             if (targets.Any())

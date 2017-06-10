@@ -76,8 +76,8 @@ namespace Ensage.SDK.Extensions
             if (d > (radius1 + radius2) || d <= Math.Abs(radius1 - radius2))
             {
                 return new Vector2[]
-                           {
-                           };
+                       {
+                       };
             }
 
             var a = (((radius1 * radius1) - (radius2 * radius2)) + (d * d)) / (2 * d);
@@ -87,10 +87,10 @@ namespace Ensage.SDK.Extensions
             var s1 = pa + (h * direction.Perpendicular());
             var s2 = pa - (h * direction.Perpendicular());
             return new[]
-                       {
-                           s1,
-                           s2
-                       };
+                   {
+                       s1,
+                       s2
+                   };
         }
 
         /// <summary>
@@ -732,10 +732,10 @@ namespace Ensage.SDK.Extensions
             float delay = 0f)
         {
             return new[]
-                       {
-                           pointStartA,
-                           pointEndA
-                       }.VectorMovementCollision(pointVelocityA, pointB, pointVelocityB, delay);
+                   {
+                       pointStartA,
+                       pointEndA
+                   }.VectorMovementCollision(pointVelocityA, pointB, pointVelocityB, delay);
         }
 
         /// <summary>

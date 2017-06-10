@@ -12,8 +12,8 @@ namespace Ensage.SDK.Prediction
     using Ensage.SDK.Extensions;
     using Ensage.SDK.Geometry;
     using Ensage.SDK.Helpers;
-    using Ensage.SDK.Orbwalker.Metadata;
     using Ensage.SDK.Prediction.Collision;
+    using Ensage.SDK.Prediction.Metadata;
 
     using SharpDX;
 
@@ -76,20 +76,20 @@ namespace Ensage.SDK.Prediction
                 {
                     movingObjects.AddRange(
                         EntityManager<Hero>.Entities.Where(
-                            unit => unit.IsAlly(input.Owner)
-                                    && unit.IsValidTarget(float.MaxValue, false)
-                                    && input.Owner.IsInRange(unit, scanRange)
-                                    && unit != input.Owner));
+                            unit => unit.IsAlly(input.Owner) &&
+                                    unit.IsValidTarget(float.MaxValue, false) &&
+                                    input.Owner.IsInRange(unit, scanRange) &&
+                                    unit != input.Owner));
                 }
 
                 if (input.CollisionTypes.HasFlag(CollisionTypes.EnemyHeroes))
                 {
                     movingObjects.AddRange(
                         EntityManager<Hero>.Entities.Where(
-                            unit => unit.IsEnemy(input.Owner)
-                                    && unit.IsValidTarget(float.MaxValue, false)
-                                    && input.Owner.IsInRange(unit, scanRange)
-                                    && unit != input.Target));
+                            unit => unit.IsEnemy(input.Owner) &&
+                                    unit.IsValidTarget(float.MaxValue, false) &&
+                                    input.Owner.IsInRange(unit, scanRange) &&
+                                    unit != input.Target));
                 }
 
                 // add units
@@ -124,12 +124,12 @@ namespace Ensage.SDK.Prediction
         private static PredictionOutput PredictionOutput(Unit target, Vector3 position, HitChance hitChance)
         {
             return new PredictionOutput
-                       {
-                           Unit = target,
-                           CastPosition = position,
-                           UnitPosition = position,
-                           HitChance = hitChance
-                       };
+                   {
+                       Unit = target,
+                       CastPosition = position,
+                       UnitPosition = position,
+                       HitChance = hitChance
+                   };
         }
 
         private Vector3 ExtendUntilWall(Vector3 start, Vector3 direction, float distance)
@@ -264,30 +264,30 @@ namespace Ensage.SDK.Prediction
                 {
                     totalArrivalTime = result.Item1 + totalDelay;
                     return new PredictionOutput
-                               {
-                                   Unit = input.Target,
-                                   ArrivalTime = totalArrivalTime,
-                                   UnitPosition = this.ExtendUntilWall(targetPosition, direction.ToVector3(), totalArrivalTime * target.MovementSpeed),
-                                   CastPosition = this.ExtendUntilWall(
-                                       targetPosition,
-                                       direction.ToVector3(),
-                                       ((totalArrivalTime * target.MovementSpeed) + 20f) - input.Radius - target.HullRadius),
-                                   HitChance = !caster.IsVisibleToEnemies ? HitChance.High : HitChance.Medium
-                               };
+                           {
+                               Unit = input.Target,
+                               ArrivalTime = totalArrivalTime,
+                               UnitPosition = this.ExtendUntilWall(targetPosition, direction.ToVector3(), totalArrivalTime * target.MovementSpeed),
+                               CastPosition = this.ExtendUntilWall(
+                                   targetPosition,
+                                   direction.ToVector3(),
+                                   ((totalArrivalTime * target.MovementSpeed) + 20f) - input.Radius - target.HullRadius),
+                               HitChance = !caster.IsVisibleToEnemies ? HitChance.High : HitChance.Medium
+                           };
                 }
             }
 
             return new PredictionOutput
-                       {
-                           Unit = input.Target,
-                           ArrivalTime = totalArrivalTime,
-                           UnitPosition = this.ExtendUntilWall(targetPosition, direction.ToVector3(), totalArrivalTime * target.MovementSpeed),
-                           CastPosition = this.ExtendUntilWall(
-                               targetPosition,
-                               direction.ToVector3(),
-                               ((totalArrivalTime * target.MovementSpeed) + 20f) - input.Radius - target.HullRadius),
-                           HitChance = input.Speed != float.MaxValue ? HitChance.Low : HitChance.Medium
-                       };
+                   {
+                       Unit = input.Target,
+                       ArrivalTime = totalArrivalTime,
+                       UnitPosition = this.ExtendUntilWall(targetPosition, direction.ToVector3(), totalArrivalTime * target.MovementSpeed),
+                       CastPosition = this.ExtendUntilWall(
+                           targetPosition,
+                           direction.ToVector3(),
+                           ((totalArrivalTime * target.MovementSpeed) + 20f) - input.Radius - target.HullRadius),
+                       HitChance = input.Speed != float.MaxValue ? HitChance.Low : HitChance.Medium
+                   };
         }
 
         private bool IsInRange(PredictionInput input, Vector3 Position, bool addRadius = true)

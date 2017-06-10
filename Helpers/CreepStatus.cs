@@ -147,19 +147,19 @@ namespace Ensage.SDK.Helpers
                     return this._target;
                 }
 
-                if (this._lastPossibleTarget != null
-                    && this._lastPossibleTarget.IsValid
-                    && this.Source.IsDirectlyFacing(this._lastPossibleTarget)
-                    && this.Source.IsValidOrbwalkingTarget(this._lastPossibleTarget))
+                if (this._lastPossibleTarget != null &&
+                    this._lastPossibleTarget.IsValid &&
+                    this.Source.IsDirectlyFacing(this._lastPossibleTarget) &&
+                    this.Source.IsValidOrbwalkingTarget(this._lastPossibleTarget))
                 {
                     return this._lastPossibleTarget;
                 }
 
                 var possibleTarget = EntityManager<Creep>.Entities.FirstOrDefault(
-                    unit => unit.IsValid
-                            && unit.Team != this.Team
-                            && this.Source.IsDirectlyFacing(unit)
-                            && this.Source.IsValidOrbwalkingTarget(unit));
+                    unit => unit.IsValid &&
+                            unit.Team != this.Team &&
+                            this.Source.IsDirectlyFacing(unit) &&
+                            this.Source.IsValidOrbwalkingTarget(unit));
 
                 if (possibleTarget != null)
                 {

@@ -60,9 +60,9 @@ namespace Ensage.SDK.Geometry
             // Find the remaining point with the smallest Y value.
             // if (there's a tie, take the one with the smaller X value.
             Vector2[] best_pt =
-                {
-                    points[0]
-                };
+            {
+                points[0]
+            };
             foreach (var pt in points.Where(pt => pt.Y < best_pt[0].Y || pt.Y == best_pt[0].Y && pt.X < best_pt[0].X))
             {
                 best_pt[0] = pt;
@@ -70,9 +70,9 @@ namespace Ensage.SDK.Geometry
 
             // Move this point to the convex hull.
             var hull = new List<Vector2>
-                           {
-                               best_pt[0]
-                           };
+                       {
+                           best_pt[0]
+                       };
             points.Remove(best_pt[0]);
 
             // Start wrapping up the other points.
@@ -393,12 +393,12 @@ namespace Ensage.SDK.Geometry
             }
 
             g_MinMaxCorners = new[]
-                                  {
-                                      ul,
-                                      ur,
-                                      lr,
-                                      ll
-                                  }; // For debugging.
+                              {
+                                  ul,
+                                  ur,
+                                  lr,
+                                  ll
+                              }; // For debugging.
         }
 
         /// <summary>

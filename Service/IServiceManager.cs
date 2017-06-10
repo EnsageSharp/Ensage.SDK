@@ -1,4 +1,8 @@
-namespace Ensage.SDK.TargetSelector
+// <copyright file="IServiceManager.cs" company="Ensage">
+//    Copyright (c) 2017 Ensage.
+// </copyright>
+
+namespace Ensage.SDK.Service
 {
     using System;
     using System.Collections.Generic;

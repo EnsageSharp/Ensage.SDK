@@ -18,30 +18,30 @@ namespace Ensage.SDK.Extensions
     public static class UnitExtensions
     {
         private static readonly HashSet<string> ChannelAnimations = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
-                                                                        {
-                                                                            "death_ward_anim",
-                                                                            "powershot_cast_anim",
-                                                                            string.Empty,
-                                                                            "rearm1_anim",
-                                                                            "warlock_cast3_upheaval",
-                                                                            "warlock_cast3_upheaval_channel_anim",
-                                                                            "cast_channel_shackles_anim",
-                                                                            "channel_shackles",
-                                                                            "sand_king_epicast_anim",
-                                                                            "cast4_tricks_trade",
-                                                                            "life drain_anim",
-                                                                            "pudge_dismember_start",
-                                                                            "pudge_dismember_mid_anim",
-                                                                            "cast1_FortunesEnd_anim_anim",
-                                                                            "cast04_spring",
-                                                                            "Illuminate_anim",
-                                                                            "cast1_echo_stomp_anim",
-                                                                            "cast4_black_hole_anim",
-                                                                            "freezing_field_anim_10s",
-                                                                            "fiends_grip_cast_anim",
-                                                                            "fiends_grip_loop_anim",
-                                                                            "drain_anim"
-                                                                        };
+                                                                    {
+                                                                        "death_ward_anim",
+                                                                        "powershot_cast_anim",
+                                                                        string.Empty,
+                                                                        "rearm1_anim",
+                                                                        "warlock_cast3_upheaval",
+                                                                        "warlock_cast3_upheaval_channel_anim",
+                                                                        "cast_channel_shackles_anim",
+                                                                        "channel_shackles",
+                                                                        "sand_king_epicast_anim",
+                                                                        "cast4_tricks_trade",
+                                                                        "life drain_anim",
+                                                                        "pudge_dismember_start",
+                                                                        "pudge_dismember_mid_anim",
+                                                                        "cast1_FortunesEnd_anim_anim",
+                                                                        "cast04_spring",
+                                                                        "Illuminate_anim",
+                                                                        "cast1_echo_stomp_anim",
+                                                                        "cast4_black_hole_anim",
+                                                                        "freezing_field_anim_10s",
+                                                                        "fiends_grip_cast_anim",
+                                                                        "fiends_grip_loop_anim",
+                                                                        "drain_anim"
+                                                                    };
 
         private static readonly ILog Log = AssemblyLogs.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
@@ -518,14 +518,14 @@ namespace Ensage.SDK.Extensions
 
         public static bool IsValidOrbwalkingTarget(this Unit attacker, Unit target)
         {
-            return target.IsValid
-                   && target.IsVisible
-                   && target.IsAlive
-                   && target.IsSpawned
-                   && !target.IsIllusion
-                   && attacker.IsInAttackRange(target)
-                   && !target.IsInvulnerable()
-                   && !target.IsAttackImmune();
+            return target.IsValid &&
+                   target.IsVisible &&
+                   target.IsAlive &&
+                   target.IsSpawned &&
+                   !target.IsIllusion &&
+                   attacker.IsInAttackRange(target) &&
+                   !target.IsInvulnerable() &&
+                   !target.IsAttackImmune();
         }
 
         /// <summary>

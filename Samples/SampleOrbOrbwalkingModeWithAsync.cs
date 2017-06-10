@@ -13,11 +13,9 @@ namespace Ensage.SDK.Samples
 
     using Ensage.Common.Extensions;
     using Ensage.SDK.Abilities.npc_dota_hero_drow_ranger;
-    using Ensage.SDK.Abilities.npc_dota_hero_pudge;
     using Ensage.SDK.Input;
     using Ensage.SDK.Orbwalker;
     using Ensage.SDK.Orbwalker.Modes;
-    using Ensage.SDK.Prediction;
     using Ensage.SDK.TargetSelector;
 
     using log4net;

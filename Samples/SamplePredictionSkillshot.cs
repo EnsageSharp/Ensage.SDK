@@ -1,3 +1,7 @@
+// <copyright file="SamplePredictionSkillshot.cs" company="Ensage">
+//    Copyright (c) 2017 Ensage.
+// </copyright>
+
 namespace Ensage.SDK.Samples
 {
     using System;
@@ -30,9 +34,9 @@ namespace Ensage.SDK.Samples
 
         private readonly Lazy<IOrbwalkerManager> orbwalkerManager;
 
-        private readonly Lazy<ITargetSelectorManager> targetManager;
-
         private readonly Unit owner;
+
+        private readonly Lazy<ITargetSelectorManager> targetManager;
 
         private PredictionAbility skillshotAbility;
 
@@ -57,6 +61,10 @@ namespace Ensage.SDK.Samples
             Drawing.OnDraw += this.Drawing_OnDraw;
         }
 
+        protected override void OnDeactivate()
+        {
+        }
+
         private void Drawing_OnDraw(EventArgs args)
         {
             var target = this.targetManager.Value.Active.GetTargets().FirstOrDefault();
@@ -70,15 +78,12 @@ namespace Ensage.SDK.Samples
                 {
                     Drawing.DrawCircle(screenPos, 40, 64, Color.Red);
                 }
+
                 if (Drawing.WorldToScreen(output.UnitPosition, out screenPos))
                 {
                     Drawing.DrawCircle(screenPos, 40, 64, Color.Green);
                 }
             }
-        }
-
-        protected override void OnDeactivate()
-        {
         }
 
         private void OnUpdate()

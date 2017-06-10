@@ -42,9 +42,9 @@ namespace Ensage.SDK.Handlers
                     .Invoke(
                         this.Event,
                         new object[]
-                            {
-                                handler
-                            });
+                        {
+                            handler
+                        });
                 this.Handlers.Add(method, handler);
             }
             catch (Exception e)

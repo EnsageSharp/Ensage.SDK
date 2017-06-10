@@ -59,16 +59,20 @@ namespace Ensage.SDK.Geometry
 
             // Find the remaining point with the smallest Y value.
             // if (there's a tie, take the one with the smaller X value.
-            Vector2[] best_pt = { points[0] };
-            foreach (
-                var pt in points.Where(pt => pt.Y < best_pt[0].Y || pt.Y == best_pt[0].Y && pt.X < best_pt[0].X)
-            )
+            Vector2[] best_pt =
+                {
+                    points[0]
+                };
+            foreach (var pt in points.Where(pt => pt.Y < best_pt[0].Y || pt.Y == best_pt[0].Y && pt.X < best_pt[0].X))
             {
                 best_pt[0] = pt;
             }
 
             // Move this point to the convex hull.
-            var hull = new List<Vector2> { best_pt[0] };
+            var hull = new List<Vector2>
+                           {
+                               best_pt[0]
+                           };
             points.Remove(best_pt[0]);
 
             // Start wrapping up the other points.
@@ -262,13 +266,7 @@ namespace Ensage.SDK.Geometry
         /// <param name="skip2">The skip2.</param>
         /// <param name="skip3">The skip3.</param>
         /// <returns><c>true</c> if the indicated circle encloses all of the points, <c>false</c> otherwise.</returns>
-        private static bool CircleEnclosesPoints(
-            Vector2 center,
-            float radius2,
-            List<Vector2> points,
-            int skip1,
-            int skip2,
-            int skip3)
+        private static bool CircleEnclosesPoints(Vector2 center, float radius2, List<Vector2> points, int skip1, int skip2, int skip3)
         {
             return (from point in points.Where((t, i) => i != skip1 && i != skip2 && i != skip3)
                     let dx = center.X - point.X
@@ -362,12 +360,7 @@ namespace Ensage.SDK.Geometry
         /// <param name="ur">The ur.</param>
         /// <param name="ll">The ll.</param>
         /// <param name="lr">The lr.</param>
-        private static void GetMinMaxCorners(
-            List<Vector2> points,
-            ref Vector2 ul,
-            ref Vector2 ur,
-            ref Vector2 ll,
-            ref Vector2 lr)
+        private static void GetMinMaxCorners(List<Vector2> points, ref Vector2 ul, ref Vector2 ur, ref Vector2 ll, ref Vector2 lr)
         {
             // Start with the first point as the solution.
             ul = points[0];
@@ -399,7 +392,13 @@ namespace Ensage.SDK.Geometry
                 }
             }
 
-            g_MinMaxCorners = new[] { ul, ur, lr, ll }; // For debugging.
+            g_MinMaxCorners = new[]
+                                  {
+                                      ul,
+                                      ur,
+                                      lr,
+                                      ll
+                                  }; // For debugging.
         }
 
         /// <summary>
@@ -414,11 +413,7 @@ namespace Ensage.SDK.Geometry
             var culling_box = GetMinMaxBox(points);
 
             // Cull the points.
-            var results =
-                points.Where(
-                          pt =>
-                              pt.X <= culling_box.Left || pt.X >= culling_box.Right || pt.Y <= culling_box.Top || pt.Y >= culling_box.Bottom)
-                      .ToList();
+            var results = points.Where(pt => pt.X <= culling_box.Left || pt.X >= culling_box.Right || pt.Y <= culling_box.Top || pt.Y >= culling_box.Bottom).ToList();
 
             g_NonCulledPoints = new Vector2[results.Count]; // For debugging.
             results.CopyTo(g_NonCulledPoints); // For debugging.

@@ -17,32 +17,31 @@ namespace Ensage.SDK.Extensions
 
     public static class UnitExtensions
     {
-        private static readonly HashSet<string> ChannelAnimations =
-            new HashSet<string>(StringComparer.OrdinalIgnoreCase)
-            {
-                "death_ward_anim",
-                "powershot_cast_anim",
-                string.Empty,
-                "rearm1_anim",
-                "warlock_cast3_upheaval",
-                "warlock_cast3_upheaval_channel_anim",
-                "cast_channel_shackles_anim",
-                "channel_shackles",
-                "sand_king_epicast_anim",
-                "cast4_tricks_trade",
-                "life drain_anim",
-                "pudge_dismember_start",
-                "pudge_dismember_mid_anim",
-                "cast1_FortunesEnd_anim_anim",
-                "cast04_spring",
-                "Illuminate_anim",
-                "cast1_echo_stomp_anim",
-                "cast4_black_hole_anim",
-                "freezing_field_anim_10s",
-                "fiends_grip_cast_anim",
-                "fiends_grip_loop_anim",
-                "drain_anim"
-            };
+        private static readonly HashSet<string> ChannelAnimations = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
+                                                                        {
+                                                                            "death_ward_anim",
+                                                                            "powershot_cast_anim",
+                                                                            string.Empty,
+                                                                            "rearm1_anim",
+                                                                            "warlock_cast3_upheaval",
+                                                                            "warlock_cast3_upheaval_channel_anim",
+                                                                            "cast_channel_shackles_anim",
+                                                                            "channel_shackles",
+                                                                            "sand_king_epicast_anim",
+                                                                            "cast4_tricks_trade",
+                                                                            "life drain_anim",
+                                                                            "pudge_dismember_start",
+                                                                            "pudge_dismember_mid_anim",
+                                                                            "cast1_FortunesEnd_anim_anim",
+                                                                            "cast04_spring",
+                                                                            "Illuminate_anim",
+                                                                            "cast1_echo_stomp_anim",
+                                                                            "cast4_black_hole_anim",
+                                                                            "freezing_field_anim_10s",
+                                                                            "fiends_grip_cast_anim",
+                                                                            "fiends_grip_loop_anim",
+                                                                            "drain_anim"
+                                                                        };
 
         private static readonly ILog Log = AssemblyLogs.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
@@ -359,14 +358,19 @@ namespace Ensage.SDK.Extensions
             return spellAmp;
         }
 
-        public static bool HasModifier(this Unit unit, string modifierName)
+        public static bool HasAghanimsScepter(this Unit unit)
         {
-            return unit.Modifiers.Any(modifier => modifier.Name == modifierName);
+            return unit.HasAnyModifiers("modifier_item_ultimate_scepter", "modifier_item_ultimate_scepter_consumed");
         }
 
         public static bool HasAnyModifiers(this Unit unit, params string[] modifierNames)
         {
             return unit.Modifiers.Any(x => modifierNames.Contains(x.Name));
+        }
+
+        public static bool HasModifier(this Unit unit, string modifierName)
+        {
+            return unit.Modifiers.Any(modifier => modifier.Name == modifierName);
         }
 
         public static bool HasModifiers(this Unit unit, IEnumerable<string> modifierNames, bool hasAll = true)
@@ -388,6 +392,11 @@ namespace Ensage.SDK.Extensions
         public static bool IsAlly(this Unit unit, Unit target)
         {
             return unit.Team == target.Team;
+        }
+
+        public static bool IsAttackImmune(this Unit unit)
+        {
+            return unit.UnitState.HasFlag(UnitState.AttackImmune);
         }
 
         public static bool IsChannelAnimation(this Animation animation)
@@ -455,6 +464,12 @@ namespace Ensage.SDK.Extensions
             return unit.UnitState.HasFlag(UnitState.Invulnerable);
         }
 
+        public static bool IsLinkensProtected(this Unit unit)
+        {
+            var linkens = unit.GetItemById(AbilityId.item_sphere);
+            return linkens != null && linkens.Cooldown <= 0 || unit.HasModifier("modifier_item_sphere_target");
+        }
+
         public static bool IsMagicImmune(this Unit unit)
         {
             return unit.UnitState.HasFlag(UnitState.MagicImmune);
@@ -470,6 +485,27 @@ namespace Ensage.SDK.Extensions
             return unit.UnitType != 0 && !unit.UnitState.HasFlag(UnitState.FakeAlly);
         }
 
+        public static bool IsReflectingAbilities(this Unit unit)
+        {
+            if (unit.HasModifier("modifier_item_lotus_orb_active"))
+            {
+                return true;
+            }
+
+            var spellShield = unit.GetAbilityById(AbilityId.antimage_spell_shield);
+            if (spellShield?.Cooldown <= 0 && unit.HasAghanimsScepter())
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        public static bool IsRooted(this Unit unit)
+        {
+            return unit.UnitState.HasFlag(UnitState.Rooted);
+        }
+
         public static bool IsSilenced(this Unit unit)
         {
             return unit.UnitState.HasFlag(UnitState.Silenced);
@@ -480,19 +516,16 @@ namespace Ensage.SDK.Extensions
             return unit.UnitState.HasFlag(UnitState.Stunned);
         }
 
-        public static bool IsRooted(this Unit unit)
-        {
-            return unit.UnitState.HasFlag(UnitState.Rooted);
-        }
-        
-        public static bool IsAttackImmune(this Unit unit)
-        {
-            return unit.UnitState.HasFlag(UnitState.AttackImmune);
-        }
-
         public static bool IsValidOrbwalkingTarget(this Unit attacker, Unit target)
         {
-            return target.IsValid && target.IsVisible && target.IsAlive && target.IsSpawned && !target.IsIllusion && attacker.IsInAttackRange(target) && !target.IsInvulnerable() && !target.IsAttackImmune();
+            return target.IsValid
+                   && target.IsVisible
+                   && target.IsAlive
+                   && target.IsSpawned
+                   && !target.IsIllusion
+                   && attacker.IsInAttackRange(target)
+                   && !target.IsInvulnerable()
+                   && !target.IsAttackImmune();
         }
 
         /// <summary>
@@ -604,33 +637,6 @@ namespace Ensage.SDK.Extensions
         public static Vector3 Vector3FromPolarAngle(this Unit unit, float delta = 0f, float radial = 1f)
         {
             return Vector2FromPolarAngle(unit, delta, radial).ToVector3();
-        }
-
-        public static bool IsLinkensProtected(this Unit unit)
-        {
-            var linkens = unit.GetItemById(AbilityId.item_sphere);
-            return (linkens != null && linkens.Cooldown <= 0) || unit.HasModifier("modifier_item_sphere_target");
-        }
-
-        public static bool HasAghanimsScepter(this Unit unit)
-        {
-            return unit.HasAnyModifiers("modifier_item_ultimate_scepter", "modifier_item_ultimate_scepter_consumed");
-        }
-
-        public static bool IsReflectingAbilities(this Unit unit)
-        {
-            if (unit.HasModifier("modifier_item_lotus_orb_active"))
-            {
-                return true;
-            }
-
-            var spellShield = unit.GetAbilityById(AbilityId.antimage_spell_shield);
-            if (spellShield?.Cooldown <= 0 && unit.HasAghanimsScepter())
-            {
-                return true;
-            }
-
-            return false;
         }
     }
 }

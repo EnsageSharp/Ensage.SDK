@@ -40,5 +40,10 @@ namespace Ensage.SDK.Abilities
         {
             return this.Ability.Name;
         }
+
+        protected virtual float GetRawDamage()
+        {
+            return 0;
+        }
     }
 }

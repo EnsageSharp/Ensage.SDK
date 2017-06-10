@@ -14,10 +14,10 @@ namespace Ensage.SDK.TargetSelector.Config
     public class TargetSelectorConfig : IDisposable
     {
         private readonly string[] staticModes =
-        {
-            "None",
-            "Auto (Near Mouse)"
-        };
+            {
+                "None",
+                "Auto (Near Mouse)"
+            };
 
         private bool disposed;
 

@@ -4,8 +4,6 @@
 
 namespace Ensage.SDK.Abilities
 {
-    using System.Linq;
-
     using Ensage.SDK.Extensions;
 
     public abstract class RangedAbility : ActiveAbility

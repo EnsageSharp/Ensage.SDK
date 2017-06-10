@@ -128,9 +128,9 @@ namespace Ensage.SDK.Handlers.Weak
                     return (TResult)this.Method.Invoke(
                         funcTarget,
                         new object[]
-                        {
-                            parameter
-                        });
+                            {
+                                parameter
+                            });
                 }
             }
 

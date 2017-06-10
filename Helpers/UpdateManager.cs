@@ -29,11 +29,7 @@ namespace Ensage.SDK.Helpers
 
             SynchronizationContext.SetSynchronizationContext(Context);
 
-            Factory = new TaskFactory(
-                CancellationToken.None,
-                TaskCreationOptions.DenyChildAttach,
-                TaskContinuationOptions.None,
-                TaskScheduler.FromCurrentSynchronizationContext());
+            Factory = new TaskFactory(CancellationToken.None, TaskCreationOptions.DenyChildAttach, TaskContinuationOptions.None, TaskScheduler.FromCurrentSynchronizationContext());
 
             Subscribe(Context.ProcessCallbacks);
 

@@ -69,21 +69,21 @@ namespace Ensage.SDK.Abilities
 
         public override float GetDamage(params Unit[] targets)
         {
-            var level = this.Ability.Level;
-            if (level == 0)
+            var damage = this.GetRawDamage();
+            if (damage == 0)
             {
                 return 0;
             }
 
-            var damage = (float)this.Ability.GetDamage(level - 1);
-            damage *= 1.0f + this.Owner.GetSpellAmplification();
+            var amplify = this.Owner.GetSpellAmplification();
+            var reduction = 0.0f;
 
             if (targets.Any())
             {
-                damage *= 1.0f - this.Ability.GetDamageReduction(targets.First());
+                reduction = this.Ability.GetDamageReduction(targets.First());
             }
 
-            return damage;
+            return DamageHelpers.GetSpellDamage(damage, amplify, reduction);
         }
 
         public virtual bool UseAbility()
@@ -169,6 +169,18 @@ namespace Ensage.SDK.Abilities
             }
 
             return result;
+        }
+
+        protected override float GetRawDamage()
+        {
+            var level = this.Ability.Level;
+            if (level == 0)
+            {
+                return 0;
+            }
+
+            var damage = (float)this.Ability.GetDamage(level - 1);
+            return damage;
         }
     }
 }

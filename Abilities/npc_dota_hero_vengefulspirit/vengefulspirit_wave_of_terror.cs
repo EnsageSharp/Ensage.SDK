@@ -14,7 +14,6 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_vengefulspirit
         protected override string RadiusName { get; } = "wave_width";
 
         // public override bool HasAreaOfEffect { get; } = true; // TODO: wait for aoe bik
-
         protected override string SpeedName { get; } = "wave_speed";
 
         public override float GetDamage(params Unit[] targets)

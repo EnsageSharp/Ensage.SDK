@@ -41,13 +41,7 @@ namespace Ensage.SDK.Prediction
             this.AreaOfEffectTargets = aoeTargets ?? new Unit[0];
         }
 
-        public PredictionInput(
-            Unit owner,
-            Unit target,
-            float delay,
-            float speed,
-            float range,
-            float radius)
+        public PredictionInput(Unit owner, Unit target, float delay, float speed, float range, float radius)
         {
             this.Owner = owner;
             this.Target = target;

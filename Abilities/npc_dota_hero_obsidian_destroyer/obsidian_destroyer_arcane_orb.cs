@@ -8,12 +8,14 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_obsidian_destroyer
 
     using Ensage.SDK.Extensions;
 
-    public class obsidian_destroyer_arcane_orb : OrbAbility
+    public class obsidian_destroyer_arcane_orb : OrbAbility, IHasTargetModifier
     {
         public obsidian_destroyer_arcane_orb(Ability ability)
             : base(ability)
         {
         }
+
+        public string TargetModifierName => "modifier_obsidian_destroyer_arcane_orb";
 
         public override float GetDamage(params Unit[] targets)
         {

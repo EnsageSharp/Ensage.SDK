@@ -479,6 +479,11 @@ namespace Ensage.SDK.Extensions
         {
             return unit.UnitState.HasFlag(UnitState.Stunned);
         }
+
+        public static bool IsRooted(this Unit unit)
+        {
+            return unit.UnitState.HasFlag(UnitState.Rooted);
+        }
         
         public static bool IsAttackImmune(this Unit unit)
         {

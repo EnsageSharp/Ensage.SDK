@@ -4,10 +4,6 @@
 
 namespace Ensage.SDK.Abilities.npc_dota_hero_vengefulspirit
 {
-    using System;
-
-    using Ensage.SDK.Extensions;
-
     public class vengefulspirit_wave_of_terror : LineAbility
     {
         public vengefulspirit_wave_of_terror(Ability ability)
@@ -15,13 +11,16 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_vengefulspirit
         {
         }
 
-        public override float Speed => this.Ability.GetAbilitySpecialData("wave_speed");
+        protected override string RadiusName { get; } = "wave_width";
 
-        public override float Width => this.Ability.GetAbilitySpecialData("wave_width");
+        // public override bool HasAreaOfEffect { get; } = true; // TODO: wait for aoe bik
 
-        public override float GetDamage(params Unit[] target)
+        protected override string SpeedName { get; } = "wave_speed";
+
+        public override float GetDamage(params Unit[] targets)
         {
-            throw new NotImplementedException();
+            // TODO
+            return base.GetDamage(targets);
         }
     }
 }

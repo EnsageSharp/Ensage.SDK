@@ -11,39 +11,47 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_vengefulspirit
 
     // ReSharper disable once InconsistentNaming
     // ReSharper disable once StyleCop.SA1300
-    public class vengefulspirit_magic_missile : TargetAbility
+    public class vengefulspirit_magic_missile : RangedAbility
     {
         public vengefulspirit_magic_missile(Ability ability)
             : base(ability)
         {
         }
 
+        public override SpellPierceImmunityType PiercesSpellImmunity
+        {
+            get
+            {
+                var pierceTalent = this.Owner.GetAbilityById(AbilityId.special_bonus_unique_vengeful_spirit_3);
+                if (pierceTalent != null && pierceTalent.Level > 0)
+                {
+                    return SpellPierceImmunityType.EnemiesYes;
+                }
+
+                return base.PiercesSpellImmunity;
+            }
+        }
+
         public override float GetDamage(params Unit[] targets)
         {
             var damage = this.Ability.GetAbilitySpecialData("magic_missile_damage");
 
-            var pierceTalentActive = false;
-            var owner = this.Ability.Owner as Unit;
-            if (owner != null)
+            var damageTalent = this.Owner.GetAbilityById(AbilityId.special_bonus_unique_vengeful_spirit_1);
+            if (damageTalent != null && damageTalent.Level > 0)
             {
-                var damageTalent = owner.GetAbilityById(AbilityId.special_bonus_unique_vengeful_spirit_1);
-                if (damageTalent != null && damageTalent.Level > 0)
-                {
-                    damage += damageTalent.GetAbilitySpecialData("value");
-                }
+                damage += damageTalent.GetAbilitySpecialData("value");
+            }
 
-                var pierceTalent = owner.GetAbilityById(AbilityId.special_bonus_unique_vengeful_spirit_3);
-                if (pierceTalent != null && pierceTalent.Level > 0)
-                {
-                    pierceTalentActive = true;
-                }
+            if (!targets.Any())
+            {
+                return damage;
             }
 
             var target = targets.First();
-            if (!this.CanAffectTarget(target, pierceTalentActive))
-            {
-                return 0;
-            }
+            //if (!this.CanAffectTarget(target, pierceTalentActive)) TODO
+            //{
+            //    return 0;
+            //}
 
             var amplify = this.Ability.SpellAmplification();
             var reduction = this.Ability.GetDamageReduction(target);

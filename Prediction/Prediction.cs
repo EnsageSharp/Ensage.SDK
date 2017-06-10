@@ -17,6 +17,8 @@ namespace Ensage.SDK.Prediction
 
     using SharpDX;
 
+    using UnitExtensions = Ensage.Common.Extensions.UnitExtensions;
+
     [ExportPrediction("SDK")]
     public class Prediction : IPrediction
     {
@@ -226,6 +228,16 @@ namespace Ensage.SDK.Prediction
 
             if (target.NetworkActivity != NetworkActivity.Move)
             {
+                if (target.IsStunned() || target.IsRooted()) // TODO: check immobile duration
+                {
+                    return PredictionOutput(target, targetPosition, HitChance.Immobile);
+                }
+
+                if (!caster.IsVisibleToEnemies)
+                {
+                    return PredictionOutput(target, targetPosition, HitChance.High);
+                }
+
                 return PredictionOutput(target, targetPosition, HitChance.Medium);
             }
 
@@ -265,7 +277,7 @@ namespace Ensage.SDK.Prediction
                                    targetPosition,
                                    direction.ToVector3(),
                                    ((totalArrivalTime * target.MovementSpeed) + 20f) - input.Radius - target.HullRadius),
-                               HitChance = HitChance.Medium
+                               HitChance = !caster.IsVisibleToEnemies ? HitChance.High : HitChance.Medium
                            };
                 }
             }

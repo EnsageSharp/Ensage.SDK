@@ -36,6 +36,11 @@ namespace Ensage.SDK.Extensions
                 level = ability.Level;
             }
 
+            if (level == 0)
+            {
+                return 0;
+            }
+
             return data.GetValue(level - 1);
         }
 
@@ -58,6 +63,27 @@ namespace Ensage.SDK.Extensions
             }
 
             return ability.GetCastPoint(level - 1);
+        }
+
+        public static float GetCastRange(this Ability ability)
+        {
+            var castRange = (float)ability.CastRange;
+            var owner = (Unit)ability.Owner;
+
+            // items
+            var aetherLense = owner.GetItemById(AbilityId.item_aether_lens);
+            if (aetherLense != null)
+            {
+                castRange += aetherLense.GetAbilitySpecialData("cast_range_bonus");
+            }
+
+            // talents
+            foreach (var talent in owner.Spellbook.Spells.Where(x => x.Level > 0 && x.Name.StartsWith("special_bonus_cast_range_")))
+            {
+                castRange += talent.GetAbilitySpecialData("value");
+            }
+
+            return castRange;
         }
     }
 }

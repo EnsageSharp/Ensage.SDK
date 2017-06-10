@@ -1,49 +1,52 @@
-﻿// <copyright file="ActiveAbility.cs" company="Ensage">
+// <copyright file="ActiveAbility.cs" company="Ensage">
 //    Copyright (c) 2017 Ensage.
 // </copyright>
 
 namespace Ensage.SDK.Abilities
 {
+    using System.Linq;
+    using System.Reflection;
+
     using Ensage.SDK.Extensions;
     using Ensage.SDK.Helpers;
 
+    using log4net;
+
+    using PlaySharp.Toolkit.Logging;
+
     using SharpDX;
 
-    public abstract class ActiveAbility : BaseAbility, IActiveAbility
+    public abstract class ActiveAbility : BaseAbility
     {
+        private static readonly ILog Log = AssemblyLogs.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
+        protected float LastCastAttempt;
+
         protected ActiveAbility(Ability ability)
             : base(ability)
         {
         }
 
-        public virtual bool CanBeCasted
+        public bool CanBeCasted
         {
             get
             {
-                if (this.Ability.IsHidden)
+                if (this.Ability.Level == 0 || this.Ability.IsHidden || this.Ability.Cooldown > 0)
                 {
                     return false;
                 }
 
-                var unit = this.Ability.Owner as Unit;
-                if (unit != null)
+                var owner = this.Owner;
+                if (owner.Mana < this.Ability.ManaCost || owner.IsSilenced())
                 {
-                    if (this.IsItem)
-                    {
-                        if (unit.IsMuted())
-                        {
-                            return false;
-                        }
-                    }
-                    else if (unit.IsSilenced())
-                    {
-                        return true;
-                    }
+                    // TODO: check for item
+                    return false;
+                }
 
-                    if (unit.Mana < this.Ability.ManaCost)
-                    {
-                        return false;
-                    }
+                if ((Game.RawGameTime - this.LastCastAttempt) < 0.1f)
+                {
+                    Log.Debug($"blocked {this}");
+                    return false;
                 }
 
                 return true;
@@ -54,11 +57,6 @@ namespace Ensage.SDK.Abilities
         {
             get
             {
-                if (this.Ability is Item)
-                {
-                    return 0.0f;
-                }
-
                 var level = this.Ability.Level;
                 if (level == 0)
                 {
@@ -69,84 +67,108 @@ namespace Ensage.SDK.Abilities
             }
         }
 
-        public virtual bool IsChanneling { get; } = false;
-
-        public override float Range => this.Ability.CastRange;
-
-        public virtual float Speed => float.MaxValue;
-
-        public override bool CanHitTarget(Unit target)
+        public override float GetDamage(params Unit[] targets)
         {
-            if (!this.CanAffectTarget(target))
+            var level = this.Ability.Level;
+            if (level == 0)
             {
+                return 0;
+            }
+
+            var damage = (float)this.Ability.GetDamage(level - 1);
+            damage *= 1.0f + this.Owner.GetSpellAmplification();
+
+            if (targets.Any())
+            {
+                damage *= 1.0f - this.Ability.GetDamageReduction(targets.First());
+            }
+
+            return damage;
+        }
+
+        public virtual bool UseAbility()
+        {
+            if (!this.CanBeCasted)
+            {
+                Log.Debug($"blocked {this}");
                 return false;
             }
 
-            var entity = this.Ability.Owner;
-            if (entity != null)
+            var result = this.Ability.UseAbility();
+            if (result)
             {
-                var range = this.Range;
-                if (target.Distance2D(entity) > range)
-                {
-                    return false;
-                }
+                this.LastCastAttempt = Game.RawGameTime;
             }
 
-            return true;
+            return result;
         }
 
-        public override float GetDamage(params Unit[] target)
+        public virtual bool UseAbility(Unit target)
         {
-            var level = this.Ability.Level;
-            return level == 0 ? 0.0f : this.Ability.GetDamage(level - 1);
-        }
-
-        public virtual float GetTravelTime(EntityOrPosition target)
-        {
-            var speed = this.Speed;
-            if (speed == float.MaxValue)
+            if (!this.CanBeCasted)
             {
-                return 0.0f;
+                Log.Debug($"blocked {this}");
+                return false;
             }
 
-            return this.Ability.Owner.Distance2D(target) / speed;
-        }
-
-        public virtual float GetTravelTime()
-        {
-            var speed = this.Speed;
-            if (speed == float.MaxValue)
+            var result = this.Ability.UseAbility(target);
+            if (result)
             {
-                return 0.0f;
+                this.LastCastAttempt = Game.RawGameTime;
             }
 
-            return this.Range / speed;
+            return result;
         }
 
-        public virtual float GetTravelTime(Entity target)
+        public virtual bool UseAbility(Tree target)
         {
-            var speed = this.Speed;
-            if (speed == float.MaxValue)
+            if (!this.CanBeCasted)
             {
-                return 0.0f;
+                Log.Debug($"blocked {this}");
+                return false;
             }
 
-            return this.Ability.Owner.Distance2D(target) / speed;
+            var result = this.Ability.UseAbility(target);
+            if (result)
+            {
+                this.LastCastAttempt = Game.RawGameTime;
+            }
+
+            return result;
         }
 
-        public void UseAbility(bool queued = false)
+        public virtual bool UseAbility(Vector3 position)
         {
-            this.Ability.UseAbility(queued);
+            if (!this.CanBeCasted)
+            {
+                Log.Debug($"blocked {this}");
+                return false;
+            }
+
+            var result = this.Ability.UseAbility(position);
+            if (result)
+            {
+                this.LastCastAttempt = Game.RawGameTime;
+            }
+
+            return result;
         }
 
-        public void UseAbility(Unit target, bool queued = false)
+        public virtual bool UseAbility(Rune target)
         {
-            this.Ability.UseAbility(target, queued);
-        }
+            if (!this.CanBeCasted)
+            {
+                Log.Debug($"blocked {this}");
+                return false;
+            }
 
-        public void UseAbility(Vector3 target, bool queued = false)
-        {
-            this.Ability.UseAbility(target, queued);
+            var result = this.Ability.UseAbility(target);
+            if (result)
+            {
+                this.LastCastAttempt = Game.RawGameTime;
+            }
+
+            return result;
         }
     }
 }

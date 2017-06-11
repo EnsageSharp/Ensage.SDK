@@ -54,9 +54,6 @@
     <Reference Include="Newtonsoft.Json">
       <HintPath>C:\EnsageSharp\References\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="PlaySharp.Service">
-      <HintPath>C:\EnsageSharp\References\PlaySharp.Service.dll</HintPath>
-    </Reference>
     <Reference Include="PlaySharp.Toolkit, Version=1.0.0.0, Culture=neutral, PublicKeyToken=7e3dc52b16ce4f66, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>C:\EnsageSharp\References\PlaySharp.Toolkit.dll</HintPath>
@@ -69,9 +66,6 @@
     </Reference>
     <Reference Include="SharpDX.Direct3D11">
       <HintPath>C:\EnsageSharp\References\SharpDX.Direct3D11.dll</HintPath>
-    </Reference>
-    <Reference Include="SharpDX.Direct3D9">
-      <HintPath>C:\EnsageSharp\References\SharpDX.Direct3D9.dll</HintPath>
     </Reference>
     <Reference Include="SharpDX.DXGI">
       <HintPath>C:\EnsageSharp\References\SharpDX.DXGI.dll</HintPath>

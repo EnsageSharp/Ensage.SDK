@@ -32,13 +32,15 @@ namespace Ensage.SDK.Abilities.Items
 
             var amplify = this.Owner.GetSpellAmplification();
             var resist = 0.0f;
-            if (targets.Any())
+            if (!targets.Any())
             {
-                var damageBonus = this.Ability.GetAbilitySpecialData("ethereal_damage_bonus") / 100.0f; // -40
-                resist = targets.First().MagicDamageResist + damageBonus;
+                return DamageHelpers.GetSpellDamage(damage, amplify, resist);
             }
 
-            return DamageHelpers.GetSpellDamage(damage, amplify, resist);
+            var damageBonus = -this.Ability.GetAbilitySpecialData("ethereal_damage_bonus") / 100.0f; // -40 => 0.4
+            resist = targets.First().MagicDamageResist; 
+
+            return DamageHelpers.GetSpellDamage(damage, amplify, -resist, damageBonus);
         }
 
         protected override float GetRawDamage()
@@ -49,17 +51,17 @@ namespace Ensage.SDK.Abilities.Items
             if (hero != null)
             {
                 var multiplier = this.Ability.GetAbilitySpecialData("blast_agility_multiplier"); // 2.0
-                if (hero.PrimaryAttribute == Attribute.Strength)
+                switch (hero.PrimaryAttribute)
                 {
-                    damage += multiplier * hero.TotalStrength;
-                }
-                else if (hero.PrimaryAttribute == Attribute.Agility)
-                {
-                    damage += multiplier * hero.TotalAgility;
-                }
-                else if (hero.PrimaryAttribute == Attribute.Intelligence)
-                {
-                    damage += multiplier * hero.TotalIntelligence;
+                    case Attribute.Strength:
+                        damage += multiplier * hero.TotalStrength;
+                        break;
+                    case Attribute.Agility:
+                        damage += multiplier * hero.TotalAgility;
+                        break;
+                    case Attribute.Intelligence:
+                        damage += multiplier * hero.TotalIntelligence;
+                        break;
                 }
             }
 

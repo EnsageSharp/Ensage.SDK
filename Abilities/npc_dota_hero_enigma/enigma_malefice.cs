@@ -11,8 +11,8 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_enigma
 
     public class enigma_malefice : RangedAbility, IHasDot
     {
-        public enigma_malefice(Ability abiltity)
-            : base(abiltity)
+        public enigma_malefice(Ability ability)
+            : base(ability)
         {
         }
 

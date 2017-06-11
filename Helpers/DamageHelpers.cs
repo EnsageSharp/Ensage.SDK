@@ -32,9 +32,33 @@ namespace Ensage.SDK.Helpers
             return reduction;
         }
 
+        /// <summary>
+        /// Gets the spell damage with the default values for calculation.
+        /// </summary>
+        /// <param name="damage">The raw damage of the spell.</param>
+        /// <param name="amplify">The total spell amplification</param>
+        /// <param name="reduction">The heroes reduction for the spell.</param>
+        /// <returns>The total spell damage.</returns>
         public static float GetSpellDamage(float damage, float amplify = 0, float reduction = 0)
         {
             return damage * (1.0f + amplify) * (1.0f - reduction);
+        }
+
+        /// <summary>
+        /// Gets the spell damage with additional amplification values.
+        /// </summary>
+        /// <param name="damage">The raw damage of the spell.</param>
+        /// <param name="modifiers">All modifiers including resistance (negative value) and amplification (positive value).</param>
+        /// <returns>The total spell damage.</returns>
+        public static float GetSpellDamage(float damage, params float[] modifiers)
+        {
+            var amplify = 1.0f;
+            foreach (var modifier in modifiers)
+            {
+                amplify *= 1.0f + modifier;
+            }
+
+            return damage * amplify;
         }
 
         public static float SpellAmplification(this Ability ability)

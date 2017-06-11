@@ -6,8 +6,8 @@ namespace Ensage.SDK.Abilities
 {
     public abstract class PassiveAbility : BaseAbility
     {
-        protected PassiveAbility(Ability abiltity)
-            : base(abiltity)
+        protected PassiveAbility(Ability ability)
+            : base(ability)
         {
         }
     }

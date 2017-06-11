@@ -20,8 +20,8 @@ namespace Ensage.SDK.Abilities
     {
         private static readonly ILog Log = AssemblyLogs.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        protected ActiveAbility(Ability abiltity)
-            : base(abiltity)
+        protected ActiveAbility(Ability ability)
+            : base(ability)
         {
         }
 

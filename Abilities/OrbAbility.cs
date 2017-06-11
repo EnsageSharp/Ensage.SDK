@@ -10,8 +10,8 @@ namespace Ensage.SDK.Abilities
 
     public abstract class OrbAbility : AutocastAbility
     {
-        protected OrbAbility(Ability abiltity)
-            : base(abiltity)
+        protected OrbAbility(Ability ability)
+            : base(ability)
         {
         }
 

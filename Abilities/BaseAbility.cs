@@ -6,9 +6,9 @@ namespace Ensage.SDK.Abilities
 {
     public abstract class BaseAbility
     {
-        protected BaseAbility(Ability abiltity)
+        protected BaseAbility(Ability ability)
         {
-            this.Ability = abiltity;
+            this.Ability = ability;
         }
 
         public Ability Ability { get; }

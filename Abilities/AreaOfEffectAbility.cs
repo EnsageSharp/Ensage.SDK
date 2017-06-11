@@ -8,8 +8,8 @@ namespace Ensage.SDK.Abilities
 
     public abstract class AreaOfEffectAbility : RangedAbility
     {
-        protected AreaOfEffectAbility(Ability abiltity)
-            : base(abiltity)
+        protected AreaOfEffectAbility(Ability ability)
+            : base(ability)
         {
         }
 

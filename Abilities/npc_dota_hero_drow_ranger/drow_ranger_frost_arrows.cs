@@ -8,8 +8,8 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_drow_ranger
 
     public class drow_ranger_frost_arrows : OrbAbility, IHasTargetModifier
     {
-        public drow_ranger_frost_arrows(Ability abiltity)
-            : base(abiltity)
+        public drow_ranger_frost_arrows(Ability ability)
+            : base(ability)
         {
         }
 

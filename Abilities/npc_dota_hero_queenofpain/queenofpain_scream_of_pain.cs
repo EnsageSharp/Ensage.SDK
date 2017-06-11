@@ -10,8 +10,8 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_queenofpain
 
     public class queenofpain_scream_of_pain : AreaOfEffectAbility
     {
-        public queenofpain_scream_of_pain(Ability abiltity)
-            : base(abiltity)
+        public queenofpain_scream_of_pain(Ability ability)
+            : base(ability)
         {
         }
 

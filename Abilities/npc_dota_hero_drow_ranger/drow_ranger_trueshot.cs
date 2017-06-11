@@ -6,8 +6,8 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_drow_ranger
 {
     public class drow_ranger_trueshot : ActiveAbility, IHasModifier
     {
-        public drow_ranger_trueshot(Ability abiltity)
-            : base(abiltity)
+        public drow_ranger_trueshot(Ability ability)
+            : base(ability)
         {
         }
 

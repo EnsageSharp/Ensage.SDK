@@ -6,8 +6,8 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_vengefulspirit
 {
     public class vengefulspirit_wave_of_terror : LineAbility
     {
-        public vengefulspirit_wave_of_terror(Ability abiltity)
-            : base(abiltity)
+        public vengefulspirit_wave_of_terror(Ability ability)
+            : base(ability)
         {
         }
 

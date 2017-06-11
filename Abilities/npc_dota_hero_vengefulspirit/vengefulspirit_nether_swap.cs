@@ -6,8 +6,8 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_vengefulspirit
 {
     public class vengefulspirit_nether_swap : RangedAbility
     {
-        public vengefulspirit_nether_swap(Ability abiltity)
-            : base(abiltity)
+        public vengefulspirit_nether_swap(Ability ability)
+            : base(ability)
         {
         }
     }

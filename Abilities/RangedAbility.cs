@@ -10,8 +10,8 @@ namespace Ensage.SDK.Abilities
 
     public abstract class RangedAbility : ActiveAbility
     {
-        protected RangedAbility(Ability abiltity)
-            : base(abiltity)
+        protected RangedAbility(Ability ability)
+            : base(ability)
         {
         }
 

@@ -6,8 +6,8 @@ namespace Ensage.SDK.Abilities
 {
     public abstract class AutocastAbility : RangedAbility
     {
-        protected AutocastAbility(Ability abiltity)
-            : base(abiltity)
+        protected AutocastAbility(Ability ability)
+            : base(ability)
         {
         }
 

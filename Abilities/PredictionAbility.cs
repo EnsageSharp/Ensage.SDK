@@ -20,8 +20,8 @@ namespace Ensage.SDK.Abilities
     {
         private static readonly ILog Log = AssemblyLogs.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        protected PredictionAbility(Ability abiltity, IPrediction prediction = null)
-            : base(abiltity)
+        protected PredictionAbility(Ability ability, IPrediction prediction = null)
+            : base(ability)
         {
             this.Prediction = prediction ?? IoC.Get<IPrediction>();
         }

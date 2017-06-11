@@ -11,8 +11,8 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_obsidian_destroyer
 
     public class obsidian_destroyer_arcane_orb : OrbAbility
     {
-        public obsidian_destroyer_arcane_orb(Ability abiltity)
-            : base(abiltity)
+        public obsidian_destroyer_arcane_orb(Ability ability)
+            : base(ability)
         {
         }
 

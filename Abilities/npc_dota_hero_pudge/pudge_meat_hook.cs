@@ -8,8 +8,8 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_pudge
 
     public class pudge_meat_hook : LineAbility, IHasTargetModifier
     {
-        public pudge_meat_hook(Ability abiltity)
-            : base(abiltity)
+        public pudge_meat_hook(Ability ability)
+            : base(ability)
         {
         }
 

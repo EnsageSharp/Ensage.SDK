@@ -13,8 +13,8 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_vengefulspirit
     // ReSharper disable once StyleCop.SA1300
     public class vengefulspirit_magic_missile : RangedAbility
     {
-        public vengefulspirit_magic_missile(Ability ability)
-            : base(ability)
+        public vengefulspirit_magic_missile(Ability abiltity)
+            : base(abiltity)
         {
         }
 
@@ -29,6 +29,14 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_vengefulspirit
                 }
 
                 return base.PiercesSpellImmunity;
+            }
+        }
+
+        public override float Speed
+        {
+            get
+            {
+                return this.Ability.GetAbilitySpecialData("magic_missile_speed");
             }
         }
 

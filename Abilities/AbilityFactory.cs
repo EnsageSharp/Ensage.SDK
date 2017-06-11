@@ -31,6 +31,12 @@ namespace Ensage.SDK.Abilities
 
         private Type[] Types { get; }
 
+        public T GetAbility<T>([NotNull] Ability ability)
+            where T : BaseAbility
+        {
+            return (T)this.GetAbility(ability);
+        }
+
         public BaseAbility GetAbility([NotNull] Ability ability)
         {
             if (ability == null)
@@ -47,6 +53,11 @@ namespace Ensage.SDK.Abilities
             }
 
             return (BaseAbility)Activator.CreateInstance(type, ability);
+        }
+
+        public T GetAbility<T>(AbilityId id) where T : BaseAbility
+        {
+            return (T)this.GetAbility(id);
         }
 
         public BaseAbility GetAbility(AbilityId id)

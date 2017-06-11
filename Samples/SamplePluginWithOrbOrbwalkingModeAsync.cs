@@ -8,6 +8,7 @@ namespace Ensage.SDK.Samples
     using System.ComponentModel.Composition;
     using System.Reflection;
 
+    using Ensage.SDK.Abilities;
     using Ensage.SDK.Input;
     using Ensage.SDK.Orbwalker;
     using Ensage.SDK.Service;
@@ -23,6 +24,8 @@ namespace Ensage.SDK.Samples
     {
         private static readonly ILog Log = AssemblyLogs.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
+        private readonly Lazy<AbilityFactory> abilityFactory;
+
         private readonly Lazy<IInputManager> input;
 
         private readonly Lazy<IOrbwalkerManager> orbwalkerManager;
@@ -33,20 +36,20 @@ namespace Ensage.SDK.Samples
         public SamplePluginWithOrbOrbwalkingModeAsync(
             [Import] Lazy<IOrbwalkerManager> orbManager,
             [Import] Lazy<ITargetSelectorManager> targetManager,
-            [Import] Lazy<IInputManager> input)
+            [Import] Lazy<IInputManager> input,
+            [Import] Lazy<AbilityFactory> abilityFactory)
         {
             this.input = input;
+            this.abilityFactory = abilityFactory;
             this.orbwalkerManager = orbManager;
             this.targetManager = targetManager;
         }
 
         public SampleOrbOrbwalkingModeWithAsync ComboTest { get; private set; }
 
-        public SamplePluginConfig Config { get; private set; }
-
         protected override void OnActivate()
         {
-            this.ComboTest = new SampleOrbOrbwalkingModeWithAsync(this.orbwalkerManager.Value, this.input.Value, this.targetManager.Value);
+            this.ComboTest = new SampleOrbOrbwalkingModeWithAsync(this.orbwalkerManager.Value, this.input.Value, this.targetManager.Value, this.abilityFactory.Value);
             this.orbwalkerManager.Value.RegisterMode(this.ComboTest);
         }
 

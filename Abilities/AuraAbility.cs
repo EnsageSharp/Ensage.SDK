@@ -8,8 +8,8 @@ namespace Ensage.SDK.Abilities
 
     public abstract class AuraAbility : PassiveAbility
     {
-        protected AuraAbility(Ability ability)
-            : base(ability)
+        protected AuraAbility(Ability abiltity)
+            : base(abiltity)
         {
         }
 

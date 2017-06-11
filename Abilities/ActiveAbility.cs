@@ -20,10 +20,8 @@ namespace Ensage.SDK.Abilities
     {
         private static readonly ILog Log = AssemblyLogs.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        protected float LastCastAttempt;
-
-        protected ActiveAbility(Ability ability)
-            : base(ability)
+        protected ActiveAbility(Ability abiltity)
+            : base(abiltity)
         {
         }
 
@@ -65,6 +63,37 @@ namespace Ensage.SDK.Abilities
 
                 return this.Ability.GetCastPoint(level - 1);
             }
+        }
+
+        protected float LastCastAttempt { get; set; }
+
+        /// <summary>
+        /// Gets the time needed to execute an ability. This assumes that you are already in range and includes turnrate, castpoint and ping.
+        /// </summary>
+        /// <param name="target">The target of the ability.</param>
+        /// <returns>Time in ms until the cast.</returns>
+        public virtual int GetCastDelay(Unit target)
+        {
+            return (int)(((this.CastPoint + this.Owner.TurnTime(target.NetworkPosition)) * 1000.0f) + Game.Ping);
+        }
+
+        /// <summary>
+        /// Gets the time needed to execute an ability. This assumes that you are already in range and includes turnrate, castpoint and ping.
+        /// </summary>
+        /// <param name="position">The target position of the ability.</param>
+        /// <returns>Time in ms until the cast.</returns>
+        public virtual int GetCastDelay(Vector3 position)
+        {
+            return (int)(((this.CastPoint + this.Owner.TurnTime(position)) * 1000.0f) + Game.Ping);
+        }
+
+        /// <summary>
+        /// Gets the time needed to execute an ability. This assumes that you are already in range and includes castpoint and ping.
+        /// </summary>
+        /// <returns>Time in ms until the cast.</returns>
+        public virtual int GetCastDelay()
+        {
+            return (int)((this.CastPoint * 1000.0f) + Game.Ping);
         }
 
         public override float GetDamage(params Unit[] targets)

@@ -20,8 +20,8 @@ namespace Ensage.SDK.Abilities
     {
         private static readonly ILog Log = AssemblyLogs.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        protected PredictionAbility(Ability ability, IPrediction prediction = null)
-            : base(ability)
+        protected PredictionAbility(Ability abiltity, IPrediction prediction = null)
+            : base(abiltity)
         {
             this.Prediction = prediction ?? IoC.Get<IPrediction>();
         }
@@ -46,7 +46,7 @@ namespace Ensage.SDK.Abilities
             }
         }
 
-        public virtual float Speed
+        public override float Speed
         {
             get
             {

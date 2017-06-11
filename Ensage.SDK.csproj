@@ -82,11 +82,16 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Abilities\AbilityFactory.cs" />
+    <Compile Include="Abilities\AbilityNotAnItemException.cs" />
     <Compile Include="Abilities\AbilityNotFoundException.cs" />
     <Compile Include="Abilities\AbilityNotImplementedException.cs" />
     <Compile Include="Abilities\ActiveAbility.cs" />
     <Compile Include="Abilities\AutocastAbility.cs" />
     <Compile Include="Abilities\BaseAbility.cs" />
+    <Compile Include="Abilities\Items\IItemInfo.cs" />
+    <Compile Include="Abilities\Items\item_ethereal_blade.cs" />
+    <Compile Include="Abilities\Items\item_gem.cs" />
+    <Compile Include="Abilities\Items\item_manta.cs" />
     <Compile Include="Abilities\npc_dota_hero_drow_ranger\drow_ranger_frost_arrows.cs" />
     <Compile Include="Abilities\IHasModifier.cs" />
     <Compile Include="Abilities\IHasTargetModifier.cs" />

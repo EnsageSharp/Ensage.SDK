@@ -6,12 +6,20 @@ namespace Ensage.SDK.Abilities
 {
     public abstract class BaseAbility
     {
-        protected BaseAbility(Ability ability)
+        protected BaseAbility(Ability abiltity)
         {
-            this.Ability = ability;
+            this.Ability = abiltity;
         }
 
         public Ability Ability { get; }
+
+        public Item Item
+        {
+            get
+            {
+                return this.Ability as Item;
+            }
+        }
 
         public Unit Owner
         {

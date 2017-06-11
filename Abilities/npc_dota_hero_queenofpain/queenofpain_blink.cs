@@ -6,8 +6,8 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_queenofpain
 {
     public class queenofpain_blink : RangedAbility
     {
-        public queenofpain_blink(Ability ability)
-            : base(ability)
+        public queenofpain_blink(Ability abiltity)
+            : base(abiltity)
         {
         }
     }

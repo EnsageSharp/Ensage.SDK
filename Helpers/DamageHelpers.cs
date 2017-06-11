@@ -32,7 +32,7 @@ namespace Ensage.SDK.Helpers
             return reduction;
         }
 
-        public static float GetSpellDamage(float damage, float amplify, float reduction)
+        public static float GetSpellDamage(float damage, float amplify = 0, float reduction = 0)
         {
             return damage * (1.0f + amplify) * (1.0f - reduction);
         }

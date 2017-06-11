@@ -11,8 +11,8 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_enigma
 
     public class enigma_malefice : RangedAbility, IHasDot
     {
-        public enigma_malefice(Ability ability)
-            : base(ability)
+        public enigma_malefice(Ability abiltity)
+            : base(abiltity)
         {
         }
 
@@ -26,7 +26,7 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_enigma
 
         public bool HasInitialDamage { get; } = false;
 
-        public string TargetModifierName { get; } = "modifier_enigma_malefice"; // TODO: confirm
+        public string TargetModifierName { get; } = "modifier_enigma_malefice";
 
         public float TickDamage
         {
@@ -53,10 +53,6 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_enigma
         {
             var target = targets.First();
 
-            // if (!this.CanAffectTarget(target)) // TODO
-            // {
-            // return 0;
-            // }
             var damage = this.TickDamage;
             var amplify = this.Ability.SpellAmplification();
             var reduction = this.Ability.GetDamageReduction(target);

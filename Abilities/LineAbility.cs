@@ -8,8 +8,8 @@ namespace Ensage.SDK.Abilities
 
     public abstract class LineAbility : PredictionAbility
     {
-        protected LineAbility(Ability ability)
-            : base(ability)
+        protected LineAbility(Ability abiltity)
+            : base(abiltity)
         {
         }
 

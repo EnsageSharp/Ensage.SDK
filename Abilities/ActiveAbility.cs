@@ -67,8 +67,14 @@ namespace Ensage.SDK.Abilities
 
         protected float LastCastAttempt { get; set; }
 
+        public static implicit operator bool(ActiveAbility ability)
+        {
+            return ability.CanBeCasted;
+        }
+
         /// <summary>
-        /// Gets the time needed to execute an ability. This assumes that you are already in range and includes turnrate, castpoint and ping.
+        ///     Gets the time needed to execute an ability. This assumes that you are already in range and includes turnrate,
+        ///     castpoint and ping.
         /// </summary>
         /// <param name="target">The target of the ability.</param>
         /// <returns>Time in ms until the cast.</returns>
@@ -78,7 +84,8 @@ namespace Ensage.SDK.Abilities
         }
 
         /// <summary>
-        /// Gets the time needed to execute an ability. This assumes that you are already in range and includes turnrate, castpoint and ping.
+        ///     Gets the time needed to execute an ability. This assumes that you are already in range and includes turnrate,
+        ///     castpoint and ping.
         /// </summary>
         /// <param name="position">The target position of the ability.</param>
         /// <returns>Time in ms until the cast.</returns>
@@ -88,7 +95,8 @@ namespace Ensage.SDK.Abilities
         }
 
         /// <summary>
-        /// Gets the time needed to execute an ability. This assumes that you are already in range and includes castpoint and ping.
+        ///     Gets the time needed to execute an ability. This assumes that you are already in range and includes castpoint and
+        ///     ping.
         /// </summary>
         /// <returns>Time in ms until the cast.</returns>
         public virtual int GetCastDelay()

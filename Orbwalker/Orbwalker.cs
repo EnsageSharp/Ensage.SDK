@@ -11,7 +11,6 @@ namespace Ensage.SDK.Orbwalker
     using System.Linq;
     using System.Reflection;
 
-    using Ensage.Common.Enums;
     using Ensage.SDK.Extensions;
     using Ensage.SDK.Helpers;
     using Ensage.SDK.Inventory;
@@ -234,7 +233,7 @@ namespace Ensage.SDK.Orbwalker
             {
                 foreach (var item in args.NewItems.OfType<InventoryItem>())
                 {
-                    if (item.Id == ItemId.item_echo_sabre)
+                    if (item.Id == AbilityId.item_echo_sabre)
                     {
                         this.EchoSabre = item;
                     }
@@ -245,7 +244,7 @@ namespace Ensage.SDK.Orbwalker
             {
                 foreach (var item in args.OldItems.OfType<InventoryItem>())
                 {
-                    if (item.Id == ItemId.item_echo_sabre)
+                    if (item.Id == AbilityId.item_echo_sabre)
                     {
                         this.EchoSabre = null;
                     }

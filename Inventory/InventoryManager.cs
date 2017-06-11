@@ -57,6 +57,16 @@ namespace Ensage.SDK.Inventory
 
         private HashSet<InventoryItem> LastItems { get; set; }
 
+        public StockInfo GetStockInfo(AbilityId id, Team team = Team.Undefined)
+        {
+            if (team == Team.Undefined)
+            {
+                team = this.Owner.Team;
+            }
+
+            return Game.StockInfo.FirstOrDefault(e => e.AbilityId == id && e.Team == team);
+        }
+
         protected override void OnActivate()
         {
             UpdateManager.Subscribe(this.OnInventoryUpdate, 500);

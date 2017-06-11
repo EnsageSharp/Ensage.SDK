@@ -39,6 +39,16 @@ namespace Ensage.SDK.Abilities
 
         public virtual float Range { get; } = 0;
 
+        public static implicit operator Item(BaseAbility ability)
+        {
+            return ability.Item;
+        }
+
+        public static implicit operator Ability(BaseAbility ability)
+        {
+            return ability.Ability;
+        }
+
         public virtual float GetDamage(params Unit[] targets)
         {
             return 0;

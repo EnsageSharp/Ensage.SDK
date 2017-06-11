@@ -6,17 +6,15 @@ namespace Ensage.SDK.Inventory
 {
     using System;
 
-    using Ensage.Common.Enums;
-
     public class InventoryItem : IEquatable<InventoryItem>
     {
         public InventoryItem(Item item)
         {
-            this.Id = (ItemId)item.Id;
+            this.Id = item.Id;
             this.Item = item;
         }
 
-        public ItemId Id { get; }
+        public AbilityId Id { get; }
 
         public bool IsValid => this.Item != null && this.Item.IsValid;
 
@@ -25,6 +23,16 @@ namespace Ensage.SDK.Inventory
         public static bool operator ==(InventoryItem left, InventoryItem right)
         {
             return Equals(left, right);
+        }
+
+        public static implicit operator Item(InventoryItem item)
+        {
+            return item.Item;
+        }
+
+        public static implicit operator AbilityId(InventoryItem item)
+        {
+            return item.Id;
         }
 
         public static bool operator !=(InventoryItem left, InventoryItem right)

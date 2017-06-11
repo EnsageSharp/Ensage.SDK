@@ -26,19 +26,24 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_clinkz
             damage += arrowDamage;
             var talent = this.Owner.GetAbilityById(AbilityId.special_bonus_unique_clinkz_1);
 
-            foreach (var target in targets)
-            {
-                var reduction = this.Ability.GetDamageReduction(target);
+            var target = targets.First();
 
-                if (talent != null)
-                {
-                    var talentDamage = talent.GetAbilitySpecialData("value");
-                    damage += (arrowDamage + talentDamage) * (1.0f - reduction);
-                }
-                else
-                {
-                    damage += arrowDamage * (1.0f - reduction);
-                }
+            if (targets.Any())
+            {
+                return damage;
+            }
+
+
+            var reduction = this.Ability.GetDamageReduction(target);
+
+            if (talent != null)
+            {
+                var talentDamage = talent.GetAbilitySpecialData("value");
+                damage += (arrowDamage + talentDamage) * (1.0f - reduction);
+            }
+            else
+            {
+                damage += arrowDamage * (1.0f - reduction);
             }
 
             return damage;

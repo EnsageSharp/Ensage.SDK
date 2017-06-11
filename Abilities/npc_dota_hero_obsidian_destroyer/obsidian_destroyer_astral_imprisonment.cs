@@ -2,6 +2,8 @@
 //    Copyright (c) 2017 Ensage.
 // </copyright>
 
+using System.Linq;
+
 namespace Ensage.SDK.Abilities.npc_dota_hero_obsidian_destroyer
 {
 
@@ -26,12 +28,16 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_obsidian_destroyer
 
             var damage = this.GetRawDamage();
             var amplify = this.Owner.GetSpellAmplification();
-            foreach (var target in targets)
+            var target = targets.First();
+            var reduction = this.Ability.GetDamageReduction(target);
+
+            if (!targets.Any())
             {
-                var reduction = this.Ability.GetDamageReduction(target);
-                totalDamage += DamageHelpers.GetSpellDamage(damage, amplify, reduction);
+                return damage;
             }
 
+            totalDamage += DamageHelpers.GetSpellDamage(damage, amplify, reduction);
+            
             return totalDamage;
         }
     }

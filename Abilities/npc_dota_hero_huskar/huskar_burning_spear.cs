@@ -34,7 +34,7 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_huskar
             {
                 var reduction = this.Ability.GetDamageReduction(target);
 
-                if (talent != null)
+                if (talent != null && talent.Level > 0)
                 {
                     var talentDamage = talent.GetAbilitySpecialData("value");
                     damage += ((talentDamage + spearDamage) * (1.0f - reduction)) * 8;

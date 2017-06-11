@@ -31,14 +31,13 @@ namespace Ensage.SDK.Abilities.Items
             var damage = this.GetRawDamage();
 
             var amplify = this.Owner.GetSpellAmplification();
-            var resist = 0.0f;
             if (!targets.Any())
             {
-                return DamageHelpers.GetSpellDamage(damage, amplify, resist);
+                return DamageHelpers.GetSpellDamage(damage, amplify);
             }
 
             var damageBonus = -this.Ability.GetAbilitySpecialData("ethereal_damage_bonus") / 100.0f; // -40 => 0.4
-            resist = targets.First().MagicDamageResist; 
+            var resist = this.Ability.GetDamageReduction(targets.First()); 
 
             return DamageHelpers.GetSpellDamage(damage, amplify, -resist, damageBonus);
         }

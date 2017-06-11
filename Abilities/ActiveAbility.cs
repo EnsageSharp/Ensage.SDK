@@ -114,7 +114,6 @@ namespace Ensage.SDK.Abilities
 
             var amplify = this.Owner.GetSpellAmplification();
             var reduction = 0.0f;
-
             if (targets.Any())
             {
                 reduction = this.Ability.GetDamageReduction(targets.First());

@@ -4,7 +4,6 @@
 
 namespace Ensage.SDK.Abilities.npc_dota_hero_queenofpain
 {
-    using Ensage.Common.Enums;
     using Ensage.SDK.Extensions;
     using Ensage.SDK.Helpers;
 
@@ -13,6 +12,14 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_queenofpain
         public queenofpain_scream_of_pain(Ability ability)
             : base(ability)
         {
+        }
+
+        public override float Speed
+        {
+            get
+            {
+                return this.Ability.GetAbilitySpecialData("projectile_speed");
+            }
         }
 
         protected override string RadiusName { get; } = "area_of_effect";
@@ -34,14 +41,6 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_queenofpain
             }
 
             return totalDamage;
-        }
-
-        public override float Speed
-        {
-            get
-            {
-                return this.Ability.GetAbilitySpecialData("projectile_speed");
-            }
         }
     }
 }

@@ -2,6 +2,8 @@
 //    Copyright (c) 2017 Ensage.
 // </copyright>
 
+using System.Linq;
+
 namespace Ensage.SDK.Abilities.npc_dota_hero_huskar
 {
 
@@ -30,22 +32,27 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_huskar
 
             var spearDamage = this.GetRawDamage() * (1.0f + this.Owner.GetSpellAmplification());
 
-            foreach (var target in targets)
-            {
-                var reduction = this.Ability.GetDamageReduction(target);
+            var target = targets.First();
 
-                if (talent != null && talent.Level > 0)
-                {
-                    var talentDamage = talent.GetAbilitySpecialData("value");
-                    damage += ((talentDamage + spearDamage) * (1.0f - reduction)) * 8;
-                }
-                else
-                {
-                    damage += (spearDamage * (1.0f - reduction)) * 8;
-                }
+            if (targets.Any())
+            {
+                return damage;
             }
 
-            return damage;
+            var reduction = this.Ability.GetDamageReduction(target);
+
+            if (talent != null && talent.Level > 0)
+            {
+                 var talentDamage = talent.GetAbilitySpecialData("value");
+                 damage += ((talentDamage + spearDamage) * (1.0f - reduction)) * 8;
+            }
+           else
+            {
+                 damage += (spearDamage * (1.0f - reduction)) * 8;
+            }
+
+         return damage;
+
         }
     }
 }

@@ -2,9 +2,10 @@
 //    Copyright (c) 2017 Ensage.
 // </copyright>
 
+using System.Linq;
+
 namespace Ensage.SDK.Abilities.npc_dota_hero_huskar
 {
-
     using Ensage.SDK.Extensions;
     using Ensage.SDK.Helpers;
 
@@ -28,11 +29,13 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_huskar
 
             var damage = this.GetRawDamage();
             var amplify = this.Owner.GetSpellAmplification();
-            foreach (var target in targets)
+            var target = targets.First();
+            if (targets.Any())
             {
-                var reduction = this.Ability.GetDamageReduction(target);
-                totalDamage += DamageHelpers.GetSpellDamage(damage, amplify, reduction);
+                return damage;
             }
+            var reduction = this.Ability.GetDamageReduction(target);
+            totalDamage += DamageHelpers.GetSpellDamage(damage, amplify, reduction);
 
             return totalDamage;
         }
@@ -50,5 +53,4 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_huskar
             return selfDamage >= this.Owner.Health ? 0f : selfDamage;
         }
     }
-
 }

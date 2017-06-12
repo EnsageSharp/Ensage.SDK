@@ -4,10 +4,7 @@
 
 namespace Ensage.SDK.Abilities.npc_dota_hero_vengefulspirit
 {
-    using System.Linq;
-
     using Ensage.SDK.Extensions;
-    using Ensage.SDK.Helpers;
 
     // ReSharper disable once InconsistentNaming
     // ReSharper disable once StyleCop.SA1300

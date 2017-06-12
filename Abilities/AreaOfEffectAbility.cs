@@ -6,7 +6,7 @@ namespace Ensage.SDK.Abilities
 {
     using Ensage.SDK.Extensions;
 
-    public abstract class AreaOfEffectAbility : RangedAbility
+    public abstract class AreaOfEffectAbility : RangedAbility, IAreaOfEffectAbility
     {
         protected AreaOfEffectAbility(Ability ability)
             : base(ability)

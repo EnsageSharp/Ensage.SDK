@@ -30,9 +30,9 @@ namespace Ensage.SDK.Samples
     {
         private static readonly ILog Log = AssemblyLogs.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        private readonly Lazy<IInputManager> input;
-
         private readonly Lazy<AbilityFactory> abilityFactory;
+
+        private readonly Lazy<IInputManager> input;
 
         private readonly Lazy<IOrbwalkerManager> orbwalkerManager;
 

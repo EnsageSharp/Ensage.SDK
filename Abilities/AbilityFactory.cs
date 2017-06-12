@@ -21,10 +21,7 @@ namespace Ensage.SDK.Abilities
         {
             this.Context = context;
 
-            this.Types = Assembly.GetExecutingAssembly()
-                                 .GetExportedTypes()
-                                 .Where(e => !e.IsAbstract && typeof(BaseAbility).IsAssignableFrom(e))
-                                 .ToArray();
+            this.Types = Assembly.GetExecutingAssembly().GetExportedTypes().Where(e => !e.IsAbstract && typeof(BaseAbility).IsAssignableFrom(e)).ToArray();
         }
 
         private IServiceContext Context { get; }
@@ -55,7 +52,8 @@ namespace Ensage.SDK.Abilities
             return (BaseAbility)Activator.CreateInstance(type, ability);
         }
 
-        public T GetAbility<T>() where T : BaseAbility
+        public T GetAbility<T>()
+            where T : BaseAbility
         {
             var abilityTypeName = typeof(T).Name;
 
@@ -65,10 +63,11 @@ namespace Ensage.SDK.Abilities
                 throw new AbilityNotFoundException($"Could not find {abilityTypeName} in the AbilityId enum");
             }
 
-            return (T)this.GetAbility(id);
+            return this.GetAbility<T>(id);
         }
 
-        public T GetAbility<T>(AbilityId id) where T : BaseAbility
+        public T GetAbility<T>(AbilityId id)
+            where T : BaseAbility
         {
             return (T)this.GetAbility(id);
         }

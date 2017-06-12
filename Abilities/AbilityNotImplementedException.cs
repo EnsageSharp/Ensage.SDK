@@ -24,9 +24,7 @@ namespace Ensage.SDK.Abilities
         {
         }
 
-        protected AbilityNotImplementedException(
-            SerializationInfo info,
-            StreamingContext context)
+        protected AbilityNotImplementedException(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {
         }

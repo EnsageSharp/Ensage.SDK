@@ -24,7 +24,7 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_enigma
             }
         }
 
-        public bool HasInitialDamage { get; } = true;
+        public bool HasInitialDamage { get; } = false;
 
         public float RawTickDamage
         {

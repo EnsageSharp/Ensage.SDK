@@ -50,7 +50,7 @@ namespace Ensage.SDK.Samples
                 if (!target.HasModifier(this.frostArrows.TargetModifierName))
                 {
                     this.frostArrows.UseAbility(target);
-                    await Task.Delay((int)(this.frostArrows.CastPoint * 1000.0f), token);
+                    await Task.Delay(this.frostArrows.GetCastDelay(target), token);
                     return;
                 }
             }
@@ -60,7 +60,7 @@ namespace Ensage.SDK.Samples
 
         protected override void OnActivate()
         {
-            this.frostArrows = (drow_ranger_frost_arrows)this.abilityFactory.GetAbility(AbilityId.drow_ranger_frost_arrows);
+            this.frostArrows = this.abilityFactory.GetAbility<drow_ranger_frost_arrows>();
             base.OnActivate();
         }
     }

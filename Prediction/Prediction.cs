@@ -159,6 +159,10 @@ namespace Ensage.SDK.Prediction
             var targets = new List<PredictionOutput>();
 
             // main target
+            output.AoeTargetsHit = new List<PredictionOutput>
+                           {
+                               output
+                           };
             targets.Add(output);
 
             foreach (var target in input.AreaOfEffectTargets)
@@ -271,7 +275,7 @@ namespace Ensage.SDK.Prediction
                                CastPosition = this.ExtendUntilWall(
                                    targetPosition,
                                    direction.ToVector3(),
-                                   ((totalArrivalTime * target.MovementSpeed) + 20f) - input.Radius - target.HullRadius),
+                                   ((totalArrivalTime * target.MovementSpeed) + 20f) - input.Radius - target.HullRadius / 2.0f),
                                HitChance = !caster.IsVisibleToEnemies ? HitChance.High : HitChance.Medium
                            };
                 }
@@ -285,7 +289,7 @@ namespace Ensage.SDK.Prediction
                        CastPosition = this.ExtendUntilWall(
                            targetPosition,
                            direction.ToVector3(),
-                           ((totalArrivalTime * target.MovementSpeed) + 20f) - input.Radius - target.HullRadius),
+                           ((totalArrivalTime * target.MovementSpeed) + 20f) - input.Radius - target.HullRadius / 2.0f),
                        HitChance = input.Speed != float.MaxValue ? HitChance.Low : HitChance.Medium
                    };
         }

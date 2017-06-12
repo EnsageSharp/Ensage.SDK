@@ -55,6 +55,19 @@ namespace Ensage.SDK.Abilities
             return (BaseAbility)Activator.CreateInstance(type, ability);
         }
 
+        public T GetAbility<T>() where T : BaseAbility
+        {
+            var abilityTypeName = typeof(T).Name;
+
+            AbilityId id;
+            if (!Enum.TryParse(abilityTypeName, out id))
+            {
+                throw new AbilityNotFoundException($"Could not find {abilityTypeName} in the AbilityId enum");
+            }
+
+            return (T)this.GetAbility(id);
+        }
+
         public T GetAbility<T>(AbilityId id) where T : BaseAbility
         {
             return (T)this.GetAbility(id);

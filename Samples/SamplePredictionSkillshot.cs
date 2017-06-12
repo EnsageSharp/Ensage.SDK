@@ -59,14 +59,16 @@ namespace Ensage.SDK.Samples
 
         protected override void OnActivate()
         {
-            // this.skillshotAbility = this.abilityFactory.Value.GetAbility<pudge_meat_hook>(AbilityId.pudge_meat_hook);
-            this.skillshotAbility = this.abilityFactory.Value.GetAbility< vengefulspirit_wave_of_terror>(AbilityId.vengefulspirit_wave_of_terror);
+            // this.skillshotAbility = this.abilityFactory.Value.GetAbility<pudge_meat_hook>();
+            this.skillshotAbility = this.abilityFactory.Value.GetAbility<vengefulspirit_wave_of_terror>();
             UpdateManager.Subscribe(this.OnUpdate);
             Drawing.OnDraw += this.Drawing_OnDraw;
         }
 
         protected override void OnDeactivate()
         {
+            Drawing.OnDraw -= this.Drawing_OnDraw;
+            UpdateManager.Unsubscribe(this.OnUpdate);
         }
 
         private void Drawing_OnDraw(EventArgs args)

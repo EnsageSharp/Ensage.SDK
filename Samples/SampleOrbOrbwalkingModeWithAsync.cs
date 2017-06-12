@@ -12,6 +12,7 @@ namespace Ensage.SDK.Samples
     using System.Windows.Input;
 
     using Ensage.Common.Extensions;
+    using Ensage.SDK.Abilities;
     using Ensage.SDK.Abilities.npc_dota_hero_drow_ranger;
     using Ensage.SDK.Input;
     using Ensage.SDK.Orbwalker;
@@ -28,13 +29,16 @@ namespace Ensage.SDK.Samples
 
         private readonly ITargetSelectorManager targetSelectorManager;
 
+        private readonly AbilityFactory abilityFactory;
+
         private drow_ranger_frost_arrows frostArrows;
 
         [ImportingConstructor]
-        public SampleOrbOrbwalkingModeWithAsync(IOrbwalker orbwalker, IInputManager input, ITargetSelectorManager targetSelectorManager)
+        public SampleOrbOrbwalkingModeWithAsync(IOrbwalker orbwalker, IInputManager input, ITargetSelectorManager targetSelectorManager, AbilityFactory abilityFactory)
             : base(orbwalker, input, Key.Space)
         {
             this.targetSelectorManager = targetSelectorManager;
+            this.abilityFactory = abilityFactory;
         }
 
         public override async Task ExecuteAsync(CancellationToken token)
@@ -56,7 +60,7 @@ namespace Ensage.SDK.Samples
 
         protected override void OnActivate()
         {
-            this.frostArrows = new drow_ranger_frost_arrows(this.Owner.GetAbilityById(AbilityId.drow_ranger_frost_arrows));
+            this.frostArrows = (drow_ranger_frost_arrows)this.abilityFactory.GetAbility(AbilityId.drow_ranger_frost_arrows);
             base.OnActivate();
         }
     }

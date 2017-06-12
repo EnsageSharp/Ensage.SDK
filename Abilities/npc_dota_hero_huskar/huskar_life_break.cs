@@ -2,15 +2,15 @@
 //    Copyright (c) 2017 Ensage.
 // </copyright>
 
-using System.Linq;
-
 namespace Ensage.SDK.Abilities.npc_dota_hero_huskar
 {
+
+    using System.Linq;
     using Ensage.SDK.Extensions;
     using Ensage.SDK.Helpers;
 
 
-    public class huskar_life_break : RangedAbility, IHasTargetModifier, IHasModifier
+    public class huskar_life_break : RangedAbility, IHasTargetModifier, IHasModifier, IHasLifeCost
     {
         public huskar_life_break(Ability ability)
             : base(ability)
@@ -21,7 +21,7 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_huskar
         public string TargetModifierName => "modifier_huskar_life_break_slow";
         public float HealthCostPercent => Ability.GetAbilitySpecialData("tooltip_health_damage");
         public float HealthDamagePercent => Ability.GetAbilitySpecialData("tooltip_health_damage");
-        public float HealthDamagePercentScepter => Ability.GetAbilitySpecialData("health_damage_scepter") * 100f;
+        public float HealthCost => GetSelfDamage();
 
         public override float GetDamage(params Unit[] targets)
         {
@@ -40,7 +40,7 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_huskar
             return totalDamage;
         }
 
-        public float GetSelfDamage()
+        private float GetSelfDamage()
         {
             var selfDamage = 0.0f;
 
@@ -50,7 +50,8 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_huskar
 
             selfDamage += DamageHelpers.GetSpellDamage(damage, amplify, reduction);
 
-            return selfDamage >= this.Owner.Health ? 0f : selfDamage;
+            return selfDamage >= this.Owner.Health ? this.Owner.Health : selfDamage;
+            
         }
     }
 }

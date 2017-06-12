@@ -87,6 +87,7 @@
     <Compile Include="Abilities\ActiveAbility.cs" />
     <Compile Include="Abilities\AutocastAbility.cs" />
     <Compile Include="Abilities\BaseAbility.cs" />
+    <Compile Include="Abilities\IAreaOfEffectAbility.cs" />
     <Compile Include="Abilities\Items\IItemInfo.cs" />
     <Compile Include="Abilities\Items\item_ethereal_blade.cs" />
     <Compile Include="Abilities\Items\item_gem.cs" />
@@ -101,6 +102,9 @@
     <Compile Include="Abilities\AuraAbility.cs" />
     <Compile Include="Abilities\npc_dota_hero_drow_ranger\drow_ranger_trueshot.cs" />
     <Compile Include="Abilities\AreaOfEffectAbility.cs" />
+    <Compile Include="Abilities\IHasHealthCost.cs" />
+    <Compile Include="Abilities\npc_dota_hero_pudge\pudge_rot.cs" />
+    <Compile Include="Abilities\ToggleAbility.cs" />
     <Compile Include="Abilities\npc_dota_hero_queenofpain\queenofpain_blink.cs" />
     <Compile Include="Abilities\npc_dota_hero_queenofpain\queenofpain_scream_of_pain.cs" />
     <Compile Include="Abilities\npc_dota_hero_vengefulspirit\vengefulspirit_command_aura.cs" />

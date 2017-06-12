@@ -26,15 +26,15 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_enigma
 
         public bool HasInitialDamage { get; } = true;
 
-        public string TargetModifierName { get; } = "modifier_enigma_malefice";
-
-        public float TickDamage
+        public float RawTickDamage
         {
             get
             {
                 return this.Ability.GetAbilitySpecialData("damage");
             }
         }
+
+        public string TargetModifierName { get; } = "modifier_enigma_malefice";
 
         public float TickRate
         {
@@ -51,12 +51,12 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_enigma
 
         public float GetTickDamage(params Unit[] targets)
         {
-            var damage = this.TickDamage;
+            var damage = this.RawTickDamage;
             var amplify = this.Ability.SpellAmplification();
             var reduction = 0.0f;
             if (targets.Any())
             {
-                reduction  = this.Ability.GetDamageReduction(targets.First());
+                reduction = this.Ability.GetDamageReduction(targets.First());
             }
 
             return DamageHelpers.GetSpellDamage(damage, amplify, reduction);

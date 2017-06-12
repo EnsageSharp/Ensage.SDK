@@ -94,7 +94,7 @@ namespace Ensage.SDK.Samples
 
         private void OnUpdate()
         {
-            var target = this.targetManager.Value.Active.GetTargets().FirstOrDefault(x => x.Distance2D(this.owner) <= this.skillshotAbility.Range);
+            var target = this.targetManager.Value.Active.GetTargets().FirstOrDefault(x => x.Distance2D(this.owner) <= this.skillshotAbility.CastRange);
             if (target != null)
             {
                 this.skillshotAbility.UseAbility(target);

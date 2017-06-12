@@ -28,6 +28,14 @@ namespace Ensage.SDK.Abilities
 
         public virtual CollisionTypes CollisionTypes { get; } = CollisionTypes.None;
 
+        public virtual float EndRadius
+        {
+            get
+            {
+                return this.Ability.GetAbilitySpecialData(this.EndRadiusName);
+            }
+        }
+
         public virtual bool HasAreaOfEffect
         {
             get
@@ -46,11 +54,27 @@ namespace Ensage.SDK.Abilities
             }
         }
 
+        public virtual float Range
+        {
+            get
+            {
+                return this.CastRange;
+            }
+        }
+
         public override float Speed
         {
             get
             {
                 return this.Ability.GetAbilitySpecialData(this.SpeedName);
+            }
+        }
+
+        protected virtual string EndRadiusName
+        {
+            get
+            {
+                return this.RadiusName;
             }
         }
 
@@ -69,7 +93,7 @@ namespace Ensage.SDK.Abilities
                                 CollisionTypes = this.CollisionTypes,
                                 Delay = this.CastPoint,
                                 Speed = this.Speed,
-                                Range = this.Range,
+                                Range = this.CastRange,
                                 Radius = this.Radius,
                                 PredictionSkillshotType = this.PredictionSkillshotType
                             };

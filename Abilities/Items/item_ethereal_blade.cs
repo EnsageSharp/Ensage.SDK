@@ -26,9 +26,37 @@ namespace Ensage.SDK.Abilities.Items
 
         public string TargetModifierName { get; } = "modifier_item_ethereal_blade_ethereal";
 
+        protected override float RawDamage
+        {
+            get
+            {
+                var damage = this.Ability.GetAbilitySpecialData("blast_damage_base");
+
+                var hero = this.Owner as Hero;
+                if (hero != null)
+                {
+                    var multiplier = this.Ability.GetAbilitySpecialData("blast_agility_multiplier"); // 2.0
+                    switch (hero.PrimaryAttribute)
+                    {
+                        case Attribute.Strength:
+                            damage += multiplier * hero.TotalStrength;
+                            break;
+                        case Attribute.Agility:
+                            damage += multiplier * hero.TotalAgility;
+                            break;
+                        case Attribute.Intelligence:
+                            damage += multiplier * hero.TotalIntelligence;
+                            break;
+                    }
+                }
+
+                return damage;
+            }
+        }
+
         public override float GetDamage(params Unit[] targets)
         {
-            var damage = this.GetRawDamage();
+            var damage = this.RawDamage;
 
             var amplify = this.Owner.GetSpellAmplification();
             if (!targets.Any())
@@ -40,31 +68,6 @@ namespace Ensage.SDK.Abilities.Items
             var resist = this.Ability.GetDamageReduction(targets.First());
 
             return DamageHelpers.GetSpellDamage(damage, amplify, -resist, damageBonus);
-        }
-
-        protected override float GetRawDamage()
-        {
-            var damage = this.Ability.GetAbilitySpecialData("blast_damage_base");
-
-            var hero = this.Owner as Hero;
-            if (hero != null)
-            {
-                var multiplier = this.Ability.GetAbilitySpecialData("blast_agility_multiplier"); // 2.0
-                switch (hero.PrimaryAttribute)
-                {
-                    case Attribute.Strength:
-                        damage += multiplier * hero.TotalStrength;
-                        break;
-                    case Attribute.Agility:
-                        damage += multiplier * hero.TotalAgility;
-                        break;
-                    case Attribute.Intelligence:
-                        damage += multiplier * hero.TotalIntelligence;
-                        break;
-                }
-            }
-
-            return damage;
         }
     }
 }

@@ -37,17 +37,20 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_vengefulspirit
             }
         }
 
-        protected override float GetRawDamage()
+        protected override float RawDamage
         {
-            var damage = this.Ability.GetAbilitySpecialData("magic_missile_damage");
-
-            var damageTalent = this.Owner.GetAbilityById(AbilityId.special_bonus_unique_vengeful_spirit_1);
-            if (damageTalent != null && damageTalent.Level > 0)
+            get
             {
-                damage += damageTalent.GetAbilitySpecialData("value");
-            }
+                var damage = this.Ability.GetAbilitySpecialData("magic_missile_damage");
 
-            return damage;
+                var damageTalent = this.Owner.GetAbilityById(AbilityId.special_bonus_unique_vengeful_spirit_1);
+                if (damageTalent != null && damageTalent.Level > 0)
+                {
+                    damage += damageTalent.GetAbilitySpecialData("value");
+                }
+
+                return damage;
+            }
         }
     }
 }

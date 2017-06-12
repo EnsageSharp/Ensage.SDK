@@ -501,6 +501,11 @@ namespace Ensage.SDK.Extensions
             return false;
         }
 
+        public static bool IsInvisible(this Unit unit)
+        {
+            return unit.UnitState.HasFlag(UnitState.Invisible);
+        }
+
         public static bool IsRooted(this Unit unit)
         {
             return unit.UnitState.HasFlag(UnitState.Rooted);

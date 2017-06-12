@@ -23,7 +23,7 @@ namespace Ensage.SDK.Abilities
             }
         }
 
-        public override float Range
+        public override float CastRange
         {
             get
             {

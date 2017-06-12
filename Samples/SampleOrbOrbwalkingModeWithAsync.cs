@@ -44,7 +44,7 @@ namespace Ensage.SDK.Samples
         public override async Task ExecuteAsync(CancellationToken token)
         {
             Log.Debug($"ExecuteAsynce");
-            var target = this.targetSelectorManager.Active.GetTargets().FirstOrDefault(x => x.Distance2D(this.Owner) <= this.frostArrows.Range);
+            var target = this.targetSelectorManager.Active.GetTargets().FirstOrDefault(x => x.Distance2D(this.Owner) <= this.frostArrows.CastRange);
             if (target != null)
             {
                 if (!target.HasModifier(this.frostArrows.TargetModifierName))

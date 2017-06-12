@@ -1,41 +1,40 @@
-﻿// <copyright file="queenofpain_scream_of_pain.cs" company="Ensage">
+﻿// <copyright file="zuus_thundergods_wrath.cs" company="Ensage">
 //    Copyright (c) 2017 Ensage.
 // </copyright>
 
-namespace Ensage.SDK.Abilities.npc_dota_hero_queenofpain
+namespace Ensage.SDK.Abilities.npc_dota_hero_zuus
 {
     using Ensage.SDK.Extensions;
     using Ensage.SDK.Helpers;
 
-    public class queenofpain_scream_of_pain : AreaOfEffectAbility
+    public class zuus_thundergods_wrath : ActiveAbility
     {
-        public queenofpain_scream_of_pain(Ability ability)
+        public zuus_thundergods_wrath(Ability ability)
             : base(ability)
         {
         }
 
-        public override float Speed
+        protected override float RawDamage
         {
             get
             {
-                return this.Ability.GetAbilitySpecialData("projectile_speed");
+                return this.Ability.GetAbilitySpecialData("damage");
             }
         }
 
-        protected override string RadiusName { get; } = "area_of_effect";
-
         public override float GetDamage(params Unit[] targets)
         {
-            var totalDamage = 0.0f;
-
             var damage = this.RawDamage;
             var amplify = this.Owner.GetSpellAmplification();
+
+            var totalDamage = 0.0f;
             foreach (var target in targets)
             {
-                // if (!this.CanAffectTarget(target)) // TODO
-                // {
-                // continue;
-                // }
+                if (target.IsInvisible())
+                {
+                    continue;
+                }
+
                 var reduction = this.Ability.GetDamageReduction(target);
                 totalDamage += DamageHelpers.GetSpellDamage(damage, amplify, reduction);
             }

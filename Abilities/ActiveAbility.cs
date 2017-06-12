@@ -67,6 +67,21 @@ namespace Ensage.SDK.Abilities
 
         protected float LastCastAttempt { get; set; }
 
+        protected override float RawDamage
+        {
+            get
+            {
+                var level = this.Ability.Level;
+                if (level == 0)
+                {
+                    return 0;
+                }
+
+                var damage = (float)this.Ability.GetDamage(level - 1);
+                return damage;
+            }
+        }
+
         public static implicit operator bool(ActiveAbility ability)
         {
             return ability.CanBeCasted;
@@ -106,7 +121,7 @@ namespace Ensage.SDK.Abilities
 
         public override float GetDamage(params Unit[] targets)
         {
-            var damage = this.GetRawDamage();
+            var damage = this.RawDamage;
             if (damage == 0)
             {
                 return 0;
@@ -205,18 +220,6 @@ namespace Ensage.SDK.Abilities
             }
 
             return result;
-        }
-
-        protected override float GetRawDamage()
-        {
-            var level = this.Ability.Level;
-            if (level == 0)
-            {
-                return 0;
-            }
-
-            var damage = (float)this.Ability.GetDamage(level - 1);
-            return damage;
         }
     }
 }

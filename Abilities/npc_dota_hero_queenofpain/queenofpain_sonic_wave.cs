@@ -13,10 +13,18 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_queenofpain
         {
         }
 
-        public override float EndWidth => this.Ability.GetAbilitySpecialData("final_aoe");
+        public override float Range
+        {
+            get
+            {
+                return this.Ability.GetAbilitySpecialData("distance");
+            }
+        }
 
-        public override float Speed => this.Ability.GetAbilitySpecialData("speed");
+        protected override string EndRadiusName { get; } = "final_aoe";
 
-        public override float StartWidth => this.Ability.GetAbilitySpecialData("starting_aoe");
+        protected override string RadiusName { get; } = "starting_aoe";
+
+        // TODO: GetDamage
     }
 }

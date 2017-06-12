@@ -106,7 +106,15 @@
     <Compile Include="Abilities\IChannable.cs" />
     <Compile Include="Abilities\npc_dota_hero_pudge\pudge_dismember.cs" />
     <Compile Include="Abilities\npc_dota_hero_pudge\pudge_rot.cs" />
+    <Compile Include="Abilities\ConeAbility.cs" />
+    <Compile Include="Abilities\npc_dota_hero_queenofpain\queenofpain_shadow_strike.cs" />
+    <Compile Include="Abilities\npc_dota_hero_queenofpain\queenofpain_sonic_wave.cs" />
     <Compile Include="Abilities\npc_dota_hero_warlock\warlock_upheaval.cs" />
+    <Compile Include="Abilities\npc_dota_hero_zuus\zuus_arc_lightning.cs" />
+    <Compile Include="Abilities\npc_dota_hero_zuus\zuus_cloud.cs" />
+    <Compile Include="Abilities\npc_dota_hero_zuus\zuus_lightning_bolt.cs" />
+    <Compile Include="Abilities\npc_dota_hero_zuus\zuus_static_field.cs" />
+    <Compile Include="Abilities\npc_dota_hero_zuus\zuus_thundergods_wrath.cs" />
     <Compile Include="Abilities\ToggleAbility.cs" />
     <Compile Include="Abilities\npc_dota_hero_queenofpain\queenofpain_blink.cs" />
     <Compile Include="Abilities\npc_dota_hero_queenofpain\queenofpain_scream_of_pain.cs" />

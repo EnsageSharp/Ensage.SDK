@@ -37,8 +37,8 @@ namespace Ensage.SDK.Abilities
         /// <summary>
         ///     Gets the total damage of the dot, including the initial damage and the total possible tick damage.
         /// </summary>
-        /// <param name="target">The target(s) which have the dot applied.</param>
+        /// <param name="targets">The target(s) which have the dot applied.</param>
         /// <returns>Total damage.</returns>
-        float GetTotalDamage(params Unit[] target);
+        float GetTotalDamage(params Unit[] targets);
     }
 }

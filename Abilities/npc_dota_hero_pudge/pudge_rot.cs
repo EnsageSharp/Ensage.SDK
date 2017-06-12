@@ -80,9 +80,9 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_pudge
             return totalDamage;
         }
 
-        public float GetTotalDamage(params Unit[] target)
+        public float GetTotalDamage(params Unit[] targets)
         {
-            return this.GetTickDamage(target) * (this.Duration / this.TickRate);
+            return this.GetTickDamage(targets) * (this.Duration / this.TickRate);
         }
     }
 }

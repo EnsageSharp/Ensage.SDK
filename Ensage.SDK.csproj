@@ -103,7 +103,10 @@
     <Compile Include="Abilities\npc_dota_hero_drow_ranger\drow_ranger_trueshot.cs" />
     <Compile Include="Abilities\AreaOfEffectAbility.cs" />
     <Compile Include="Abilities\IHasHealthCost.cs" />
+    <Compile Include="Abilities\IChannable.cs" />
+    <Compile Include="Abilities\npc_dota_hero_pudge\pudge_dismember.cs" />
     <Compile Include="Abilities\npc_dota_hero_pudge\pudge_rot.cs" />
+    <Compile Include="Abilities\npc_dota_hero_warlock\warlock_upheaval.cs" />
     <Compile Include="Abilities\ToggleAbility.cs" />
     <Compile Include="Abilities\npc_dota_hero_queenofpain\queenofpain_blink.cs" />
     <Compile Include="Abilities\npc_dota_hero_queenofpain\queenofpain_scream_of_pain.cs" />

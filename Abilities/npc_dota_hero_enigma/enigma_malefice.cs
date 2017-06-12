@@ -62,9 +62,9 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_enigma
             return DamageHelpers.GetSpellDamage(damage, amplify, reduction);
         }
 
-        public float GetTotalDamage(params Unit[] target)
+        public float GetTotalDamage(params Unit[] targets)
         {
-            return this.GetTickDamage(target) * (this.Duration / this.TickRate);
+            return this.GetTickDamage(targets) * (this.Duration / this.TickRate);
         }
     }
 }

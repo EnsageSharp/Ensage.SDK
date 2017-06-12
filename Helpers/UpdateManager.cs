@@ -29,7 +29,11 @@ namespace Ensage.SDK.Helpers
 
             SynchronizationContext.SetSynchronizationContext(Context);
 
-            Factory = new TaskFactory(CancellationToken.None, TaskCreationOptions.DenyChildAttach, TaskContinuationOptions.None, TaskScheduler.FromCurrentSynchronizationContext());
+            Factory = new TaskFactory(
+                CancellationToken.None,
+                TaskCreationOptions.DenyChildAttach,
+                TaskContinuationOptions.None,
+                TaskScheduler.FromCurrentSynchronizationContext());
 
             Subscribe(Context.ProcessCallbacks);
 
@@ -76,7 +80,7 @@ namespace Ensage.SDK.Helpers
         }
 
         /// <summary>
-        /// Subscribes <paramref name="callback"/> to OnIngameUpdate with a call timeout of <paramref name="timeout"/>
+        ///     Subscribes <paramref name="callback" /> to OnIngameUpdate with a call timeout of <paramref name="timeout" />
         /// </summary>
         /// <param name="callback">callback</param>
         /// <param name="timeout">in ms</param>
@@ -87,7 +91,7 @@ namespace Ensage.SDK.Helpers
         }
 
         /// <summary>
-        /// Subscribes <paramref name="callback"/> to OnPreIngameUpdate with a call timeout of <paramref name="timeout"/>
+        ///     Subscribes <paramref name="callback" /> to OnPreIngameUpdate with a call timeout of <paramref name="timeout" />
         /// </summary>
         /// <param name="callback">callback</param>
         /// <param name="timeout">in ms</param>

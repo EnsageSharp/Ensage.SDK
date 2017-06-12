@@ -85,6 +85,9 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Abilities\AbilityFactory.cs" />
+    <Compile Include="Abilities\AbilityNotFoundException.cs" />
+    <Compile Include="Abilities\AbilityNotImplementedException.cs" />
     <Compile Include="Abilities\ActiveAbility.cs" />
     <Compile Include="Abilities\AutocastAbility.cs" />
     <Compile Include="Abilities\BaseAbility.cs" />

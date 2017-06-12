@@ -12,7 +12,7 @@ namespace Ensage.SDK.Abilities
         float Duration { get; }
 
         /// <summary>
-        /// Returns true when the dot has an initial damage instance. Use <see cref="ActiveAbility.GetDamage"/> to get the damage value.
+        /// Returns true when the dot has an initial damage instance or applies its first tick immediatelly. Use <see cref="ActiveAbility.GetDamage"/> to get the damage value.
         /// </summary>
         bool HasInitialDamage { get; }
 

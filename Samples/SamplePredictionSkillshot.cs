@@ -32,6 +32,8 @@ namespace Ensage.SDK.Samples
 
         private readonly Lazy<IInputManager> input;
 
+        private readonly Lazy<AbilityFactory> abilityFactory;
+
         private readonly Lazy<IOrbwalkerManager> orbwalkerManager;
 
         private readonly Unit owner;
@@ -45,18 +47,20 @@ namespace Ensage.SDK.Samples
             [Import] IServiceContext context,
             [Import] Lazy<IOrbwalkerManager> orbManager,
             [Import] Lazy<ITargetSelectorManager> targetManager,
-            [Import] Lazy<IInputManager> input)
+            [Import] Lazy<IInputManager> input,
+            [Import] Lazy<AbilityFactory> abilityFactory)
         {
             this.owner = context.Owner;
             this.input = input;
+            this.abilityFactory = abilityFactory;
             this.orbwalkerManager = orbManager;
             this.targetManager = targetManager;
         }
 
         protected override void OnActivate()
         {
-            // this.skillshotAbility = new pudge_meat_hook(this.owner.GetAbilityById(AbilityId.pudge_meat_hook));
-            this.skillshotAbility = new vengefulspirit_wave_of_terror(this.owner.GetAbilityById(AbilityId.vengefulspirit_wave_of_terror));
+            // this.skillshotAbility = this.abilityFactory.Value.GetAbility<pudge_meat_hook>(AbilityId.pudge_meat_hook);
+            this.skillshotAbility = this.abilityFactory.Value.GetAbility< vengefulspirit_wave_of_terror>(AbilityId.vengefulspirit_wave_of_terror);
             UpdateManager.Subscribe(this.OnUpdate);
             Drawing.OnDraw += this.Drawing_OnDraw;
         }

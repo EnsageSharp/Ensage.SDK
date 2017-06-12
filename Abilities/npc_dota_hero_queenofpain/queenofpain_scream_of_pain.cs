@@ -14,6 +14,14 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_queenofpain
         {
         }
 
+        public override float Speed
+        {
+            get
+            {
+                return this.Ability.GetAbilitySpecialData("projectile_speed");
+            }
+        }
+
         protected override string RadiusName { get; } = "area_of_effect";
 
         public override float GetDamage(params Unit[] targets)

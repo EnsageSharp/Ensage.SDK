@@ -32,7 +32,15 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_vengefulspirit
             }
         }
 
-        public override float GetDamage(params Unit[] targets)
+        public override float Speed
+        {
+            get
+            {
+                return this.Ability.GetAbilitySpecialData("magic_missile_speed");
+            }
+        }
+
+        protected override float GetRawDamage()
         {
             var damage = this.Ability.GetAbilitySpecialData("magic_missile_damage");
 
@@ -42,21 +50,7 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_vengefulspirit
                 damage += damageTalent.GetAbilitySpecialData("value");
             }
 
-            if (!targets.Any())
-            {
-                return damage;
-            }
-
-            var target = targets.First();
-
-            // if (!this.CanAffectTarget(target, pierceTalentActive)) TODO
-            // {
-            // return 0;
-            // }
-            var amplify = this.Ability.SpellAmplification();
-            var reduction = this.Ability.GetDamageReduction(target);
-
-            return damage * (1.0f + amplify) * (1.0f - reduction);
+            return damage;
         }
     }
 }

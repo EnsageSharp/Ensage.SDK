@@ -92,6 +92,10 @@
     <Compile Include="Abilities\AutocastAbility.cs" />
     <Compile Include="Abilities\BaseAbility.cs" />
     <Compile Include="Abilities\npc_dota_hero_clinkz\clinkz_searing_arrows.cs" />
+    <Compile Include="Abilities\Items\IItemInfo.cs" />
+    <Compile Include="Abilities\Items\item_ethereal_blade.cs" />
+    <Compile Include="Abilities\Items\item_gem.cs" />
+    <Compile Include="Abilities\Items\item_manta.cs" />
     <Compile Include="Abilities\npc_dota_hero_drow_ranger\drow_ranger_frost_arrows.cs" />
     <Compile Include="Abilities\IHasModifier.cs" />
     <Compile Include="Abilities\IHasTargetModifier.cs" />

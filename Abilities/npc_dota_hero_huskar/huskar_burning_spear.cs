@@ -66,7 +66,7 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_huskar
         public float GetTotalDamage(params Unit[] target)
         {
             var damage = base.GetDamage(target);
-            return (this.GetTickDamage(target) * (this.Duration / this.TickRate)) + base.GetDamage(target);
+            return (this.GetTickDamage(target) * (this.Duration / this.TickRate)) + damage;
         }
     }
 }

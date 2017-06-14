@@ -8,7 +8,7 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_rattletrap
     using Ensage.SDK.Helpers;
     using Ensage.SDK.Prediction.Collision;
 
-    public class rattletrap_hookshot : LineAbility, IHasTargetModifier
+    public class rattletrap_hookshot : LineAbility, IHasTargetModifierTexture
     {
         public rattletrap_hookshot(Ability ability)
             : base(ability)
@@ -17,7 +17,7 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_rattletrap
 
         public override CollisionTypes CollisionTypes { get; } = CollisionTypes.AllUnits;
 
-        public string TargetModifierName { get; } = "modifier_stunned";
+        public string TargetModifierTextureName { get; } = "rattletrap_hookshot";
 
         protected override string RadiusName { get; } = "latch_radius";
 

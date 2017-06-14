@@ -102,7 +102,15 @@ namespace Ensage.SDK.Plugins
                 Drawing.DrawText($"{modifier.StackCount}", name, new Vector2(x + nameSize[0] + 200, y), size, color, flag);
                 Drawing.DrawText($"{this.GetFlags(modifier)}", name, new Vector2(x + nameSize[0] + 260, y), size, color, flag);
 
-                y += 25;
+                if (modifier.TextureName != string.Empty)
+                {
+                    Drawing.DrawText($"{modifier.TextureName}", name, new Vector2(x + 50, y + 25), size, color, flag);
+                    y += 25 * 2;
+                }
+                else
+                {
+                    y += 25;
+                }
             }
         }
     }

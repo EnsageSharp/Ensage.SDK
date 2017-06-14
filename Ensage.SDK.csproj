@@ -118,6 +118,8 @@
     <Compile Include="Abilities\npc_dota_hero_queenofpain\queenofpain_shadow_strike.cs" />
     <Compile Include="Abilities\npc_dota_hero_queenofpain\queenofpain_sonic_wave.cs" />
     <Compile Include="Abilities\CircleAbility.cs" />
+    <Compile Include="Abilities\IHasModifierTexture.cs" />
+    <Compile Include="Abilities\IHasTargetModifierTexture.cs" />
     <Compile Include="Abilities\npc_dota_hero_rattletrap\rattletrap_battery_assault.cs" />
     <Compile Include="Abilities\npc_dota_hero_rattletrap\rattletrap_hookshot.cs" />
     <Compile Include="Abilities\npc_dota_hero_rattletrap\rattletrap_power_cogs.cs" />

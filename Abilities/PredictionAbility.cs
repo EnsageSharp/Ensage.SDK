@@ -142,5 +142,7 @@ namespace Ensage.SDK.Abilities
         {
             return this.UseAbility(target, HitChance.Medium); // TODO: get prediction config hitchance value
         }
+
+        // TODO: add other UseAbility overload without parameter etc to automatically get best position for clock rockets, magnus ult etc?
     }
 }

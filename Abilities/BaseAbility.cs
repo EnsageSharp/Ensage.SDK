@@ -13,6 +13,8 @@ namespace Ensage.SDK.Abilities
 
         public Ability Ability { get; }
 
+        public virtual float CastRange { get; } = 0;
+
         public Item Item
         {
             get
@@ -36,8 +38,6 @@ namespace Ensage.SDK.Abilities
                 return this.Ability.SpellPierceImmunityType;
             }
         }
-
-        public virtual float CastRange { get; } = 0;
 
         protected virtual float RawDamage
         {

@@ -15,6 +15,14 @@ namespace Ensage.SDK.Abilities
         {
         }
 
+        public override bool CanBeCasted
+        {
+            get
+            {
+                return this.Owner.CanAttack() && base.CanBeCasted;
+            }
+        }
+
         public override float CastPoint
         {
             get
@@ -28,6 +36,14 @@ namespace Ensage.SDK.Abilities
             get
             {
                 return this.Owner.AttackRange();
+            }
+        }
+
+        public override float Speed
+        {
+            get
+            {
+                return this.Owner.ProjectileSpeed();
             }
         }
 

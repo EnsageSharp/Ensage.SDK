@@ -1,4 +1,8 @@
-﻿namespace Ensage.SDK.Abilities
+﻿// <copyright file="ConeAbility.cs" company="Ensage">
+//    Copyright (c) 2017 Ensage.
+// </copyright>
+
+namespace Ensage.SDK.Abilities
 {
     using Ensage.SDK.Prediction;
 

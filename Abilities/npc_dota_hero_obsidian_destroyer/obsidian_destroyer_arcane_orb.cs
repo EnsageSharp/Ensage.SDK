@@ -26,14 +26,6 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_obsidian_destroyer
         /// </summary>
         public string ModifierName { get; } = "modifier_obsidian_destroyer_astral_imprisonment_buff";
 
-        public override float Speed
-        {
-            get
-            {
-                return this.Owner.ProjectileSpeed();
-            }
-        }
-
         /// <summary>
         ///     Gets the name of the modifier for enemy heroes, which holds the total count of stacks acquired.
         /// </summary>
@@ -47,19 +39,24 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_obsidian_destroyer
         public override float GetDamage(params Unit[] targets)
         {
             var damage = base.GetDamage(targets);
+            var spellAmp = this.Owner.GetSpellAmplification();
 
             var manaPoolDamage = this.Ability.GetAbilitySpecialData("mana_pool_damage_pct") / 100.0f;
-            damage += DamageHelpers.GetSpellDamage(this.Owner.Mana * manaPoolDamage, this.Owner.GetSpellAmplification());
+            var bonusDamage = this.Owner.Mana * manaPoolDamage;
 
+            var reduction = 0.0f;
             if (targets.Any())
             {
                 var target = targets.First();
+                reduction = this.Ability.GetDamageReduction(target);
+
                 if (target.IsIllusion || target.IsSummoned)
                 {
-                    damage += this.Ability.GetAbilitySpecialData("illusion_damage");
+                    bonusDamage += this.Ability.GetAbilitySpecialData("illusion_damage");
                 }
             }
 
+            damage += DamageHelpers.GetSpellDamage(bonusDamage, spellAmp, reduction);
             return damage;
         }
     }

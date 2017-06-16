@@ -11,6 +11,7 @@ namespace Ensage.SDK.Abilities
 
     using Ensage.SDK.Service;
 
+    using PlaySharp.Toolkit.Extensions;
     using PlaySharp.Toolkit.Helper.Annotations;
 
     [Export(typeof(AbilityFactory))]
@@ -74,7 +75,9 @@ namespace Ensage.SDK.Abilities
 
         public BaseAbility GetAbility(AbilityId id)
         {
-            var ability = this.Context.Owner.Spellbook.Spells.FirstOrDefault(e => e.Id == id);
+            var ability = id.ToName().StartsWith("item_")
+                                  ? this.Context.Owner.Inventory.Items.FirstOrDefault(x => x.Id == id)
+                                  : this.Context.Owner.Spellbook.Spells.FirstOrDefault(x => x.Id == id);
 
             if (ability == null)
             {

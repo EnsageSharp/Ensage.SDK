@@ -15,8 +15,7 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_night_stalker
         {
             get
             {
-                // TODO: wait for core update
-                return /*Game.IsNight &&*/ base.CanBeCasted;
+                return Game.IsNight && base.CanBeCasted;
             }
         }
 

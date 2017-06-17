@@ -82,7 +82,7 @@ namespace Ensage.SDK.Renderer.Particle
         }
 
         /// <summary>
-        /// Draws a range indicator around the point
+        ///     Draws a range indicator around the point
         /// </summary>
         /// <param name="center"></param>
         /// <param name="id"></param>
@@ -94,7 +94,7 @@ namespace Ensage.SDK.Renderer.Particle
         }
 
         /// <summary>
-        /// Draws a red line from unit to endPosition
+        ///     Draws a red line from unit to endPosition
         /// </summary>
         /// <param name="unit"></param>
         /// <param name="id"></param>
@@ -105,7 +105,7 @@ namespace Ensage.SDK.Renderer.Particle
         }
 
         /// <summary>
-        /// Draws a line from unit to endPosition
+        ///     Draws a line from unit to endPosition
         /// </summary>
         /// <param name="unit"></param>
         /// <param name="id"></param>
@@ -120,7 +120,7 @@ namespace Ensage.SDK.Renderer.Particle
         }
 
         /// <summary>
-        /// Draws a range indicator around the unit
+        ///     Draws a range indicator around the unit
         /// </summary>
         /// <param name="unit"></param>
         /// <param name="id"></param>
@@ -156,7 +156,7 @@ namespace Ensage.SDK.Renderer.Particle
         }
 
         /// <summary>
-        /// Shows the click effect on position
+        ///     Shows the click effect on position
         /// </summary>
         /// <param name="unit"></param>
         /// <param name="id"></param>

@@ -55,7 +55,7 @@ namespace Ensage.SDK.Plugins
 
             if (modifier.IsPurgable)
             {
-                sb.Append("Purgable ");
+                sb.Append("Purgeable ");
             }
 
             if (modifier.IsStunDebuff)

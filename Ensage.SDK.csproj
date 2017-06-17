@@ -22,7 +22,8 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <PlatformTarget>x64</PlatformTarget>
-    <LangVersion>7</LangVersion>
+    <LangVersion>default</LangVersion>
+    <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -32,46 +33,51 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <PlatformTarget>x64</PlatformTarget>
+    <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
   </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>true</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>key.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>Properties\key.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="clipper_library">
-      <HintPath>C:\EnsageSharp\References\clipper_library.dll</HintPath>
+      <HintPath>D:\Games\Loader\References\clipper_library.dll</HintPath>
     </Reference>
     <Reference Include="Ensage">
-      <HintPath>C:\EnsageSharp\References\Ensage.dll</HintPath>
+      <HintPath>D:\Games\Loader\References\Ensage.dll</HintPath>
     </Reference>
     <Reference Include="Ensage.Common, Version=1.2.8.5, Culture=neutral, PublicKeyToken=9849de8727708dde, processorArchitecture=AMD64">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>C:\EnsageSharp\References\Ensage.Common.dll</HintPath>
+      <HintPath>D:\Games\Loader\References\Ensage.Common.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Newtonsoft.Json">
-      <HintPath>C:\EnsageSharp\References\Newtonsoft.Json.dll</HintPath>
+      <HintPath>D:\Games\Loader\References\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="PlaySharp.Toolkit, Version=1.0.0.0, Culture=neutral, PublicKeyToken=7e3dc52b16ce4f66, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>C:\EnsageSharp\References\PlaySharp.Toolkit.dll</HintPath>
+      <HintPath>D:\Games\Loader\References\PlaySharp.Toolkit.dll</HintPath>
     </Reference>
     <Reference Include="SharpDX">
-      <HintPath>C:\EnsageSharp\References\SharpDX.dll</HintPath>
+      <HintPath>D:\Games\Loader\References\SharpDX.dll</HintPath>
     </Reference>
     <Reference Include="SharpDX.Direct2D1">
-      <HintPath>C:\EnsageSharp\References\SharpDX.Direct2D1.dll</HintPath>
+      <HintPath>D:\Games\Loader\References\SharpDX.Direct2D1.dll</HintPath>
     </Reference>
     <Reference Include="SharpDX.Direct3D11">
-      <HintPath>C:\EnsageSharp\References\SharpDX.Direct3D11.dll</HintPath>
+      <HintPath>D:\Games\Loader\References\SharpDX.Direct3D11.dll</HintPath>
+    </Reference>
+    <Reference Include="SharpDX.Direct3D9, Version=3.1.0.0, Culture=neutral, PublicKeyToken=7e3dc52b16ce4f66, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>D:\Games\Loader\References\SharpDX.Direct3D9.dll</HintPath>
     </Reference>
     <Reference Include="SharpDX.DXGI">
-      <HintPath>C:\EnsageSharp\References\SharpDX.DXGI.dll</HintPath>
+      <HintPath>D:\Games\Loader\References\SharpDX.DXGI.dll</HintPath>
     </Reference>
     <Reference Include="SharpDX.Mathematics">
-      <HintPath>C:\EnsageSharp\References\SharpDX.Mathematics.dll</HintPath>
+      <HintPath>D:\Games\Loader\References\SharpDX.Mathematics.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
@@ -152,6 +158,19 @@
     <Compile Include="Prediction\PredictionInput.cs" />
     <Compile Include="Prediction\PredictionOutput.cs" />
     <Compile Include="Prediction\PredictionSkillshotType.cs" />
+    <Compile Include="Renderer\DX11\BrushCache.cs" />
+    <Compile Include="Renderer\DX11\D3D11Context.cs" />
+    <Compile Include="Renderer\DX11\D3D11Renderer.cs" />
+    <Compile Include="Renderer\DX11\ID3D11Context.cs" />
+    <Compile Include="Renderer\DX11\TextFormatCache.cs" />
+    <Compile Include="Renderer\DX9\D3D9Context.cs" />
+    <Compile Include="Renderer\DX9\D3D9Renderer.cs" />
+    <Compile Include="Renderer\IRendererManager.cs" />
+    <Compile Include="Renderer\Metadata\ExportRendererAttribute.cs" />
+    <Compile Include="Renderer\DX9\ID3D9Context.cs" />
+    <Compile Include="Renderer\Metadata\IRendererMetadata.cs" />
+    <Compile Include="Renderer\IRenderer.cs" />
+    <Compile Include="Renderer\RendererManager.cs" />
     <Compile Include="Service\ControllableService.cs" />
     <Compile Include="Inventory\InventoryItem.cs" />
     <Compile Include="Inventory\Metadata\ExportInventoryManagerAttribute.cs" />
@@ -242,19 +261,10 @@
     <Compile Include="Service\CatalogLoader.cs" />
     <Compile Include="Service\ContainerFactory.cs" />
     <Compile Include="Service\ContextContainer.cs" />
-    <Compile Include="Renderer\D2D\D2DBrushContainer.cs" />
-    <Compile Include="Renderer\D2D\D2DContext.cs" />
-    <Compile Include="Renderer\D2D\D2DRenderer.cs" />
-    <Compile Include="Renderer\D2D\ID2DBrushContainer.cs" />
-    <Compile Include="Renderer\D2D\ID2DFontContainer.cs" />
     <Compile Include="Input\IInputManager.cs" />
     <Compile Include="Input\InputManager.cs" />
     <Compile Include="Input\KeyEventArgs.cs" />
     <Compile Include="Input\MouseEventArgs.cs" />
-    <Compile Include="Renderer\D2D\D2DFontContainer.cs" />
-    <Compile Include="Renderer\D3D\ID3DRenderer.cs" />
-    <Compile Include="Renderer\D2D\ID2DContext.cs" />
-    <Compile Include="Renderer\D2D\ID2DRenderer.cs" />
     <Compile Include="Service\Plugin.cs" />
     <Compile Include="TargetSelector\Metadata\ExportTargetSelectorAttribute.cs" />
     <Compile Include="Extensions\AbilityExtensions.cs" />
@@ -278,12 +288,9 @@
     <Compile Include="Threading\EnsageSynchronizationContext.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="key.snk" />
+    <None Include="Properties\key.snk" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Managers\" />
-    <Folder Include="Resources\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

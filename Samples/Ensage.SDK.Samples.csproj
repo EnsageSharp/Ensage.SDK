@@ -32,18 +32,40 @@
     <PlatformTarget>x64</PlatformTarget>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="clipper_library" />
-    <Reference Include="Ensage" />
-    <Reference Include="Ensage.Common" />
+    <Reference Include="clipper_library">
+      <HintPath>C:\EnsageSharp\References\clipper_library.dll</HintPath>
+    </Reference>
+    <Reference Include="Ensage">
+      <HintPath>C:\EnsageSharp\References\Ensage.dll</HintPath>
+    </Reference>
+    <Reference Include="Ensage.Common">
+      <HintPath>C:\EnsageSharp\References\Ensage.Common.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="Newtonsoft.Json" />
-    <Reference Include="PlaySharp.Toolkit" />
-    <Reference Include="SharpDX" />
-    <Reference Include="SharpDX.Direct2D1" />
-    <Reference Include="SharpDX.Direct3D11" />
-    <Reference Include="SharpDX.Direct3D9" />
-    <Reference Include="SharpDX.DXGI" />
-    <Reference Include="SharpDX.Mathematics" />
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>C:\EnsageSharp\References\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="PlaySharp.Toolkit">
+      <HintPath>C:\EnsageSharp\References\PlaySharp.Toolkit.dll</HintPath>
+    </Reference>
+    <Reference Include="SharpDX">
+      <HintPath>C:\EnsageSharp\References\SharpDX.dll</HintPath>
+    </Reference>
+    <Reference Include="SharpDX.Direct2D1">
+      <HintPath>C:\EnsageSharp\References\SharpDX.Direct2D1.dll</HintPath>
+    </Reference>
+    <Reference Include="SharpDX.Direct3D11">
+      <HintPath>C:\EnsageSharp\References\SharpDX.Direct3D11.dll</HintPath>
+    </Reference>
+    <Reference Include="SharpDX.Direct3D9">
+      <HintPath>C:\EnsageSharp\References\SharpDX.Direct3D9.dll</HintPath>
+    </Reference>
+    <Reference Include="SharpDX.DXGI">
+      <HintPath>C:\EnsageSharp\References\SharpDX.DXGI.dll</HintPath>
+    </Reference>
+    <Reference Include="SharpDX.Mathematics">
+      <HintPath>C:\EnsageSharp\References\SharpDX.Mathematics.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Core" />

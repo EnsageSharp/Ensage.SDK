@@ -44,13 +44,13 @@ namespace Ensage.SDK.Samples
         public override async Task ExecuteAsync(CancellationToken token)
         {
             Log.Debug($"ExecuteAsynce");
-            var target = this.targetSelectorManager.Active.GetTargets().FirstOrDefault(x => x.Distance2D(this.Owner) <= this.frostArrows.Range);
+            var target = this.targetSelectorManager.Active.GetTargets().FirstOrDefault(x => x.Distance2D(this.Owner) <= this.frostArrows.CastRange);
             if (target != null)
             {
                 if (!target.HasModifier(this.frostArrows.TargetModifierName))
                 {
                     this.frostArrows.UseAbility(target);
-                    await Task.Delay((int)(this.frostArrows.CastPoint * 1000.0f), token);
+                    await Task.Delay(this.frostArrows.GetCastDelay(target), token);
                     return;
                 }
             }
@@ -60,7 +60,7 @@ namespace Ensage.SDK.Samples
 
         protected override void OnActivate()
         {
-            this.frostArrows = (drow_ranger_frost_arrows)this.abilityFactory.GetAbility(AbilityId.drow_ranger_frost_arrows);
+            this.frostArrows = this.abilityFactory.GetAbility<drow_ranger_frost_arrows>();
             base.OnActivate();
         }
     }

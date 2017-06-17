@@ -30,9 +30,9 @@ namespace Ensage.SDK.Samples
     {
         private static readonly ILog Log = AssemblyLogs.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        private readonly Lazy<IInputManager> input;
-
         private readonly Lazy<AbilityFactory> abilityFactory;
+
+        private readonly Lazy<IInputManager> input;
 
         private readonly Lazy<IOrbwalkerManager> orbwalkerManager;
 
@@ -59,14 +59,16 @@ namespace Ensage.SDK.Samples
 
         protected override void OnActivate()
         {
-            // this.skillshotAbility = this.abilityFactory.Value.GetAbility<pudge_meat_hook>(AbilityId.pudge_meat_hook);
-            this.skillshotAbility = this.abilityFactory.Value.GetAbility< vengefulspirit_wave_of_terror>(AbilityId.vengefulspirit_wave_of_terror);
+            // this.skillshotAbility = this.abilityFactory.Value.GetAbility<pudge_meat_hook>();
+            this.skillshotAbility = this.abilityFactory.Value.GetAbility<vengefulspirit_wave_of_terror>();
             UpdateManager.Subscribe(this.OnUpdate);
             Drawing.OnDraw += this.Drawing_OnDraw;
         }
 
         protected override void OnDeactivate()
         {
+            Drawing.OnDraw -= this.Drawing_OnDraw;
+            UpdateManager.Unsubscribe(this.OnUpdate);
         }
 
         private void Drawing_OnDraw(EventArgs args)
@@ -92,7 +94,7 @@ namespace Ensage.SDK.Samples
 
         private void OnUpdate()
         {
-            var target = this.targetManager.Value.Active.GetTargets().FirstOrDefault(x => x.Distance2D(this.owner) <= this.skillshotAbility.Range);
+            var target = this.targetManager.Value.Active.GetTargets().FirstOrDefault(x => x.Distance2D(this.owner) <= this.skillshotAbility.CastRange);
             if (target != null)
             {
                 this.skillshotAbility.UseAbility(target);

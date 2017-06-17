@@ -28,6 +28,14 @@ namespace Ensage.SDK.Abilities
 
         public virtual CollisionTypes CollisionTypes { get; } = CollisionTypes.None;
 
+        public virtual float EndRadius
+        {
+            get
+            {
+                return this.Ability.GetAbilitySpecialData(this.EndRadiusName);
+            }
+        }
+
         public virtual bool HasAreaOfEffect
         {
             get
@@ -46,11 +54,27 @@ namespace Ensage.SDK.Abilities
             }
         }
 
+        public virtual float Range
+        {
+            get
+            {
+                return this.CastRange;
+            }
+        }
+
         public override float Speed
         {
             get
             {
                 return this.Ability.GetAbilitySpecialData(this.SpeedName);
+            }
+        }
+
+        protected virtual string EndRadiusName
+        {
+            get
+            {
+                return this.RadiusName;
             }
         }
 
@@ -63,16 +87,16 @@ namespace Ensage.SDK.Abilities
         public virtual PredictionInput GetPredictionInput(params Unit[] targets)
         {
             var input = new PredictionInput
-                        {
-                            Owner = this.Owner,
-                            AreaOfEffect = this.HasAreaOfEffect,
-                            CollisionTypes = this.CollisionTypes,
-                            Delay = this.CastPoint,
-                            Speed = this.Speed,
-                            Range = this.Range,
-                            Radius = this.Radius,
-                            PredictionSkillshotType = this.PredictionSkillshotType
-                        };
+                            {
+                                Owner = this.Owner,
+                                AreaOfEffect = this.HasAreaOfEffect,
+                                CollisionTypes = this.CollisionTypes,
+                                Delay = this.CastPoint,
+                                Speed = this.Speed,
+                                Range = this.CastRange,
+                                Radius = this.Radius,
+                                PredictionSkillshotType = this.PredictionSkillshotType
+                            };
 
             if (this.HasAreaOfEffect)
             {
@@ -118,5 +142,7 @@ namespace Ensage.SDK.Abilities
         {
             return this.UseAbility(target, HitChance.Medium); // TODO: get prediction config hitchance value
         }
+
+        // TODO: add other UseAbility overload without parameter etc to automatically get best position for clock rockets, magnus ult etc?
     }
 }

@@ -13,6 +13,8 @@ namespace Ensage.SDK.Abilities
 
         public Ability Ability { get; }
 
+        public virtual float CastRange { get; } = 0;
+
         public Item Item
         {
             get
@@ -37,7 +39,13 @@ namespace Ensage.SDK.Abilities
             }
         }
 
-        public virtual float Range { get; } = 0;
+        protected virtual float RawDamage
+        {
+            get
+            {
+                return 0;
+            }
+        }
 
         public static implicit operator Item(BaseAbility ability)
         {
@@ -57,11 +65,6 @@ namespace Ensage.SDK.Abilities
         public override string ToString()
         {
             return this.Ability.Name;
-        }
-
-        protected virtual float GetRawDamage()
-        {
-            return 0;
         }
     }
 }

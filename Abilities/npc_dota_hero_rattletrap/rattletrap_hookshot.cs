@@ -1,28 +1,25 @@
-﻿// <copyright file="queenofpain_scream_of_pain.cs" company="Ensage">
+// <copyright file="rattletrap_hookshot.cs" company="Ensage">
 //    Copyright (c) 2017 Ensage.
 // </copyright>
 
-namespace Ensage.SDK.Abilities.npc_dota_hero_queenofpain
+namespace Ensage.SDK.Abilities.npc_dota_hero_rattletrap
 {
     using Ensage.SDK.Extensions;
     using Ensage.SDK.Helpers;
+    using Ensage.SDK.Prediction.Collision;
 
-    public class queenofpain_scream_of_pain : AreaOfEffectAbility
+    public class rattletrap_hookshot : LineAbility, IHasTargetModifierTexture
     {
-        public queenofpain_scream_of_pain(Ability ability)
+        public rattletrap_hookshot(Ability ability)
             : base(ability)
         {
         }
 
-        public override float Speed
-        {
-            get
-            {
-                return this.Ability.GetAbilitySpecialData("projectile_speed");
-            }
-        }
+        public override CollisionTypes CollisionTypes { get; } = CollisionTypes.AllUnits;
 
-        protected override string RadiusName { get; } = "area_of_effect";
+        public string TargetModifierTextureName { get; } = "rattletrap_hookshot";
+
+        protected override string RadiusName { get; } = "latch_radius";
 
         public override float GetDamage(params Unit[] targets)
         {
@@ -32,10 +29,6 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_queenofpain
             var amplify = this.Owner.GetSpellAmplification();
             foreach (var target in targets)
             {
-                // if (!this.CanAffectTarget(target)) // TODO
-                // {
-                // continue;
-                // }
                 var reduction = this.Ability.GetDamageReduction(target);
                 totalDamage += DamageHelpers.GetSpellDamage(damage, amplify, reduction);
             }

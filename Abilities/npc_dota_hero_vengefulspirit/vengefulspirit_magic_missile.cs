@@ -4,10 +4,7 @@
 
 namespace Ensage.SDK.Abilities.npc_dota_hero_vengefulspirit
 {
-    using System.Linq;
-
     using Ensage.SDK.Extensions;
-    using Ensage.SDK.Helpers;
 
     // ReSharper disable once InconsistentNaming
     // ReSharper disable once StyleCop.SA1300
@@ -40,31 +37,20 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_vengefulspirit
             }
         }
 
-        public override float GetDamage(params Unit[] targets)
+        protected override float RawDamage
         {
-            var damage = this.Ability.GetAbilitySpecialData("magic_missile_damage");
-
-            var damageTalent = this.Owner.GetAbilityById(AbilityId.special_bonus_unique_vengeful_spirit_1);
-            if (damageTalent != null && damageTalent.Level > 0)
+            get
             {
-                damage += damageTalent.GetAbilitySpecialData("value");
-            }
+                var damage = this.Ability.GetAbilitySpecialData("magic_missile_damage");
 
-            if (!targets.Any())
-            {
+                var damageTalent = this.Owner.GetAbilityById(AbilityId.special_bonus_unique_vengeful_spirit_1);
+                if (damageTalent != null && damageTalent.Level > 0)
+                {
+                    damage += damageTalent.GetAbilitySpecialData("value");
+                }
+
                 return damage;
             }
-
-            var target = targets.First();
-
-            // if (!this.CanAffectTarget(target, pierceTalentActive)) TODO
-            // {
-            // return 0;
-            // }
-            var amplify = this.Ability.SpellAmplification();
-            var reduction = this.Ability.GetDamageReduction(target);
-
-            return damage * (1.0f + amplify) * (1.0f - reduction);
         }
     }
 }

@@ -11,6 +11,7 @@ namespace Ensage.SDK.Abilities
 
     using Ensage.SDK.Service;
 
+    using PlaySharp.Toolkit.Extensions;
     using PlaySharp.Toolkit.Helper.Annotations;
 
     [Export(typeof(AbilityFactory))]
@@ -21,10 +22,7 @@ namespace Ensage.SDK.Abilities
         {
             this.Context = context;
 
-            this.Types = Assembly.GetExecutingAssembly()
-                                 .GetExportedTypes()
-                                 .Where(e => !e.IsAbstract && typeof(BaseAbility).IsAssignableFrom(e))
-                                 .ToArray();
+            this.Types = Assembly.GetExecutingAssembly().GetExportedTypes().Where(e => !e.IsAbstract && typeof(BaseAbility).IsAssignableFrom(e)).ToArray();
         }
 
         private IServiceContext Context { get; }
@@ -55,14 +53,31 @@ namespace Ensage.SDK.Abilities
             return (BaseAbility)Activator.CreateInstance(type, ability);
         }
 
-        public T GetAbility<T>(AbilityId id) where T : BaseAbility
+        public T GetAbility<T>()
+            where T : BaseAbility
+        {
+            var abilityTypeName = typeof(T).Name;
+
+            AbilityId id;
+            if (!Enum.TryParse(abilityTypeName, out id))
+            {
+                throw new AbilityNotFoundException($"Could not find {abilityTypeName} in the AbilityId enum");
+            }
+
+            return this.GetAbility<T>(id);
+        }
+
+        public T GetAbility<T>(AbilityId id)
+            where T : BaseAbility
         {
             return (T)this.GetAbility(id);
         }
 
         public BaseAbility GetAbility(AbilityId id)
         {
-            var ability = this.Context.Owner.Spellbook.Spells.FirstOrDefault(e => e.Id == id);
+            var ability = id.ToName().StartsWith("item_")
+                                  ? this.Context.Owner.Inventory.Items.FirstOrDefault(x => x.Id == id)
+                                  : this.Context.Owner.Spellbook.Spells.FirstOrDefault(x => x.Id == id);
 
             if (ability == null)
             {

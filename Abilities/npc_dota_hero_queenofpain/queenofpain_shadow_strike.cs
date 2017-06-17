@@ -9,63 +9,67 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_queenofpain
     using Ensage.SDK.Extensions;
     using Ensage.SDK.Helpers;
 
-    public class queenofpain_shadow_strike : TargetAbility, IDotAbility
+    public class queenofpain_shadow_strike : RangedAbility, IHasDot
     {
         public queenofpain_shadow_strike(Ability ability)
             : base(ability)
         {
         }
 
-        public float Duration => this.Ability.GetAbilitySpecialData("duration_tooltip");
-
-        public string ModifierName { get; }
-
-        public override float Speed => this.Ability.GetAbilitySpecialData("projectile_speed");
-
-        public float TickDamage
+        public float Duration
         {
             get
             {
-                var damage = this.Ability.GetAbilitySpecialData("duration_damage");
-                return damage;
+                return this.Ability.GetAbilitySpecialData("duration_tooltip");
             }
         }
 
-        public float TickRate { get; }
+        public bool HasInitialDamage { get; } = true;
 
-        public override float GetDamage(params Unit[] targets)
+        public float RawTickDamage
         {
-            var target = targets.First();
-            if (!this.CanAffectTarget(target))
+            get
             {
-                return 0;
+                return this.Ability.GetAbilitySpecialData("duration_damage");
             }
+        }
 
-            var damage = this.Ability.GetAbilitySpecialData("strike_damage");
-            var amplify = this.Ability.SpellAmplification();
-            var reduction = this.Ability.GetDamageReduction(target);
+        public override float Speed
+        {
+            get
+            {
+                return this.Ability.GetAbilitySpecialData("projectile_speed");
+            }
+        }
 
-            return DamageHelpers.GetSpellDamage(damage, amplify, reduction) + this.GetTickDamage(target);
+        public string TargetModifierName { get; } = "modifier_queenofpain_shadow_strike";
+
+        public float TickRate { get; } = 3.0f;
+
+        protected override float RawDamage
+        {
+            get
+            {
+                return this.Ability.GetAbilitySpecialData("strike_damage");
+            }
         }
 
         public float GetTickDamage(params Unit[] targets)
         {
-            var target = targets.First();
-            if (!this.CanAffectTarget(target))
-            {
-                return 0;
-            }
-
-            var damage = this.TickDamage;
+            var damage = this.RawTickDamage;
             var amplify = this.Ability.SpellAmplification();
-            var reduction = this.Ability.GetDamageReduction(target);
+            var reduction = 0.0f;
+            if (targets.Any())
+            {
+                reduction = this.Ability.GetDamageReduction(targets.First());
+            }
 
             return DamageHelpers.GetSpellDamage(damage, amplify, reduction);
         }
 
-        public float GetTotalDamage(params Unit[] target)
+        public float GetTotalDamage(params Unit[] targets)
         {
-            return this.GetTickDamage(target) * (this.Duration / this.TickRate);
+            return this.GetDamage(targets) + (this.GetTickDamage(targets) * (this.Duration / this.TickRate));
         }
     }
 }

@@ -6,14 +6,16 @@ namespace Ensage.SDK.Abilities
 {
     using Ensage.SDK.Extensions;
 
-    public abstract class AuraAbility : PassiveAbility
+    public abstract class AuraAbility : PassiveAbility, IAuraAbility
     {
         protected AuraAbility(Ability ability)
             : base(ability)
         {
         }
 
-        public virtual float Radius
+        public virtual string AuraModifierName { get; } = string.Empty;
+
+        public virtual float AuraRadius
         {
             get
             {

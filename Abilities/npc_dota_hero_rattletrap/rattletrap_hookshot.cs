@@ -17,7 +17,7 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_rattletrap
 
         public override CollisionTypes CollisionTypes { get; } = CollisionTypes.AllUnits;
 
-        public string TargetModifierTextureName { get; } = "rattletrap_hookshot";
+        public string[] TargetModifierTextureName { get; } = { "rattletrap_hookshot" };
 
         protected override string RadiusName { get; } = "latch_radius";
 

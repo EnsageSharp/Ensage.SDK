@@ -6,6 +6,6 @@ namespace Ensage.SDK.Abilities
 {
     public interface IHasTargetModifierTexture
     {
-        string TargetModifierTextureName { get; }
+        string[] TargetModifierTextureName { get; }
     }
 }

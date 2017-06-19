@@ -224,6 +224,7 @@ namespace Ensage.SDK.Orbwalker
             else
             {
                 UpdateManager.Unsubscribe(this.OnUpdateDrawings);
+                this.OnUpdateDrawings();
             }
         }
 

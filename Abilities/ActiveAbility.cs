@@ -35,9 +35,9 @@ namespace Ensage.SDK.Abilities
                 }
 
                 var owner = this.Owner;
-                if (owner.Mana < this.Ability.ManaCost || owner.IsSilenced())
+                var isItem = this.Ability is Item;
+                if (owner.Mana < this.Ability.ManaCost || (!isItem && owner.IsSilenced()) || (isItem && owner.IsMuted()))
                 {
-                    // TODO: check for item
                     return false;
                 }
 
@@ -49,6 +49,22 @@ namespace Ensage.SDK.Abilities
 
                 return true;
             }
+        }
+
+        public virtual bool CanHit(params Unit[] targets)
+        {
+            if (!targets.Any())
+            {
+                return true;
+            }
+
+            if (this.Owner.Distance2D(targets.First()) < this.CastRange)
+            {
+                return true;
+            }
+
+            // moar checks
+            return false;
         }
 
         public virtual float CastPoint

@@ -21,28 +21,20 @@ namespace Ensage.SDK.Renderer.DX9
     {
         private readonly ID3D9Context context;
 
-        private Font font;
+        private readonly FontCache fontCache;
 
-        private Line line;
+        private readonly Line line;
 
-        private Sprite sprite;
+        private readonly Sprite sprite;
 
         [ImportingConstructor]
-        public D3D9Renderer([Import] ID3D9Context context)
+        public D3D9Renderer([Import] ID3D9Context context, [Import] FontCache fontCache)
         {
             this.context = context;
+            this.fontCache = fontCache;
 
             this.line = new Line(this.context.Device);
             this.sprite = new Sprite(this.context.Device);
-            this.font = new Font(
-                this.context.Device,
-                new FontDescription
-                {
-                    FaceName = "Calibri",
-                    Height = 13,
-                    OutputPrecision = FontPrecision.Default,
-                    Quality = FontQuality.ClearTypeNatural
-                });
 
             context.PreReset += this.OnPreReset;
             context.PostReset += this.OnPostReset;
@@ -129,21 +121,20 @@ namespace Ensage.SDK.Renderer.DX9
 
         public void DrawText(Vector2 position, string text, Color color, string fontFamily = "Calibri", float fontSize = 13)
         {
-            this.font.DrawText(null, text, (int)position.X, (int)position.Y, new ColorBGRA(color.R, color.G, color.B, color.A));
+            var font = this.fontCache.GetOrCreate(fontFamily, fontSize);
+            font.DrawText(null, text, (int)position.X, (int)position.Y, new ColorBGRA(color.R, color.G, color.B, color.A));
         }
 
         private void OnPostReset(object sender, EventArgs eventArgs)
         {
             this.line.OnResetDevice();
             this.sprite.OnResetDevice();
-            this.font.OnResetDevice();
         }
 
         private void OnPreReset(object sender, EventArgs eventArgs)
         {
             this.line.OnLostDevice();
             this.sprite.OnLostDevice();
-            this.font.OnLostDevice();
         }
     }
 }

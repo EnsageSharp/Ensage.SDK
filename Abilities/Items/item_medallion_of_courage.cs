@@ -12,7 +12,7 @@ namespace Ensage.SDK.Abilities.Items
         }
 
         /// <summary>
-        ///  "modifier_item_medallion_of_courage_armor_addition" when casted on allies
+        ///     "modifier_item_medallion_of_courage_armor_addition" when casted on allies
         /// </summary>
         public string TargetModifierName { get; } = "modifier_item_medallion_of_courage_armor_reduction";
     }

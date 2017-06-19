@@ -219,6 +219,7 @@
     <Compile Include="Renderer\DX11\TextFormatCache.cs" />
     <Compile Include="Renderer\DX9\D3D9Context.cs" />
     <Compile Include="Renderer\DX9\D3D9Renderer.cs" />
+    <Compile Include="Renderer\DX9\FontCache.cs" />
     <Compile Include="Renderer\IRendererManager.cs" />
     <Compile Include="Renderer\Metadata\ExportRendererAttribute.cs" />
     <Compile Include="Renderer\DX9\ID3D9Context.cs" />

@@ -95,7 +95,8 @@ namespace Ensage.SDK.Renderer.Particle
                 return 0;
             }
 
-            return this.ControlPoints.Sum(o => o.GetHashCode());
+            // return this.ControlPoints.Sum(o => o.GetHashCode());
+            return this.ControlPoints.Aggregate(0, (sum, o) => unchecked(sum + o.GetHashCode()));
         }
 
         public override int GetHashCode()

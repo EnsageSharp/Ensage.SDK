@@ -67,7 +67,8 @@ namespace Ensage.SDK.Renderer.Particle
                 }
 
                 // control points changed
-                var hash = controlPoints.Sum(p => p.GetHashCode());
+                // var hash = controlPoints.Sum(p => p.GetHashCode());
+                var hash = controlPoints.Aggregate(0, (sum, p) => unchecked(sum + p.GetHashCode()));
                 if (particle.GetControlPointsHashCode() != hash)
                 {
                     particle.SetControlPoints(controlPoints);

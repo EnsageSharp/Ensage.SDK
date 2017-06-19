@@ -22,7 +22,7 @@ namespace Ensage.SDK.Handlers
 
         private bool isRunning;
 
-        public TaskHandler([NotNull] Func<CancellationToken, Task> factory)
+        public TaskHandler([NotNull] Func<CancellationToken, Task> factory, bool restart = false)
         {
             if (factory == null)
             {
@@ -30,6 +30,7 @@ namespace Ensage.SDK.Handlers
             }
 
             this.TaskFactory = factory;
+            this.Restart = restart;
         }
 
         public bool IsRunning
@@ -41,6 +42,8 @@ namespace Ensage.SDK.Handlers
         }
 
         public Task RunningTask { get; private set; }
+
+        private bool Restart { get; }
 
         private Func<CancellationToken, Task> TaskFactory { get; }
 
@@ -63,7 +66,7 @@ namespace Ensage.SDK.Handlers
 
         public TaskHandler CreateCopy()
         {
-            return new TaskHandler(this.TaskFactory);
+            return new TaskHandler(this.TaskFactory, this.Restart);
         }
 
         public void RunAsync()
@@ -81,7 +84,11 @@ namespace Ensage.SDK.Handlers
                 {
                     try
                     {
-                        await this.TaskFactory(this.TokenSource.Token);
+                        do
+                        {
+                            await this.TaskFactory(this.TokenSource.Token);
+                        }
+                        while (this.Restart && !this.TokenSource.IsCancellationRequested);
                     }
                     catch (TaskCanceledException)
                     {

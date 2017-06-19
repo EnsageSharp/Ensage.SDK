@@ -62,14 +62,14 @@ namespace Ensage.SDK.Helpers
             InvokeHandlers.Add(new UpdateHandler(callback, new TimeoutHandler(timeout, true)));
         }
 
-        public static TaskHandler Run([NotNull] Func<CancellationToken, Task> factory, bool autostart = true)
+        public static TaskHandler Run([NotNull] Func<CancellationToken, Task> factory, bool restart = true, bool autostart = true)
         {
             if (factory == null)
             {
                 throw new ArgumentNullException(nameof(factory));
             }
 
-            var task = new TaskHandler(factory);
+            var task = new TaskHandler(factory, restart);
 
             if (autostart)
             {

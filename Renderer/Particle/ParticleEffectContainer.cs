@@ -114,7 +114,7 @@ namespace Ensage.SDK.Renderer.Particle
             }
         }
 
-        public void SetControlPoints(params object[] controlPoints)
+        public void SetControlPoints(bool restart = true, params object[] controlPoints)
         {
             if (controlPoints?.Length > 0)
             {
@@ -145,7 +145,10 @@ namespace Ensage.SDK.Renderer.Particle
                 }
             }
 
-            this.Effect.Restart();
+            if (restart)
+            {
+                this.Effect.Restart();
+            }
         }
 
         protected virtual void Dispose(bool disposing)

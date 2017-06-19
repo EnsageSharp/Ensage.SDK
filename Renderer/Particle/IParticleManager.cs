@@ -10,11 +10,13 @@ namespace Ensage.SDK.Renderer.Particle
 
     public interface IParticleManager : IDisposable
     {
-        void AddOrUpdate(Entity unit, string name, string file, ParticleAttachment attachment, params object[] controlPoints);
+        void AddOrUpdate(Entity unit, string name, string file, ParticleAttachment attachment, bool restart = true, params object[] controlPoints);
 
         void DrawCircle(Vector3 center, string id, float range, Color color);
 
         void DrawDangerLine(Unit unit, string id, Vector3 endPosition);
+
+        void DrawTargetLine(Unit unit, string id, Vector3 endPosition);
 
         void DrawLine(Unit unit, string id, Vector3 endPosition, bool red = true);
 

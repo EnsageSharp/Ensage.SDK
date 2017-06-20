@@ -103,6 +103,7 @@
     <Compile Include="Abilities\Items\item_dagon_4.cs" />
     <Compile Include="Abilities\Items\item_dagon_5.cs" />
     <Compile Include="Abilities\Items\item_ethereal_blade.cs" />
+    <Compile Include="Abilities\Items\item_force_staff.cs" />
     <Compile Include="Abilities\Items\item_gem.cs" />
     <Compile Include="Abilities\Items\item_heavens_halberd.cs" />
     <Compile Include="Abilities\Items\item_lotus_orb.cs" />

@@ -71,6 +71,14 @@ namespace Ensage.SDK.Abilities
             }
         }
 
+        public virtual bool IsActivated
+        {
+            get
+            {
+                return this.Ability.IsActivated;
+            }
+        }
+
         protected float LastCastAttempt { get; set; }
 
         protected override float RawDamage

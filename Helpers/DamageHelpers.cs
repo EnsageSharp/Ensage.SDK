@@ -8,6 +8,11 @@ namespace Ensage.SDK.Helpers
 
     public static class DamageHelpers
     {
+        public static float GetDamageReduction(this Ability ability, Unit target)
+        {
+            return GetDamageReduction(ability, target, ability.DamageType);
+        }
+
         public static float GetDamageReduction(this Ability ability, Unit target, DamageType damageType)
         {
             // TODO: modifiers

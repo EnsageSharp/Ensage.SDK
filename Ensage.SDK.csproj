@@ -204,6 +204,12 @@
     <Compile Include="Abilities\AreaOfEffectAbility.cs" />
     <Compile Include="Abilities\IHasHealthCost.cs" />
     <Compile Include="Abilities\IChannable.cs" />
+    <Compile Include="Abilities\IHasCritChance.cs" />
+    <Compile Include="Abilities\IHasProcChance.cs" />
+    <Compile Include="Abilities\npc_dota_hero_phantom_assassin\phantom_assassin_blur.cs" />
+    <Compile Include="Abilities\npc_dota_hero_phantom_assassin\phantom_assassin_coup_de_grace.cs" />
+    <Compile Include="Abilities\npc_dota_hero_phantom_assassin\phantom_assassin_phantom_strike.cs" />
+    <Compile Include="Abilities\npc_dota_hero_phantom_assassin\phantom_assassin_stifling_dagger.cs" />
     <Compile Include="Abilities\npc_dota_hero_pudge\pudge_dismember.cs" />
     <Compile Include="Abilities\npc_dota_hero_pudge\pudge_rot.cs" />
     <Compile Include="Abilities\ConeAbility.cs" />

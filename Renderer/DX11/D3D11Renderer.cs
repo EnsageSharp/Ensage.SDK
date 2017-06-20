@@ -53,11 +53,13 @@ namespace Ensage.SDK.Renderer.DX11
 
         public void DrawLine(Vector2 start, Vector2 end, Color color, float width = 1.0f)
         {
+            this.context.RenderTarget.StrokeWidth = width;
             this.context.RenderTarget.DrawLine(start, end, this.brushCache.GetOrCreate(color));
         }
 
         public void DrawRectangle(RectangleF rect, Color color, float width = 1.0f)
         {
+            this.context.RenderTarget.StrokeWidth = width;
             this.context.RenderTarget.DrawRectangle(rect, this.brushCache.GetOrCreate(color));
         }
 

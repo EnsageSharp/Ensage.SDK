@@ -39,7 +39,9 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_axe
             {
                 var target = targets.First();
                 var threshold = this.Ability.GetAbilitySpecialData("kill_threshold");
-                if (target.Health < threshold)
+
+                var healthRegen = target.HealthRegeneration * this.GetCastDelay(target) / 1000.0f * 2.0f;
+                if (target.Health + healthRegen < threshold)
                 {
                     return float.MaxValue;
                 }

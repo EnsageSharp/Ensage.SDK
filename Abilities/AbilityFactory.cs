@@ -74,13 +74,47 @@ namespace Ensage.SDK.Abilities
 
         public BaseAbility GetAbility(AbilityId id)
         {
-            var ability = id.ToString().StartsWith("item_")
-                              ? this.Context.Owner.Inventory.Items.FirstOrDefault(x => x.Id == id)
-                              : this.Context.Owner.Spellbook.Spells.FirstOrDefault(x => x.Id == id);
-
+            var ability = this.Context.Owner.Spellbook.Spells.FirstOrDefault(x => x.Id == id);
             if (ability == null)
             {
                 throw new AbilityNotFoundException($"Could not find {id} for {this.Context}");
+            }
+
+            return this.GetAbility(ability);
+        }
+
+        public T GetItem<T>([NotNull] Item item)
+            where T : BaseAbility
+        {
+            return (T)this.GetAbility(item);
+        }
+
+        public T GetItem<T>(AbilityId id)
+            where T : BaseAbility
+        {
+            return (T)this.GetItem(id);
+        }
+
+        public T GetItem<T>()
+            where T : BaseAbility
+        {
+            var abilityTypeName = typeof(T).Name;
+
+            AbilityId id;
+            if (!Enum.TryParse(abilityTypeName, out id))
+            {
+                throw new AbilityNotFoundException($"Could not find {abilityTypeName} in the AbilityId enum");
+            }
+
+            return this.GetItem<T>(id);
+        }
+
+        public BaseAbility GetItem(AbilityId id)
+        {
+            var ability = this.Context.Owner.Inventory.Items.FirstOrDefault(x => x.Id == id);
+            if (ability == null)
+            {
+                return null;
             }
 
             return this.GetAbility(ability);

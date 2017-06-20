@@ -94,6 +94,7 @@
     <Compile Include="Abilities\IAuraAbility.cs" />
     <Compile Include="Abilities\Items\IItemInfo.cs" />
     <Compile Include="Abilities\Items\item_abyssal_blade.cs" />
+    <Compile Include="Abilities\Items\item_blade_mail.cs" />
     <Compile Include="Abilities\Items\item_blink.cs" />
     <Compile Include="Abilities\Items\item_bloodthorn.cs" />
     <Compile Include="Abilities\Items\item_dagon.cs" />
@@ -104,6 +105,7 @@
     <Compile Include="Abilities\Items\item_ethereal_blade.cs" />
     <Compile Include="Abilities\Items\item_gem.cs" />
     <Compile Include="Abilities\Items\item_heavens_halberd.cs" />
+    <Compile Include="Abilities\Items\item_lotus_orb.cs" />
     <Compile Include="Abilities\Items\item_manta.cs" />
     <Compile Include="Abilities\Items\item_medallion_of_courage.cs" />
     <Compile Include="Abilities\Items\item_orchid.cs" />

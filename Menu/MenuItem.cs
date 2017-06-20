@@ -5,6 +5,7 @@
 namespace Ensage.SDK.Menu
 {
     using System.ComponentModel;
+    using System.Windows.Input;
 
     using Ensage.Common.Menu;
     using Ensage.SDK.Helpers;
@@ -62,6 +63,11 @@ namespace Ensage.SDK.Menu
         public static implicit operator string(MenuItem<TType> item)
         {
             return item.Item.GetValue<StringList>().SelectedValue;
+        }
+
+        public static implicit operator Key(MenuItem<TType> item)
+        {
+            return KeyInterop.KeyFromVirtualKey((int)item.Item.GetValue<KeyBind>().Key);
         }
 
         public static implicit operator int(MenuItem<TType> item)

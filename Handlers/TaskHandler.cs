@@ -87,6 +87,7 @@ namespace Ensage.SDK.Handlers
                         do
                         {
                             await this.TaskFactory(this.TokenSource.Token);
+                            await Task.Delay(10, this.TokenSource.Token);
                         }
                         while (this.Restart && !this.TokenSource.IsCancellationRequested);
                     }

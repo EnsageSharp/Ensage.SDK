@@ -8,10 +8,9 @@ namespace Ensage.SDK.Helpers
 
     public static class DamageHelpers
     {
-        public static float GetDamageReduction(this Ability ability, Unit target)
+        public static float GetDamageReduction(this Ability ability, Unit target, DamageType damageType)
         {
             // TODO: modifiers
-            var damageType = ability.DamageType;
 
             if (damageType.HasFlag(DamageType.HealthRemoval))
             {

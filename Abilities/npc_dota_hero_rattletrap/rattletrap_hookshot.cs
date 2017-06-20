@@ -29,7 +29,7 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_rattletrap
             var amplify = this.Owner.GetSpellAmplification();
             foreach (var target in targets)
             {
-                var reduction = this.Ability.GetDamageReduction(target);
+                var reduction = this.Ability.GetDamageReduction(target, this.DamageType);
                 totalDamage += DamageHelpers.GetSpellDamage(damage, amplify, reduction);
             }
 

@@ -64,7 +64,7 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_sniper
             var totalDamage = 0.0f;
             foreach (var target in targets)
             {
-                var reduction = this.Ability.GetDamageReduction(target);
+                var reduction = this.Ability.GetDamageReduction(target, this.DamageType);
                 totalDamage += DamageHelpers.GetSpellDamage(damage, amplify, reduction);
             }
 

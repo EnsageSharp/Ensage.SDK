@@ -39,7 +39,7 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_zuus
             var totalDamage = 0.0f;
             foreach (var target in targets)
             {
-                var reduction = this.Ability.GetDamageReduction(target);
+                var reduction = this.Ability.GetDamageReduction(target, this.DamageType);
                 var damage = damagePercent * target.Health;
                 totalDamage += DamageHelpers.GetSpellDamage(damage, amplify, reduction);
             }

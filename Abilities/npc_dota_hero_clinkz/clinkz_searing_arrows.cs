@@ -31,7 +31,7 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_clinkz
             var reduction = 0.0f;
             if (targets.Any())
             {
-                reduction = this.Ability.GetDamageReduction(targets.First());
+                reduction = this.Ability.GetDamageReduction(targets.First(), this.DamageType);
             }
 
             damage += DamageHelpers.GetSpellDamage(damageBonus, amp, reduction);

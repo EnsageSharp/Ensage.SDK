@@ -21,6 +21,14 @@ namespace Ensage.SDK.Abilities.Items
             }
         }
 
+        public override DamageType DamageType
+        {
+            get
+            {
+                return DamageType.Pure;
+            }
+        }
+
         public float Duration
         {
             get

@@ -48,7 +48,7 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_obsidian_destroyer
             if (targets.Any())
             {
                 var target = targets.First();
-                reduction = this.Ability.GetDamageReduction(target);
+                reduction = this.Ability.GetDamageReduction(target, this.DamageType);
 
                 if (target.IsIllusion || target.IsSummoned)
                 {

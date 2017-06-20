@@ -7,7 +7,7 @@ namespace Ensage.SDK.Abilities.Items
     using Ensage.SDK.Extensions;
     using Ensage.SDK.Helpers;
 
-    public class item_shivas_guard : AreaOfEffectAbility, IAuraAbility, IHasTargetModifier
+    public class item_shivas_guard : ActiveAbility, IAreaOfEffectAbility, IAuraAbility, IHasTargetModifier
     {
         public item_shivas_guard(Item item)
             : base(item)
@@ -24,7 +24,23 @@ namespace Ensage.SDK.Abilities.Items
             }
         }
 
-        public override float Speed
+        public override DamageType DamageType
+        {
+            get
+            {
+                return DamageType.Magical;
+            }
+        }
+
+        public float Radius
+        {
+            get
+            {
+                return this.Ability.GetAbilitySpecialData("blast_radius");
+            }
+        }
+
+        public float Speed
         {
             get
             {
@@ -33,8 +49,6 @@ namespace Ensage.SDK.Abilities.Items
         }
 
         public string TargetModifierName { get; } = "modifier_item_shivas_guard_blast";
-
-        protected override string RadiusName { get; } = "blast_radius";
 
         protected override float RawDamage
         {
@@ -52,7 +66,7 @@ namespace Ensage.SDK.Abilities.Items
             var amplify = this.Owner.GetSpellAmplification();
             foreach (var target in targets)
             {
-                var reduction = this.Ability.GetDamageReduction(target);
+                var reduction = this.Ability.GetDamageReduction(target, this.DamageType);
                 totalDamage += DamageHelpers.GetSpellDamage(damage, amplify, reduction);
             }
 

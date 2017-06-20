@@ -11,6 +11,14 @@ namespace Ensage.SDK.Abilities.Items
         {
         }
 
+        public override DamageType DamageType
+        {
+            get
+            {
+                return DamageType.Magical;
+            }
+        }
+
         public string TargetModifierName { get; } = "modifier_orchid_malevolence_debuff";
     }
 }

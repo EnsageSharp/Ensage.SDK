@@ -7,7 +7,7 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_pudge
     using Ensage.SDK.Extensions;
     using Ensage.SDK.Helpers;
 
-    public class pudge_rot : ToggleAbility, IAreaOfEffectAbility, IHasDot, IHasHealthCost
+    public class pudge_rot : ToggleAbility, IAreaOfEffectAbility, IHasDot, IHasHealthCost, IHasModifier
     {
         public pudge_rot(Ability ability)
             : base(ability)
@@ -26,7 +26,7 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_pudge
             get
             {
                 var amplify = this.Owner.GetSpellAmplification();
-                var reduction = this.Ability.GetDamageReduction(this.Owner);
+                var reduction = this.Ability.GetDamageReduction(this.Owner, this.DamageType);
                 return DamageHelpers.GetSpellDamage(this.RawTickDamage, amplify, reduction);
             }
         }
@@ -73,7 +73,7 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_pudge
             var totalDamage = 0.0f;
             foreach (var target in targets)
             {
-                var reduction = this.Ability.GetDamageReduction(target);
+                var reduction = this.Ability.GetDamageReduction(target, this.DamageType);
                 totalDamage += DamageHelpers.GetSpellDamage(damage, amplify, reduction);
             }
 

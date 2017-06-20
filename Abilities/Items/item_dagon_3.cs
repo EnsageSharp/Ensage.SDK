@@ -13,6 +13,14 @@ namespace Ensage.SDK.Abilities.Items
         {
         }
 
+        public override DamageType DamageType
+        {
+            get
+            {
+                return DamageType.Magical;
+            }
+        }
+
         protected override float RawDamage
         {
             get

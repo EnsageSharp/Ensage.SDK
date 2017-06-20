@@ -6,7 +6,9 @@ namespace Ensage.SDK.Abilities.Items
 {
     using System.Linq;
 
-    public class item_gem : PassiveAbility, IItemInfo, IHasModifier
+    using Ensage.SDK.Extensions;
+
+    public class item_gem : PassiveAbility, IItemInfo, IHasModifier, IAreaOfEffectAbility
     {
         public item_gem(Item item)
             : base(item)
@@ -14,6 +16,14 @@ namespace Ensage.SDK.Abilities.Items
         }
 
         public string ModifierName { get; } = "modifier_item_gem_of_true_sight";
+
+        public float Radius
+        {
+            get
+            {
+                return this.Ability.GetAbilitySpecialData("radius");
+            }
+        }
 
         public int StockCount
         {

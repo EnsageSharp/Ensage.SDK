@@ -36,7 +36,7 @@ namespace Ensage.SDK.Abilities
 
                 var owner = this.Owner;
                 var isItem = this.Ability is Item;
-                if (owner.Mana < this.Ability.ManaCost || (!isItem && owner.IsSilenced()) || (isItem && owner.IsMuted()))
+                if (owner.Mana < this.Ability.ManaCost || !isItem && owner.IsSilenced() || isItem && owner.IsMuted())
                 {
                     return false;
                 }
@@ -51,26 +51,16 @@ namespace Ensage.SDK.Abilities
             }
         }
 
-        public virtual bool CanHit(params Unit[] targets)
-        {
-            if (!targets.Any())
-            {
-                return true;
-            }
-
-            if (this.Owner.Distance2D(targets.First()) < this.CastRange)
-            {
-                return true;
-            }
-
-            // moar checks
-            return false;
-        }
-
         public virtual float CastPoint
         {
             get
             {
+                if (this.Ability is Item)
+                {
+                    // 50 ms
+                    return 0.05f;
+                }
+
                 var level = this.Ability.Level;
                 if (level == 0)
                 {
@@ -101,6 +91,22 @@ namespace Ensage.SDK.Abilities
         public static implicit operator bool(ActiveAbility ability)
         {
             return ability.CanBeCasted;
+        }
+
+        public virtual bool CanHit(params Unit[] targets)
+        {
+            if (!targets.Any())
+            {
+                return true;
+            }
+
+            if (this.Owner.Distance2D(targets.First()) < this.CastRange)
+            {
+                return true;
+            }
+
+            // moar checks
+            return false;
         }
 
         /// <summary>

@@ -21,5 +21,7 @@ namespace Ensage.SDK.Abilities.Items
                 return this.Ability.GetAbilitySpecialData("push_length");
             }
         }
+
+        public float PushSpeed { get; } = 1500.0f;
     }
 }

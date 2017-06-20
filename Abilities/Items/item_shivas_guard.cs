@@ -40,7 +40,7 @@ namespace Ensage.SDK.Abilities.Items
             }
         }
 
-        public float Speed
+        public override float Speed
         {
             get
             {

@@ -643,5 +643,10 @@ namespace Ensage.SDK.Extensions
         {
             return Vector2FromPolarAngle(unit, delta, radial).ToVector3();
         }
+
+        public static bool IsRotating(this Unit unit)
+        {
+            return unit.RotationDifference != 0;
+        }
     }
 }

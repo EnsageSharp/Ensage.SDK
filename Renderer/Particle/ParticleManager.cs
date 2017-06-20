@@ -102,7 +102,7 @@ namespace Ensage.SDK.Renderer.Particle
         /// <param name="endPosition"></param>
         public void DrawDangerLine(Unit unit, string id, Vector3 endPosition)
         {
-            this.AddOrUpdate(unit, id, "particles/ui_mouseactions/range_finder_tower_line.vpcf", ParticleAttachment.AbsOriginFollow, false, 6, true, 2, endPosition, 7, unit.Position);
+            this.AddOrUpdate(unit, id, "particles/ui_mouseactions/range_finder_tower_line.vpcf", ParticleAttachment.AbsOriginFollow, false, 6, true, 2, unit.Position, 7, endPosition);
         }
 
         /// <summary>
@@ -113,7 +113,7 @@ namespace Ensage.SDK.Renderer.Particle
         /// <param name="endPosition"></param>
         public void DrawTargetLine(Unit unit, string id, Vector3 endPosition)
         {
-            this.AddOrUpdate(unit, id, "particles/ui_mouseactions/range_finder_tower_aoe.vpcf", ParticleAttachment.AbsOriginFollow, false, 6, true, 2, endPosition, 7, unit.Position);
+            this.AddOrUpdate(unit, id, "particles/ui_mouseactions/range_finder_tower_aoe.vpcf", ParticleAttachment.AbsOriginFollow, false, 6, true, 2, unit.Position, 7, endPosition);
         }
 
         /// <summary>

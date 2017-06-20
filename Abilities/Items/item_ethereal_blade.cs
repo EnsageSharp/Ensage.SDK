@@ -16,6 +16,14 @@ namespace Ensage.SDK.Abilities.Items
         {
         }
 
+        public override DamageType DamageType
+        {
+            get
+            {
+                return DamageType.Magical;
+            }
+        }
+
         public override float Speed
         {
             get
@@ -65,7 +73,7 @@ namespace Ensage.SDK.Abilities.Items
             }
 
             var damageBonus = -this.Ability.GetAbilitySpecialData("ethereal_damage_bonus") / 100.0f; // -40 => 0.4
-            var resist = this.Ability.GetDamageReduction(targets.First());
+            var resist = this.Ability.GetDamageReduction(targets.First(), this.DamageType);
 
             return DamageHelpers.GetSpellDamage(damage, amplify, -resist, damageBonus);
         }

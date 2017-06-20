@@ -15,6 +15,14 @@ namespace Ensage.SDK.Abilities
 
         public virtual float CastRange { get; } = 0;
 
+        public virtual DamageType DamageType
+        {
+            get
+            {
+                return this.Ability.DamageType;
+            }
+        }
+
         public Item Item
         {
             get

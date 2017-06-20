@@ -1,6 +1,7 @@
 ﻿// <copyright file="item_force_staff.cs" company="Ensage">
 //    Copyright (c) 2017 Ensage.
 // </copyright>
+
 namespace Ensage.SDK.Abilities.Items
 {
     using Ensage.SDK.Extensions;
@@ -12,8 +13,6 @@ namespace Ensage.SDK.Abilities.Items
         {
         }
 
-        public string TargetModifierName { get; } = "modifier_item_forcestaff_active";
-
         public float PushLength
         {
             get
@@ -23,5 +22,7 @@ namespace Ensage.SDK.Abilities.Items
         }
 
         public float PushSpeed { get; } = 1500.0f;
+
+        public string TargetModifierName { get; } = "modifier_item_forcestaff_active";
     }
 }

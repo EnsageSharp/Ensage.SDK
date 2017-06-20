@@ -46,7 +46,7 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_axe
                     return float.MaxValue;
                 }
 
-                reduction = this.Ability.GetDamageReduction(target);
+                reduction = this.Ability.GetDamageReduction(target, this.DamageType);
             }
 
             var damage = this.RawDamage;

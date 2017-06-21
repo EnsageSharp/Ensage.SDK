@@ -62,7 +62,7 @@ namespace Ensage.SDK.Extensions
 
         public static float AttackRange(this Unit unit, Unit target = null)
         {
-            var result = (float)(unit.AttackRange + unit.HullRadius);
+            var result = unit.AttackRange + unit.HullRadius;
 
             if (target != null)
             {
@@ -76,37 +76,78 @@ namespace Ensage.SDK.Extensions
 
             if (unit is Hero)
             {
-                // test for items with bonus range
-                var bonusRangeItem = unit.GetItemById(AbilityId.item_dragon_lance) ?? unit.GetItemById(AbilityId.item_hurricane_pike);
-                if (bonusRangeItem != null)
+                if (unit.IsRanged)
                 {
-                    result += bonusRangeItem.GetAbilitySpecialData("base_attack_range");
+                    // test for talents with bonus range
+                    foreach (var ability in unit.Spellbook.Spells.Where(x => x.Name.StartsWith("special_bonus_attack_range_")))
+                    {
+                        if (ability.Level > 0)
+                        {
+                            result += ability.GetAbilitySpecialData("value");
+                        }
+                    }
+
+                    // test for items with bonus range
+                    var bonusRangeItem = unit.GetItemById(AbilityId.item_dragon_lance) ?? unit.GetItemById(AbilityId.item_hurricane_pike);
+                    if (bonusRangeItem != null)
+                    {
+                        result += bonusRangeItem.GetAbilitySpecialData("base_attack_range");
+                    }
                 }
 
                 // test for abilities with bonus range
                 var sniperTakeAim = unit.GetAbilityById(AbilityId.sniper_take_aim);
-                if (sniperTakeAim != null && sniperTakeAim.Level > 0)
+                if (sniperTakeAim?.Level > 0)
                 {
                     result += sniperTakeAim.GetAbilitySpecialData("bonus_attack_range");
                 }
 
                 var psiBlades = unit.GetAbilityById(AbilityId.templar_assassin_psi_blades);
-                if (psiBlades != null && psiBlades.Level > 0)
+                if (psiBlades?.Level > 0)
                 {
                     result += psiBlades.GetAbilitySpecialData("bonus_attack_range");
                 }
 
-                // test for talents with bonus range
-                foreach (var ability in unit.Spellbook.Spells.Where(x => x.Name.StartsWith("special_bonus_attack_range_")))
+                var impetus = unit.GetAbilityById(AbilityId.enchantress_impetus);
+                if (impetus?.Level > 1 && unit.HasAghanimsScepter())
                 {
-                    if (ability.Level > 0)
-                    {
-                        result += ability.GetAbilitySpecialData("value");
-                    }
+                    result += impetus.GetAbilitySpecialData("bonus_attack_range_scepter");
+                }
+
+                // test for modifiers with bonus range
+                var metamorphosis = unit.GetAbilityById(AbilityId.terrorblade_metamorphosis);
+                if (metamorphosis != null && unit.HasModifier("modifier_terrorblade_metamorphosis"))
+                {
+                    result += metamorphosis.GetAbilitySpecialData("bonus_range");
+                }
+
+                var dragonForm = unit.GetAbilityById(AbilityId.dragon_knight_elder_dragon_form);
+                if (dragonForm != null && unit.HasModifier("modifier_dragon_knight_dragon_form"))
+                {
+                    result += dragonForm.GetAbilitySpecialData("bonus_attack_range");
+                }
+
+                var arcticBurn = unit.GetAbilityById(AbilityId.winter_wyvern_arctic_burn);
+                if (arcticBurn != null && unit.HasModifier("modifier_winter_wyvern_arctic_burn_flight"))
+                {
+                    result += arcticBurn.GetAbilitySpecialData("attack_range_bonus");
+                }
+
+                // modifier range decrease
+                var trollMeleeForm = unit.GetAbilityById(AbilityId.troll_warlord_berserkers_rage);
+                if (trollMeleeForm != null && unit.HasModifier("modifier_troll_warlord_berserkers_rage"))
+                {
+                    result -= trollMeleeForm.GetAbilitySpecialData("bonus_range");
+                }
+
+                var druidMeleeForm = unit.GetAbilityById(AbilityId.lone_druid_true_form);
+                if (druidMeleeForm != null && unit.HasModifier("modifier_lone_druid_true_form"))
+                {
+                    // no special data
+                    result -= 400;
                 }
             }
 
-            // test for modifiers with bonus range TODO
             return result;
         }
 
@@ -251,19 +292,13 @@ namespace Ensage.SDK.Extensions
             {
                 var isMelee = source.IsMelee;
 
-                // apply bonus damage from quelling blade and iron talon (they do stack)
-                var bonusDmgItem = source.GetItemById(AbilityId.item_quelling_blade);
+                // quelling blade and talon does not stack
+                var bonusDmgItem = source.GetItemById(AbilityId.item_quelling_blade) ?? source.GetItemById(AbilityId.item_iron_talon);
                 if (bonusDmgItem != null)
                 {
                     damage += bonusDmgItem.GetAbilitySpecialData(isMelee ? "damage_bonus" : "damage_bonus_ranged");
                 }
-
-                bonusDmgItem = source.GetItemById(AbilityId.item_iron_talon);
-                if (bonusDmgItem != null)
-                {
-                    damage += bonusDmgItem.GetAbilitySpecialData(isMelee ? "damage_bonus" : "damage_bonus_ranged");
-                }
-
+       
                 // apply percentage bonus damage from battle fury to base dmg
                 var battleFury = source.GetItemById(AbilityId.item_bfury);
                 if (battleFury != null)

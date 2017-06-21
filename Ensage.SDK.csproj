@@ -222,6 +222,10 @@
     <Compile Include="Abilities\npc_dota_hero_rattletrap\rattletrap_hookshot.cs" />
     <Compile Include="Abilities\npc_dota_hero_rattletrap\rattletrap_power_cogs.cs" />
     <Compile Include="Abilities\npc_dota_hero_rattletrap\rattletrap_rocket_flare.cs" />
+    <Compile Include="Abilities\npc_dota_hero_skywrath_mage\skywrath_mage_ancient_seal.cs" />
+    <Compile Include="Abilities\npc_dota_hero_skywrath_mage\skywrath_mage_arcane_bolt.cs" />
+    <Compile Include="Abilities\npc_dota_hero_skywrath_mage\skywrath_mage_concussive_shot.cs" />
+    <Compile Include="Abilities\npc_dota_hero_skywrath_mage\skywrath_mage_mystic_flare.cs" />
     <Compile Include="Abilities\npc_dota_hero_sniper\sniper_assassinate.cs" />
     <Compile Include="Abilities\npc_dota_hero_sniper\sniper_headshot.cs" />
     <Compile Include="Abilities\npc_dota_hero_sniper\sniper_shrapnel.cs" />

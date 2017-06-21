@@ -56,7 +56,7 @@ namespace Ensage.SDK.TargetSelector.Modes
                 return;
             }
 
-            this.Targets = EntityManager<Hero>.Entities.Where(e => e.IsAlive && !e.IsIllusion && e.Team != this.Owner.Team)
+            this.Targets = EntityManager<Hero>.Entities.Where(e => e.IsVisible && e.IsAlive && !e.IsIllusion && e.Team != this.Owner.Team)
                                               .Where(e => e.Position.Distance(Game.MousePosition) < 400)
                                               .OrderBy(e => e.Position.Distance(Game.MousePosition))
                                               .ToArray();

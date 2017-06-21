@@ -26,7 +26,7 @@ namespace Ensage.SDK.TargetSelector.Modes
         {
             var team = this.Owner.Team;
 
-            return EntityManager<Hero>.Entities.Where(e => e.IsAlive && !e.IsIllusion && e.Team != team).OrderByDescending(e => e.GetSpellAmplification()).ToArray();
+            return EntityManager<Hero>.Entities.Where(e => e.IsVisible && e.IsAlive && !e.IsIllusion && e.Team != team).OrderByDescending(e => e.GetSpellAmplification()).ToArray();
         }
     }
 }

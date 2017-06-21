@@ -13,20 +13,20 @@ namespace Ensage.SDK.Helpers
     {
         private static HashSet<Entity> cache = new HashSet<Entity>();
 
-        private static HashSet<Entity> dormantCache = new HashSet<Entity>();
+        // private static HashSet<Entity> dormantCache = new HashSet<Entity>();
 
         static EntityManager()
         {
             UpdateManager.SubscribeService(OnUpdate, 1000);
         }
 
-        internal static HashSet<Entity> DormantEntities
-        {
-            get
-            {
-                return dormantCache;
-            }
-        }
+        //internal static HashSet<Entity> DormantEntities
+        //{
+        //    get
+        //    {
+        //        return dormantCache;
+        //    }
+        //}
 
         internal static HashSet<Entity> Entities
         {
@@ -40,8 +40,11 @@ namespace Ensage.SDK.Helpers
         {
             ObjectManager.OnAddEntity -= OnAddEntity;
             ObjectManager.OnRemoveEntity -= OnRemoveEntity;
-            cache = ObjectManager.GetEntities<Entity>().ToHashSet();
-            dormantCache = ObjectManager.GetDormantEntities<Entity>().ToHashSet();
+
+            // dormantCache = ObjectManager.GetDormantEntities<Entity>().ToHashSet();
+            var tmp = ObjectManager.GetEntities<Entity>();
+            cache = tmp.Concat(ObjectManager.GetDormantEntities<Entity>()).ToHashSet();
+
             ObjectManager.OnAddEntity += OnAddEntity;
             ObjectManager.OnRemoveEntity += OnRemoveEntity;
         }
@@ -67,20 +70,20 @@ namespace Ensage.SDK.Helpers
     {
         private static HashSet<T> cache = new HashSet<T>();
 
-        private static HashSet<T> dormantCache = new HashSet<T>();
+        // private static HashSet<T> dormantCache = new HashSet<T>();
 
         static EntityManager()
         {
             UpdateManager.SubscribeService(OnUpdate, 1000);
         }
 
-        public static HashSet<T> DormantEntities
-        {
-            get
-            {
-                return dormantCache;
-            }
-        }
+        //public static HashSet<T> DormantEntities
+        //{
+        //    get
+        //    {
+        //        return dormantCache;
+        //    }
+        //}
 
         public static HashSet<T> Entities
         {
@@ -99,8 +102,10 @@ namespace Ensage.SDK.Helpers
         {
             ObjectManager.OnAddEntity -= OnAddEntity;
             ObjectManager.OnRemoveEntity -= OnRemoveEntity;
+
             cache = EntityManager.Entities.OfType<T>().ToHashSet();
-            dormantCache = EntityManager.DormantEntities.OfType<T>().ToHashSet();
+            // dormantCache = EntityManager.DormantEntities.OfType<T>().ToHashSet();
+            
             ObjectManager.OnAddEntity += OnAddEntity;
             ObjectManager.OnRemoveEntity += OnRemoveEntity;
         }

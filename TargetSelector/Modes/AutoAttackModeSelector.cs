@@ -57,7 +57,7 @@ namespace Ensage.SDK.TargetSelector.Modes
         {
             if (this.Config.Farm)
             {
-                var killableCreep = EntityManager<Creep>.Entities.FirstOrDefault(unit => this.IsValid(unit) && this.CanKill(unit));
+                var killableCreep = EntityManager<Creep>.Entities.FirstOrDefault(unit => unit.IsVisible && this.IsValid(unit) && this.CanKill(unit));
 
                 if (killableCreep != null)
                 {
@@ -81,7 +81,7 @@ namespace Ensage.SDK.TargetSelector.Modes
 
             if (this.Config.Deny)
             {
-                var denyCreep = EntityManager<Creep>.Entities.FirstOrDefault(unit => this.IsValid(unit, true) && unit.HealthPercent() < 0.5f && this.CanKill(unit));
+                var denyCreep = EntityManager<Creep>.Entities.FirstOrDefault(unit => unit.IsVisible && this.IsValid(unit, true) && unit.HealthPercent() < 0.5f && this.CanKill(unit));
 
                 if (denyCreep != null)
                 {
@@ -91,7 +91,7 @@ namespace Ensage.SDK.TargetSelector.Modes
 
             if (this.Config.Hero)
             {
-                var hero = this.Manager.Active.GetTargets()?.FirstOrDefault(unit => this.IsValid(unit));
+                var hero = this.Manager.Active.GetTargets()?.FirstOrDefault(unit => unit.IsVisible && this.IsValid(unit));
 
                 if (hero != null)
                 {
@@ -101,13 +101,13 @@ namespace Ensage.SDK.TargetSelector.Modes
 
             if (this.Config.Building)
             {
-                var barracks = EntityManager<Building>.Entities.FirstOrDefault(unit => this.IsValid(unit));
+                var barracks = EntityManager<Building>.Entities.FirstOrDefault(unit => unit.IsVisible && this.IsValid(unit));
                 if (barracks != null)
                 {
                     return barracks;
                 }
 
-                var tower = EntityManager<Tower>.Entities.FirstOrDefault(unit => this.IsValid(unit));
+                var tower = EntityManager<Tower>.Entities.FirstOrDefault(unit => unit.IsVisible && this.IsValid(unit));
                 if (tower != null)
                 {
                     return tower;
@@ -116,7 +116,7 @@ namespace Ensage.SDK.TargetSelector.Modes
 
             if (this.Config.Neutral)
             {
-                var neutral = EntityManager<Creep>.Entities.FirstOrDefault(unit => unit.IsNeutral && this.IsValid(unit));
+                var neutral = EntityManager<Creep>.Entities.FirstOrDefault(unit => unit.IsVisible && unit.IsNeutral && this.IsValid(unit));
 
                 if (neutral != null)
                 {
@@ -126,7 +126,7 @@ namespace Ensage.SDK.TargetSelector.Modes
 
             if (this.Config.Creep)
             {
-                var neutral = EntityManager<Creep>.Entities.FirstOrDefault(unit => this.IsValid(unit));
+                var neutral = EntityManager<Creep>.Entities.FirstOrDefault(unit => unit.IsVisible && this.IsValid(unit));
 
                 if (neutral != null)
                 {

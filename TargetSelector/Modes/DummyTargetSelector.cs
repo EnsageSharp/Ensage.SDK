@@ -26,7 +26,7 @@ namespace Ensage.SDK.TargetSelector.Modes
 
         public IEnumerable<Unit> GetTargets()
         {
-            return EntityManager<Unit>.Entities.Where(e => e.ClassId == ClassId.CDOTA_Unit_TargetDummy).OrderBy(e => e.Distance2D(this.Owner));
+            return EntityManager<Unit>.Entities.Where(e => e.IsVisible && e.ClassId == ClassId.CDOTA_Unit_TargetDummy).OrderBy(e => e.Distance2D(this.Owner));
         }
     }
 }

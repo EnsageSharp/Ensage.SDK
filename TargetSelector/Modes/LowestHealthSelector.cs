@@ -24,7 +24,7 @@ namespace Ensage.SDK.TargetSelector.Modes
         protected override IEnumerable<Unit> GetTargetsImpl()
         {
             var team = this.Owner.Team;
-            return EntityManager<Hero>.Entities.Where(e => e.IsAlive && e.Team != team && e.Health > 0).OrderBy(e => e.Health).ToArray();
+            return EntityManager<Hero>.Entities.Where(e => e.IsVisible && e.IsAlive && e.Team != team && e.Health > 0).OrderBy(e => e.Health).ToArray();
         }
     }
 }

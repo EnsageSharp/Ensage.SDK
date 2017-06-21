@@ -11,37 +11,39 @@ namespace Ensage.SDK.Extensions
 
     using log4net;
 
+    using PlaySharp.Toolkit.Helper.Annotations;
     using PlaySharp.Toolkit.Logging;
 
     using SharpDX;
 
     public static class UnitExtensions
     {
-        private static readonly HashSet<string> ChannelAnimations = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
-                                                                    {
-                                                                        "death_ward_anim",
-                                                                        "powershot_cast_anim",
-                                                                        string.Empty,
-                                                                        "rearm1_anim",
-                                                                        "warlock_cast3_upheaval",
-                                                                        "warlock_cast3_upheaval_channel_anim",
-                                                                        "cast_channel_shackles_anim",
-                                                                        "channel_shackles",
-                                                                        "sand_king_epicast_anim",
-                                                                        "cast4_tricks_trade",
-                                                                        "life drain_anim",
-                                                                        "pudge_dismember_start",
-                                                                        "pudge_dismember_mid_anim",
-                                                                        "cast1_FortunesEnd_anim_anim",
-                                                                        "cast04_spring",
-                                                                        "Illuminate_anim",
-                                                                        "cast1_echo_stomp_anim",
-                                                                        "cast4_black_hole_anim",
-                                                                        "freezing_field_anim_10s",
-                                                                        "fiends_grip_cast_anim",
-                                                                        "fiends_grip_loop_anim",
-                                                                        "drain_anim"
-                                                                    };
+        private static readonly HashSet<string> ChannelAnimations =
+            new HashSet<string>(StringComparer.OrdinalIgnoreCase)
+            {
+                "death_ward_anim",
+                "powershot_cast_anim",
+                string.Empty,
+                "rearm1_anim",
+                "warlock_cast3_upheaval",
+                "warlock_cast3_upheaval_channel_anim",
+                "cast_channel_shackles_anim",
+                "channel_shackles",
+                "sand_king_epicast_anim",
+                "cast4_tricks_trade",
+                "life drain_anim",
+                "pudge_dismember_start",
+                "pudge_dismember_mid_anim",
+                "cast1_FortunesEnd_anim_anim",
+                "cast04_spring",
+                "Illuminate_anim",
+                "cast1_echo_stomp_anim",
+                "cast4_black_hole_anim",
+                "freezing_field_anim_10s",
+                "fiends_grip_cast_anim",
+                "fiends_grip_loop_anim",
+                "drain_anim"
+            };
 
         private static readonly ILog Log = AssemblyLogs.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
@@ -74,77 +76,99 @@ namespace Ensage.SDK.Extensions
                 result += 15f;
             }
 
-            if (unit is Hero)
+            var hero = unit as Hero;
+            if (hero != null)
             {
-                if (unit.IsRanged)
+                if (hero.IsRanged)
                 {
                     // test for talents with bonus range
-                    foreach (var ability in unit.Spellbook.Spells.Where(x => x.Name.StartsWith("special_bonus_attack_range_")))
+                    foreach (var ability in hero.Spellbook.Spells.Where(x => x.Level > 0 && x.Name.StartsWith("special_bonus_attack_range_")))
                     {
-                        if (ability.Level > 0)
-                        {
-                            result += ability.GetAbilitySpecialData("value");
-                        }
+                        result += ability.GetAbilitySpecialData("value");
                     }
 
                     // test for items with bonus range
-                    var bonusRangeItem = unit.GetItemById(AbilityId.item_dragon_lance) ?? unit.GetItemById(AbilityId.item_hurricane_pike);
+                    var bonusRangeItem = hero.GetItemById(AbilityId.item_dragon_lance) ?? hero.GetItemById(AbilityId.item_hurricane_pike);
                     if (bonusRangeItem != null)
                     {
                         result += bonusRangeItem.GetAbilitySpecialData("base_attack_range");
                     }
                 }
 
-                // test for abilities with bonus range
-                var sniperTakeAim = unit.GetAbilityById(AbilityId.sniper_take_aim);
-                if (sniperTakeAim?.Level > 0)
+                switch (hero.HeroId)
                 {
-                    result += sniperTakeAim.GetAbilitySpecialData("bonus_attack_range");
-                }
+                    case HeroId.npc_dota_hero_sniper:
+                        var sniperTakeAim = hero.GetAbilityById(AbilityId.sniper_take_aim);
+                        if (sniperTakeAim?.Level > 0)
+                        {
+                            result += sniperTakeAim.GetAbilitySpecialData("bonus_attack_range");
+                        }
 
-                var psiBlades = unit.GetAbilityById(AbilityId.templar_assassin_psi_blades);
-                if (psiBlades?.Level > 0)
-                {
-                    result += psiBlades.GetAbilitySpecialData("bonus_attack_range");
-                }
+                        break;
 
-                var impetus = unit.GetAbilityById(AbilityId.enchantress_impetus);
-                if (impetus?.Level > 1 && unit.HasAghanimsScepter())
-                {
-                    result += impetus.GetAbilitySpecialData("bonus_attack_range_scepter");
-                }
+                    case HeroId.npc_dota_hero_templar_assassin:
+                        var psiBlades = hero.GetAbilityById(AbilityId.templar_assassin_psi_blades);
+                        if (psiBlades?.Level > 0)
+                        {
+                            result += psiBlades.GetAbilitySpecialData("bonus_attack_range");
+                        }
 
-                // test for modifiers with bonus range
-                var metamorphosis = unit.GetAbilityById(AbilityId.terrorblade_metamorphosis);
-                if (metamorphosis != null && unit.HasModifier("modifier_terrorblade_metamorphosis"))
-                {
-                    result += metamorphosis.GetAbilitySpecialData("bonus_range");
-                }
+                        break;
 
-                var dragonForm = unit.GetAbilityById(AbilityId.dragon_knight_elder_dragon_form);
-                if (dragonForm != null && unit.HasModifier("modifier_dragon_knight_dragon_form"))
-                {
-                    result += dragonForm.GetAbilitySpecialData("bonus_attack_range");
-                }
+                    case HeroId.npc_dota_hero_enchantress:
 
-                var arcticBurn = unit.GetAbilityById(AbilityId.winter_wyvern_arctic_burn);
-                if (arcticBurn != null && unit.HasModifier("modifier_winter_wyvern_arctic_burn_flight"))
-                {
-                    result += arcticBurn.GetAbilitySpecialData("attack_range_bonus");
-                }
+                        var impetus = hero.GetAbilityById(AbilityId.enchantress_impetus);
+                        if (impetus?.Level > 1 && hero.HasAghanimsScepter())
+                        {
+                            result += impetus.GetAbilitySpecialData("bonus_attack_range_scepter");
+                        }
 
-                // modifier range decrease
-                var trollMeleeForm = unit.GetAbilityById(AbilityId.troll_warlord_berserkers_rage);
-                if (trollMeleeForm != null && unit.HasModifier("modifier_troll_warlord_berserkers_rage"))
-                {
-                    result -= trollMeleeForm.GetAbilitySpecialData("bonus_range");
-                }
+                        break;
 
-                var druidMeleeForm = unit.GetAbilityById(AbilityId.lone_druid_true_form);
-                if (druidMeleeForm != null && unit.HasModifier("modifier_lone_druid_true_form"))
-                {
-                    // no special data
-                    result -= 400;
+                    case HeroId.npc_dota_hero_terrorblade:
+                        var metamorphosis = hero.GetAbilityById(AbilityId.terrorblade_metamorphosis);
+                        if (metamorphosis != null && hero.HasModifier("modifier_terrorblade_metamorphosis"))
+                        {
+                            result += metamorphosis.GetAbilitySpecialData("bonus_range");
+                        }
+
+                        break;
+
+                    case HeroId.npc_dota_hero_dragon_knight:
+                        var dragonForm = hero.GetAbilityById(AbilityId.dragon_knight_elder_dragon_form);
+                        if (dragonForm != null && hero.HasModifier("modifier_dragon_knight_dragon_form"))
+                        {
+                            result += dragonForm.GetAbilitySpecialData("bonus_attack_range");
+                        }
+
+                        break;
+
+                    case HeroId.npc_dota_hero_winter_wyvern:
+                        var arcticBurn = hero.GetAbilityById(AbilityId.winter_wyvern_arctic_burn);
+                        if (arcticBurn != null && hero.HasModifier("modifier_winter_wyvern_arctic_burn_flight"))
+                        {
+                            result += arcticBurn.GetAbilitySpecialData("attack_range_bonus");
+                        }
+
+                        break;
+
+                    case HeroId.npc_dota_hero_troll_warlord:
+                        var trollMeleeForm = hero.GetAbilityById(AbilityId.troll_warlord_berserkers_rage);
+                        if (trollMeleeForm != null && hero.HasModifier("modifier_troll_warlord_berserkers_rage"))
+                        {
+                            result -= trollMeleeForm.GetAbilitySpecialData("bonus_range");
+                        }
+                        break;
+
+                    case HeroId.npc_dota_hero_lone_druid:
+                        var druidMeleeForm = hero.GetAbilityById(AbilityId.lone_druid_true_form);
+                        if (druidMeleeForm != null && hero.HasModifier("modifier_lone_druid_true_form"))
+                        {
+                            // no special data
+                            result -= 400;
+                        }
+
+                        break;
                 }
             }
 
@@ -237,6 +261,7 @@ namespace Ensage.SDK.Extensions
             return (float)angle;
         }
 
+        [CanBeNull]
         public static Ability GetAbilityById(this Unit unit, AbilityId abilityId)
         {
             return unit.Spellbook.Spells.FirstOrDefault(x => x.Id == abilityId);
@@ -332,6 +357,7 @@ namespace Ensage.SDK.Extensions
             return result;
         }
 
+        [CanBeNull]
         public static Item GetItemById(this Unit unit, AbilityId abilityId)
         {
             if (!unit.HasInventory)

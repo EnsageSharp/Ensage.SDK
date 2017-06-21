@@ -193,6 +193,10 @@
     <Compile Include="Abilities\IHasTargetModifier.cs" />
     <Compile Include="Abilities\npc_dota_hero_enigma\enigma_malefice.cs" />
     <Compile Include="Abilities\IHasDot.cs" />
+    <Compile Include="Abilities\npc_dota_hero_juggernaut\juggernaut_blade_dance.cs" />
+    <Compile Include="Abilities\npc_dota_hero_juggernaut\juggernaut_blade_fury.cs" />
+    <Compile Include="Abilities\npc_dota_hero_juggernaut\juggernaut_healing_ward.cs" />
+    <Compile Include="Abilities\npc_dota_hero_juggernaut\juggernaut_omni_slash.cs" />
     <Compile Include="Abilities\npc_dota_hero_night_stalker\night_stalker_crippling_fear.cs" />
     <Compile Include="Abilities\npc_dota_hero_night_stalker\night_stalker_darkness.cs" />
     <Compile Include="Abilities\npc_dota_hero_night_stalker\night_stalker_hunter_in_the_night.cs" />
@@ -417,6 +421,7 @@
     <Compile Include="TargetSelector\Config\TargetSelectorConfig.cs" />
     <Compile Include="TargetSelector\TargetSelectorManager.cs" />
     <Compile Include="Threading\EnsageSynchronizationContext.cs" />
+    <Compile Include="Utils\Utils.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Properties\key.snk" />

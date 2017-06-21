@@ -1,0 +1,89 @@
+// <copyright file="juggernaut_blade_fury.cs" company="Ensage">
+//    Copyright (c) 2017 Ensage.
+// </copyright>
+
+namespace Ensage.SDK.Abilities.npc_dota_hero_juggernaut
+{
+    using Ensage.SDK.Extensions;
+    using Ensage.SDK.Helpers;
+
+    public class juggernaut_blade_fury : ActiveAbility, IAreaOfEffectAbility, IHasDot, IHasModifier
+    {
+        public juggernaut_blade_fury(Ability ability)
+            : base(ability)
+        {
+        }
+
+        public float Duration
+        {
+            get
+            {
+                var level = this.Ability.Level;
+                if (level == 0)
+                {
+                    return 0.0f;
+                }
+
+                return this.Ability.GetDuration(level - 1);
+            }
+        }
+
+        public bool HasInitialDamage { get; } = false;
+
+        public string ModifierName { get; } = "modifier_juggernaut_blade_fury";
+
+        public float Radius
+        {
+            get
+            {
+                return this.Ability.GetAbilitySpecialData("blade_fury_radius");
+            }
+        }
+
+        public float RawTickDamage
+        {
+            get
+            {
+                var damage = this.Ability.GetAbilitySpecialData("blade_fury_damage");
+
+                var talent = this.Owner.GetAbilityById(AbilityId.special_bonus_unique_juggernaut);
+                if (talent != null && talent.Level > 0)
+                {
+                    damage += talent.GetAbilitySpecialData("value");
+                }
+
+                return damage * this.TickRate;
+            }
+        }
+
+        public string TargetModifierName { get; } = string.Empty;
+
+        public float TickRate
+        {
+            get
+            {
+                return this.Ability.GetAbilitySpecialData("blade_fury_damage_tick");
+            }
+        }
+
+        public float GetTickDamage(params Unit[] targets)
+        {
+            var damage = this.RawTickDamage;
+            var amplify = this.Ability.SpellAmplification();
+
+            var totalDamage = 0.0f;
+            foreach (var target in targets)
+            {
+                var reduction = this.Ability.GetDamageReduction(target, this.DamageType);
+                totalDamage += DamageHelpers.GetSpellDamage(damage, amplify, reduction);
+            }
+
+            return totalDamage;
+        }
+
+        public float GetTotalDamage(params Unit[] targets)
+        {
+            return this.GetTickDamage(targets) * (this.Duration / this.TickRate);
+        }
+    }
+}

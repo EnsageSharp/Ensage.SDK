@@ -44,23 +44,25 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_skywrath_mage
             }
         }
 
-        public override float GetDamage(params Unit[] targets)
-        {
-            return this.GetTickDamage(targets);
-        }
-
         public float GetTickDamage(params Unit[] targets)
         {
             var damage = this.RawTickDamage;
             var amplify = this.Ability.SpellAmplification();
-            var reduction = 0.0f;
-            if (targets.Any())
+            if (!targets.Any())
             {
-                //add dmg reduction based on targets.count ?
-                reduction = this.Ability.GetDamageReduction(targets.First(), this.DamageType);
+                return DamageHelpers.GetSpellDamage(damage, amplify);
             }
 
-            return DamageHelpers.GetSpellDamage(damage, amplify, reduction);
+            damage /= targets.Length;
+
+            var totalDamage = 0.0f;
+            foreach (var target in targets)
+            {
+                var reduction = this.Ability.GetDamageReduction(target, this.DamageType);
+                totalDamage += DamageHelpers.GetSpellDamage(damage, amplify, reduction);
+            }
+
+            return totalDamage;
         }
 
         public float GetTotalDamage(params Unit[] targets)

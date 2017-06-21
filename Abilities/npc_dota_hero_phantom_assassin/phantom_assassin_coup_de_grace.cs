@@ -17,15 +17,17 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_phantom_assassin
         {
             get
             {
-                return this.Ability.GetAbilitySpecialData("crit_chance");
+                return this.Ability.GetAbilitySpecialData("crit_chance") / 100.0f;
             }
         }
+
+        public bool IsPseudoCHance { get; } = true;
 
         public float CritMultiplier
         {
             get
             {
-                return this.Ability.GetAbilitySpecialData("crit_bonus");
+                return this.Ability.GetAbilitySpecialData("crit_bonus") / 100.0f;
             }
         }
     }

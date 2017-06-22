@@ -55,6 +55,20 @@ namespace Ensage.SDK.Menu
             return new MenuFactory(Common.Menu.Menu.GetMenu(Assembly.GetExecutingAssembly().GetName().Name, name));
         }
 
+        public static MenuFactory CreateWithTexture(string displayName, string textureName)
+        {
+            return CreateWithTexture(displayName, null, textureName);
+        }
+
+        public static MenuFactory CreateWithTexture(string displayName, string name, string textureName)
+        {
+            var menu = Create(displayName, name);
+            menu.Target.TextureName = textureName;
+            menu.Target.ShowTextWithTexture = true;
+
+            return menu;
+        }
+
         public static MenuFactory Create(string displayName, string name = null)
         {
             name = name ?? GetName(displayName);
@@ -137,6 +151,20 @@ namespace Ensage.SDK.Menu
             }
 
             return item;
+        }
+
+        public MenuFactory MenuWithTexture(string displayName, string textureName)
+        {
+            return this.MenuWithTexture(displayName, null, textureName);
+        }
+
+        public MenuFactory MenuWithTexture(string displayName, string name, string textureName)
+        {
+            var menu = this.Menu(displayName, name);
+            menu.Target.TextureName = textureName;
+            menu.Target.ShowTextWithTexture = true;
+
+            return menu;
         }
 
         public MenuFactory Menu(string displayName, string name = null)

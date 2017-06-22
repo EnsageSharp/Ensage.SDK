@@ -85,11 +85,11 @@ namespace Ensage.SDK.Helpers
         //    }
         //}
 
-        public static HashSet<T> Entities
+        public static IEnumerable<T> Entities
         {
             get
             {
-                return cache;
+                return cache.Where(x => x.IsValid);
             }
         }
 

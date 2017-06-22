@@ -92,12 +92,12 @@ namespace Ensage.SDK.Inventory
                 var added = this.Items.Except(this.LastItems);
                 var removed = this.LastItems.Except(this.Items);
 
-                foreach (var change in added)
+                foreach (var change in removed)
                 {
                     try
                     {
-                        Log.Debug($"Added {change.Id}");
-                        this.CollectionChanged.Invoke(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, change));
+                        Log.Debug($"Removed {change.Id}");
+                        this.CollectionChanged.Invoke(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Remove, change));
                     }
                     catch (Exception e)
                     {
@@ -105,12 +105,12 @@ namespace Ensage.SDK.Inventory
                     }
                 }
 
-                foreach (var change in removed)
+                foreach (var change in added)
                 {
                     try
                     {
-                        Log.Debug($"Removed {change.Id}");
-                        this.CollectionChanged.Invoke(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Remove, change));
+                        Log.Debug($"Added {change.Id}");
+                        this.CollectionChanged.Invoke(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, change));
                     }
                     catch (Exception e)
                     {

@@ -69,8 +69,11 @@ namespace Ensage.SDK.Inventory
 
         protected override void OnActivate()
         {
-            UpdateManager.Subscribe(this.OnInventoryUpdate, 500);
-            UpdateManager.SubscribeService(this.OnInventoryClear);
+            if (this.Owner.HasInventory)
+            {
+                UpdateManager.Subscribe(this.OnInventoryUpdate, 500);
+                UpdateManager.SubscribeService(this.OnInventoryClear);
+            }
         }
 
         protected override void OnDeactivate()

@@ -4,29 +4,11 @@
 
 namespace Ensage.SDK.Abilities.Items
 {
-    using Ensage.SDK.Extensions;
-
-    public class item_dagon_5 : RangedAbility
+    public class item_dagon_5 : Dagon
     {
         public item_dagon_5(Item item)
             : base(item)
         {
-        }
-
-        public override DamageType DamageType
-        {
-            get
-            {
-                return DamageType.Magical;
-            }
-        }
-
-        protected override float RawDamage
-        {
-            get
-            {
-                return this.Ability.GetAbilitySpecialData("damage");
-            }
         }
     }
 }

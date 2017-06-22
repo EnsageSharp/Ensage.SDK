@@ -4,6 +4,8 @@
 
 namespace Ensage.SDK.Abilities
 {
+    using System.Linq;
+
     using Ensage.SDK.Extensions;
 
     public abstract class AreaOfEffectAbility : RangedAbility, IAreaOfEffectAbility
@@ -22,5 +24,15 @@ namespace Ensage.SDK.Abilities
         }
 
         protected virtual string RadiusName { get; } = "radius";
+
+        public override bool CanHit(params Unit[] targets)
+        {
+            if (!targets.Any())
+            {
+                return true;
+            }
+
+            return targets.All(x => x.Distance2D(this.Owner) < (this.CastRange + this.Radius));
+        }
     }
 }

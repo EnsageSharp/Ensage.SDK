@@ -15,7 +15,7 @@ namespace Ensage.SDK.Abilities.Items
         {
             get
             {
-                //no speed value in special data ...
+                // no speed value in special data ...
                 return 1500f;
             }
         }

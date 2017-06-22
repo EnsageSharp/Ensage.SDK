@@ -25,6 +25,8 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_axe
             }
         }
 
+        public string TargetModifierName { get; } = "modifier_axe_berserkers_call";
+
         public override bool CanHit(params Unit[] targets)
         {
             if (!targets.Any())
@@ -34,7 +36,5 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_axe
 
             return this.Owner.Distance2D(targets.First()) < this.Radius;
         }
-
-        public string TargetModifierName { get; } = "modifier_axe_berserkers_call";
     }
 }

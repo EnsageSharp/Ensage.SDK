@@ -21,7 +21,7 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_juggernaut
             }
         }
 
-        public bool IsPseudoCHance { get; } = true;
+        public bool IsPseudoChance { get; } = true;
 
         public float ProcChance
         {

@@ -4,21 +4,11 @@
 
 namespace Ensage.SDK.Abilities.Items
 {
-    public class item_diffusal_blade : ActiveAbility, IHasTargetModifier
+    public class item_diffusal_blade : DiffusalBlade
     {
         public item_diffusal_blade(Item item)
             : base(item)
         {
         }
-
-        public override bool CanBeCasted
-        {
-            get
-            {
-                return this.Item.CurrentCharges > 0 && base.CanBeCasted;
-            }
-        }
-
-        public string TargetModifierName { get; } = "modifier_item_diffusal_blade_slow";
     }
 }

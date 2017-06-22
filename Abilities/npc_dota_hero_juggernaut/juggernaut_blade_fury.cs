@@ -4,6 +4,8 @@
 
 namespace Ensage.SDK.Abilities.npc_dota_hero_juggernaut
 {
+    using System.Linq;
+
     using Ensage.SDK.Extensions;
     using Ensage.SDK.Helpers;
 
@@ -64,6 +66,16 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_juggernaut
             {
                 return this.Ability.GetAbilitySpecialData("blade_fury_damage_tick");
             }
+        }
+
+        public override bool CanHit(params Unit[] targets)
+        {
+            if (!targets.Any())
+            {
+                return true;
+            }
+
+            return targets.All(x => x.Distance2D(this.Owner) < this.Radius);
         }
 
         public float GetTickDamage(params Unit[] targets)

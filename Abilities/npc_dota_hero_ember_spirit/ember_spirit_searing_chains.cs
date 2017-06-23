@@ -1,4 +1,4 @@
-﻿// <copyright file="searing_chains.cs" company="Ensage">
+﻿// <copyright file="ember_spirit_searing_chains.cs" company="Ensage">
 //    Copyright (c) 2017 Ensage.
 // </copyright>
 
@@ -13,6 +13,14 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_ember_spirit
         public ember_spirit_searing_chains(Ability ability)
             : base(ability)
         {
+        }
+
+        public float Radius
+        {
+            get
+            {
+                return this.Ability.GetAbilitySpecialData("radius");
+            }
         }
 
         public string TargetModifierName { get; } = "modifier_ember_spirit_searing_chains";

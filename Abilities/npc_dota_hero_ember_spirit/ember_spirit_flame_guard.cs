@@ -20,13 +20,7 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_ember_spirit
         {
             get
             {
-                var level = this.Ability.Level;
-                if (level == 0)
-                {
-                    return 0.0f;
-                }
-
-                return this.Ability.GetDuration(level - 1);
+                return this.Ability.GetAbilitySpecialData("duration");
             }
         }
 
@@ -46,13 +40,7 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_ember_spirit
         {
             get
             {
-                var damage = this.Ability.GetAbilitySpecialData("flame_guard_damage");
-
-                {
-                    damage += talent.GetAbilitySpecialData("value");
-                }
-
-                return damage * this.TickRate;
+                return this.Ability.GetAbilitySpecialData("flame_guard_damage");
             }
         }
 

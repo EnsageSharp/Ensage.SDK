@@ -16,14 +16,25 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_alchemist
         public alchemist_unstable_concoction(Ability ability)
             : base(ability)
         {
-            this.ThrowAbility = this.AbilityFactory.Value.GetAbility<alchemist_unstable_concoction_throw>();
+            var throwAbility = this.Owner.GetAbilityById(AbilityId.alchemist_unstable_concoction_throw);
+            this.ThrowAbility = new alchemist_unstable_concoction_throw(throwAbility);
         }
+
+        public override float CastPoint { get; } = 0.05f;
 
         public float Duration
         {
             get
             {
                 return this.Ability.GetAbilitySpecialData("brew_time");
+            }
+        }
+
+        public float ExplosionDuration
+        {
+            get
+            {
+                return this.Ability.GetAbilitySpecialData("brew_explosion");
             }
         }
 
@@ -57,6 +68,14 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_alchemist
             var minDamage = this.Ability.GetAbilitySpecialData("min_damage");
             var maxDamage = this.Ability.GetAbilitySpecialData("max_damage");
 
+            var talent = this.Owner.GetAbilityById(AbilityId.special_bonus_unique_alchemist_2);
+            if (talent != null && talent.Level > 0)
+            {
+                var dmgValue = talent.GetAbilitySpecialData("value");
+                minDamage += dmgValue;
+                maxDamage += dmgValue;
+            }
+
             var percentage = concotionDuration / this.Duration;
             var damage = minDamage + ((maxDamage - minDamage) * percentage);
             var amp = this.Owner.GetSpellAmplification();
@@ -75,7 +94,7 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_alchemist
         }
 
         /// <summary>
-        /// Releases the unstable concoction.
+        ///     Releases the unstable concoction.
         /// </summary>
         /// <param name="target"></param>
         /// <returns></returns>

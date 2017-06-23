@@ -4,11 +4,21 @@
 
 namespace Ensage.SDK.Abilities.npc_dota_hero_alchemist
 {
+    using Ensage.SDK.Extensions;
+
     public class alchemist_goblins_greed : PassiveAbility
     {
         public alchemist_goblins_greed(Ability ability)
             : base(ability)
         {
+        }
+
+        public float Duration
+        {
+            get
+            {
+                return this.Ability.GetAbilitySpecialData("duration");
+            }
         }
     }
 }

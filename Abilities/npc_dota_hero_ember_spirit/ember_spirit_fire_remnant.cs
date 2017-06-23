@@ -4,9 +4,6 @@
 
 namespace Ensage.SDK.Abilities.npc_dota_hero_ember_spirit
 {
-    using System;
-    using System.ComponentModel.Composition;
-
     using Ensage.SDK.Extensions;
 
     using SharpDX;
@@ -16,7 +13,8 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_ember_spirit
         public ember_spirit_fire_remnant(Ability ability)
             : base(ability)
         {
-            this.ActivateFireRemnant = this.AbilityFactory.Value.GetAbility<ember_spirit_activate_fire_remnant>();
+            var activeAbility = this.Owner.GetAbilityById(AbilityId.ember_spirit_activate_fire_remnant);
+            this.ActivateFireRemnant = new ember_spirit_activate_fire_remnant(activeAbility);
         }
 
         public ember_spirit_activate_fire_remnant ActivateFireRemnant { get; }
@@ -30,9 +28,6 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_ember_spirit
         }
 
         public string ModifierName { get; } = "modifier_ember_spirit_fire_remnant_charge_counter";
-
-        [Import(typeof(AbilityFactory))]
-        private Lazy<AbilityFactory> AbilityFactory { get; set; }
 
         public override bool UseAbility(Unit target)
         {

@@ -4,6 +4,7 @@
 
 namespace Ensage.SDK.Abilities.npc_dota_hero_obsidian_destroyer
 {
+    using System;
     using System.Linq;
 
     using Ensage.SDK.Extensions;
@@ -17,19 +18,9 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_obsidian_destroyer
         }
 
         /// <summary>
-        ///     Gets the name of the modifier, which holds the total count of stacks acquired.
-        /// </summary>
-        public string ModifierCounterName { get; } = "modifier_obsidian_destroyer_astral_imprisonment_buff_counter";
-
-        /// <summary>
         ///     Gets the name of the modifier for each stack instance of the buff.
         /// </summary>
         public string ModifierName { get; } = "modifier_obsidian_destroyer_astral_imprisonment_buff";
-
-        /// <summary>
-        ///     Gets the name of the modifier for enemy heroes, which holds the total count of stacks acquired.
-        /// </summary>
-        public string TargetModifierCounterName { get; } = "modifier_obsidian_destroyer_astral_imprisonment_debuff_counter";
 
         /// <summary>
         ///     Gets the name of the modifier for enemy heroes, for each stack instance of the debuff.
@@ -42,7 +33,7 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_obsidian_destroyer
             var spellAmp = this.Owner.GetSpellAmplification();
 
             var manaPoolDamage = this.Ability.GetAbilitySpecialData("mana_pool_damage_pct") / 100.0f;
-            var bonusDamage = this.Owner.Mana * manaPoolDamage;
+            var bonusDamage = Math.Max(this.Owner.Mana - this.Ability.ManaCost, 0) * manaPoolDamage;
 
             var reduction = 0.0f;
             if (targets.Any())

@@ -4,11 +4,21 @@
 
 namespace Ensage.SDK.Abilities.npc_dota_hero_queenofpain
 {
+    using Ensage.SDK.Extensions;
+
     public class queenofpain_blink : RangedAbility
     {
         public queenofpain_blink(Ability ability)
             : base(ability)
         {
+        }
+
+        public override float CastRange
+        {
+            get
+            {
+                return this.Ability.GetAbilitySpecialData("blink_range");
+            }
         }
     }
 }

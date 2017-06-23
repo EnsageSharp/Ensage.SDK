@@ -16,27 +16,33 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_clinkz
         {
         }
 
+        protected override float RawDamage
+        {
+            get
+            {
+                var damage = this.Ability.GetAbilitySpecialData("damage_bonus");
+
+                var talent = this.Owner.GetAbilityById(AbilityId.special_bonus_unique_clinkz_1);
+                if (talent?.Level > 0)
+                {
+                    damage += talent.GetAbilitySpecialData("value");
+                }
+
+                return damage;
+            }
+        }
+
         public override float GetDamage(params Unit[] targets)
         {
-            var damage = base.GetDamage(targets);
-            var amp = this.Owner.GetSpellAmplification();
-            var damageBonus = this.Ability.GetAbilitySpecialData("damage_bonus");
-
-            var talent = this.Owner.GetAbilityById(AbilityId.special_bonus_unique_clinkz_1);
-            if (talent != null && talent.Level > 0)
+            if (!targets.Any())
             {
-                damageBonus += talent.GetAbilitySpecialData("value");
+                return base.GetDamage() + this.RawDamage;
             }
 
-            var reduction = 0.0f;
-            if (targets.Any())
-            {
-                reduction = this.Ability.GetDamageReduction(targets.First(), this.DamageType);
-            }
+            var reduction = this.Ability.GetDamageReduction(targets.First(), this.DamageType);
+            var amplify = this.Ability.SpellAmplification();
 
-            damage += DamageHelpers.GetSpellDamage(damageBonus, amp, reduction);
-
-            return damage;
+            return base.GetDamage(targets) + DamageHelpers.GetSpellDamage(this.RawDamage, amplify, reduction);
         }
     }
 }

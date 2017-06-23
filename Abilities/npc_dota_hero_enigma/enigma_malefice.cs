@@ -44,6 +44,14 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_enigma
             }
         }
 
+        protected override float RawDamage
+        {
+            get
+            {
+                return this.Ability.GetAbilitySpecialData("damage");
+            }
+        }
+
         public override float GetDamage(params Unit[] targets)
         {
             return this.GetTickDamage(targets);
@@ -64,7 +72,7 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_enigma
 
         public float GetTotalDamage(params Unit[] targets)
         {
-            return this.GetTickDamage(targets) * (this.Duration / this.TickRate);
+            return this.GetDamage(targets) + (this.GetTickDamage(targets) * (this.Duration / this.TickRate));
         }
     }
 }

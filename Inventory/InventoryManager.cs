@@ -17,7 +17,6 @@ namespace Ensage.SDK.Inventory
 
     using log4net;
 
-    using PlaySharp.Toolkit.Helper.Annotations;
     using PlaySharp.Toolkit.Logging;
 
     using Inventory = Ensage.Inventory;
@@ -92,8 +91,8 @@ namespace Ensage.SDK.Inventory
             if (this.CollectionChanged != null)
             {
                 // TODO: investigate arc ult item changes
-                var added = this.Items.Except(this.LastItems).ToArray();
-                var removed = this.LastItems.Except(this.Items).ToArray();
+                var added = this.Items.Except(this.LastItems).ToList();
+                var removed = this.LastItems.Except(this.Items).ToList();
 
                 foreach (var change in added)
                 {
@@ -105,8 +104,15 @@ namespace Ensage.SDK.Inventory
                     Log.Debug($"Removed {change.Id}");
                 }
 
-                this.CollectionChanged.Invoke(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Remove, removed));
-                this.CollectionChanged.Invoke(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, added));
+                if (removed.Count > 0)
+                {
+                    this.CollectionChanged.Invoke(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Remove, removed));
+                }
+
+                if (added.Count > 0)
+                {
+                    this.CollectionChanged.Invoke(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, added));
+                }
 
                 this.LastItems = this.Items;
             }

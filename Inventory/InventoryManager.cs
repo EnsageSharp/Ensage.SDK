@@ -4,7 +4,6 @@
 
 namespace Ensage.SDK.Inventory
 {
-    using System;
     using System.Collections.Generic;
     using System.Collections.Specialized;
     using System.ComponentModel.Composition;
@@ -18,6 +17,7 @@ namespace Ensage.SDK.Inventory
 
     using log4net;
 
+    using PlaySharp.Toolkit.Helper.Annotations;
     using PlaySharp.Toolkit.Logging;
 
     using Inventory = Ensage.Inventory;
@@ -92,34 +92,21 @@ namespace Ensage.SDK.Inventory
             if (this.CollectionChanged != null)
             {
                 // TODO: investigate arc ult item changes
-                var added = this.Items.Except(this.LastItems);
-                var removed = this.LastItems.Except(this.Items);
-
-                foreach (var change in removed)
-                {
-                    try
-                    {
-                        Log.Debug($"Removed {change.Id}");
-                        this.CollectionChanged.Invoke(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Remove, change));
-                    }
-                    catch (Exception e)
-                    {
-                        Log.Error(e);
-                    }
-                }
+                var added = this.Items.Except(this.LastItems).ToArray();
+                var removed = this.LastItems.Except(this.Items).ToArray();
 
                 foreach (var change in added)
                 {
-                    try
-                    {
-                        Log.Debug($"Added {change.Id}");
-                        this.CollectionChanged.Invoke(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, change));
-                    }
-                    catch (Exception e)
-                    {
-                        Log.Error(e);
-                    }
+                    Log.Debug($"Added {change.Id}");
                 }
+
+                foreach (var change in removed)
+                {
+                    Log.Debug($"Removed {change.Id}");
+                }
+
+                this.CollectionChanged.Invoke(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Remove, removed));
+                this.CollectionChanged.Invoke(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, added));
 
                 this.LastItems = this.Items;
             }

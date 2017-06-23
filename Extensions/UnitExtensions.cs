@@ -116,9 +116,8 @@ namespace Ensage.SDK.Extensions
                         break;
 
                     case HeroId.npc_dota_hero_enchantress:
-
                         var impetus = hero.GetAbilityById(AbilityId.enchantress_impetus);
-                        if (impetus?.Level > 1 && hero.HasAghanimsScepter())
+                        if (impetus?.Level > 0 && hero.HasAghanimsScepter())
                         {
                             result += impetus.GetAbilitySpecialData("bonus_attack_range_scepter");
                         }

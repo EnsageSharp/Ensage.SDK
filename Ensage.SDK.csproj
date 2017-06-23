@@ -182,6 +182,10 @@
     <Compile Include="Abilities\Items\item_ward_dispenser.cs" />
     <Compile Include="Abilities\Items\item_ward_observer.cs" />
     <Compile Include="Abilities\Items\item_ward_sentry.cs" />
+    <Compile Include="Abilities\npc_dota_hero_abaddon\abaddon_aphotic_shield.cs" />
+    <Compile Include="Abilities\npc_dota_hero_abaddon\abaddon_borrowed_time.cs" />
+    <Compile Include="Abilities\npc_dota_hero_abaddon\abaddon_death_coil.cs" />
+    <Compile Include="Abilities\npc_dota_hero_abaddon\abaddon_frostmourne.cs" />
     <Compile Include="Abilities\npc_dota_hero_axe\axe_battle_hunger.cs" />
     <Compile Include="Abilities\npc_dota_hero_axe\axe_berserkers_call.cs" />
     <Compile Include="Abilities\npc_dota_hero_axe\axe_counter_helix.cs" />
@@ -193,8 +197,13 @@
     <Compile Include="Abilities\npc_dota_hero_drow_ranger\drow_ranger_frost_arrows.cs" />
     <Compile Include="Abilities\IHasModifier.cs" />
     <Compile Include="Abilities\IHasTargetModifier.cs" />
+    <Compile Include="Abilities\npc_dota_hero_drow_ranger\drow_ranger_marksmanship.cs" />
+    <Compile Include="Abilities\npc_dota_hero_drow_ranger\drow_ranger_wave_of_silence.cs" />
+    <Compile Include="Abilities\npc_dota_hero_enigma\enigma_black_hole.cs" />
+    <Compile Include="Abilities\npc_dota_hero_enigma\enigma_demonic_conversion.cs" />
     <Compile Include="Abilities\npc_dota_hero_enigma\enigma_malefice.cs" />
     <Compile Include="Abilities\IHasDot.cs" />
+    <Compile Include="Abilities\npc_dota_hero_enigma\enigma_midnight_pulse.cs" />
     <Compile Include="Abilities\npc_dota_hero_juggernaut\juggernaut_blade_dance.cs" />
     <Compile Include="Abilities\npc_dota_hero_juggernaut\juggernaut_blade_fury.cs" />
     <Compile Include="Abilities\npc_dota_hero_juggernaut\juggernaut_healing_ward.cs" />
@@ -212,6 +221,9 @@
     <Compile Include="Abilities\IChannable.cs" />
     <Compile Include="Abilities\IHasCritChance.cs" />
     <Compile Include="Abilities\IHasProcChance.cs" />
+    <Compile Include="Abilities\npc_dota_hero_obsidian_destroyer\obsidian_destroyer_astral_imprisonment.cs" />
+    <Compile Include="Abilities\npc_dota_hero_obsidian_destroyer\obsidian_destroyer_essence_aura.cs" />
+    <Compile Include="Abilities\npc_dota_hero_obsidian_destroyer\obsidian_destroyer_sanity_eclipse.cs" />
     <Compile Include="Abilities\npc_dota_hero_phantom_assassin\phantom_assassin_blur.cs" />
     <Compile Include="Abilities\npc_dota_hero_phantom_assassin\phantom_assassin_coup_de_grace.cs" />
     <Compile Include="Abilities\npc_dota_hero_phantom_assassin\phantom_assassin_phantom_strike.cs" />

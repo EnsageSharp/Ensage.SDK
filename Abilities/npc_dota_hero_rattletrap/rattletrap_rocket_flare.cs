@@ -14,6 +14,22 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_rattletrap
         {
         }
 
+        protected override float RawDamage
+        {
+            get
+            {
+                var damage = base.RawDamage;
+
+                var talent = this.Owner.GetAbilityById(AbilityId.special_bonus_unique_clockwerk_2);
+                if (talent?.Level > 0)
+                {
+                    damage += talent.GetAbilitySpecialData("value");
+                }
+
+                return damage;
+            }
+        }
+
         public override float GetDamage(params Unit[] targets)
         {
             var totalDamage = 0.0f;

@@ -18,32 +18,38 @@ namespace Ensage.SDK.Extensions
 
     public static class UnitExtensions
     {
-        private static readonly HashSet<string> ChannelAnimations =
-            new HashSet<string>(StringComparer.OrdinalIgnoreCase)
-            {
-                "death_ward_anim",
-                "powershot_cast_anim",
-                string.Empty,
-                "rearm1_anim",
-                "warlock_cast3_upheaval",
-                "warlock_cast3_upheaval_channel_anim",
-                "cast_channel_shackles_anim",
-                "channel_shackles",
-                "sand_king_epicast_anim",
-                "cast4_tricks_trade",
-                "life drain_anim",
-                "pudge_dismember_start",
-                "pudge_dismember_mid_anim",
-                "cast1_FortunesEnd_anim_anim",
-                "cast04_spring",
-                "Illuminate_anim",
-                "cast1_echo_stomp_anim",
-                "cast4_black_hole_anim",
-                "freezing_field_anim_10s",
-                "fiends_grip_cast_anim",
-                "fiends_grip_loop_anim",
-                "drain_anim"
-            };
+        private static readonly HashSet<string> EtherealModifiers = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
+                                                                        {
+                                                                            "modifier_ghost_state",
+                                                                            "modifier_item_ethereal_blade_ethereal",
+                                                                            "modifier_pugna_decrepify",
+                                                                            "modifier_necrolyte_sadist_active"
+                                                                        };
+
+        private static readonly HashSet<string> ChannelAnimations = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
+                                                                        {
+                                                                            "death_ward_anim",
+                                                                            "powershot_cast_anim",
+                                                                            "rearm1_anim",
+                                                                            "warlock_cast3_upheaval",
+                                                                            "warlock_cast3_upheaval_channel_anim",
+                                                                            "cast_channel_shackles_anim",
+                                                                            "channel_shackles",
+                                                                            "sand_king_epicast_anim",
+                                                                            "cast4_tricks_trade",
+                                                                            "life drain_anim",
+                                                                            "pudge_dismember_start",
+                                                                            "pudge_dismember_mid_anim",
+                                                                            "cast1_FortunesEnd_anim_anim",
+                                                                            "cast04_spring",
+                                                                            "Illuminate_anim",
+                                                                            "cast1_echo_stomp_anim",
+                                                                            "cast4_black_hole_anim",
+                                                                            "freezing_field_anim_10s",
+                                                                            "fiends_grip_cast_anim",
+                                                                            "fiends_grip_loop_anim",
+                                                                            "drain_anim"
+                                                                        };
 
         private static readonly ILog Log = AssemblyLogs.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
@@ -157,6 +163,7 @@ namespace Ensage.SDK.Extensions
                         {
                             result -= trollMeleeForm.GetAbilitySpecialData("bonus_range");
                         }
+
                         break;
 
                     case HeroId.npc_dota_hero_lone_druid:
@@ -232,7 +239,7 @@ namespace Ensage.SDK.Extensions
         }
 
         /// <summary>
-        /// Gets the direction unit vector
+        ///     Gets the direction unit vector
         /// </summary>
         /// <param name="unit"></param>
         /// <returns></returns>
@@ -267,7 +274,7 @@ namespace Ensage.SDK.Extensions
         }
 
         /// <summary>
-        /// Returns the damage an auto-attack would do to the target
+        ///     Returns the damage an auto-attack would do to the target
         /// </summary>
         /// <param name="source">The attacker</param>
         /// <param name="target">The target</param>
@@ -322,7 +329,7 @@ namespace Ensage.SDK.Extensions
                 {
                     damage += bonusDmgItem.GetAbilitySpecialData(isMelee ? "damage_bonus" : "damage_bonus_ranged");
                 }
-       
+
                 // apply percentage bonus damage from battle fury to base dmg
                 var battleFury = source.GetItemById(AbilityId.item_bfury);
                 if (battleFury != null)
@@ -339,7 +346,7 @@ namespace Ensage.SDK.Extensions
         }
 
         /// <summary>
-        /// Returns the amount of time that it would take for the auto-attack to hit the target
+        ///     Returns the amount of time that it would take for the auto-attack to hit the target
         /// </summary>
         /// <param name="source">The attacker</param>
         /// <param name="target">The target</param>
@@ -368,7 +375,7 @@ namespace Ensage.SDK.Extensions
         }
 
         /// <summary>
-        /// Returns the amount of time that it would take for a missile to hit the target
+        ///     Returns the amount of time that it would take for a missile to hit the target
         /// </summary>
         /// <param name="source"></param>
         /// <param name="target"></param>
@@ -465,7 +472,7 @@ namespace Ensage.SDK.Extensions
         }
 
         /// <summary>
-        /// Check if the unit is channeling a spell
+        ///     Check if the unit is channeling a spell
         /// </summary>
         /// <param name="unit"></param>
         /// <returns></returns>
@@ -480,7 +487,7 @@ namespace Ensage.SDK.Extensions
         }
 
         /// <summary>
-        /// returns true if source is directly facing to target
+        ///     returns true if source is directly facing to target
         /// </summary>
         /// <param name="source"></param>
         /// <param name="target"></param>
@@ -502,13 +509,18 @@ namespace Ensage.SDK.Extensions
             return unit.Team != target.Team;
         }
 
+        public static bool IsEthereal(this Unit unit)
+        {
+            return unit.HasModifiers(EtherealModifiers, false);
+        }
+
         public static bool IsInAttackRange(this Unit source, Unit target)
         {
             return source.IsInRange(target, source.AttackRange(target), true);
         }
 
         /// <summary>
-        /// Returns if the distance to target is lower than range
+        ///     Returns if the distance to target is lower than range
         /// </summary>
         /// <param name="sourcePosition"></param>
         /// <param name="target"></param>
@@ -517,6 +529,11 @@ namespace Ensage.SDK.Extensions
         public static bool IsInRange(this Unit source, Unit target, float range, bool centerToCenter = false)
         {
             return source.NetworkPosition.IsInRange(target, centerToCenter ? range : Math.Max(0, range + source.HullRadius + target.HullRadius));
+        }
+
+        public static bool IsInvisible(this Unit unit)
+        {
+            return unit.UnitState.HasFlag(UnitState.Invisible);
         }
 
         public static bool IsInvulnerable(this Unit unit)
@@ -561,14 +578,14 @@ namespace Ensage.SDK.Extensions
             return false;
         }
 
-        public static bool IsInvisible(this Unit unit)
-        {
-            return unit.UnitState.HasFlag(UnitState.Invisible);
-        }
-
         public static bool IsRooted(this Unit unit)
         {
             return unit.UnitState.HasFlag(UnitState.Rooted);
+        }
+
+        public static bool IsRotating(this Unit unit)
+        {
+            return unit.RotationDifference != 0;
         }
 
         public static bool IsSilenced(this Unit unit)
@@ -583,18 +600,18 @@ namespace Ensage.SDK.Extensions
 
         public static bool IsValidOrbwalkingTarget(this Unit attacker, Unit target)
         {
-            return target.IsValid &&
-                   target.IsVisible &&
-                   target.IsAlive &&
-                   target.IsSpawned &&
-                   !target.IsIllusion &&
-                   attacker.IsInAttackRange(target) &&
-                   !target.IsInvulnerable() &&
-                   !target.IsAttackImmune();
+            return target.IsValid
+                   && target.IsVisible
+                   && target.IsAlive
+                   && target.IsSpawned
+                   && !target.IsIllusion
+                   && attacker.IsInAttackRange(target)
+                   && !target.IsInvulnerable()
+                   && !target.IsAttackImmune();
         }
 
         /// <summary>
-        /// Checks if the target is valid (alive, visible, spawned and not invulnerable)
+        ///     Checks if the target is valid (alive, visible, spawned and not invulnerable)
         /// </summary>
         /// <param name="unit"></param>
         /// <param name="range"></param>
@@ -622,7 +639,7 @@ namespace Ensage.SDK.Extensions
         }
 
         /// <summary>
-        /// Returns the units auto attacks projectile speed
+        ///     Returns the units auto attacks projectile speed
         /// </summary>
         /// <param name="unit"></param>
         /// <returns></returns>
@@ -702,11 +719,6 @@ namespace Ensage.SDK.Extensions
         public static Vector3 Vector3FromPolarAngle(this Unit unit, float delta = 0f, float radial = 1f)
         {
             return Vector2FromPolarAngle(unit, delta, radial).ToVector3();
-        }
-
-        public static bool IsRotating(this Unit unit)
-        {
-            return unit.RotationDifference != 0;
         }
     }
 }

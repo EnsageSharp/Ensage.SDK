@@ -4,6 +4,8 @@
 
 namespace Ensage.SDK.Abilities.npc_dota_hero_crystal_maiden
 {
+    using System.Linq;
+
     using Ensage.SDK.Extensions;
     using Ensage.SDK.Helpers;
 
@@ -104,6 +106,22 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_crystal_maiden
             }
 
             return totalDamage;
+        }
+
+        public override bool CanHit(params Unit[] targets)
+        {
+            if (!targets.Any())
+            {
+                return true;
+            }
+
+            if (this.Owner.Distance2D(targets.First()) < this.Radius)
+            {
+                return true;
+            }
+
+            // moar checks
+            return false;
         }
     }
 }

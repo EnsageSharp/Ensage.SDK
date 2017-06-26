@@ -42,5 +42,10 @@ namespace Ensage.SDK.Persistence
         {
             this.Setter(this.Reference.Target, value);
         }
+
+        public override string ToString()
+        {
+            return $"{this.PropertyInfo?.DeclaringType?.Name}.{this.PropertyInfo?.Name} @ {this.Reference.Target}";
+        }
     }
 }

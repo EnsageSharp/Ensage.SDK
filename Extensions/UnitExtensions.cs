@@ -8,6 +8,9 @@ namespace Ensage.SDK.Extensions
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
+    using System.Runtime.CompilerServices;
+
+    using Ensage.SDK.Abilities;
 
     using log4net;
 
@@ -719,6 +722,26 @@ namespace Ensage.SDK.Extensions
         public static Vector3 Vector3FromPolarAngle(this Unit unit, float delta = 0f, float radial = 1f)
         {
             return Vector2FromPolarAngle(unit, delta, radial).ToVector3();
+        }
+
+        public static bool CanCastAbilities(this Unit unit, params BaseAbility[] abilities)
+        {
+            var myMana = unit.Mana;
+            foreach (var ability in abilities.OfType<ActiveAbility>())
+            {
+                if (!ability.CanBeCasted)
+                {
+                    return false;
+                }
+
+                myMana -= ability.Ability.ManaCost;
+                if (myMana < 0)
+                {
+                    return false;
+                }
+            }
+
+            return true;
         }
     }
 }

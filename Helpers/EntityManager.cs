@@ -13,20 +13,15 @@ namespace Ensage.SDK.Helpers
     {
         private static HashSet<Entity> cache = new HashSet<Entity>();
 
-        // private static HashSet<Entity> dormantCache = new HashSet<Entity>();
-
         static EntityManager()
         {
-            UpdateManager.SubscribeService(OnUpdate, 1000);
-        }
+            OnRefresh();
 
-        //internal static HashSet<Entity> DormantEntities
-        //{
-        //    get
-        //    {
-        //        return dormantCache;
-        //    }
-        //}
+            ObjectManager.OnAddEntity += OnAddEntity;
+            ObjectManager.OnRemoveEntity += OnRemoveEntity;
+
+            UpdateManager.SubscribeService(OnRefresh, 1000);
+        }
 
         internal static HashSet<Entity> Entities
         {
@@ -36,17 +31,9 @@ namespace Ensage.SDK.Helpers
             }
         }
 
-        internal static void Refresh()
+        internal static HashSet<Entity> GetEntities()
         {
-            ObjectManager.OnAddEntity -= OnAddEntity;
-            ObjectManager.OnRemoveEntity -= OnRemoveEntity;
-
-            // dormantCache = ObjectManager.GetDormantEntities<Entity>().ToHashSet();
-            var tmp = ObjectManager.GetEntities<Entity>();
-            cache = tmp.Concat(ObjectManager.GetDormantEntities<Entity>()).ToHashSet();
-
-            ObjectManager.OnAddEntity += OnAddEntity;
-            ObjectManager.OnRemoveEntity += OnRemoveEntity;
+            return ObjectManager.GetEntities<Entity>().Concat(ObjectManager.GetDormantEntities<Entity>()).ToHashSet();
         }
 
         private static void OnAddEntity(EntityEventArgs args)
@@ -54,14 +41,14 @@ namespace Ensage.SDK.Helpers
             cache.Add(args.Entity);
         }
 
+        private static void OnRefresh()
+        {
+            cache = GetEntities();
+        }
+
         private static void OnRemoveEntity(EntityEventArgs args)
         {
             cache.Remove(args.Entity);
-        }
-
-        private static void OnUpdate()
-        {
-            Refresh();
         }
     }
 
@@ -70,20 +57,15 @@ namespace Ensage.SDK.Helpers
     {
         private static HashSet<T> cache = new HashSet<T>();
 
-        // private static HashSet<T> dormantCache = new HashSet<T>();
-
         static EntityManager()
         {
-            UpdateManager.SubscribeService(OnUpdate, 1000);
-        }
+            OnRefresh();
 
-        //public static HashSet<T> DormantEntities
-        //{
-        //    get
-        //    {
-        //        return dormantCache;
-        //    }
-        //}
+            ObjectManager.OnAddEntity += OnAddEntity;
+            ObjectManager.OnRemoveEntity += OnRemoveEntity;
+
+            UpdateManager.SubscribeService(OnRefresh, 1000);
+        }
 
         public static IEnumerable<T> Entities
         {
@@ -98,16 +80,9 @@ namespace Ensage.SDK.Helpers
             return $"EntityManager<{typeof(T).Name}>";
         }
 
-        internal static void Refresh()
+        internal static HashSet<T> GetEntities()
         {
-            ObjectManager.OnAddEntity -= OnAddEntity;
-            ObjectManager.OnRemoveEntity -= OnRemoveEntity;
-
-            cache = EntityManager.Entities.OfType<T>().ToHashSet();
-            // dormantCache = EntityManager.DormantEntities.OfType<T>().ToHashSet();
-            
-            ObjectManager.OnAddEntity += OnAddEntity;
-            ObjectManager.OnRemoveEntity += OnRemoveEntity;
+            return EntityManager.Entities.OfType<T>().ToHashSet();
         }
 
         private static void OnAddEntity(EntityEventArgs args)
@@ -119,6 +94,11 @@ namespace Ensage.SDK.Helpers
             }
         }
 
+        private static void OnRefresh()
+        {
+            cache = GetEntities();
+        }
+
         private static void OnRemoveEntity(EntityEventArgs args)
         {
             var type = args.Entity as T;
@@ -126,11 +106,6 @@ namespace Ensage.SDK.Helpers
             {
                 cache.Remove(type);
             }
-        }
-
-        private static void OnUpdate()
-        {
-            Refresh();
         }
     }
 }

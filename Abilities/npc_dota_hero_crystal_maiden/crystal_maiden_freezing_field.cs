@@ -36,6 +36,22 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_crystal_maiden
             }
         }
 
+        public float MinimumExplosionDistance
+        {
+            get
+            {
+                return this.Ability.GetAbilitySpecialData("explosion_min_dist");
+            }
+        }
+
+        public float MaximumExplosionDistance
+        {
+            get
+            {
+                return this.Ability.GetAbilitySpecialData("explosion_max_dist");
+            }
+        }
+
         public bool IsChanneling
         {
             get

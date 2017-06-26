@@ -45,7 +45,7 @@ namespace Ensage.SDK.Persistence
 
         public override string ToString()
         {
-            return $"{this.PropertyInfo?.DeclaringType?.Name}.{this.PropertyInfo?.Name} @ {this.Reference.Target}";
+            return $"{this.PropertyInfo?.Name} @ {this.Reference.Target}";
         }
     }
 }

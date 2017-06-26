@@ -11,10 +11,10 @@ namespace Ensage.SDK.Inventory
     using System.Linq;
     using System.Reflection;
 
+    using Ensage.SDK.Abilities;
     using Ensage.SDK.Extensions;
     using Ensage.SDK.Helpers;
     using Ensage.SDK.Inventory.Metadata;
-    using Ensage.SDK.Persistence;
     using Ensage.SDK.Service;
 
     using log4net;
@@ -27,6 +27,8 @@ namespace Ensage.SDK.Inventory
     public class InventoryManager : ControllableService, IInventoryManager
     {
         private static readonly ILog Log = AssemblyLogs.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
+        private Dictionary<Type, BaseAbility> itemCache = new Dictionary<Type, BaseAbility>();
 
         private HashSet<InventoryItem> items;
 
@@ -56,7 +58,7 @@ namespace Ensage.SDK.Inventory
 
         public Unit Owner { get; }
 
-        private Dictionary<Type, List<PropertyBinding>> Bindings { get; } = new Dictionary<Type, List<PropertyBinding>>();
+        private List<ItemBindingHandler> Bindings { get; } = new List<ItemBindingHandler>();
 
         private HashSet<InventoryItem> LastItems { get; set; }
 
@@ -66,10 +68,40 @@ namespace Ensage.SDK.Inventory
 
             foreach (var property in targetType.GetProperties())
             {
-                var attribute = property.GetCustomAttribute<ItemBindingAttribute>();
-                if (attribute != null)
+                try
                 {
-                    this.CreateBinding(property, target);
+                    var itemType = property.PropertyType;
+                    var attribute = property.GetCustomAttribute<ItemBindingAttribute>();
+
+                    if (attribute != null)
+                    {
+                        var id = (AbilityId)Enum.Parse(typeof(AbilityId), itemType.Name);
+
+                        // get or create handler
+                        var handler = this.Bindings.FirstOrDefault(e => e.Type == itemType);
+                        if (handler == null)
+                        {
+                            handler = new ItemBindingHandler(id, itemType);
+                            this.Bindings.Add(handler);
+                        }
+
+                        // create binding
+                        handler.Add(property, target);
+                    }
+                }
+                catch (Exception e)
+                {
+                    Log.Warn(e);
+                }
+            }
+
+            foreach (var change in this.Items)
+            {
+                var item = this.GetOrCreateItem(change.Item);
+
+                foreach (var handler in this.Bindings.Where(e => e.Id == change.Id))
+                {
+                    handler.UpdateBindings(item);
                 }
             }
         }
@@ -78,7 +110,7 @@ namespace Ensage.SDK.Inventory
         {
             foreach (var binding in this.Bindings)
             {
-                binding.Value.RemoveAll(e => !e.Reference.IsAlive || e.Reference.Target == target);
+                binding.Remove(target);
             }
         }
 
@@ -107,20 +139,33 @@ namespace Ensage.SDK.Inventory
             UpdateManager.Unsubscribe(this.OnInventoryClear);
         }
 
-        private PropertyBinding CreateBinding(PropertyInfo prop, object target)
+        private object GetOrCreateItem(Item item)
         {
-            var itemType = prop.PropertyType;
-            var binding = new PropertyBinding(prop, target);
+            var typeName = $"Ensage.SDK.Abilities.Items.{item.Id}";
+            var type = Type.GetType(typeName);
 
-            if (!this.Bindings.ContainsKey(itemType))
+            if (type == null)
             {
-                this.Bindings[itemType] = new List<PropertyBinding>();
+                return null;
             }
 
-            Log.Debug($"Attach: {itemType.Name} @ {binding}");
-            this.Bindings[itemType].Add(binding);
+            BaseAbility cacheItem = null;
 
-            return binding;
+            if (this.itemCache.TryGetValue(type, out cacheItem))
+            {
+                if (cacheItem?.Item?.IsValid == false)
+                {
+                    cacheItem = null;
+                }
+            }
+
+            if (cacheItem == null)
+            {
+                cacheItem = (BaseAbility)Activator.CreateInstance(type, item);
+                this.itemCache[type] = cacheItem;
+            }
+
+            return cacheItem;
         }
 
         private void OnInventoryClear()
@@ -136,54 +181,7 @@ namespace Ensage.SDK.Inventory
                 var added = this.Items.Except(this.LastItems).ToList();
                 var removed = this.LastItems.Except(this.Items).ToList();
 
-                // cleanup bindings
-                foreach (var binding in this.Bindings)
-                {
-                    binding.Value.RemoveAll(e => !e.Reference.IsAlive);
-                }
-
-                // update bindings
-                foreach (var change in added)
-                {
-                    var type = Type.GetType($"Ensage.SDK.Abilities.Items.{change.Id}");
-
-                    if (type == null)
-                    {
-                        Log.Warn($"Item not supported {change.Id}");
-                        continue;
-                    }
-
-                    if (this.Bindings.ContainsKey(type))
-                    {
-                        var item = Activator.CreateInstance(type, change.Item);
-
-                        foreach (var binding in this.Bindings[type])
-                        {
-                            Log.Debug($"Update {binding}");
-                            binding.SetValue(item);
-                        }
-                    }
-                }
-
-                foreach (var change in removed)
-                {
-                    var type = Type.GetType($"Ensage.SDK.Abilities.Items.{change.Id}");
-
-                    if (type == null)
-                    {
-                        Log.Warn($"Item not supported {change.Id}");
-                        continue;
-                    }
-
-                    if (this.Bindings.ContainsKey(type))
-                    {
-                        foreach (var binding in this.Bindings[type])
-                        {
-                            Log.Debug($"Update {binding}");
-                            binding.SetValue(null);
-                        }
-                    }
-                }
+                this.UpdateBindings(added, removed);
 
                 // update events
                 if (this.CollectionChanged != null)
@@ -200,6 +198,28 @@ namespace Ensage.SDK.Inventory
                 }
 
                 this.LastItems = this.Items;
+            }
+        }
+
+        private void UpdateBindings(IEnumerable<InventoryItem> added, IEnumerable<InventoryItem> removed)
+        {
+            // update bindings
+            foreach (var change in added)
+            {
+                var item = this.GetOrCreateItem(change.Item);
+
+                foreach (var handler in this.Bindings.Where(e => e.Id == change.Id))
+                {
+                    handler.UpdateBindings(item);
+                }
+            }
+
+            foreach (var change in removed)
+            {
+                foreach (var handler in this.Bindings.Where(e => e.Id == change.Id))
+                {
+                    handler.ResetBindings();
+                }
             }
         }
     }

@@ -4,6 +4,7 @@
 
 namespace Ensage.SDK.Helpers
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
 
@@ -67,6 +68,10 @@ namespace Ensage.SDK.Helpers
             UpdateManager.SubscribeService(OnRefresh, 1000);
         }
 
+        public static event EventHandler<T> EntityAdded;
+
+        public static event EventHandler<T> EntityRemoved;
+
         public static IEnumerable<T> Entities
         {
             get
@@ -91,6 +96,7 @@ namespace Ensage.SDK.Helpers
             if (type != null)
             {
                 cache.Add(type);
+                EntityAdded?.Invoke(null, type);
             }
         }
 
@@ -105,6 +111,7 @@ namespace Ensage.SDK.Helpers
             if (type != null)
             {
                 cache.Remove(type);
+                EntityRemoved?.Invoke(null, type);
             }
         }
     }

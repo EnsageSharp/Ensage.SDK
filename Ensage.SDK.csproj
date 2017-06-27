@@ -191,6 +191,10 @@
     <Compile Include="Abilities\npc_dota_hero_alchemist\alchemist_goblins_greed.cs" />
     <Compile Include="Abilities\npc_dota_hero_alchemist\alchemist_unstable_concoction.cs" />
     <Compile Include="Abilities\npc_dota_hero_alchemist\alchemist_unstable_concoction_throw.cs" />
+    <Compile Include="Abilities\npc_dota_hero_antimage\antimage_blink.cs" />
+    <Compile Include="Abilities\npc_dota_hero_antimage\antimage_mana_break.cs" />
+    <Compile Include="Abilities\npc_dota_hero_antimage\antimage_mana_void.cs" />
+    <Compile Include="Abilities\npc_dota_hero_antimage\antimage_spell_shield.cs" />
     <Compile Include="Abilities\npc_dota_hero_axe\axe_battle_hunger.cs" />
     <Compile Include="Abilities\npc_dota_hero_axe\axe_berserkers_call.cs" />
     <Compile Include="Abilities\npc_dota_hero_axe\axe_counter_helix.cs" />
@@ -262,6 +266,10 @@
     <Compile Include="Abilities\npc_dota_hero_sniper\sniper_headshot.cs" />
     <Compile Include="Abilities\npc_dota_hero_sniper\sniper_shrapnel.cs" />
     <Compile Include="Abilities\npc_dota_hero_sniper\sniper_take_aim.cs" />
+    <Compile Include="Abilities\npc_dota_hero_sven\sven_gods_strength.cs" />
+    <Compile Include="Abilities\npc_dota_hero_sven\sven_great_cleave.cs" />
+    <Compile Include="Abilities\npc_dota_hero_sven\sven_storm_bolt.cs" />
+    <Compile Include="Abilities\npc_dota_hero_sven\sven_warcry.cs" />
     <Compile Include="Abilities\npc_dota_hero_warlock\warlock_upheaval.cs" />
     <Compile Include="Abilities\npc_dota_hero_zuus\zuus_arc_lightning.cs" />
     <Compile Include="Abilities\npc_dota_hero_zuus\zuus_cloud.cs" />

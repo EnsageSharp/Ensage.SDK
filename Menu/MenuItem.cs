@@ -4,6 +4,7 @@
 
 namespace Ensage.SDK.Menu
 {
+    using System;
     using System.ComponentModel;
     using System.Windows.Input;
 
@@ -73,6 +74,13 @@ namespace Ensage.SDK.Menu
         public static implicit operator int(MenuItem<TType> item)
         {
             return item.Item.GetValue<Slider>().Value;
+        }
+
+        public T GetEnum<T>()
+            where T : struct
+        {
+            var selection = this.Item.GetValue<StringList>().SelectedValue;
+            return (T)Enum.Parse(typeof(T), selection);
         }
 
         [NotifyPropertyChangedInvocator]

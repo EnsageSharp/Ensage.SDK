@@ -247,6 +247,7 @@
     <Compile Include="Abilities\npc_dota_hero_phantom_assassin\phantom_assassin_phantom_strike.cs" />
     <Compile Include="Abilities\npc_dota_hero_phantom_assassin\phantom_assassin_stifling_dagger.cs" />
     <Compile Include="Abilities\npc_dota_hero_pudge\pudge_dismember.cs" />
+    <Compile Include="Abilities\npc_dota_hero_pudge\pudge_flesh_heap.cs" />
     <Compile Include="Abilities\npc_dota_hero_pudge\pudge_rot.cs" />
     <Compile Include="Abilities\ConeAbility.cs" />
     <Compile Include="Abilities\npc_dota_hero_queenofpain\queenofpain_shadow_strike.cs" />

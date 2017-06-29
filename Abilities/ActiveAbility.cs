@@ -55,10 +55,11 @@ namespace Ensage.SDK.Abilities
         {
             get
             {
+                const float MinimumCastPoint = 0.05f;
                 if (this.Ability is Item)
                 {
                     // 50 ms
-                    return 0.05f;
+                    return MinimumCastPoint;
                 }
 
                 var level = this.Ability.Level;
@@ -67,7 +68,8 @@ namespace Ensage.SDK.Abilities
                     return 0.0f;
                 }
 
-                return this.Ability.GetCastPoint(level - 1);
+                var castpoint = this.Ability.GetCastPoint(level - 1);
+                return castpoint == 0.0f ? MinimumCastPoint : castpoint;
             }
         }
 

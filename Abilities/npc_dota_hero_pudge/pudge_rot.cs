@@ -4,6 +4,8 @@
 
 namespace Ensage.SDK.Abilities.npc_dota_hero_pudge
 {
+    using System.Linq;
+
     using Ensage.SDK.Extensions;
     using Ensage.SDK.Helpers;
 
@@ -57,6 +59,16 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_pudge
             {
                 return this.Ability.GetAbilitySpecialData("rot_tick");
             }
+        }
+
+        public override bool CanHit(params Unit[] targets)
+        {
+            if (!targets.Any())
+            {
+                return true;
+            }
+
+            return targets.All(x => x.Distance2D(this.Owner) < (this.CastRange + this.Radius));
         }
 
         public float GetTickDamage(params Unit[] targets)

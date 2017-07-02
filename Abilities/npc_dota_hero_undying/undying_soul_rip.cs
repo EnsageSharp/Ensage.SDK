@@ -41,6 +41,12 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_undying
             }
         }
 
+        public int GetAffectedUnitCount(Unit target)
+        {
+            var count = EntityManager<Unit>.Entities.Count(x => x.IsVisible && x.IsAlive && x != target && x != this.Owner  && !(x is Building) && x.IsRealUnit() && x.Distance2D(this.Owner) < this.Radius);
+            return Math.Min(count, this.MaxUnits);
+        }
+
         /// <summary>
         ///     Returns negative damage for an allied target.
         /// </summary>
@@ -59,11 +65,14 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_undying
             var amplify = this.Ability.SpellAmplification();
             var reduction = this.Ability.GetDamageReduction(target);
 
-            var count = EntityManager<Unit>.Entities.Count(x => x.IsVisible && x.IsAlive && x.IsRealUnit() && x.Distance2D(target) < this.Radius);
-            count = Math.Min(count, this.MaxUnits);
+            var count = this.GetAffectedUnitCount(target);
 
-            damage = DamageHelpers.GetSpellDamage(damage * count, amplify, reduction);
-            return target.IsEnemy(this.Owner) ? damage : -damage;
+            if (this.Owner.IsEnemy(target))
+            {
+                return DamageHelpers.GetSpellDamage(damage * count, amplify, reduction);
+            }
+
+            return DamageHelpers.GetSpellDamage(damage * count, amplify);
         }
     }
 }

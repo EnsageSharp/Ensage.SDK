@@ -4,7 +4,7 @@
 
 namespace Ensage.SDK.Abilities.npc_dota_hero_undying
 {
-    public class undying_tombstone : RangedAbility, IHasTargetModifier
+    public class undying_tombstone : AreaOfEffectAbility, IHasTargetModifier
     {
         public undying_tombstone(Ability ability)
             : base(ability)

@@ -232,7 +232,28 @@ namespace Ensage.SDK.Prediction
             {
                 if (target.IsStunned() || target.IsRooted())
                 {
-                    // TODO: check immobile duration
+                    // TODO: test this immobile duration
+                    //var immobileDuration = target.ImmobileDuration();
+
+                    //// check if enemy could run out of the radius
+                    //if (totalArrivalTime - (input.Radius / target.MovementSpeed) > immobileDuration)
+                    //{
+                    //    // assume enemy will run in their facing direction 
+                    //    return new PredictionOutput
+                    //    {
+                    //        Unit = input.Target,
+                    //        ArrivalTime = totalArrivalTime,
+                    //        UnitPosition = this.ExtendUntilWall(targetPosition, direction.ToVector3(),
+                    //                   (totalArrivalTime - immobileDuration) * target.MovementSpeed),
+                    //        CastPosition =
+                    //                       this.ExtendUntilWall(
+                    //                           targetPosition,
+                    //                           direction.ToVector3(),
+                    //                           (((totalArrivalTime - immobileDuration) * target.MovementSpeed) + 20f) - input.Radius - (target.HullRadius / 2.0f)),
+                    //        HitChance = HitChance.Medium
+                    //    };
+                    //}
+
                     return PredictionOutput(target, targetPosition, HitChance.Immobile);
                 }
 
@@ -243,7 +264,7 @@ namespace Ensage.SDK.Prediction
 
                 return PredictionOutput(target, targetPosition, HitChance.Medium);
             }
-
+            
             var rotationDifferenceRad = (target.RotationDifference * (float)Math.PI) / 180f;
             var direction = rotationDifferenceRad != 0f ? Vector2Extensions.Rotated(target.Direction2D(), rotationDifferenceRad) : target.Direction2D();
 

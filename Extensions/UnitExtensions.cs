@@ -10,6 +10,7 @@ namespace Ensage.SDK.Extensions
     using System.Reflection;
     using System.Runtime.CompilerServices;
 
+    using Ensage.Common.Extensions;
     using Ensage.SDK.Abilities;
 
     using log4net;
@@ -21,6 +22,20 @@ namespace Ensage.SDK.Extensions
 
     public static class UnitExtensions
     {
+        private static readonly HashSet<string> DisableModifiers = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
+                                                                       {
+                                                                           "modifier_shadow_demon_disruption", "modifier_obsidian_destroyer_astral_imprisonment_prison",
+                                                                           "modifier_eul_cyclone", "modifier_invoker_tornado", "modifier_bane_nightmare",
+                                                                           "modifier_shadow_shaman_shackles", "modifier_crystal_maiden_frostbite",
+                                                                           "modifier_ember_spirit_searing_chains", "modifier_axe_berserkers_call",
+                                                                           "modifier_lone_druid_spirit_bear_entangle_effect", "modifier_meepo_earthbind",
+                                                                           "modifier_naga_siren_ensnare", "modifier_storm_spirit_electric_vortex_pull", "modifier_treant_overgrowth",
+                                                                           "modifier_cyclone", "modifier_sheepstick_debuff", "modifier_shadow_shaman_voodoo", "modifier_lion_voodoo",
+                                                                           "modifier_sheepstick", "modifier_brewmaster_storm_cyclone", "modifier_puck_phase_shift",
+                                                                           "modifier_dark_troll_warlord_ensnare", "modifier_invoker_deafening_blast_knockback",
+                                                                           "modifier_pudge_meat_hook"
+                                                                       };
+
         private static readonly HashSet<string> EtherealModifiers = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
                                                                         {
                                                                             "modifier_ghost_state",
@@ -53,6 +68,7 @@ namespace Ensage.SDK.Extensions
                                                                             "fiends_grip_loop_anim",
                                                                             "drain_anim"
                                                                         };
+
 
         private static readonly ILog Log = AssemblyLogs.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
@@ -186,7 +202,12 @@ namespace Ensage.SDK.Extensions
 
         public static float AttackSpeedValue(this Unit unit)
         {
-            // TODO modifiers like ursa overpower
+            // TODO are there other modifiers like this one
+            if (unit.GetAbilityById(AbilityId.ursa_overpower) != null && unit.HasModifier("modifier_ursa_overpower"))
+            {
+                return 600;
+            }
+
             var attackSpeed = Math.Max(20, unit.AttackSpeedValue);
             return Math.Min(attackSpeed, 600);
         }
@@ -451,6 +472,40 @@ namespace Ensage.SDK.Extensions
         public static float HealthPercent(this Unit unit)
         {
             return (float)unit.Health / unit.MaximumHealth;
+        }
+
+        public static float ImmobileDuration(this Unit unit)
+        {
+            var result = 0f;
+            Modifier relevantModifier = null;
+            foreach (var modifier in unit.Modifiers)
+            {
+                if (!modifier.IsStunDebuff && !DisableModifiers.Contains(modifier.Name))
+                {
+                    continue;
+                }
+
+                var remainingTime = modifier.RemainingTime;
+                if (remainingTime <= result)
+                {
+                    continue;
+                }
+
+                relevantModifier = modifier;
+                result = remainingTime;
+            }
+
+            if (result == 0)
+            {
+                return 0;
+            }
+
+            if (relevantModifier.Name == "modifier_eul_cyclone" || relevantModifier.Name == "modifier_invoker_tornado")
+            {
+                result += 0.07f;
+            }
+
+            return result;
         }
 
         public static Vector3 InFront(this Unit unit, float distance)

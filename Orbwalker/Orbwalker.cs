@@ -91,20 +91,19 @@ namespace Ensage.SDK.Orbwalker
             this.Inventory.Value.CollectionChanged += this.OnItemsChanged;
         }
 
-        public bool Attack(Unit unit)
+        public bool Attack(Unit unit, float time)
         {
             if (!this.Settings.Attack)
             {
                 return false;
             }
-
-            var time = Game.RawGameTime;
+            
             if ((time - this.LastAttackOrderIssuedTime) < (this.Settings.AttackDelay / 1000f))
             {
                 return false;
             }
 
-            this.TurnEndTime = this.GetTurnTime(unit);
+            this.TurnEndTime = this.GetTurnTime(unit, time);
 
             if (this.Owner.Attack(unit))
             {
@@ -115,14 +114,29 @@ namespace Ensage.SDK.Orbwalker
             return false;
         }
 
+        public bool Attack(Unit unit)
+        {
+            return this.Attack(unit, Game.RawGameTime);
+        }
+
+        public bool CanAttack(Unit target, float time)
+        {
+            return this.Owner.CanAttack() && (this.GetTurnTime(target, time) - this.LastAttackTime) > (1f / this.Owner.AttacksPerSecond);
+        }
+
         public bool CanAttack(Unit target)
         {
-            return this.Owner.CanAttack() && (this.GetTurnTime(target) - this.LastAttackTime) > (1f / this.Owner.AttacksPerSecond);
+            return this.CanAttack(target, Game.RawGameTime);
+        }
+
+        public bool CanMove(float time)
+        {
+            return (((time - 0.1f) + this.PingTime) - this.LastAttackTime) > this.Owner.AttackPoint();
         }
 
         public bool CanMove()
         {
-            return (((Game.RawGameTime - 0.1f) + this.PingTime) - this.LastAttackTime) > this.Owner.AttackPoint();
+            return this.CanMove(Game.RawGameTime);
         }
 
         public void Deactivate()
@@ -144,12 +158,17 @@ namespace Ensage.SDK.Orbwalker
             this.Settings.Dispose();
         }
 
-        public float GetTurnTime(Entity unit)
+        public float GetTurnTime(Entity unit, float time)
         {
-            return Game.RawGameTime + this.PingTime + this.Owner.TurnTime(unit.NetworkPosition) + (this.Settings.TurnDelay / 1000f);
+            return time + this.PingTime + this.Owner.TurnTime(unit.NetworkPosition) + (this.Settings.TurnDelay / 1000f);
         }
 
-        public bool Move(Vector3 position)
+        public float GetTurnTime(Entity unit)
+        {
+            return this.GetTurnTime(unit, Game.RawGameTime);
+        }
+
+        public bool Move(Vector3 position, float time)
         {
             if (!this.Settings.Move)
             {
@@ -160,8 +179,7 @@ namespace Ensage.SDK.Orbwalker
             {
                 return false;
             }
-
-            var time = Game.RawGameTime;
+            
             if ((time - this.LastMoveOrderIssuedTime) < (this.Settings.MoveDelay / 1000f))
             {
                 return false;
@@ -176,10 +194,17 @@ namespace Ensage.SDK.Orbwalker
             return false;
         }
 
+        public bool Move(Vector3 position)
+        {
+            return this.Move(position, Game.RawGameTime);
+        }
+
         public bool OrbwalkTo([CanBeNull] Unit target)
         {
+            var time = Game.RawGameTime;
+
             // turning
-            if (this.TurnEndTime > Game.RawGameTime)
+            if (this.TurnEndTime > time)
             {
                 return false;
             }
@@ -190,21 +215,23 @@ namespace Ensage.SDK.Orbwalker
                 return false;
             }
 
+            var validTarget = target != null;
+
             // move
-            if ((target == null || !this.CanAttack(target)) && this.CanMove())
+            if ((!validTarget || !this.CanAttack(target)) && this.CanMove(time))
             {
                 if (this.OrbwalkingPoint != Vector3.Zero)
                 {
-                    return this.Move(this.OrbwalkingPoint);
+                    return this.Move(this.OrbwalkingPoint, time);
                 }
 
-                return this.Move(Game.MousePosition);
+                return this.Move(Game.MousePosition, time);
             }
 
             // attack
-            if (target != null && this.CanAttack(target))
+            if (validTarget && this.CanAttack(target))
             {
-                return this.Attack(target);
+                return this.Attack(target, time);
             }
 
             return false;

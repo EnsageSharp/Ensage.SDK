@@ -8,9 +8,7 @@ namespace Ensage.SDK.Extensions
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
-    using System.Runtime.CompilerServices;
 
-    using Ensage.Common.Extensions;
     using Ensage.SDK.Abilities;
 
     using log4net;

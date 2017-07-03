@@ -29,6 +29,14 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_ember_spirit
 
         public string ModifierName { get; } = "modifier_ember_spirit_fire_remnant_charge_counter";
 
+        public override float Speed
+        {
+            get
+            {
+                return (this.Ability.GetAbilitySpecialData("speed_multiplier") / 100) * this.Owner.MovementSpeed;
+            }
+        }
+
         public override bool UseAbility(Unit target)
         {
             return this.ActivateFireRemnant.CanBeCasted && this.ActivateFireRemnant.UseAbility(target.Position);

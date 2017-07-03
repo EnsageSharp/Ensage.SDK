@@ -32,7 +32,7 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_ember_spirit
         {
             get
             {
-                return this.Ability.GetAbilitySpecialData("flame_guard_radius");
+                return this.Ability.GetAbilitySpecialData("radius");
             }
         }
 
@@ -40,7 +40,7 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_ember_spirit
         {
             get
             {
-                return this.Ability.GetAbilitySpecialData("flame_guard_damage");
+                return this.Ability.GetAbilitySpecialData("damage_per_second") * this.TickRate;
             }
         }
 
@@ -50,7 +50,7 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_ember_spirit
         {
             get
             {
-                return this.Ability.GetAbilitySpecialData("flame_guard_damage_tick");
+                return this.Ability.GetAbilitySpecialData("tick_interval");
             }
         }
 

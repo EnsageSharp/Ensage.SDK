@@ -13,6 +13,14 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_queenofpain
         {
         }
 
+        public override bool CanBeCasted
+        {
+            get
+            {
+                return base.CanBeCasted && !this.Owner.IsRooted();
+            }
+        }
+
         public override float CastRange
         {
             get

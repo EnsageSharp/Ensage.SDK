@@ -4,6 +4,8 @@
 
 namespace Ensage.SDK.Abilities.npc_dota_hero_ember_spirit
 {
+    using Ensage.SDK.Extensions;
+
     /// <summary>
     ///     This ability should be only used to activate a remnant. Use <see cref="ember_spirit_fire_remnant" />.
     /// </summary>
@@ -12,6 +14,14 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_ember_spirit
         public ember_spirit_activate_fire_remnant(Ability ability)
             : base(ability)
         {
+        }
+
+        public override bool CanBeCasted
+        {
+            get
+            {
+                return base.CanBeCasted && !this.Owner.IsRooted();
+            }
         }
 
         public string ModifierName { get; } = "modifier_ember_spirit_fire_remnant_timer";

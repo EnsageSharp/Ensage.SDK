@@ -13,6 +13,14 @@ namespace Ensage.SDK.Abilities.Items
         {
         }
 
+        public override bool CanBeCasted
+        {
+            get
+            {
+                return base.CanBeCasted && !this.Owner.IsRooted();
+            }
+        }
+
         public override float CastRange
         {
             get

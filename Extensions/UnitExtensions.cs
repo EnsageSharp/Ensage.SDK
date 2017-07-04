@@ -20,53 +20,66 @@ namespace Ensage.SDK.Extensions
 
     public static class UnitExtensions
     {
+        private static readonly HashSet<string> ChannelAnimations = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
+                                                                    {
+                                                                        "death_ward_anim",
+                                                                        "powershot_cast_anim",
+                                                                        "rearm1_anim",
+                                                                        "warlock_cast3_upheaval",
+                                                                        "warlock_cast3_upheaval_channel_anim",
+                                                                        "cast_channel_shackles_anim",
+                                                                        "channel_shackles",
+                                                                        "sand_king_epicast_anim",
+                                                                        "cast4_tricks_trade",
+                                                                        "life drain_anim",
+                                                                        "pudge_dismember_start",
+                                                                        "pudge_dismember_mid_anim",
+                                                                        "cast1_FortunesEnd_anim_anim",
+                                                                        "cast04_spring",
+                                                                        "Illuminate_anim",
+                                                                        "cast1_echo_stomp_anim",
+                                                                        "cast4_black_hole_anim",
+                                                                        "freezing_field_anim_10s",
+                                                                        "fiends_grip_cast_anim",
+                                                                        "fiends_grip_loop_anim",
+                                                                        "drain_anim"
+                                                                    };
+
         private static readonly HashSet<string> DisableModifiers = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
-                                                                       {
-                                                                           "modifier_shadow_demon_disruption", "modifier_obsidian_destroyer_astral_imprisonment_prison",
-                                                                           "modifier_eul_cyclone", "modifier_invoker_tornado", "modifier_bane_nightmare",
-                                                                           "modifier_shadow_shaman_shackles", "modifier_crystal_maiden_frostbite",
-                                                                           "modifier_ember_spirit_searing_chains", "modifier_axe_berserkers_call",
-                                                                           "modifier_lone_druid_spirit_bear_entangle_effect", "modifier_meepo_earthbind",
-                                                                           "modifier_naga_siren_ensnare", "modifier_storm_spirit_electric_vortex_pull", "modifier_treant_overgrowth",
-                                                                           "modifier_cyclone", "modifier_sheepstick_debuff", "modifier_shadow_shaman_voodoo", "modifier_lion_voodoo",
-                                                                           "modifier_sheepstick", "modifier_brewmaster_storm_cyclone", "modifier_puck_phase_shift",
-                                                                           "modifier_dark_troll_warlord_ensnare", "modifier_invoker_deafening_blast_knockback",
-                                                                           "modifier_pudge_meat_hook"
-                                                                       };
+                                                                   {
+                                                                       "modifier_shadow_demon_disruption",
+                                                                       "modifier_obsidian_destroyer_astral_imprisonment_prison",
+                                                                       "modifier_eul_cyclone",
+                                                                       "modifier_invoker_tornado",
+                                                                       "modifier_bane_nightmare",
+                                                                       "modifier_shadow_shaman_shackles",
+                                                                       "modifier_crystal_maiden_frostbite",
+                                                                       "modifier_ember_spirit_searing_chains",
+                                                                       "modifier_axe_berserkers_call",
+                                                                       "modifier_lone_druid_spirit_bear_entangle_effect",
+                                                                       "modifier_meepo_earthbind",
+                                                                       "modifier_naga_siren_ensnare",
+                                                                       "modifier_storm_spirit_electric_vortex_pull",
+                                                                       "modifier_treant_overgrowth",
+                                                                       "modifier_cyclone",
+                                                                       "modifier_sheepstick_debuff",
+                                                                       "modifier_shadow_shaman_voodoo",
+                                                                       "modifier_lion_voodoo",
+                                                                       "modifier_sheepstick",
+                                                                       "modifier_brewmaster_storm_cyclone",
+                                                                       "modifier_puck_phase_shift",
+                                                                       "modifier_dark_troll_warlord_ensnare",
+                                                                       "modifier_invoker_deafening_blast_knockback",
+                                                                       "modifier_pudge_meat_hook"
+                                                                   };
 
         private static readonly HashSet<string> EtherealModifiers = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
-                                                                        {
-                                                                            "modifier_ghost_state",
-                                                                            "modifier_item_ethereal_blade_ethereal",
-                                                                            "modifier_pugna_decrepify",
-                                                                            "modifier_necrolyte_sadist_active"
-                                                                        };
-
-        private static readonly HashSet<string> ChannelAnimations = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
-                                                                        {
-                                                                            "death_ward_anim",
-                                                                            "powershot_cast_anim",
-                                                                            "rearm1_anim",
-                                                                            "warlock_cast3_upheaval",
-                                                                            "warlock_cast3_upheaval_channel_anim",
-                                                                            "cast_channel_shackles_anim",
-                                                                            "channel_shackles",
-                                                                            "sand_king_epicast_anim",
-                                                                            "cast4_tricks_trade",
-                                                                            "life drain_anim",
-                                                                            "pudge_dismember_start",
-                                                                            "pudge_dismember_mid_anim",
-                                                                            "cast1_FortunesEnd_anim_anim",
-                                                                            "cast04_spring",
-                                                                            "Illuminate_anim",
-                                                                            "cast1_echo_stomp_anim",
-                                                                            "cast4_black_hole_anim",
-                                                                            "freezing_field_anim_10s",
-                                                                            "fiends_grip_cast_anim",
-                                                                            "fiends_grip_loop_anim",
-                                                                            "drain_anim"
-                                                                        };
-
+                                                                    {
+                                                                        "modifier_ghost_state",
+                                                                        "modifier_item_ethereal_blade_ethereal",
+                                                                        "modifier_pugna_decrepify",
+                                                                        "modifier_necrolyte_sadist_active"
+                                                                    };
 
         private static readonly ILog Log = AssemblyLogs.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
@@ -254,6 +267,26 @@ namespace Ensage.SDK.Extensions
                 if (target is Building)
                 {
                     return target.HealthPercent() < 0.10;
+                }
+            }
+
+            return true;
+        }
+
+        public static bool CanCastAbilities(this Unit unit, params BaseAbility[] abilities)
+        {
+            var myMana = unit.Mana;
+            foreach (var ability in abilities.OfType<ActiveAbility>())
+            {
+                if (!ability.CanBeCasted)
+                {
+                    return false;
+                }
+
+                myMana -= ability.Ability.ManaCost;
+                if (myMana < 0)
+                {
+                    return false;
                 }
             }
 
@@ -656,14 +689,14 @@ namespace Ensage.SDK.Extensions
 
         public static bool IsValidOrbwalkingTarget(this Unit attacker, Unit target)
         {
-            return target.IsValid
-                   && target.IsVisible
-                   && target.IsAlive
-                   && target.IsSpawned
-                   && !target.IsIllusion
-                   && attacker.IsInAttackRange(target)
-                   && !target.IsInvulnerable()
-                   && !target.IsAttackImmune();
+            return target.IsValid &&
+                   target.IsVisible &&
+                   target.IsAlive &&
+                   target.IsSpawned &&
+                   !target.IsIllusion &&
+                   attacker.IsInAttackRange(target) &&
+                   !target.IsInvulnerable() &&
+                   !target.IsAttackImmune();
         }
 
         /// <summary>
@@ -775,26 +808,6 @@ namespace Ensage.SDK.Extensions
         public static Vector3 Vector3FromPolarAngle(this Unit unit, float delta = 0f, float radial = 1f)
         {
             return Vector2FromPolarAngle(unit, delta, radial).ToVector3();
-        }
-
-        public static bool CanCastAbilities(this Unit unit, params BaseAbility[] abilities)
-        {
-            var myMana = unit.Mana;
-            foreach (var ability in abilities.OfType<ActiveAbility>())
-            {
-                if (!ability.CanBeCasted)
-                {
-                    return false;
-                }
-
-                myMana -= ability.Ability.ManaCost;
-                if (myMana < 0)
-                {
-                    return false;
-                }
-            }
-
-            return true;
         }
     }
 }

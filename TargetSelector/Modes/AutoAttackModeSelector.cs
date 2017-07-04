@@ -81,7 +81,8 @@ namespace Ensage.SDK.TargetSelector.Modes
 
             if (this.Config.Deny)
             {
-                var denyCreep = EntityManager<Creep>.Entities.FirstOrDefault(unit => unit.IsVisible && this.IsValid(unit, true) && unit.HealthPercent() < 0.5f && this.CanKill(unit));
+                var denyCreep = EntityManager<Creep>.Entities.FirstOrDefault(
+                    unit => unit.IsVisible && this.IsValid(unit, true) && unit.HealthPercent() < 0.5f && this.CanKill(unit));
 
                 if (denyCreep != null)
                 {

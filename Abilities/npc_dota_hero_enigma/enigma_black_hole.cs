@@ -49,6 +49,7 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_enigma
             get
             {
                 return 1.0f;
+
                 // wrong tick rate in special data
                 // return this.Ability.GetAbilitySpecialData("tick_rate");
             }

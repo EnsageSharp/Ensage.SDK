@@ -91,7 +91,18 @@ namespace Ensage.SDK.Renderer.Particle
         /// <param name="color"></param>
         public void DrawCircle(Vector3 center, string id, float range, Color color)
         {
-            this.AddOrUpdate(ObjectManager.LocalHero, id, "particles/ui_mouseactions/drag_selected_ring.vpcf", ParticleAttachment.AbsOrigin, true, 0, center, 1, color, 2, range * 1.1f);
+            this.AddOrUpdate(
+                ObjectManager.LocalHero,
+                id,
+                "particles/ui_mouseactions/drag_selected_ring.vpcf",
+                ParticleAttachment.AbsOrigin,
+                true,
+                0,
+                center,
+                1,
+                color,
+                2,
+                range * 1.1f);
         }
 
         /// <summary>
@@ -102,18 +113,18 @@ namespace Ensage.SDK.Renderer.Particle
         /// <param name="endPosition"></param>
         public void DrawDangerLine(Unit unit, string id, Vector3 endPosition)
         {
-            this.AddOrUpdate(unit, id, "particles/ui_mouseactions/range_finder_tower_line.vpcf", ParticleAttachment.AbsOriginFollow, false, 6, true, 2, unit.Position, 7, endPosition);
-        }
-
-        /// <summary>
-        ///     Draws a red line from unit to endPosition with a red circle
-        /// </summary>
-        /// <param name="unit"></param>
-        /// <param name="id"></param>
-        /// <param name="endPosition"></param>
-        public void DrawTargetLine(Unit unit, string id, Vector3 endPosition)
-        {
-            this.AddOrUpdate(unit, id, "particles/ui_mouseactions/range_finder_tower_aoe.vpcf", ParticleAttachment.AbsOriginFollow, false, 6, true, 2, unit.Position, 7, endPosition);
+            this.AddOrUpdate(
+                unit,
+                id,
+                "particles/ui_mouseactions/range_finder_tower_line.vpcf",
+                ParticleAttachment.AbsOriginFollow,
+                false,
+                6,
+                true,
+                2,
+                unit.Position,
+                7,
+                endPosition);
         }
 
         /// <summary>
@@ -141,6 +152,28 @@ namespace Ensage.SDK.Renderer.Particle
         public void DrawRange(Unit unit, string id, float range, Color color)
         {
             this.AddOrUpdate(unit, id, "particles/ui_mouseactions/drag_selected_ring.vpcf", ParticleAttachment.AbsOriginFollow, true, 1, color, 2, range * 1.1f);
+        }
+
+        /// <summary>
+        ///     Draws a red line from unit to endPosition with a red circle
+        /// </summary>
+        /// <param name="unit"></param>
+        /// <param name="id"></param>
+        /// <param name="endPosition"></param>
+        public void DrawTargetLine(Unit unit, string id, Vector3 endPosition)
+        {
+            this.AddOrUpdate(
+                unit,
+                id,
+                "particles/ui_mouseactions/range_finder_tower_aoe.vpcf",
+                ParticleAttachment.AbsOriginFollow,
+                false,
+                6,
+                true,
+                2,
+                unit.Position,
+                7,
+                endPosition);
         }
 
         public bool HasParticle(string name)
@@ -176,7 +209,16 @@ namespace Ensage.SDK.Renderer.Particle
         /// <param name="color"></param>
         public void ShowClick(Unit unit, string id, Vector3 position, Color color)
         {
-            this.AddOrUpdate(unit, id, "particles/ui_mouseactions/clicked_basemove.vpcf", ParticleAttachment.AbsOrigin, true, 0, position, 1, new Vector3(color.R, color.G, color.B));
+            this.AddOrUpdate(
+                unit,
+                id,
+                "particles/ui_mouseactions/clicked_basemove.vpcf",
+                ParticleAttachment.AbsOrigin,
+                true,
+                0,
+                position,
+                1,
+                new Vector3(color.R, color.G, color.B));
         }
 
         protected virtual void Dispose(bool disposing)

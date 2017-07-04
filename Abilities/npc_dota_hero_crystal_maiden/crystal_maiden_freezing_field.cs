@@ -38,11 +38,11 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_crystal_maiden
             }
         }
 
-        public float MinimumExplosionDistance
+        public bool IsChanneling
         {
             get
             {
-                return this.Ability.GetAbilitySpecialData("explosion_min_dist");
+                return this.Ability.IsChanneling;
             }
         }
 
@@ -54,11 +54,11 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_crystal_maiden
             }
         }
 
-        public bool IsChanneling
+        public float MinimumExplosionDistance
         {
             get
             {
-                return this.Ability.IsChanneling;
+                return this.Ability.GetAbilitySpecialData("explosion_min_dist");
             }
         }
 
@@ -93,21 +93,6 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_crystal_maiden
             }
         }
 
-        public override float GetDamage(params Unit[] targets)
-        {
-            var totalDamage = 0.0f;
-
-            var damage = this.RawDamage;
-            var amplify = this.Owner.GetSpellAmplification();
-            foreach (var target in targets)
-            {
-                var reduction = this.Ability.GetDamageReduction(target);
-                totalDamage += DamageHelpers.GetSpellDamage(damage, amplify, reduction);
-            }
-
-            return totalDamage;
-        }
-
         public override bool CanHit(params Unit[] targets)
         {
             if (!targets.Any())
@@ -122,6 +107,21 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_crystal_maiden
 
             // moar checks
             return false;
+        }
+
+        public override float GetDamage(params Unit[] targets)
+        {
+            var totalDamage = 0.0f;
+
+            var damage = this.RawDamage;
+            var amplify = this.Owner.GetSpellAmplification();
+            foreach (var target in targets)
+            {
+                var reduction = this.Ability.GetDamageReduction(target);
+                totalDamage += DamageHelpers.GetSpellDamage(damage, amplify, reduction);
+            }
+
+            return totalDamage;
         }
     }
 }

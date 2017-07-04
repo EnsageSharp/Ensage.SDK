@@ -32,9 +32,9 @@ namespace Ensage.SDK.Service
                 this.ErrorReporting = this.Factory.Item("Error Reporting", true);
             }
 
-            public MenuFactory Factory { get; }
-
             public MenuItem<bool> ErrorReporting { get; }
+
+            public MenuFactory Factory { get; }
         }
 
         public class PluginsConfig

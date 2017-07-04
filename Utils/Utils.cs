@@ -96,6 +96,7 @@ namespace Ensage.SDK.Utils
 
                 p2 = p1;
             }
+
             return (float)cmid;
         }
 

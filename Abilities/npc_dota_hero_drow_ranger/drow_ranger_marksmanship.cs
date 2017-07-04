@@ -1,14 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿// <copyright file="drow_ranger_marksmanship.cs" company="Ensage">
+//    Copyright (c) 2017 Ensage.
+// </copyright>
 
 namespace Ensage.SDK.Abilities.npc_dota_hero_drow_ranger
 {
     using Ensage.SDK.Extensions;
 
-    public  class drow_ranger_marksmanship : PassiveAbility, IHasModifier, IAreaOfEffectAbility
+    public class drow_ranger_marksmanship : PassiveAbility, IHasModifier, IAreaOfEffectAbility
     {
         public drow_ranger_marksmanship(Ability ability)
             : base(ability)

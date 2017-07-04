@@ -5,6 +5,7 @@
 namespace Ensage.SDK.Service
 {
     using System;
+    using System.Collections.Generic;
 
     using Ensage.SDK.Properties;
 
@@ -21,8 +22,9 @@ namespace Ensage.SDK.Service
         {
             this.Client = new SentryClient(Settings.Default.Logger, "Ensage.SDK");
             this.Client.User.Id = SandboxConfig.Config.Settings["ID"];
-            this.Client.User.Username = SandboxConfig.Config.Settings["USER"];
         }
+
+        private HashSet<string> CaptureCache { get; } = new HashSet<string>();
 
         private SentryClient Client { get; }
 
@@ -34,8 +36,9 @@ namespace Ensage.SDK.Service
             }
 
             var exception = loggingEvent.ExceptionObject ?? loggingEvent.MessageObject as Exception;
-            if (exception != null)
+            if (exception != null && !this.CaptureCache.Contains(exception.Message))
             {
+                this.CaptureCache.Add(exception.Message);
                 this.Client.CaptureAsync(exception);
             }
         }

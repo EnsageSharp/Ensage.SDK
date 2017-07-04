@@ -38,12 +38,12 @@ namespace Ensage.SDK.Renderer.DX9
             var font = new Font(
                 this.Context.Device,
                 new FontDescription
-                    {
-                        FaceName = familyName,
-                        Height = (int)fontSize,
-                        OutputPrecision = FontPrecision.Default,
-                        Quality = FontQuality.ClearTypeNatural
-                    });
+                {
+                    FaceName = familyName,
+                    Height = (int)fontSize,
+                    OutputPrecision = FontPrecision.Default,
+                    Quality = FontQuality.ClearTypeNatural
+                });
             this.Add(key, font);
 
             return font;

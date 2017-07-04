@@ -16,7 +16,6 @@ namespace Ensage.SDK.Helpers
         public static float GetDamageReduction(this Ability ability, Unit target, DamageType damageType)
         {
             // TODO: modifiers
-
             if (damageType.HasFlag(DamageType.HealthRemoval))
             {
                 return 0.0f;
@@ -37,7 +36,7 @@ namespace Ensage.SDK.Helpers
         }
 
         /// <summary>
-        /// Gets the spell damage with the default values for calculation.
+        ///     Gets the spell damage with the default values for calculation.
         /// </summary>
         /// <param name="damage">The raw damage of the spell.</param>
         /// <param name="amplify">The total spell amplification</param>
@@ -49,7 +48,7 @@ namespace Ensage.SDK.Helpers
         }
 
         /// <summary>
-        /// Gets the spell damage with additional amplification values.
+        ///     Gets the spell damage with additional amplification values.
         /// </summary>
         /// <param name="damage">The raw damage of the spell.</param>
         /// <param name="modifiers">All modifiers including resistance (negative value) and amplification (positive value).</param>

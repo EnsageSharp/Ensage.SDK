@@ -43,7 +43,14 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_undying
 
         public int GetAffectedUnitCount(Unit target)
         {
-            var count = EntityManager<Unit>.Entities.Count(x => x.IsVisible && x.IsAlive && x != target && x != this.Owner  && !(x is Building) && x.IsRealUnit() && x.Distance2D(this.Owner) < this.Radius);
+            var count = EntityManager<Unit>.Entities.Count(
+                x => x.IsVisible &&
+                     x.IsAlive &&
+                     x != target &&
+                     x != this.Owner &&
+                     !(x is Building) &&
+                     x.IsRealUnit() &&
+                     x.Distance2D(this.Owner) < this.Radius);
             return Math.Min(count, this.MaxUnits);
         }
 

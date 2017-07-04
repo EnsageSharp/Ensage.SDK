@@ -390,7 +390,7 @@ namespace Ensage.SDK.Extensions
         }
 
         /// <summary>
-        /// Returns if the distance to target is lower than range
+        ///     Returns if the distance to target is lower than range
         /// </summary>
         /// <param name="sourcePosition"></param>
         /// <param name="target"></param>
@@ -402,7 +402,7 @@ namespace Ensage.SDK.Extensions
         }
 
         /// <summary>
-        /// Returns if the distance to target is lower than range
+        ///     Returns if the distance to target is lower than range
         /// </summary>
         /// <param name="sourcePosition"></param>
         /// <param name="target"></param>
@@ -417,7 +417,7 @@ namespace Ensage.SDK.Extensions
         }
 
         /// <summary>
-        /// Returns if the distance to target is lower than range
+        ///     Returns if the distance to target is lower than range
         /// </summary>
         /// <param name="sourcePosition"></param>
         /// <param name="target"></param>

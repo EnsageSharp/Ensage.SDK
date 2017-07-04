@@ -8,8 +8,8 @@ namespace Ensage.SDK.Handlers.Weak
     using System.Reflection;
 
     /// <summary>
-    /// Stores an Action without causing a hard reference
-    /// to be created to the Action's owner. The owner can be garbage collected at any time.
+    ///     Stores an Action without causing a hard reference
+    ///     to be created to the Action's owner. The owner can be garbage collected at any time.
     /// </summary>
     /// <typeparam name="T">The type of the Action's parameter.</typeparam>
     public class WeakAction<T> : WeakAction, IExecuteWithObject
@@ -17,7 +17,7 @@ namespace Ensage.SDK.Handlers.Weak
         private Action<T> staticAction;
 
         /// <summary>
-        /// Initializes a new instance of the WeakAction class.
+        ///     Initializes a new instance of the WeakAction class.
         /// </summary>
         /// <param name="action">The action that will be associated to this instance.</param>
         public WeakAction(Action<T> action)
@@ -26,7 +26,7 @@ namespace Ensage.SDK.Handlers.Weak
         }
 
         /// <summary>
-        /// Initializes a new instance of the WeakAction class.
+        ///     Initializes a new instance of the WeakAction class.
         /// </summary>
         /// <param name="target">The action's owner.</param>
         /// <param name="action">The action that will be associated to this instance.</param>
@@ -52,8 +52,8 @@ namespace Ensage.SDK.Handlers.Weak
         }
 
         /// <summary>
-        /// Gets a value indicating whether the Action's owner is still alive, or if it was collected
-        /// by the Garbage Collector already.
+        ///     Gets a value indicating whether the Action's owner is still alive, or if it was collected
+        ///     by the Garbage Collector already.
         /// </summary>
         public override bool IsAlive
         {
@@ -79,7 +79,7 @@ namespace Ensage.SDK.Handlers.Weak
         }
 
         /// <summary>
-        /// Gets the name of the method that this WeakAction represents.
+        ///     Gets the name of the method that this WeakAction represents.
         /// </summary>
         public override string MethodName
         {
@@ -95,8 +95,8 @@ namespace Ensage.SDK.Handlers.Weak
         }
 
         /// <summary>
-        /// Executes the action. This only happens if the action's owner
-        /// is still alive. The action's parameter is set to default(T).
+        ///     Executes the action. This only happens if the action's owner
+        ///     is still alive. The action's parameter is set to default(T).
         /// </summary>
         public new void Execute()
         {
@@ -104,8 +104,8 @@ namespace Ensage.SDK.Handlers.Weak
         }
 
         /// <summary>
-        /// Executes the action. This only happens if the action's owner
-        /// is still alive.
+        ///     Executes the action. This only happens if the action's owner
+        ///     is still alive.
         /// </summary>
         /// <param name="parameter">A parameter to be passed to the action.</param>
         public void Execute(T parameter)
@@ -133,13 +133,15 @@ namespace Ensage.SDK.Handlers.Weak
         }
 
         /// <summary>
-        /// Executes the action with a parameter of type object. This parameter
-        /// will be casted to T. This method implements <see cref="IExecuteWithObject.ExecuteWithObject" />
-        /// and can be useful if you store multiple WeakAction{T} instances but don't know in advance
-        /// what type T represents.
+        ///     Executes the action with a parameter of type object. This parameter
+        ///     will be casted to T. This method implements <see cref="IExecuteWithObject.ExecuteWithObject" />
+        ///     and can be useful if you store multiple WeakAction{T} instances but don't know in advance
+        ///     what type T represents.
         /// </summary>
-        /// <param name="parameter">The parameter that will be passed to the action after
-        /// being casted to T.</param>
+        /// <param name="parameter">
+        ///     The parameter that will be passed to the action after
+        ///     being casted to T.
+        /// </param>
         public void ExecuteWithObject(object parameter)
         {
             var parameterCasted = (T)parameter;
@@ -147,9 +149,9 @@ namespace Ensage.SDK.Handlers.Weak
         }
 
         /// <summary>
-        /// Sets all the actions that this WeakAction contains to null,
-        /// which is a signal for containing objects that this WeakAction
-        /// should be deleted.
+        ///     Sets all the actions that this WeakAction contains to null,
+        ///     which is a signal for containing objects that this WeakAction
+        ///     should be deleted.
         /// </summary>
         public new void MarkForDeletion()
         {
@@ -159,15 +161,15 @@ namespace Ensage.SDK.Handlers.Weak
     }
 
     /// <summary>
-    /// Stores an <see cref="Action" /> without causing a hard reference
-    /// to be created to the Action's owner. The owner can be garbage collected at any time.
+    ///     Stores an <see cref="Action" /> without causing a hard reference
+    ///     to be created to the Action's owner. The owner can be garbage collected at any time.
     /// </summary>
     public class WeakAction
     {
         private Action staticAction;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="WeakAction" /> class.
+        ///     Initializes a new instance of the <see cref="WeakAction" /> class.
         /// </summary>
         /// <param name="action">The action that will be associated to this instance.</param>
         public WeakAction(Action action)
@@ -176,7 +178,7 @@ namespace Ensage.SDK.Handlers.Weak
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="WeakAction" /> class.
+        ///     Initializes a new instance of the <see cref="WeakAction" /> class.
         /// </summary>
         /// <param name="target">The action's owner.</param>
         /// <param name="action">The action that will be associated to this instance.</param>
@@ -203,15 +205,15 @@ namespace Ensage.SDK.Handlers.Weak
         }
 
         /// <summary>
-        /// Initializes an empty instance of the <see cref="WeakAction" /> class.
+        ///     Initializes an empty instance of the <see cref="WeakAction" /> class.
         /// </summary>
         protected WeakAction()
         {
         }
 
         /// <summary>
-        /// Gets a value indicating whether the Action's owner is still alive, or if it was collected
-        /// by the Garbage Collector already.
+        ///     Gets a value indicating whether the Action's owner is still alive, or if it was collected
+        ///     by the Garbage Collector already.
         /// </summary>
         public virtual bool IsAlive
         {
@@ -237,7 +239,7 @@ namespace Ensage.SDK.Handlers.Weak
         }
 
         /// <summary>
-        /// Gets a value indicating whether the WeakAction is static or not.
+        ///     Gets a value indicating whether the WeakAction is static or not.
         /// </summary>
         public bool IsStatic
         {
@@ -248,7 +250,7 @@ namespace Ensage.SDK.Handlers.Weak
         }
 
         /// <summary>
-        /// Gets the name of the method that this WeakAction represents.
+        ///     Gets the name of the method that this WeakAction represents.
         /// </summary>
         public virtual string MethodName
         {
@@ -264,8 +266,8 @@ namespace Ensage.SDK.Handlers.Weak
         }
 
         /// <summary>
-        /// Gets the Action's owner. This object is stored as a 
-        /// <see cref="WeakReference" />.
+        ///     Gets the Action's owner. This object is stored as a
+        ///     <see cref="WeakReference" />.
         /// </summary>
         public object Target
         {
@@ -276,15 +278,15 @@ namespace Ensage.SDK.Handlers.Weak
         }
 
         /// <summary>
-        /// Gets or sets a WeakReference to this WeakAction's action's target.
-        /// This is not necessarily the same as
-        /// <see cref="Reference" />, for example if the
-        /// method is anonymous.
+        ///     Gets or sets a WeakReference to this WeakAction's action's target.
+        ///     This is not necessarily the same as
+        ///     <see cref="Reference" />, for example if the
+        ///     method is anonymous.
         /// </summary>
         protected WeakReference ActionReference { get; set; }
 
         /// <summary>
-        /// The target of the weak reference.
+        ///     The target of the weak reference.
         /// </summary>
         protected object ActionTarget
         {
@@ -295,22 +297,22 @@ namespace Ensage.SDK.Handlers.Weak
         }
 
         /// <summary>
-        /// Gets or sets the <see cref="MethodInfo" /> corresponding to this WeakAction's
-        /// method passed in the constructor.
+        ///     Gets or sets the <see cref="MethodInfo" /> corresponding to this WeakAction's
+        ///     method passed in the constructor.
         /// </summary>
         protected MethodInfo Method { get; set; }
 
         /// <summary>
-        /// Gets or sets a WeakReference to the target passed when constructing
-        /// the WeakAction. This is not necessarily the same as
-        /// <see cref="ActionReference" />, for example if the
-        /// method is anonymous.
+        ///     Gets or sets a WeakReference to the target passed when constructing
+        ///     the WeakAction. This is not necessarily the same as
+        ///     <see cref="ActionReference" />, for example if the
+        ///     method is anonymous.
         /// </summary>
         protected WeakReference Reference { get; set; }
 
         /// <summary>
-        /// Executes the action. This only happens if the action's owner
-        /// is still alive.
+        ///     Executes the action. This only happens if the action's owner
+        ///     is still alive.
         /// </summary>
         public void Execute()
         {
@@ -333,7 +335,7 @@ namespace Ensage.SDK.Handlers.Weak
         }
 
         /// <summary>
-        /// Sets the reference that this instance stores to null.
+        ///     Sets the reference that this instance stores to null.
         /// </summary>
         public void MarkForDeletion()
         {

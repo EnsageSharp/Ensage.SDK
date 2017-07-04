@@ -97,7 +97,7 @@ namespace Ensage.SDK.Orbwalker
             {
                 return false;
             }
-            
+
             if ((time - this.LastAttackOrderIssuedTime) < (this.Settings.AttackDelay / 1000f))
             {
                 return false;
@@ -179,7 +179,7 @@ namespace Ensage.SDK.Orbwalker
             {
                 return false;
             }
-            
+
             if ((time - this.LastMoveOrderIssuedTime) < (this.Settings.MoveDelay / 1000f))
             {
                 return false;

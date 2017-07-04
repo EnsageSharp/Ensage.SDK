@@ -44,7 +44,7 @@ namespace Ensage.SDK.Service
                     return;
                 }
 
-                this.Cache.Add(new CacheItem(exception.Message), new CacheItemPolicy { AbsoluteExpiration = DateTimeOffset.Now.AddMinutes(1) });
+                this.Cache.Add(exception.Message, exception, DateTimeOffset.Now.AddMinutes(1));
                 this.Client.CaptureAsync(exception);
             }
         }

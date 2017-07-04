@@ -89,8 +89,10 @@ namespace Ensage.SDK.Service
         {
             try
             {
-                var logger = (Hierarchy)LogManager.GetRepository("Ensage.SDK");
-                logger.Root.AddAppender(new SentryAppender());
+                var assemblyName = Assembly.GetCallingAssembly().GetName().Name;
+                var repository = LogManager.GetAllRepositories().FirstOrDefault(e => e.Name == assemblyName);
+                var hierarchy = (Hierarchy)repository;
+                hierarchy.Root.AddAppender(new SentryAppender());
             }
             catch (Exception e)
             {

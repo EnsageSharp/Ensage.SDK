@@ -28,7 +28,7 @@ namespace Ensage.SDK.Service
 
         protected override void Append(LoggingEvent loggingEvent)
         {
-            if (loggingEvent.Level != Level.Fatal)
+            if (loggingEvent.Level != Level.Error)
             {
                 return;
             }

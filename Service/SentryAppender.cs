@@ -13,27 +13,18 @@ namespace Ensage.SDK.Service
     using log4net.Appender;
     using log4net.Core;
 
-    using SharpRaven;
-    using SharpRaven.Data;
+    using PlaySharp.Sentry;
 
-    public class SentryAppender : AppenderSkeleton, ISentryUserFactory
+    public class SentryAppender : AppenderSkeleton
     {
         public SentryAppender()
         {
-            this.User = new SentryUser(SandboxConfig.Config.Settings["ID"]);
-            this.Client = new RavenClient(Settings.Default.Logger, sentryUserFactory: this);
-            this.Client.Compression = true;
-            this.Client.Logger = "Ensage.SDK";
+            this.Client = new SentryClient(Settings.Default.Logger, "Ensage.SDK");
+            this.Client.User.Id = SandboxConfig.Config.Settings["ID"];
+            this.Client.User.Username = SandboxConfig.Config.Settings["USER"];
         }
 
-        private RavenClient Client { get; }
-
-        private SentryUser User { get; }
-
-        public SentryUser Create()
-        {
-            return this.User;
-        }
+        private SentryClient Client { get; }
 
         protected override void Append(LoggingEvent loggingEvent)
         {
@@ -45,7 +36,7 @@ namespace Ensage.SDK.Service
             var exception = loggingEvent.ExceptionObject ?? loggingEvent.MessageObject as Exception;
             if (exception != null)
             {
-                this.Client.CaptureAsync(new SentryEvent(exception));
+                this.Client.CaptureAsync(exception);
             }
         }
 

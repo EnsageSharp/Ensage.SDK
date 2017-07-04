@@ -25,8 +25,8 @@ namespace Ensage.SDK.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("https://37da258f2799427f99a99f88c9d23566:ddaef13cf69842dba42e0085858925dd@sentry." +
-            "ensage.io/3")]
+        [global::System.Configuration.DefaultSettingValueAttribute("https://8c33266dfc6547738bcd9a2b0fe079e5:e994911e30b347599c68b70ae525d553@sentry." +
+            "ensage.io/10")]
         public string Logger {
             get {
                 return ((string)(this["Logger"]));

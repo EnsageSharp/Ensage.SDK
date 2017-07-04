@@ -28,10 +28,13 @@ namespace Ensage.SDK.Service
         {
             public DebugConfig(MenuFactory parent)
             {
-                // this.Factory = parent.Menu("Debug");
+                this.Factory = parent.Menu("Debug");
+                this.ErrorReporting = this.Factory.Item("Error Reporting", true);
             }
 
             public MenuFactory Factory { get; }
+
+            public MenuItem<bool> ErrorReporting { get; }
         }
 
         public class PluginsConfig

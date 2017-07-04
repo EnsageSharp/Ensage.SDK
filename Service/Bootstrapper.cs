@@ -25,19 +25,6 @@ namespace Ensage.SDK.Service
     {
         private static readonly ILog Log = AssemblyLogs.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        //public Bootstrapper()
-        //{
-        //    try
-        //    {
-        //        this.Logger = (Hierarchy)LogManager.GetRepository("Ensage.SDK");
-        //        this.Logger.Root.AddAppender(new SentryAppender());
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        Log.Warn(e);
-        //    }
-        //}
-
         public SDKConfig Config { get; private set; }
 
         public ContextContainer<IServiceContext> Default { get; private set; }
@@ -53,8 +40,6 @@ namespace Ensage.SDK.Service
         }
 
         private EnsageServiceContext Context { get; set; }
-
-        private Hierarchy Logger { get; }
 
         public void BuildUp(object instance)
         {
@@ -97,6 +82,19 @@ namespace Ensage.SDK.Service
                 {
                     UpdateManager.BeginInvoke(plugin.Activate, plugin.Metadata.Priority);
                 }
+            }
+        }
+
+        private void CreateLogger()
+        {
+            try
+            {
+                var logger = (Hierarchy)LogManager.GetRepository("Ensage.SDK");
+                logger.Root.AddAppender(new SentryAppender());
+            }
+            catch (Exception e)
+            {
+                Log.Warn(e);
             }
         }
 
@@ -147,6 +145,12 @@ namespace Ensage.SDK.Service
 
                 Log.Debug($">> Building Menu");
                 this.Config = new SDKConfig();
+
+                if (this.Config.Debug.ErrorReporting)
+                {
+                    Log.Debug($">> Building Logger");
+                    this.CreateLogger();
+                }
 
                 Log.Debug($">> Building Context for LocalHero");
                 this.Context = new EnsageServiceContext(ObjectManager.LocalHero);

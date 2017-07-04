@@ -51,13 +51,17 @@
     <Reference Include="Ensage.Common">
       <HintPath>D:\Games\Loader\References\Ensage.Common.dll</HintPath>
     </Reference>
-    <Reference Include="EnsageSharp.Sandbox, Version=1.0.0.0, Culture=neutral, PublicKeyToken=0c92cb9c3763a33b, processorArchitecture=AMD64">
+    <Reference Include="EnsageSharp.Sandbox">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>D:\Games\Loader\System\EnsageSharp.Sandbox.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Newtonsoft.Json">
       <HintPath>D:\Games\Loader\References\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="PlaySharp.Sentry">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>D:\Games\Loader\Core\PlaySharp.Sentry.dll</HintPath>
     </Reference>
     <Reference Include="PlaySharp.Toolkit">
       <HintPath>D:\Games\Loader\References\PlaySharp.Toolkit.dll</HintPath>
@@ -379,6 +383,7 @@
     <Compile Include="Service\Metadata\IPluginLoaderMetadata.cs" />
     <Compile Include="Service\Metadata\StartupMode.cs" />
     <Compile Include="Service\PluginContainer.cs" />
+    <Compile Include="Service\SentryAppender.cs" />
     <Compile Include="Service\ServiceManager.cs" />
     <Compile Include="TargetSelector\Modes\AutoAttackModeSelector.cs" />
     <Compile Include="Orbwalker\Metadata\ExportOrbwalkingModeAttribute.cs" />
@@ -476,6 +481,7 @@
     <Compile Include="Utils\Utils.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="Properties\key.snk" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

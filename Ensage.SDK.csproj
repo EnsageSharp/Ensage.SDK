@@ -51,6 +51,10 @@
     <Reference Include="Ensage.Common">
       <HintPath>C:\EnsageSharp\References\Ensage.Common.dll</HintPath>
     </Reference>
+    <Reference Include="EnsageSharp.Sandbox, Version=1.0.0.0, Culture=neutral, PublicKeyToken=0c92cb9c3763a33b, processorArchitecture=AMD64">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Games\Loader\System\EnsageSharp.Sandbox.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Newtonsoft.Json">
       <HintPath>C:\EnsageSharp\References\Newtonsoft.Json.dll</HintPath>
@@ -75,6 +79,10 @@
     </Reference>
     <Reference Include="SharpDX.Mathematics">
       <HintPath>C:\EnsageSharp\References\SharpDX.Mathematics.dll</HintPath>
+    </Reference>
+    <Reference Include="SharpRaven, Version=2.2.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Games\Loader\Core\SharpRaven.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
@@ -335,6 +343,11 @@
     <Compile Include="Prediction\PredictionInput.cs" />
     <Compile Include="Prediction\PredictionOutput.cs" />
     <Compile Include="Prediction\PredictionSkillshotType.cs" />
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
     <Compile Include="Renderer\DX11\BrushCache.cs" />
     <Compile Include="Renderer\DX11\D3D11Context.cs" />
     <Compile Include="Renderer\DX11\D3D11Renderer.cs" />
@@ -370,6 +383,7 @@
     <Compile Include="Service\Metadata\IPluginLoaderMetadata.cs" />
     <Compile Include="Service\Metadata\StartupMode.cs" />
     <Compile Include="Service\PluginContainer.cs" />
+    <Compile Include="Service\SentryAppender.cs" />
     <Compile Include="Service\ServiceManager.cs" />
     <Compile Include="TargetSelector\Modes\AutoAttackModeSelector.cs" />
     <Compile Include="Orbwalker\Metadata\ExportOrbwalkingModeAttribute.cs" />
@@ -468,6 +482,10 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Properties\key.snk" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

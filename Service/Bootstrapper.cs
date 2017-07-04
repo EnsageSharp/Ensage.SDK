@@ -15,6 +15,7 @@ namespace Ensage.SDK.Service
     using Ensage.SDK.Service.Metadata;
 
     using log4net;
+    using log4net.Repository.Hierarchy;
 
     using PlaySharp.Toolkit.AppDomain.Loader;
     using PlaySharp.Toolkit.Helper;
@@ -23,6 +24,19 @@ namespace Ensage.SDK.Service
     public class Bootstrapper : AssemblyEntryPoint
     {
         private static readonly ILog Log = AssemblyLogs.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
+        public Bootstrapper()
+        {
+            try
+            {
+                this.Logger = (Hierarchy)LogManager.GetRepository("Ensage.SDK");
+                this.Logger.Root.AddAppender(new SentryAppender());
+            }
+            catch (Exception e)
+            {
+                Log.Warn(e);
+            }
+        }
 
         public SDKConfig Config { get; private set; }
 
@@ -39,6 +53,8 @@ namespace Ensage.SDK.Service
         }
 
         private EnsageServiceContext Context { get; set; }
+
+        private Hierarchy Logger { get; }
 
         public void BuildUp(object instance)
         {
@@ -156,12 +172,12 @@ namespace Ensage.SDK.Service
             {
                 foreach (var exception in e.LoaderExceptions)
                 {
-                    Log.Error(exception);
+                    Log.Fatal(exception);
                 }
             }
             catch (Exception e)
             {
-                Log.Error(e);
+                Log.Fatal(e);
             }
         }
     }

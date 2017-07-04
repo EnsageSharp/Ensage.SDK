@@ -43,46 +43,42 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="clipper_library">
-      <HintPath>C:\EnsageSharp\References\clipper_library.dll</HintPath>
+      <HintPath>D:\Games\Loader\References\clipper_library.dll</HintPath>
     </Reference>
     <Reference Include="Ensage">
-      <HintPath>C:\EnsageSharp\References\Ensage.dll</HintPath>
+      <HintPath>D:\Games\Loader\References\Ensage.dll</HintPath>
     </Reference>
     <Reference Include="Ensage.Common">
-      <HintPath>C:\EnsageSharp\References\Ensage.Common.dll</HintPath>
+      <HintPath>D:\Games\Loader\References\Ensage.Common.dll</HintPath>
     </Reference>
     <Reference Include="EnsageSharp.Sandbox, Version=1.0.0.0, Culture=neutral, PublicKeyToken=0c92cb9c3763a33b, processorArchitecture=AMD64">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Games\Loader\System\EnsageSharp.Sandbox.dll</HintPath>
+      <HintPath>D:\Games\Loader\System\EnsageSharp.Sandbox.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Newtonsoft.Json">
-      <HintPath>C:\EnsageSharp\References\Newtonsoft.Json.dll</HintPath>
+      <HintPath>D:\Games\Loader\References\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="PlaySharp.Toolkit">
-      <HintPath>C:\EnsageSharp\References\PlaySharp.Toolkit.dll</HintPath>
+      <HintPath>D:\Games\Loader\References\PlaySharp.Toolkit.dll</HintPath>
     </Reference>
     <Reference Include="SharpDX">
-      <HintPath>C:\EnsageSharp\References\SharpDX.dll</HintPath>
+      <HintPath>D:\Games\Loader\References\SharpDX.dll</HintPath>
     </Reference>
     <Reference Include="SharpDX.Direct2D1">
-      <HintPath>C:\EnsageSharp\References\SharpDX.Direct2D1.dll</HintPath>
+      <HintPath>D:\Games\Loader\References\SharpDX.Direct2D1.dll</HintPath>
     </Reference>
     <Reference Include="SharpDX.Direct3D11">
-      <HintPath>C:\EnsageSharp\References\SharpDX.Direct3D11.dll</HintPath>
+      <HintPath>D:\Games\Loader\References\SharpDX.Direct3D11.dll</HintPath>
     </Reference>
     <Reference Include="SharpDX.Direct3D9">
-      <HintPath>C:\EnsageSharp\References\SharpDX.Direct3D9.dll</HintPath>
+      <HintPath>D:\Games\Loader\References\SharpDX.Direct3D9.dll</HintPath>
     </Reference>
     <Reference Include="SharpDX.DXGI">
-      <HintPath>C:\EnsageSharp\References\SharpDX.DXGI.dll</HintPath>
+      <HintPath>D:\Games\Loader\References\SharpDX.DXGI.dll</HintPath>
     </Reference>
     <Reference Include="SharpDX.Mathematics">
-      <HintPath>C:\EnsageSharp\References\SharpDX.Mathematics.dll</HintPath>
-    </Reference>
-    <Reference Include="SharpRaven, Version=2.2.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Games\Loader\Core\SharpRaven.dll</HintPath>
+      <HintPath>D:\Games\Loader\References\SharpDX.Mathematics.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
@@ -383,7 +379,6 @@
     <Compile Include="Service\Metadata\IPluginLoaderMetadata.cs" />
     <Compile Include="Service\Metadata\StartupMode.cs" />
     <Compile Include="Service\PluginContainer.cs" />
-    <Compile Include="Service\SentryAppender.cs" />
     <Compile Include="Service\ServiceManager.cs" />
     <Compile Include="TargetSelector\Modes\AutoAttackModeSelector.cs" />
     <Compile Include="Orbwalker\Metadata\ExportOrbwalkingModeAttribute.cs" />

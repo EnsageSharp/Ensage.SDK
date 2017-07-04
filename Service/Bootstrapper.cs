@@ -25,18 +25,18 @@ namespace Ensage.SDK.Service
     {
         private static readonly ILog Log = AssemblyLogs.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        public Bootstrapper()
-        {
-            try
-            {
-                this.Logger = (Hierarchy)LogManager.GetRepository("Ensage.SDK");
-                this.Logger.Root.AddAppender(new SentryAppender());
-            }
-            catch (Exception e)
-            {
-                Log.Warn(e);
-            }
-        }
+        //public Bootstrapper()
+        //{
+        //    try
+        //    {
+        //        this.Logger = (Hierarchy)LogManager.GetRepository("Ensage.SDK");
+        //        this.Logger.Root.AddAppender(new SentryAppender());
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        Log.Warn(e);
+        //    }
+        //}
 
         public SDKConfig Config { get; private set; }
 

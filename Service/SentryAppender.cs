@@ -86,6 +86,24 @@ namespace Ensage.SDK.Service
                 var assemblyName = loggingEvent.Repository.Name;
                 var assembly = AssemblyResolver.AssemblyCache.FirstOrDefault(e => e.AssemblyName?.Name == assemblyName);
 
+                if (assembly != null)
+                {
+                    if (assembly.Id > 0 && assembly.Id < 1000)
+                    {
+                        this.Client.Tags["Id"] = assembly.Id.ToString();
+                    }
+                    else
+                    {
+                        this.Client.Tags["Id"] = "local";
+                    }
+
+                    // this.Client.Tags["Build"] = assembly.Version;
+                }
+
+                this.Client.Tags["Plugin"] = assemblyName;
+                this.Client.Tags["Map"] = Game.ShortLevelName;
+                this.Client.Tags["Hero"] = ObjectManager.LocalHero?.HeroId.ToString();
+
                 this.Client.Extra["Game"] =
                     new
                     {
@@ -98,16 +116,6 @@ namespace Ensage.SDK.Service
                         LevelName = Game.ShortLevelName,
                         Assembly = assemblyName
                     };
-
-                if (assembly?.Id > 0)
-                {
-                    this.Client.Tags["Id"] = assembly.Id.ToString();
-                }
-
-                // this.Client.Tags["Build"] = assembly?.Version;
-                this.Client.Tags["Plugin"] = assemblyName;
-                this.Client.Tags["Map"] = Game.ShortLevelName;
-                this.Client.Tags["Hero"] = ObjectManager.LocalHero?.HeroId.ToString();
 
                 this.Cache.Add(exception.Message, loggingEvent, DateTimeOffset.Now.AddMinutes(1));
                 this.Client.CaptureAsync(exception);

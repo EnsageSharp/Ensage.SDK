@@ -61,7 +61,7 @@
     </Reference>
     <Reference Include="PlaySharp.Sentry">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>D:\Games\Loader\Core\PlaySharp.Sentry.dll</HintPath>
+      <HintPath>D:\Games\Loader\References\PlaySharp.Sentry.dll</HintPath>
     </Reference>
     <Reference Include="PlaySharp.Toolkit">
       <HintPath>D:\Games\Loader\References\PlaySharp.Toolkit.dll</HintPath>

@@ -25,6 +25,8 @@ namespace Ensage.SDK.Service
     {
         private static readonly ILog Log = AssemblyLogs.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
+        private SentryAppender appender;
+
         public SDKConfig Config { get; private set; }
 
         public ContextContainer<IServiceContext> Default { get; private set; }
@@ -89,14 +91,11 @@ namespace Ensage.SDK.Service
         {
             try
             {
-                var assemblyName = Assembly.GetCallingAssembly().GetName().Name;
-                var repository = LogManager.GetAllRepositories().FirstOrDefault(e => e.Name == assemblyName);
-                var hierarchy = (Hierarchy)repository;
-                hierarchy.Root.AddAppender(new SentryAppender());
+                this.appender = new SentryAppender();
             }
             catch (Exception e)
             {
-                Log.Warn(e);
+                Log.Error(e);
             }
         }
 

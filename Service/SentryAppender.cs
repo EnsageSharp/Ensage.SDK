@@ -32,10 +32,7 @@ namespace Ensage.SDK.Service
             this.Cache = new MemoryCache("SentryAppender");
             this.Client = new SentryClient(Settings.Default.Logger, "Ensage.SDK");
             this.Client.User.Id = SandboxConfig.Config.Settings["ID"];
-
             this.Client.Tags["game_version"] = Game.BuildVersion.ToString();
-            this.Client.Tags["Map"] = Game.ShortLevelName;
-            this.Client.Tags["Hero"] = ObjectManager.LocalHero?.HeroId.ToString();
 
             this.UpdateRepositories();
 
@@ -86,6 +83,9 @@ namespace Ensage.SDK.Service
                     return;
                 }
 
+                var assemblyName = loggingEvent.Repository.Name;
+                var assembly = AssemblyResolver.AssemblyCache.FirstOrDefault(e => e.AssemblyName?.Name == assemblyName);
+
                 this.Client.Extra["Game"] =
                     new
                     {
@@ -96,10 +96,18 @@ namespace Ensage.SDK.Service
                         GameVersion = Game.BuildVersion,
                         GameTime = TimeSpan.FromSeconds(Game.GameTime),
                         LevelName = Game.ShortLevelName,
-                        Assembly = loggingEvent.Repository.Name
+                        Assembly = assemblyName
                     };
 
-                this.Client.Tags["Plugin"] = loggingEvent.Repository.Name;
+                if (assembly?.Id > 0)
+                {
+                    this.Client.Tags["Id"] = assembly.Id.ToString();
+                }
+
+                this.Client.Tags["Build"] = assembly?.Version;
+                this.Client.Tags["Plugin"] = assemblyName;
+                this.Client.Tags["Map"] = Game.ShortLevelName;
+                this.Client.Tags["Hero"] = ObjectManager.LocalHero?.HeroId.ToString();
 
                 this.Cache.Add(exception.Message, loggingEvent, DateTimeOffset.Now.AddMinutes(1));
                 this.Client.CaptureAsync(exception);

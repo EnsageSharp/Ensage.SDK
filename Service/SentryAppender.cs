@@ -104,7 +104,7 @@ namespace Ensage.SDK.Service
                     this.Client.Tags["Id"] = assembly.Id.ToString();
                 }
 
-                this.Client.Tags["Build"] = assembly?.Version;
+                // this.Client.Tags["Build"] = assembly?.Version;
                 this.Client.Tags["Plugin"] = assemblyName;
                 this.Client.Tags["Map"] = Game.ShortLevelName;
                 this.Client.Tags["Hero"] = ObjectManager.LocalHero?.HeroId.ToString();

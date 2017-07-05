@@ -5,6 +5,7 @@
 namespace Ensage.SDK.Service
 {
     using System;
+    using System.ComponentModel.Composition;
     using System.Linq;
     using System.Reflection;
     using System.Runtime.Caching;
@@ -20,15 +21,17 @@ namespace Ensage.SDK.Service
     using log4net.Repository.Hierarchy;
 
     using PlaySharp.Sentry;
-    using PlaySharp.Sentry.Data;
     using PlaySharp.Toolkit.Logging;
 
+    [Export(typeof(SentryAppender))]
     public class SentryAppender : AppenderSkeleton
     {
         private static readonly ILog Log = AssemblyLogs.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        public SentryAppender()
+        [ImportingConstructor]
+        public SentryAppender([Import] IServiceContext context)
         {
+            this.Context = context;
             this.Cache = new MemoryCache("SentryAppender");
             this.Client = new SentryClient(Settings.Default.Logger, "Ensage.SDK");
             this.Client.User.Id = SandboxConfig.Config.Settings["ID"];
@@ -44,27 +47,21 @@ namespace Ensage.SDK.Service
 
         private SentryClient Client { get; }
 
+        private IServiceContext Context { get; }
+
         private string[] Exclusions { get; } = { "EnsageSharp.Sandbox", "PlaySharp.Toolkit", "PlaySharp.Service" };
 
         private DateTime UpdateUntil { get; }
 
         public void Capture(Exception e)
         {
-            this.Client.Capture(e);
-        }
-
-        public void Capture(SentryEvent e)
-        {
+            this.UpdateMetadata(Assembly.GetCallingAssembly().GetName().Name);
             this.Client.Capture(e);
         }
 
         public void CaptureAsync(Exception e)
         {
-            this.Client.CaptureAsync(e);
-        }
-
-        public void CaptureAsync(SentryEvent e)
-        {
+            this.UpdateMetadata(Assembly.GetCallingAssembly().GetName().Name);
             this.Client.CaptureAsync(e);
         }
 
@@ -78,13 +75,41 @@ namespace Ensage.SDK.Service
             var exception = loggingEvent.ExceptionObject ?? loggingEvent.MessageObject as Exception;
             if (exception != null)
             {
-                if (this.Cache.Contains(exception.Message))
+                if (this.CanCapture(exception))
                 {
                     return;
                 }
 
-                var assemblyName = loggingEvent.Repository.Name;
-                var assembly = AssemblyResolver.AssemblyCache.FirstOrDefault(e => e.AssemblyName?.Name == assemblyName);
+                this.StoreException(exception);
+
+                this.UpdateMetadata(loggingEvent.Repository.Name);
+                this.CaptureAsync(exception);
+            }
+        }
+
+        protected override void Append(LoggingEvent[] loggingEvents)
+        {
+            foreach (var loggingEvent in loggingEvents)
+            {
+                this.Append(loggingEvent);
+            }
+        }
+
+        private bool CanCapture(Exception e)
+        {
+            return !this.Cache.Contains(e.StackTrace);
+        }
+
+        private void StoreException(Exception e, int seconds = 60)
+        {
+            this.Cache.Add(e.StackTrace, e, DateTimeOffset.Now.AddSeconds(seconds));
+        }
+
+        private void UpdateMetadata(string origin)
+        {
+            try
+            {
+                var assembly = AssemblyResolver.AssemblyCache.FirstOrDefault(e => e.AssemblyName?.Name == origin);
 
                 if (assembly != null)
                 {
@@ -100,33 +125,26 @@ namespace Ensage.SDK.Service
                     // this.Client.Tags["Build"] = assembly.Version;
                 }
 
-                this.Client.Tags["Plugin"] = assemblyName;
+                this.Client.Tags["Plugin"] = origin;
                 this.Client.Tags["Map"] = Game.ShortLevelName;
-                this.Client.Tags["Hero"] = ObjectManager.LocalHero?.HeroId.ToString();
+                this.Client.Tags["Unit"] = this.Context.Owner.ClassId.ToString();
 
                 this.Client.Extra["Game"] =
                     new
                     {
                         GameMode = Game.GameMode.ToString(),
                         GameState = Game.GameState.ToString(),
-                        Hero = ObjectManager.LocalHero?.HeroId.ToString(),
+                        Unit = this.Context.Owner.ClassId.ToString(),
                         Ping = Game.Ping,
                         GameVersion = Game.BuildVersion,
                         GameTime = TimeSpan.FromSeconds(Game.GameTime),
                         LevelName = Game.ShortLevelName,
-                        Assembly = assemblyName
+                        Assembly = origin
                     };
-
-                this.Cache.Add(exception.Message, loggingEvent, DateTimeOffset.Now.AddMinutes(1));
-                this.Client.CaptureAsync(exception);
             }
-        }
-
-        protected override void Append(LoggingEvent[] loggingEvents)
-        {
-            foreach (var loggingEvent in loggingEvents)
+            catch (Exception e)
             {
-                this.Append(loggingEvent);
+                Log.Warn(e);
             }
         }
 
@@ -140,19 +158,26 @@ namespace Ensage.SDK.Service
 
             foreach (var repository in LogManager.GetAllRepositories().Where(e => !this.Exclusions.Contains(e.Name)))
             {
-                var hierarchy = repository as Hierarchy;
-                if (hierarchy == null)
+                try
                 {
-                    return;
-                }
+                    var hierarchy = repository as Hierarchy;
+                    if (hierarchy == null)
+                    {
+                        return;
+                    }
 
-                if (hierarchy.Root.Appenders.Contains(this))
+                    if (hierarchy.Root.Appenders.Contains(this))
+                    {
+                        continue;
+                    }
+
+                    Log.Info($"LOG {hierarchy.Name}");
+                    hierarchy.Root.AddAppender(this);
+                }
+                catch (Exception e)
                 {
-                    continue;
+                    Log.Warn(e);
                 }
-
-                Log.Info($"LOG {hierarchy.Name}");
-                hierarchy.Root.AddAppender(this);
             }
         }
     }

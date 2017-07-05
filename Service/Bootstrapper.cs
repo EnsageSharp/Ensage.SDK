@@ -15,7 +15,6 @@ namespace Ensage.SDK.Service
     using Ensage.SDK.Service.Metadata;
 
     using log4net;
-    using log4net.Repository.Hierarchy;
 
     using PlaySharp.Toolkit.AppDomain.Loader;
     using PlaySharp.Toolkit.Helper;
@@ -24,8 +23,6 @@ namespace Ensage.SDK.Service
     public class Bootstrapper : AssemblyEntryPoint
     {
         private static readonly ILog Log = AssemblyLogs.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-
-        private SentryAppender appender;
 
         public SDKConfig Config { get; private set; }
 
@@ -89,9 +86,14 @@ namespace Ensage.SDK.Service
 
         private void CreateLogger()
         {
+            if (!this.Config.Debug.ErrorReporting)
+            {
+                return;
+            }
+
             try
             {
-                this.appender = new SentryAppender();
+                this.Default.Get<SentryAppender>();
             }
             catch (Exception e)
             {
@@ -147,11 +149,10 @@ namespace Ensage.SDK.Service
                 Log.Debug($">> Building Menu");
                 this.Config = new SDKConfig();
 
-                if (this.Config.Debug.ErrorReporting)
-                {
+ 
                     Log.Debug($">> Building Logger");
                     this.CreateLogger();
-                }
+
 
                 Log.Debug($">> Building Context for LocalHero");
                 this.Context = new EnsageServiceContext(ObjectManager.LocalHero);

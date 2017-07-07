@@ -120,11 +120,22 @@ namespace Ensage.SDK.Service
         {
             foreach (var assembly in this.Plugins.OrderBy(e => e.Metadata.Priority))
             {
-                Log.Debug($"Found {assembly.Metadata.Name}");
-
-                if (assembly.Metadata.IsSupported())
+                try
                 {
-                    this.PluginContainer.Add(new PluginContainer(this.Config.Plugins.Factory, assembly));
+                    Log.Debug($"Found {assembly.Metadata.Name}");
+
+                    if (assembly.Metadata.IsSupported())
+                    {
+                        this.PluginContainer.Add(new PluginContainer(this.Config.Plugins.Factory, assembly));
+                    }
+                    else
+                    {
+                        Log.Warn($"Plugin not supported {assembly.Metadata.Name}");
+                    }
+                }
+                catch (Exception e)
+                {
+                    Log.Error(e);
                 }
             }
         }
@@ -149,16 +160,14 @@ namespace Ensage.SDK.Service
                 Log.Debug($">> Building Menu");
                 this.Config = new SDKConfig();
 
- 
-                    Log.Debug($">> Building Logger");
-                    this.CreateLogger();
-
-
                 Log.Debug($">> Building Context for LocalHero");
                 this.Context = new EnsageServiceContext(ObjectManager.LocalHero);
 
                 this.Default = this.Context.Container;
                 this.Default.RegisterValue(this);
+
+                Log.Debug($">> Building Logger");
+                this.CreateLogger();
 
                 Log.Debug($">> Initializing Services");
                 IoC.Initialize(this.BuildUp, this.GetInstance, this.GetAllInstances);

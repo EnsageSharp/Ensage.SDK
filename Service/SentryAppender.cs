@@ -75,13 +75,12 @@ namespace Ensage.SDK.Service
             var exception = loggingEvent.ExceptionObject ?? loggingEvent.MessageObject as Exception;
             if (exception != null)
             {
-                if (this.CanCapture(exception))
+                if (this.IsCached(exception))
                 {
                     return;
                 }
 
                 this.StoreException(exception);
-
                 this.UpdateMetadata(loggingEvent.Repository.Name);
                 this.CaptureAsync(exception);
             }
@@ -95,9 +94,9 @@ namespace Ensage.SDK.Service
             }
         }
 
-        private bool CanCapture(Exception e)
+        private bool IsCached(Exception e)
         {
-            return !this.Cache.Contains(e.StackTrace);
+            return this.Cache.Contains(e.StackTrace);
         }
 
         private void StoreException(Exception e, int seconds = 60)
@@ -163,7 +162,7 @@ namespace Ensage.SDK.Service
                     var hierarchy = repository as Hierarchy;
                     if (hierarchy == null)
                     {
-                        return;
+                        continue;
                     }
 
                     if (hierarchy.Root.Appenders.Contains(this))

@@ -140,17 +140,15 @@ namespace Ensage.SDK.Service
             }
         }
 
-        private void OnLoad()
+        private void OnBootstrap()
         {
-            if (ObjectManager.LocalHero == null)
-            {
-                return;
-            }
-
-            UpdateManager.Unsubscribe(this.OnLoad);
-
             try
             {
+                if (ObjectManager.LocalHero == null)
+                {
+                    throw new Exception("Local Hero is null");
+                }
+
                 var sw = Stopwatch.StartNew();
 
                 Log.Debug("====================================================");
@@ -194,6 +192,17 @@ namespace Ensage.SDK.Service
             {
                 Log.Fatal(e);
             }
+        }
+
+        private void OnLoad()
+        {
+            if (ObjectManager.LocalHero == null)
+            {
+                return;
+            }
+
+            UpdateManager.Unsubscribe(this.OnLoad);
+            UpdateManager.BeginInvoke(this.OnBootstrap);
         }
     }
 }

@@ -4,7 +4,6 @@
 
 namespace Ensage.SDK.Service
 {
-    using Ensage.Common.Menu;
     using Ensage.SDK.Menu;
 
     public class SDKConfig

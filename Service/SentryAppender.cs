@@ -6,6 +6,7 @@ namespace Ensage.SDK.Service
 {
     using System;
     using System.ComponentModel.Composition;
+    using System.Diagnostics;
     using System.Linq;
     using System.Reflection;
     using System.Runtime.Caching;
@@ -21,6 +22,7 @@ namespace Ensage.SDK.Service
     using log4net.Repository.Hierarchy;
 
     using PlaySharp.Sentry;
+    using PlaySharp.Toolkit.Helper.Annotations;
     using PlaySharp.Toolkit.Logging;
 
     [Export(typeof(SentryAppender))]
@@ -39,7 +41,7 @@ namespace Ensage.SDK.Service
 
             this.UpdateRepositories();
 
-            this.UpdateUntil = DateTime.Now.AddSeconds(30);
+            this.UpdateUntil = DateTime.Now.AddSeconds(60);
             UpdateManager.SubscribeService(this.UpdateRepositories, 100);
         }
 
@@ -55,13 +57,13 @@ namespace Ensage.SDK.Service
 
         public void Capture(Exception e)
         {
-            this.UpdateMetadata(Assembly.GetCallingAssembly().GetName().Name);
+            this.UpdateMetadata(e, Assembly.GetCallingAssembly().GetName().Name);
             this.Client.Capture(e);
         }
 
-        public void CaptureAsync(Exception e)
+        public void CaptureAsync(Exception e, string origin)
         {
-            this.UpdateMetadata(Assembly.GetCallingAssembly().GetName().Name);
+            this.UpdateMetadata(e, origin);
             this.Client.CaptureAsync(e);
         }
 
@@ -81,8 +83,7 @@ namespace Ensage.SDK.Service
                 }
 
                 this.StoreException(exception);
-                this.UpdateMetadata(loggingEvent.Repository.Name);
-                this.CaptureAsync(exception);
+                this.CaptureAsync(exception, loggingEvent.Repository.Name);
             }
         }
 
@@ -92,6 +93,16 @@ namespace Ensage.SDK.Service
             {
                 this.Append(loggingEvent);
             }
+        }
+
+        [CanBeNull]
+        private string FindAssemblyToBlame(Exception e)
+        {
+            var trace = new StackTrace(e);
+            var frames = trace.GetFrames();
+            var firstFrame = frames?.First();
+
+            return firstFrame?.GetMethod()?.DeclaringType?.Assembly?.GetName()?.Name;
         }
 
         private bool IsCached(Exception e)
@@ -104,10 +115,19 @@ namespace Ensage.SDK.Service
             this.Cache.Add(e.StackTrace, e, DateTimeOffset.Now.AddSeconds(seconds));
         }
 
-        private void UpdateMetadata(string origin)
+        private void UpdateMetadata(Exception exception, string origin)
         {
             try
             {
+                if (origin == "Ensage.SDK")
+                {
+                    var targetAssembly = this.FindAssemblyToBlame(exception);
+                    if (!string.IsNullOrEmpty(targetAssembly))
+                    {
+                        origin = targetAssembly;
+                    }
+                }
+
                 var assembly = AssemblyResolver.AssemblyCache.FirstOrDefault(e => e.AssemblyName?.Name == origin);
 
                 if (assembly != null)
@@ -121,7 +141,7 @@ namespace Ensage.SDK.Service
                         this.Client.Tags["Id"] = "local";
                     }
 
-                    // this.Client.Tags["Build"] = assembly.Version;
+                    this.Client.Tags["Build"] = assembly.Version;
                 }
 
                 this.Client.Tags["Plugin"] = origin;

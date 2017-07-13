@@ -103,9 +103,15 @@ namespace Ensage.SDK.Service
 
             if (frames != null)
             {
-                foreach (var frame in frames.Where(x => x.GetMethod().DeclaringType != null))
+                foreach (var frame in frames)
                 {
-                    var assembly = frame.GetMethod().DeclaringType.Assembly;
+                    var method = frame.GetMethod();
+                    if (method.DeclaringType == null)
+                    {
+                        continue;
+                    }
+
+                    var assembly = method.DeclaringType.Assembly;
                     var name = assembly.GetName().Name;
 
                     if (assembly.GlobalAssemblyCache)
@@ -162,6 +168,11 @@ namespace Ensage.SDK.Service
                     }
 
                     this.Client.Tags["Build"] = assembly.Version;
+                }
+                else
+                {
+                    this.Client.Tags["Id"] = null;
+                    this.Client.Tags["Build"] = null;
                 }
 
                 this.Client.Tags["Plugin"] = origin;

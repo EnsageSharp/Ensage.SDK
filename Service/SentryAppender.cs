@@ -100,9 +100,29 @@ namespace Ensage.SDK.Service
         {
             var trace = new StackTrace(e);
             var frames = trace.GetFrames();
-            var firstFrame = frames?.First();
 
-            return firstFrame?.GetMethod()?.DeclaringType?.Assembly?.GetName()?.Name;
+            if (frames != null)
+            {
+                foreach (var frame in frames.Where(x => x.GetMethod().DeclaringType != null))
+                {
+                    var assembly = frame.GetMethod().DeclaringType.Assembly;
+                    var name = assembly.GetName().Name;
+
+                    if (assembly.GlobalAssemblyCache)
+                    {
+                        continue;
+                    }
+
+                    if (name == "Ensage" || name == "Ensage.SDK" || name == "Ensage.Common")
+                    {
+                        continue;
+                    }
+
+                    return name;
+                }
+            }
+
+            return null;
         }
 
         private bool IsCached(Exception e)

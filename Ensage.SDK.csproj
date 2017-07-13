@@ -43,46 +43,46 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="clipper_library">
-      <HintPath>D:\Games\Loader\References\clipper_library.dll</HintPath>
+      <HintPath>C:\EnsageSharp\References\clipper_library.dll</HintPath>
     </Reference>
     <Reference Include="Ensage">
-      <HintPath>D:\Games\Loader\References\Ensage.dll</HintPath>
+      <HintPath>C:\EnsageSharp\References\Ensage.dll</HintPath>
     </Reference>
     <Reference Include="Ensage.Common">
-      <HintPath>D:\Games\Loader\References\Ensage.Common.dll</HintPath>
+      <HintPath>C:\EnsageSharp\References\Ensage.Common.dll</HintPath>
     </Reference>
     <Reference Include="EnsageSharp.Sandbox">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>D:\Games\Loader\System\EnsageSharp.Sandbox.dll</HintPath>
+      <HintPath>C:\EnsageSharp\System\EnsageSharp.Sandbox.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Newtonsoft.Json">
-      <HintPath>D:\Games\Loader\References\Newtonsoft.Json.dll</HintPath>
+      <HintPath>C:\EnsageSharp\References\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="PlaySharp.Sentry">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>D:\Games\Loader\References\PlaySharp.Sentry.dll</HintPath>
+      <HintPath>C:\EnsageSharp\References\PlaySharp.Sentry.dll</HintPath>
     </Reference>
     <Reference Include="PlaySharp.Toolkit">
-      <HintPath>D:\Games\Loader\References\PlaySharp.Toolkit.dll</HintPath>
+      <HintPath>C:\EnsageSharp\References\PlaySharp.Toolkit.dll</HintPath>
     </Reference>
     <Reference Include="SharpDX">
-      <HintPath>D:\Games\Loader\References\SharpDX.dll</HintPath>
+      <HintPath>C:\EnsageSharp\References\SharpDX.dll</HintPath>
     </Reference>
     <Reference Include="SharpDX.Direct2D1">
-      <HintPath>D:\Games\Loader\References\SharpDX.Direct2D1.dll</HintPath>
+      <HintPath>C:\EnsageSharp\References\SharpDX.Direct2D1.dll</HintPath>
     </Reference>
     <Reference Include="SharpDX.Direct3D11">
-      <HintPath>D:\Games\Loader\References\SharpDX.Direct3D11.dll</HintPath>
+      <HintPath>C:\EnsageSharp\References\SharpDX.Direct3D11.dll</HintPath>
     </Reference>
     <Reference Include="SharpDX.Direct3D9">
-      <HintPath>D:\Games\Loader\References\SharpDX.Direct3D9.dll</HintPath>
+      <HintPath>C:\EnsageSharp\References\SharpDX.Direct3D9.dll</HintPath>
     </Reference>
     <Reference Include="SharpDX.DXGI">
-      <HintPath>D:\Games\Loader\References\SharpDX.DXGI.dll</HintPath>
+      <HintPath>C:\EnsageSharp\References\SharpDX.DXGI.dll</HintPath>
     </Reference>
     <Reference Include="SharpDX.Mathematics">
-      <HintPath>D:\Games\Loader\References\SharpDX.Mathematics.dll</HintPath>
+      <HintPath>C:\EnsageSharp\References\SharpDX.Mathematics.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
@@ -268,6 +268,16 @@
     <Compile Include="Abilities\npc_dota_hero_rattletrap\rattletrap_hookshot.cs" />
     <Compile Include="Abilities\npc_dota_hero_rattletrap\rattletrap_power_cogs.cs" />
     <Compile Include="Abilities\npc_dota_hero_rattletrap\rattletrap_rocket_flare.cs" />
+    <Compile Include="Abilities\npc_dota_hero_rubick\rubick_empty1.cs" />
+    <Compile Include="Abilities\npc_dota_hero_rubick\rubick_empty2.cs" />
+    <Compile Include="Abilities\npc_dota_hero_rubick\rubick_fade_bolt.cs" />
+    <Compile Include="Abilities\npc_dota_hero_rubick\rubick_hidden1.cs" />
+    <Compile Include="Abilities\npc_dota_hero_rubick\rubick_hidden2.cs" />
+    <Compile Include="Abilities\npc_dota_hero_rubick\rubick_hidden3.cs" />
+    <Compile Include="Abilities\npc_dota_hero_rubick\rubick_null_field.cs" />
+    <Compile Include="Abilities\npc_dota_hero_rubick\rubick_spell_steal.cs" />
+    <Compile Include="Abilities\npc_dota_hero_rubick\rubick_telekinesis.cs" />
+    <Compile Include="Abilities\npc_dota_hero_rubick\rubick_telekinesis_land.cs" />
     <Compile Include="Abilities\npc_dota_hero_skywrath_mage\skywrath_mage_ancient_seal.cs" />
     <Compile Include="Abilities\npc_dota_hero_skywrath_mage\skywrath_mage_arcane_bolt.cs" />
     <Compile Include="Abilities\npc_dota_hero_skywrath_mage\skywrath_mage_concussive_shot.cs" />
@@ -308,6 +318,7 @@
     <Compile Include="Handlers\Weak\IExecuteWithObjectAndResult.cs" />
     <Compile Include="Handlers\Weak\WeakAction.cs" />
     <Compile Include="Handlers\Weak\WeakFunc.cs" />
+    <Compile Include="Helpers\AbilityDetector.cs" />
     <Compile Include="Helpers\CircularBuffer.cs" />
     <Compile Include="Helpers\Messenger.cs" />
     <Compile Include="Handlers\IUpdateHandler.cs" />

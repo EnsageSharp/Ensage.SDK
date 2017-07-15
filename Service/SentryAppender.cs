@@ -175,6 +175,7 @@ namespace Ensage.SDK.Service
                     this.Client.Tags["Build"] = null;
                 }
 
+                this.Client.Client.Logger = origin;
                 this.Client.Tags["Plugin"] = origin;
                 this.Client.Tags["Map"] = Game.ShortLevelName;
                 this.Client.Tags["Unit"] = this.Context.Owner.ClassId.ToString();

@@ -53,6 +53,11 @@ namespace Ensage.SDK.Helpers
 
         public static void BeginInvoke(Action callback, int timeout = 0)
         {
+            if (timeout < 0)
+            {
+                throw new ArgumentOutOfRangeException(nameof(timeout));
+            }
+
             if (timeout == 0)
             {
                 Context.Post(state => callback(), null);
@@ -173,6 +178,11 @@ namespace Ensage.SDK.Helpers
 
         private static IUpdateHandler Subscribe(ICollection<IUpdateHandler> handlers, Action callback, int timeout = 0, bool isEnabled = true)
         {
+            if (timeout < 0)
+            {
+                throw new ArgumentOutOfRangeException(nameof(timeout));
+            }
+
             var handler = handlers.FirstOrDefault(h => h.Callback == callback);
             if (handler == null)
             {

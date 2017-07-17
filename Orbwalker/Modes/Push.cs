@@ -13,7 +13,7 @@ namespace Ensage.SDK.Orbwalker.Modes
     internal class Push : AttackOrbwalkingMode
     {
         [ImportingConstructor]
-        public Push([Import] IOrbwalker orbwalker, [Import] ITargetSelectorManager targetSelector)
+        public Push([Import] IOrbwalkerManager orbwalker, [Import] ITargetSelectorManager targetSelector)
             : base(orbwalker, targetSelector, "Push", 'T', false, true, false, true, false, true)
         {
         }

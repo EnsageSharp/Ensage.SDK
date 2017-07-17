@@ -12,7 +12,7 @@ namespace Ensage.SDK.Orbwalker.Modes
     {
         private bool canExecute;
 
-        protected KeyPressOrbwalkingModeAsync(IOrbwalker orbwalker, IInputManager input, Key key)
+        protected KeyPressOrbwalkingModeAsync(IOrbwalkerManager orbwalker, IInputManager input, Key key)
             : base(orbwalker)
         {
             this.Input = input;

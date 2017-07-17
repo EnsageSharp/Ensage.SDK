@@ -34,7 +34,7 @@ namespace Ensage.SDK.Samples
         private drow_ranger_frost_arrows frostArrows;
 
         [ImportingConstructor]
-        public SampleOrbOrbwalkingModeWithAsync(IOrbwalker orbwalker, IInputManager input, ITargetSelectorManager targetSelectorManager, AbilityFactory abilityFactory)
+        public SampleOrbOrbwalkingModeWithAsync(IOrbwalkerManager orbwalker, IInputManager input, ITargetSelectorManager targetSelectorManager, AbilityFactory abilityFactory)
             : base(orbwalker, input, Key.Space)
         {
             this.targetSelectorManager = targetSelectorManager;

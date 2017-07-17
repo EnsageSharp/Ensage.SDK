@@ -190,7 +190,14 @@ namespace Ensage.SDK.Menu
         {
             if (disposing)
             {
-                this.Target.RemoveFromMainMenu(Assembly.GetExecutingAssembly());
+                if (this.Target.IsRootMenu)
+                {
+                    this.Target.RemoveFromMainMenu(Assembly.GetExecutingAssembly());
+                }
+                else
+                {
+                    this.Parent.Target.RemoveSubMenu(this.Target.Name);
+                }
             }
         }
 

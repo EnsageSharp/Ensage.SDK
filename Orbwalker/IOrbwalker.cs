@@ -4,7 +4,6 @@
 
 namespace Ensage.SDK.Orbwalker
 {
-    using Ensage.SDK.Orbwalker.Config;
     using Ensage.SDK.Service;
 
     using PlaySharp.Toolkit.Helper;
@@ -16,8 +15,6 @@ namespace Ensage.SDK.Orbwalker
         IServiceContext Context { get; }
 
         Vector3 OrbwalkingPoint { get; set; }
-
-        OrbwalkerSettings Settings { get; }
 
         bool Attack(Unit target);
 

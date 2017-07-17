@@ -99,14 +99,6 @@ namespace Ensage.SDK.Orbwalker
             }
         }
 
-        OrbwalkerSettings IOrbwalker.Settings
-        {
-            get
-            {
-                return this.Active.Settings;
-            }
-        }
-
         [ImportMany(typeof(IOrbwalkingMode))]
         private IEnumerable<Lazy<IOrbwalkingMode, IOrbwalkingModeMetadata>> ImportedModes { get; set; }
 

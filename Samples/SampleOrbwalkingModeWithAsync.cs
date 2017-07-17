@@ -21,7 +21,7 @@ namespace Ensage.SDK.Samples
     {
         private static readonly ILog Log = AssemblyLogs.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        public SampleOrbwalkingModeWithAsync(IOrbwalker orbwalker, IInputManager input)
+        public SampleOrbwalkingModeWithAsync(IOrbwalkerManager orbwalker, IInputManager input)
             : base(orbwalker, input, Key.Space)
         {
         }

@@ -13,7 +13,7 @@ namespace Ensage.SDK.Orbwalker.Modes
     internal class Farm : AttackOrbwalkingMode
     {
         [ImportingConstructor]
-        public Farm([Import] IOrbwalker orbwalker, [Import] ITargetSelectorManager targetSelector)
+        public Farm([Import] IOrbwalkerManager orbwalker, [Import] ITargetSelectorManager targetSelector)
             : base(orbwalker, targetSelector, "Farm", 'V', false, false, false, false, true, true)
         {
         }

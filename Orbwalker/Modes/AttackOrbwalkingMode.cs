@@ -27,7 +27,7 @@ namespace Ensage.SDK.Orbwalker.Modes
         private readonly bool neutral;
 
         protected AttackOrbwalkingMode(
-            IOrbwalker orbwalker,
+            IOrbwalkerManager orbwalker,
             ITargetSelectorManager ts,
             string name,
             uint key,
@@ -74,7 +74,7 @@ namespace Ensage.SDK.Orbwalker.Modes
         protected override void OnActivate()
         {
             this.Config = new AutoAttackModeConfig(
-                this.Orbwalker.Settings.Factory.Parent,
+                this.OrbwalkerManager.Config.Factory,
                 this.name,
                 this.key,
                 this.hero,

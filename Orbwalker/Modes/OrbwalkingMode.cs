@@ -8,16 +8,18 @@ namespace Ensage.SDK.Orbwalker.Modes
 
     public abstract class OrbwalkingMode : ControllableService, IOrbwalkingMode
     {
-        protected OrbwalkingMode(IOrbwalker orbwalker)
+        protected OrbwalkingMode(IOrbwalkerManager orbwalker)
         {
-            this.Orbwalker = orbwalker;
+            this.OrbwalkerManager = orbwalker;
         }
 
         public abstract bool CanExecute { get; }
 
         protected IServiceContext Context => this.Orbwalker.Context;
 
-        protected IOrbwalker Orbwalker { get; }
+        protected IOrbwalker Orbwalker => this.OrbwalkerManager.Active;
+
+        protected IOrbwalkerManager OrbwalkerManager { get; }
 
         protected Unit Owner => this.Context.Owner;
 

@@ -13,7 +13,7 @@ namespace Ensage.SDK.Orbwalker.Modes
     internal class Support : AttackOrbwalkingMode
     {
         [ImportingConstructor]
-        public Support([Import] IOrbwalker orbwalker, [Import] ITargetSelectorManager targetSelector)
+        public Support([Import] IOrbwalkerManager orbwalker, [Import] ITargetSelectorManager targetSelector)
             : base(orbwalker, targetSelector, "Support", 'G', true, false, true, true, true, false)
         {
         }

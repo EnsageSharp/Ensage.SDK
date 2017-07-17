@@ -10,7 +10,7 @@ namespace Ensage.SDK.Orbwalker.Modes
 
     public abstract class AutoAttackMode : OrbwalkingMode
     {
-        protected AutoAttackMode(IOrbwalker orbwalker, ITargetSelectorManager targetSelector)
+        protected AutoAttackMode(IOrbwalkerManager orbwalker, ITargetSelectorManager targetSelector)
             : base(orbwalker)
         {
             this.TargetSelector = targetSelector;

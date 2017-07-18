@@ -6,7 +6,12 @@ namespace Ensage.SDK.Renderer.DX11
 {
     using System;
     using System.ComponentModel.Composition;
+    using System.Reflection;
     using System.Runtime.CompilerServices;
+
+    using log4net;
+
+    using PlaySharp.Toolkit.Logging;
 
     using SharpDX.Direct2D1;
     using SharpDX.Direct3D11;
@@ -18,17 +23,16 @@ namespace Ensage.SDK.Renderer.DX11
     [Export(typeof(ID3D11Context))]
     public class D3D11Context : ID3D11Context, IDisposable
     {
+        private static readonly ILog Log = AssemblyLogs.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
+        private RenderTarget renderTarget;
+
         public D3D11Context()
         {
             if (Drawing.RenderMode != RenderMode.Dx11)
             {
                 throw new WrongRenderModeException(RenderMode.Dx11, Drawing.RenderMode);
             }
-
-            this.RenderTarget = new RenderTarget(
-                this.Direct2D1,
-                this.Surface,
-                new RenderTargetProperties(new PixelFormat(Format.R8G8B8A8_UNorm_SRgb, AlphaMode.Premultiplied)));
 
             Drawing.OnD3D11Present += this.OnPresent;
         }
@@ -39,7 +43,28 @@ namespace Ensage.SDK.Renderer.DX11
 
         public SharpDX.DirectWrite.Factory DirectWrite { get; } = new SharpDX.DirectWrite.Factory();
 
-        public RenderTarget RenderTarget { get; }
+        public RenderTarget RenderTarget
+        {
+            get
+            {
+                if (this.renderTarget == null)
+                {
+                    try
+                    {
+                        this.renderTarget = new RenderTarget(
+                            this.Direct2D1,
+                            this.Surface,
+                            new RenderTargetProperties(new PixelFormat(Format.R8G8B8A8_UNorm_SRgb, AlphaMode.Premultiplied)));
+                    }
+                    catch (Exception e)
+                    {
+                        Log.Warn(e);
+                    }
+                }
+
+                return this.renderTarget;
+            }
+        }
 
         private Texture2D BackBuffer
         {

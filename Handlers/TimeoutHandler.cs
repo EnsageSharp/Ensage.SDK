@@ -8,13 +8,31 @@ namespace Ensage.SDK.Handlers
 
     public class TimeoutHandler : InvokeHandler
     {
+        private int timeout;
+
         public TimeoutHandler(int timeout, bool fromNow = false)
         {
             this.Timeout = timeout;
             this.NextUpdate = fromNow ? DateTime.Now.AddMilliseconds(this.Timeout) : DateTime.Now;
         }
 
-        public int Timeout { get; set; }
+        public int Timeout
+        {
+            get
+            {
+                return this.timeout;
+            }
+
+            set
+            {
+                if (value <= 0)
+                {
+                    throw new ArgumentOutOfRangeException(nameof(value));
+                }
+
+                this.timeout = value;
+            }
+        }
 
         protected bool HasTimeout
         {

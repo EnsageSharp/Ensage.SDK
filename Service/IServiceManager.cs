@@ -9,6 +9,14 @@ namespace Ensage.SDK.Service
 
     using PlaySharp.Toolkit.Helper;
 
+    public interface IServiceManager<TService, TServiceMetadata> : IControllable
+        where TService : class, IControllable
+    {
+        TService Active { get; set; }
+
+        IEnumerable<Lazy<TService, TServiceMetadata>> Services { get; }
+    }
+
     public interface IServiceManager<TService> : IControllable
         where TService : class, IControllable
     {

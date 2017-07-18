@@ -4,20 +4,12 @@
 
 namespace Ensage.SDK.TargetSelector
 {
-    using System;
-    using System.Collections.Generic;
-
+    using Ensage.SDK.Service;
     using Ensage.SDK.TargetSelector.Config;
     using Ensage.SDK.TargetSelector.Metadata;
 
-    using PlaySharp.Toolkit.Helper;
-
-    public interface ITargetSelectorManager : IControllable
+    public interface ITargetSelectorManager : IServiceManager<ITargetSelector, ITargetSelectorMetadata>, ITargetSelector
     {
-        ITargetSelector Active { get; set; }
-
         TargetSelectorConfig Config { get; }
-
-        IEnumerable<Lazy<ITargetSelector, ITargetSelectorMetadata>> Selectors { get; }
     }
 }

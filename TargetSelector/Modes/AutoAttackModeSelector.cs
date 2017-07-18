@@ -65,7 +65,7 @@ namespace Ensage.SDK.TargetSelector.Modes
                 }
             }
 
-            if (this.Config.Farm)
+            if (this.Config.Farm && this.HealthPrediction != null)
             {
                 if ((Game.RawGameTime - LaneClearRateLimitTime) > 0.25f)
                 {
@@ -90,9 +90,9 @@ namespace Ensage.SDK.TargetSelector.Modes
                 }
             }
 
-            if (this.Config.Hero)
+            if (this.Config.Hero && this.Manager.Active != null)
             {
-                var hero = this.Manager.Active.GetTargets()?.FirstOrDefault(unit => unit.IsVisible && this.IsValid(unit));
+                var hero = this.Manager.GetTargets().FirstOrDefault(unit => unit.IsVisible && this.IsValid(unit));
 
                 if (hero != null)
                 {

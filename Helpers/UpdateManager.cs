@@ -12,7 +12,6 @@ namespace Ensage.SDK.Helpers
     using System.Threading.Tasks;
 
     using Ensage.SDK.Handlers;
-    using Ensage.SDK.Threading;
 
     using log4net;
 
@@ -25,9 +24,7 @@ namespace Ensage.SDK.Helpers
 
         static UpdateManager()
         {
-            Context = new EnsageSynchronizationContext();
-
-            SynchronizationContext.SetSynchronizationContext(Context);
+            SynchronizationContext.SetSynchronizationContext(Threading.SynchronizationContext);
 
             Factory = new TaskFactory(
                 CancellationToken.None,
@@ -35,15 +32,13 @@ namespace Ensage.SDK.Helpers
                 TaskContinuationOptions.None,
                 TaskScheduler.FromCurrentSynchronizationContext());
 
-            Subscribe(Context.ProcessCallbacks);
-
             Game.OnIngameUpdate += OnUpdate;
             Game.OnPreIngameUpdate += OnPreUpdate;
         }
 
-        public static EnsageSynchronizationContext Context { get; }
-
         public static TaskFactory Factory { get; }
+
+        public static ulong Frame { get; private set; }
 
         internal static List<IUpdateHandler> Handlers { get; } = new List<IUpdateHandler>();
 
@@ -60,7 +55,7 @@ namespace Ensage.SDK.Helpers
 
             if (timeout == 0)
             {
-                Context.Post(state => callback(), null);
+                Threading.SynchronizationContext.Post(state => callback(), null);
                 return;
             }
 
@@ -128,8 +123,6 @@ namespace Ensage.SDK.Helpers
 
         private static void OnPreUpdate(EventArgs eventArgs)
         {
-            SynchronizationContext.SetSynchronizationContext(Context);
-
             foreach (var handler in ServiceHandlers.ToArray())
             {
                 try
@@ -141,12 +134,12 @@ namespace Ensage.SDK.Helpers
                     Log.Error(e);
                 }
             }
+
+            Frame++;
         }
 
         private static void OnUpdate(EventArgs args)
         {
-            SynchronizationContext.SetSynchronizationContext(Context);
-
             foreach (var handler in InvokeHandlers.ToArray())
             {
                 try

@@ -62,9 +62,9 @@ namespace Ensage.SDK.Orbwalker.Modes
             }
         }
 
-        private AutoAttackModeConfig Config { get; set; }
+        protected AutoAttackModeConfig Config { get; set; }
 
-        private AutoAttackModeSelector Selector { get; set; }
+        protected AutoAttackModeSelector Selector { get; set; }
 
         protected override Unit GetTarget()
         {

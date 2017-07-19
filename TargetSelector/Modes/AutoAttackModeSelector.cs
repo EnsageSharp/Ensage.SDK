@@ -19,7 +19,7 @@ namespace Ensage.SDK.TargetSelector.Modes
     using PlaySharp.Toolkit.Helper;
     using PlaySharp.Toolkit.Logging;
 
-    internal class AutoAttackModeSelector
+    public class AutoAttackModeSelector
     {
         private static readonly ILog Log = AssemblyLogs.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
@@ -32,7 +32,7 @@ namespace Ensage.SDK.TargetSelector.Modes
             this.Config = config;
         }
 
-        protected float BonusRange
+        public float BonusRange
         {
             get
             {

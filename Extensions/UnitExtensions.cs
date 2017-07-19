@@ -273,14 +273,6 @@ namespace Ensage.SDK.Extensions
             return true;
         }
 
-        /// <summary>
-        /// Tests if the target is in auto-attack range of the attacker.
-        /// </summary>
-        public static bool CanHit(this Unit attacker, Unit target)
-        {
-            return attacker.Distance2D(target) <= attacker.AttackRange(target);
-        }
-
         public static bool CanCastAbilities(this Unit unit, params BaseAbility[] abilities)
         {
             var myMana = unit.Mana;
@@ -611,9 +603,9 @@ namespace Ensage.SDK.Extensions
             return unit.HasModifiers(EtherealModifiers, false);
         }
 
-        public static bool IsInAttackRange(this Unit source, Unit target)
+        public static bool IsInAttackRange(this Unit source, Unit target, float bonusAttackRange = 0.0f)
         {
-            return source.IsInRange(target, source.AttackRange(target), true);
+            return source.IsInRange(target, source.AttackRange(target) + bonusAttackRange, true);
         }
 
         /// <summary>
@@ -695,14 +687,14 @@ namespace Ensage.SDK.Extensions
             return unit.UnitState.HasFlag(UnitState.Stunned);
         }
 
-        public static bool IsValidOrbwalkingTarget(this Unit attacker, Unit target)
+        public static bool IsValidOrbwalkingTarget(this Unit attacker, Unit target, float bonusAttackRange = 0.0f)
         {
             return target.IsValid &&
                    target.IsVisible &&
                    target.IsAlive &&
                    target.IsSpawned &&
                    !target.IsIllusion &&
-                   attacker.IsInAttackRange(target) &&
+                   attacker.IsInAttackRange(target, bonusAttackRange) &&
                    !target.IsInvulnerable() &&
                    !target.IsAttackImmune();
         }

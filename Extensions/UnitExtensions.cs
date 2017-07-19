@@ -273,6 +273,14 @@ namespace Ensage.SDK.Extensions
             return true;
         }
 
+        /// <summary>
+        /// Tests if the target is in auto-attack range of the attacker.
+        /// </summary>
+        public static bool CanHit(this Unit attacker, Unit target)
+        {
+            return attacker.Distance2D(target) <= attacker.AttackRange(target);
+        }
+
         public static bool CanCastAbilities(this Unit unit, params BaseAbility[] abilities)
         {
             var myMana = unit.Mana;

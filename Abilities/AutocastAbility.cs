@@ -11,7 +11,7 @@ namespace Ensage.SDK.Abilities
         {
         }
 
-        public bool Enabled
+        public virtual bool Enabled
         {
             get
             {

@@ -294,6 +294,10 @@
     <Compile Include="Abilities\npc_dota_hero_undying\undying_flesh_golem.cs" />
     <Compile Include="Abilities\npc_dota_hero_undying\undying_soul_rip.cs" />
     <Compile Include="Abilities\npc_dota_hero_undying\undying_tombstone.cs" />
+    <Compile Include="Abilities\npc_dota_hero_venomancer\venomancer_plague_ward.cs" />
+    <Compile Include="Abilities\npc_dota_hero_venomancer\venomancer_poison_nova.cs" />
+    <Compile Include="Abilities\npc_dota_hero_venomancer\venomancer_poison_sting.cs" />
+    <Compile Include="Abilities\npc_dota_hero_venomancer\venomancer_venomous_gale.cs" />
     <Compile Include="Abilities\npc_dota_hero_warlock\warlock_upheaval.cs" />
     <Compile Include="Abilities\npc_dota_hero_zuus\zuus_arc_lightning.cs" />
     <Compile Include="Abilities\npc_dota_hero_zuus\zuus_cloud.cs" />

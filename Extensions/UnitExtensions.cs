@@ -593,7 +593,7 @@ namespace Ensage.SDK.Extensions
             return unit.UnitState.HasFlag(UnitState.Disarmed);
         }
 
-        public static bool IsEnemy(this Unit unit, Unit target)
+        public static bool IsEnemy(this Unit unit, Entity target)
         {
             return unit.Team != target.Team;
         }

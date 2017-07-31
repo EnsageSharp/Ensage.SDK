@@ -25,18 +25,18 @@ namespace Ensage.SDK.Abilities
         {
         }
 
-        public virtual bool CanBeCasted
+        public override bool CanBeCasted
         {
             get
             {
-                if (this.Ability.Level == 0 || this.Ability.IsHidden || this.Ability.Cooldown > 0)
+                if (!base.CanBeCasted)
                 {
                     return false;
                 }
 
                 var owner = this.Owner;
                 var isItem = this.Ability is Item;
-                if (owner.Mana < this.Ability.ManaCost || !isItem && owner.IsSilenced() || isItem && owner.IsMuted())
+                if (owner.IsStunned() || owner.IsMuted() || !isItem && owner.IsSilenced())
                 {
                     return false;
                 }

@@ -7,14 +7,15 @@ namespace Ensage.SDK.Orbwalker.Modes
     using System.ComponentModel.Composition;
 
     using Ensage.SDK.Orbwalker.Metadata;
+    using Ensage.SDK.Service;
     using Ensage.SDK.TargetSelector;
 
     [ExportOrbwalkingMode]
     internal class Combo : AttackOrbwalkingMode
     {
         [ImportingConstructor]
-        public Combo([Import] IOrbwalker orbwalker, [Import] ITargetSelectorManager targetSelector)
-            : base(orbwalker, targetSelector, "Combo", 32, true, false, false, false, false, false)
+        public Combo([Import] IServiceContext context)
+            : base(context, "Combo", 32, true, false, false, false, false, false)
         {
         }
     }

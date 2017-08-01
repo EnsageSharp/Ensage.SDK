@@ -5,7 +5,6 @@
 namespace Ensage.SDK.Orbwalker
 {
     using Ensage.SDK.Orbwalker.Config;
-    using Ensage.SDK.Service;
 
     using PlaySharp.Toolkit.Helper;
 
@@ -13,8 +12,6 @@ namespace Ensage.SDK.Orbwalker
 
     public interface IOrbwalker : IControllable
     {
-        IServiceContext Context { get; }
-
         Vector3 OrbwalkingPoint { get; set; }
 
         OrbwalkerSettings Settings { get; }

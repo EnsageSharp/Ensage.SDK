@@ -13,8 +13,8 @@ namespace Ensage.SDK.Orbwalker.Modes
 
     public abstract class OrbwalkingModeAsync : OrbwalkingMode, IExecutableAsync
     {
-        protected OrbwalkingModeAsync(IOrbwalker orbwalker)
-            : base(orbwalker)
+        protected OrbwalkingModeAsync(IServiceContext context)
+            : base(context)
         {
         }
 

@@ -9,9 +9,8 @@ namespace Ensage.SDK.Samples
     using System.Threading.Tasks;
     using System.Windows.Input;
 
-    using Ensage.SDK.Input;
-    using Ensage.SDK.Orbwalker;
     using Ensage.SDK.Orbwalker.Modes;
+    using Ensage.SDK.Service;
 
     using log4net;
 
@@ -21,8 +20,8 @@ namespace Ensage.SDK.Samples
     {
         private static readonly ILog Log = AssemblyLogs.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        public SampleOrbwalkingModeWithAsync(IOrbwalker orbwalker, IInputManager input)
-            : base(orbwalker, input, Key.Space)
+        public SampleOrbwalkingModeWithAsync(IServiceContext context)
+            : base(context, Key.Space)
         {
         }
 

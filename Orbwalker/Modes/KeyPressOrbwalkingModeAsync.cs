@@ -7,15 +7,16 @@ namespace Ensage.SDK.Orbwalker.Modes
     using System.Windows.Input;
 
     using Ensage.SDK.Input;
+    using Ensage.SDK.Service;
 
     public abstract class KeyPressOrbwalkingModeAsync : OrbwalkingModeAsync
     {
         private bool canExecute;
 
-        protected KeyPressOrbwalkingModeAsync(IOrbwalker orbwalker, IInputManager input, Key key)
-            : base(orbwalker)
+        protected KeyPressOrbwalkingModeAsync(IServiceContext context, Key key)
+            : base(context)
         {
-            this.Input = input;
+            this.Input = context.Input;
             this.Key = key;
         }
 

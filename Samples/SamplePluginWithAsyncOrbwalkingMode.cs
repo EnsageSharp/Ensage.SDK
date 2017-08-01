@@ -4,7 +4,6 @@
 
 namespace Ensage.SDK.Samples
 {
-    using System;
     using System.ComponentModel.Composition;
     using System.Reflection;
 
@@ -23,38 +22,39 @@ namespace Ensage.SDK.Samples
     {
         private static readonly ILog Log = AssemblyLogs.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        private readonly Lazy<IInputManager> input;
+        private readonly IInputManager input;
 
-        private readonly Lazy<IOrbwalkerManager> orbwalkerManager;
+        private readonly IOrbwalkerManager orbwalkerManager;
 
-        private readonly Lazy<ITargetSelectorManager> targetManager;
+        private readonly ITargetSelectorManager targetManager;
 
         [ImportingConstructor]
         public SamplePluginWithAsyncOrbwalkingMode(
-            [Import] Lazy<IOrbwalkerManager> orbManager,
-            [Import] Lazy<ITargetSelectorManager> targetManager,
-            [Import] Lazy<IInputManager> input)
+            [Import] IServiceContext context)
         {
-            this.input = input;
-            this.orbwalkerManager = orbManager;
-            this.targetManager = targetManager;
+            this.Context = context;
+            this.input = context.Input;
+            this.orbwalkerManager = context.Orbwalker;
+            this.targetManager = context.TargetSelector;
         }
 
         public SampleOrbwalkingModeWithAsync ComboTest { get; private set; }
 
         public SamplePluginConfig Config { get; private set; }
 
+        public IServiceContext Context { get; }
+
         protected override void OnActivate()
         {
             this.Config = new SamplePluginConfig();
-            this.ComboTest = new SampleOrbwalkingModeWithAsync(this.orbwalkerManager.Value, this.input.Value);
+            this.ComboTest = new SampleOrbwalkingModeWithAsync(this.Context);
 
-            this.orbwalkerManager.Value.RegisterMode(this.ComboTest);
+            this.orbwalkerManager.RegisterMode(this.ComboTest);
         }
 
         protected override void OnDeactivate()
         {
-            this.orbwalkerManager.Value.UnregisterMode(this.ComboTest);
+            this.orbwalkerManager.UnregisterMode(this.ComboTest);
             this.Config.Dispose();
         }
     }

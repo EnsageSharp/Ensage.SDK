@@ -1,4 +1,4 @@
-// <copyright file="AutoAttackMode.cs" company="Ensage">
+// <copyright file="AutoAttackModeAsync.cs" company="Ensage">
 //    Copyright (c) 2017 Ensage.
 // </copyright>
 
@@ -8,15 +8,15 @@ namespace Ensage.SDK.Orbwalker.Modes
     using System.Threading;
     using System.Threading.Tasks;
 
+    using Ensage.SDK.Service;
     using Ensage.SDK.TargetSelector;
 
     public abstract class AutoAttackModeAsync : OrbwalkingModeAsync
     {
-        protected AutoAttackModeAsync(IOrbwalker orbwalker, ITargetSelectorManager targetSelector)
-            : base(orbwalker)
+        protected AutoAttackModeAsync(IServiceContext context)
+            : base(context)
         {
-            this.TargetSelector = targetSelector;
-            this.TargetSelector.Activate();
+            this.TargetSelector = context.TargetSelector;
         }
 
         protected ITargetSelectorManager TargetSelector { get; }

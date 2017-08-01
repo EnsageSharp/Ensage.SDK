@@ -34,22 +34,18 @@ namespace Ensage.SDK.Samples
 
         [ImportingConstructor]
         public SamplePluginWithOrbOrbwalkingModeAsync(
-            [Import] Lazy<IOrbwalkerManager> orbManager,
-            [Import] Lazy<ITargetSelectorManager> targetManager,
-            [Import] Lazy<IInputManager> input,
-            [Import] Lazy<AbilityFactory> abilityFactory)
+            [Import] IServiceContext context)
         {
-            this.input = input;
-            this.abilityFactory = abilityFactory;
-            this.orbwalkerManager = orbManager;
-            this.targetManager = targetManager;
+            this.Context = context;
         }
 
         public SampleOrbOrbwalkingModeWithAsync ComboTest { get; private set; }
 
+        public IServiceContext Context { get; }
+
         protected override void OnActivate()
         {
-            this.ComboTest = new SampleOrbOrbwalkingModeWithAsync(this.orbwalkerManager.Value, this.input.Value, this.targetManager.Value, this.abilityFactory.Value);
+            this.ComboTest = new SampleOrbOrbwalkingModeWithAsync(this.Context);
             this.orbwalkerManager.Value.RegisterMode(this.ComboTest);
         }
 

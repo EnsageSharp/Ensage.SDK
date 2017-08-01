@@ -21,7 +21,7 @@ namespace Ensage.SDK.Service
     public sealed class EnsageServiceContext : IServiceContext
     {
         [Import]
-        private Lazy<AbilityDetector> abilityDetector;
+        private Lazy<IAbilityDetector> abilityDetector;
 
         [Import]
         private Lazy<AbilityFactory> abilityFactory;

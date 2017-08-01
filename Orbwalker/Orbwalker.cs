@@ -32,11 +32,9 @@ namespace Ensage.SDK.Orbwalker
         private static readonly ILog Log = AssemblyLogs.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         [ImportingConstructor]
-        public Orbwalker([Import] IServiceContext context, [Import] Lazy<IParticleManager> particle, [Import] Lazy<IInventoryManager> inventory)
+        public Orbwalker([Import] IServiceContext context)
         {
             this.Context = context;
-            this.Particle = particle;
-            this.Inventory = inventory;
             this.Owner = context.Owner;
         }
 
@@ -50,8 +48,6 @@ namespace Ensage.SDK.Orbwalker
 
         private InventoryItem EchoSabre { get; set; }
 
-        private Lazy<IInventoryManager> Inventory { get; }
-
         private float LastAttackOrderIssuedTime { get; set; }
 
         private float LastAttackTime { get; set; }
@@ -59,8 +55,6 @@ namespace Ensage.SDK.Orbwalker
         private float LastMoveOrderIssuedTime { get; set; }
 
         private Unit Owner { get; }
-
-        private Lazy<IParticleManager> Particle { get; }
 
         private float PingTime
         {
@@ -91,7 +85,7 @@ namespace Ensage.SDK.Orbwalker
             }
 
             Entity.OnInt32PropertyChange += this.OnNetworkActivity;
-            this.Inventory.Value.CollectionChanged += this.OnItemsChanged;
+            this.Context.Inventory.CollectionChanged += this.OnItemsChanged;
         }
 
         public bool Attack(Unit unit, float time)
@@ -154,8 +148,8 @@ namespace Ensage.SDK.Orbwalker
             Log.Debug($"Deactivate Orbwalker: {this.Owner.GetDisplayName()}");
             UpdateManager.Unsubscribe(this.OnUpdateDrawings);
             Entity.OnInt32PropertyChange -= this.OnNetworkActivity;
-            this.Inventory.Value.CollectionChanged -= this.OnItemsChanged;
-            this.Particle?.Value.Remove("AttackRange");
+            this.Context.Inventory.CollectionChanged -= this.OnItemsChanged;
+            this.Context.Particle.Remove("AttackRange");
             this.Settings.DrawRange.PropertyChanged -= this.OnDrawRangeChanged;
             this.Settings.DrawHoldRange.PropertyChanged -= this.OnDrawHoldRangeChanged;
             this.Settings.Dispose();
@@ -316,20 +310,20 @@ namespace Ensage.SDK.Orbwalker
         {
             if (this.Settings.DrawRange)
             {
-                this.Particle?.Value.DrawRange(this.Owner, "AttackRange", this.Owner.AttackRange(this.Owner), Color.LightGreen);
+                this.Context.Particle.DrawRange(this.Owner, "AttackRange", this.Owner.AttackRange(this.Owner), Color.LightGreen);
             }
             else
             {
-                this.Particle?.Value.Remove("AttackRange");
+                this.Context.Particle.Remove("AttackRange");
             }
 
             if (this.Settings.DrawHoldRange)
             {
-                this.Particle?.Value.DrawRange(this.Owner, "HoldRange", this.Settings.HoldRange, Color.DarkViolet);
+                this.Context.Particle.DrawRange(this.Owner, "HoldRange", this.Settings.HoldRange, Color.DarkViolet);
             }
             else
             {
-                this.Particle?.Value.Remove("HoldRange");
+                this.Context.Particle.Remove("HoldRange");
             }
         }
     }

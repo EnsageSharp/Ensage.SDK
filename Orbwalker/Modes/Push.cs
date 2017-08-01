@@ -7,14 +7,15 @@ namespace Ensage.SDK.Orbwalker.Modes
     using System.ComponentModel.Composition;
 
     using Ensage.SDK.Orbwalker.Metadata;
+    using Ensage.SDK.Service;
     using Ensage.SDK.TargetSelector;
 
     [ExportOrbwalkingMode]
     internal class Push : AttackOrbwalkingMode
     {
         [ImportingConstructor]
-        public Push([Import] IOrbwalker orbwalker, [Import] ITargetSelectorManager targetSelector)
-            : base(orbwalker, targetSelector, "Push", 'T', false, true, false, true, false, true)
+        public Push([Import] IServiceContext context)
+            : base(context, "Push", 'T', false, true, false, true, false, true)
         {
         }
     }

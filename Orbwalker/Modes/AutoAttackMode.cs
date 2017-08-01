@@ -6,15 +6,15 @@ namespace Ensage.SDK.Orbwalker.Modes
 {
     using System.Linq;
 
+    using Ensage.SDK.Service;
     using Ensage.SDK.TargetSelector;
 
     public abstract class AutoAttackMode : OrbwalkingMode
     {
-        protected AutoAttackMode(IOrbwalker orbwalker, ITargetSelectorManager targetSelector)
-            : base(orbwalker)
+        protected AutoAttackMode(IServiceContext context)
+            : base(context)
         {
-            this.TargetSelector = targetSelector;
-            this.TargetSelector.Activate();
+            this.TargetSelector = context.TargetSelector;
         }
 
         protected ITargetSelectorManager TargetSelector { get; }

@@ -14,9 +14,8 @@ namespace Ensage.SDK.Samples
     using Ensage.Common.Extensions;
     using Ensage.SDK.Abilities;
     using Ensage.SDK.Abilities.npc_dota_hero_drow_ranger;
-    using Ensage.SDK.Input;
-    using Ensage.SDK.Orbwalker;
     using Ensage.SDK.Orbwalker.Modes;
+    using Ensage.SDK.Service;
     using Ensage.SDK.TargetSelector;
 
     using log4net;
@@ -27,18 +26,18 @@ namespace Ensage.SDK.Samples
     {
         private static readonly ILog Log = AssemblyLogs.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        private readonly ITargetSelectorManager targetSelectorManager;
-
         private readonly AbilityFactory abilityFactory;
+
+        private readonly ITargetSelectorManager targetSelectorManager;
 
         private drow_ranger_frost_arrows frostArrows;
 
         [ImportingConstructor]
-        public SampleOrbOrbwalkingModeWithAsync(IOrbwalker orbwalker, IInputManager input, ITargetSelectorManager targetSelectorManager, AbilityFactory abilityFactory)
-            : base(orbwalker, input, Key.Space)
+        public SampleOrbOrbwalkingModeWithAsync(IServiceContext context)
+            : base(context, Key.Space)
         {
-            this.targetSelectorManager = targetSelectorManager;
-            this.abilityFactory = abilityFactory;
+            this.targetSelectorManager = context.TargetSelector;
+            this.abilityFactory = context.AbilityFactory;
         }
 
         public override async Task ExecuteAsync(CancellationToken token)

@@ -62,14 +62,6 @@ namespace Ensage.SDK.Orbwalker
         [ImportMany(typeof(IOrbwalker))]
         public override IEnumerable<Lazy<IOrbwalker, IOrbwalkerMetadata>> Services { get; protected set; }
 
-        IServiceContext IOrbwalker.Context
-        {
-            get
-            {
-                return this.active.Context;
-            }
-        }
-
         OrbwalkerSettings IOrbwalker.Settings
         {
             get

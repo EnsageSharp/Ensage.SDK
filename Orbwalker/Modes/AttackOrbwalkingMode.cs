@@ -5,6 +5,7 @@
 namespace Ensage.SDK.Orbwalker.Modes
 {
     using Ensage.SDK.Orbwalker.Config;
+    using Ensage.SDK.Service;
     using Ensage.SDK.TargetSelector;
     using Ensage.SDK.TargetSelector.Modes;
 
@@ -27,8 +28,7 @@ namespace Ensage.SDK.Orbwalker.Modes
         private readonly bool neutral;
 
         protected AttackOrbwalkingMode(
-            IOrbwalker orbwalker,
-            ITargetSelectorManager ts,
+            IServiceContext context,
             string name,
             uint key,
             bool hero,
@@ -37,7 +37,7 @@ namespace Ensage.SDK.Orbwalker.Modes
             bool building,
             bool deny,
             bool lasthit)
-            : base(orbwalker, ts)
+            : base(context)
         {
             this.key = key;
             this.hero = hero;

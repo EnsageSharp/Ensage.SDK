@@ -25,7 +25,7 @@ namespace Ensage.SDK.Orbwalker
     using SharpDX;
 
     [ExportOrbwalkerManager]
-    public class OrbwalkerManager : ControllableService, IOrbwalkerManager
+    public class OrbwalkerManager : ServiceManager<IOrbwalker, IOrbwalkerMetadata>, IOrbwalkerManager, IPartImportsSatisfiedNotification
     {
         private static readonly ILog Log = AssemblyLogs.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
@@ -38,43 +38,11 @@ namespace Ensage.SDK.Orbwalker
             this.Owner = context.Owner;
         }
 
-        public IOrbwalker Active
-        {
-            get
-            {
-                return this.active;
-            }
-
-            set
-            {
-                if (value == null && this.active != null)
-                {
-                    Log.Debug($"Deactivate Orbwalker {this.active}");
-                    this.active.Deactivate();
-                    this.active = null;
-                    return;
-                }
-
-                if (EqualityComparer<IOrbwalker>.Default.Equals(this.active, value))
-                {
-                    return;
-                }
-
-                Log.Debug($"Activate Orbwalker {value}");
-                this.active?.Deactivate();
-                this.active = value;
-                this.active?.Activate();
-            }
-        }
-
-        public OrbwalkerConfig Config { get; private set; }
+        public SDKConfig.OrbwalkerConfig Config { get; private set; }
 
         public IServiceContext Context { get; }
 
         public IEnumerable<IOrbwalkingMode> CustomOrbwalkingModes => this.Modes;
-
-        [ImportMany(typeof(IOrbwalker))]
-        public IEnumerable<Lazy<IOrbwalker, IOrbwalkerMetadata>> Orbwalkers { get; private set; }
 
         public IEnumerable<Lazy<IOrbwalkingMode, IOrbwalkingModeMetadata>> OrbwalkingModes => this.ImportedModes;
 
@@ -90,6 +58,9 @@ namespace Ensage.SDK.Orbwalker
                 this.Active.OrbwalkingPoint = value;
             }
         }
+
+        [ImportMany(typeof(IOrbwalker))]
+        public override IEnumerable<Lazy<IOrbwalker, IOrbwalkerMetadata>> Services { get; protected set; }
 
         IServiceContext IOrbwalker.Context
         {
@@ -141,6 +112,11 @@ namespace Ensage.SDK.Orbwalker
             return this.active.Move(position);
         }
 
+        public void OnImportsSatisfied()
+        {
+            this.Context.Config.Settings.UpdateOrbwalkers(this.Services.Select(e => e.Metadata.Name));
+        }
+
         public bool OrbwalkTo(Unit target)
         {
             return this.active.OrbwalkTo(target);
@@ -170,16 +146,21 @@ namespace Ensage.SDK.Orbwalker
             }
         }
 
+        protected override IOrbwalker GetSelection()
+        {
+            return this.Services.First(s => s.Metadata.Name == this.Context.Config.Settings.OrbwalkerSelection).Value;
+        }
+
         protected override void OnActivate()
         {
             try
             {
-                this.Config = new OrbwalkerConfig(this.Context.Owner.GetDisplayName(), this.Orbwalkers.Select(e => e.Metadata.Name).ToArray());
-                this.Config.Selection.PropertyChanged += this.OnSelectionChanged;
+                this.Config = new SDKConfig.OrbwalkerConfig(this.Context.Config.Factory);
+                this.Context.Config.Settings.OrbwalkerSelection.PropertyChanged += this.OnSelectionChanged;
                 this.Config.TickRate.PropertyChanged += this.OnTickRateChanged;
+                this.OnImportsSatisfied();
 
-                // activate selection
-                this.Active = this.Orbwalkers.FirstOrDefault(e => e.Metadata.Name == this.Config.Selection)?.Value;
+                this.Active = this.GetSelection();
 
                 this.OnUpdateHandler = UpdateManager.Subscribe(this.OnUpdate, this.Config.TickRate);
             }
@@ -193,19 +174,16 @@ namespace Ensage.SDK.Orbwalker
         {
             UpdateManager.Unsubscribe(this.OnUpdateHandler);
 
-            this.Active?.Deactivate();
             this.Active = null;
 
-            this.Config.Selection.PropertyChanged -= this.OnSelectionChanged;
+            this.Context.Config.Settings.OrbwalkerSelection.PropertyChanged -= this.OnSelectionChanged;
             this.Config.TickRate.PropertyChanged -= this.OnSelectionChanged;
-            this.Config?.Dispose();
+            this.Config.Dispose();
         }
 
         private void OnSelectionChanged(object sender, PropertyChangedEventArgs args)
         {
-            // update selection
-            string name = this.Config.Selection;
-            this.Active = this.Orbwalkers.FirstOrDefault(e => e.Metadata.Name == name)?.Value;
+            this.Active = this.GetSelection();
         }
 
         private void OnTickRateChanged(object sender, PropertyChangedEventArgs args)

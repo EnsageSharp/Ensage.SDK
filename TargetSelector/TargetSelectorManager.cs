@@ -14,7 +14,6 @@ namespace Ensage.SDK.TargetSelector
     using Ensage.SDK.Helpers;
     using Ensage.SDK.Renderer.Particle;
     using Ensage.SDK.Service;
-    using Ensage.SDK.TargetSelector.Config;
     using Ensage.SDK.TargetSelector.Metadata;
 
     using log4net;
@@ -25,7 +24,7 @@ namespace Ensage.SDK.TargetSelector
     using SharpDX;
 
     [ExportTargetSelectorManager]
-    public class TargetSelectorManager : ServiceManager<ITargetSelector, ITargetSelectorMetadata>, ITargetSelectorManager
+    public class TargetSelectorManager : ServiceManager<ITargetSelector, ITargetSelectorMetadata>, ITargetSelectorManager, IPartImportsSatisfiedNotification
     {
         private static readonly ILog Log = AssemblyLogs.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
@@ -36,7 +35,7 @@ namespace Ensage.SDK.TargetSelector
             this.Particle = particle;
         }
 
-        public TargetSelectorConfig Config { get; private set; }
+        public SDKConfig.TargetSelectorConfig Config { get; private set; }
 
         public Lazy<IParticleManager> Particle { get; }
 
@@ -50,28 +49,22 @@ namespace Ensage.SDK.TargetSelector
             return this.Active?.GetTargets() ?? new Unit[0];
         }
 
+        public void OnImportsSatisfied()
+        {
+            this.Context.Config.Settings.UpdateTargetSelectors(this.Services.Select(e => e.Metadata.Name).OrderBy(e => e != "Near Mouse"));
+        }
+
         [CanBeNull]
         protected override ITargetSelector GetSelection()
         {
-            string name = this.Config.Selection;
-
-            if (name == "None")
-            {
-                return null;
-            }
-
-            if (name.StartsWith("Auto"))
-            {
-                name = "Near Mouse";
-            }
-
-            return this.Services.First(s => s.Metadata.Name == name).Value;
+            return this.Services.First(s => s.Metadata.Name == this.Context.Config.Settings.TargetSelectorSelection).Value;
         }
 
         protected override void OnActivate()
         {
-            this.Config = new TargetSelectorConfig(this.Services.Select(e => e.Metadata.Name));
-            this.Config.Selection.PropertyChanged += this.OnSelectionChanged;
+            this.Config = new SDKConfig.TargetSelectorConfig(this.Context.Config.Factory);
+            this.Context.Config.Settings.TargetSelectorSelection.PropertyChanged += this.OnSelectionChanged;
+            this.OnImportsSatisfied();
 
             // activate selection
             this.Active = this.GetSelection();
@@ -84,10 +77,9 @@ namespace Ensage.SDK.TargetSelector
             UpdateManager.Unsubscribe(this.OnDrawingsUpdate);
             this.Particle.Value.Remove("ActiveTargetSelectorTarget");
 
-            this.Active?.Deactivate();
             this.Active = null;
 
-            this.Config.Selection.PropertyChanged -= this.OnSelectionChanged;
+            this.Context.Config.Settings.TargetSelectorSelection.PropertyChanged -= this.OnSelectionChanged;
             this.Config.Dispose();
         }
 

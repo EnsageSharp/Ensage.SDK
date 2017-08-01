@@ -10,7 +10,7 @@ namespace Ensage.SDK.Service
     using PlaySharp.Toolkit.Helper;
 
     public interface IServiceManager<TService, TServiceMetadata> : IControllable
-        where TService : class, IControllable
+        where TService : class
     {
         TService Active { get; set; }
 
@@ -18,7 +18,7 @@ namespace Ensage.SDK.Service
     }
 
     public interface IServiceManager<TService> : IControllable
-        where TService : class, IControllable
+        where TService : class
     {
         TService Active { get; set; }
 

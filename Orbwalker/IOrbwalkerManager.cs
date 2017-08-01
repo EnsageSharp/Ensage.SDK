@@ -7,18 +7,14 @@ namespace Ensage.SDK.Orbwalker
     using System;
     using System.Collections.Generic;
 
-    using Ensage.SDK.Orbwalker.Config;
     using Ensage.SDK.Orbwalker.Metadata;
+    using Ensage.SDK.Service;
 
-    public interface IOrbwalkerManager : IOrbwalker
+    public interface IOrbwalkerManager : IServiceManager<IOrbwalker, IOrbwalkerMetadata>, IOrbwalker
     {
-        IOrbwalker Active { get; set; }
-
-        OrbwalkerConfig Config { get; }
+        SDKConfig.OrbwalkerConfig Config { get; }
 
         IEnumerable<IOrbwalkingMode> CustomOrbwalkingModes { get; }
-
-        IEnumerable<Lazy<IOrbwalker, IOrbwalkerMetadata>> Orbwalkers { get; }
 
         IEnumerable<Lazy<IOrbwalkingMode, IOrbwalkingModeMetadata>> OrbwalkingModes { get; }
 

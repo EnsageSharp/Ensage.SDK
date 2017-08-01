@@ -33,6 +33,7 @@ namespace Ensage.SDK.Renderer.DX11
 
             var key = $"{familyName}-{fontSize}";
             var format = new TextFormat(this.Context.DirectWrite, familyName, fontSize);
+
             this.Add(key, format);
 
             return format;

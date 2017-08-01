@@ -39,9 +39,9 @@ namespace Ensage.SDK.Renderer
             }
         }
 
-        public void DrawCircle(Vector2 center, float radius, Color color)
+        public void DrawCircle(Vector2 center, float radius, Color color, float width = 1.0f)
         {
-            this.active.DrawCircle(center, radius, color);
+            this.active.DrawCircle(center, radius, color, width);
         }
 
         public void DrawLine(Vector2 start, Vector2 end, Color color, float width = 1.0f)
@@ -54,9 +54,9 @@ namespace Ensage.SDK.Renderer
             this.active.DrawRectangle(rect, color, width);
         }
 
-        public void DrawText(Vector2 position, string text, Color color, string fontFamily = "Calibri", float fontSize = 13f)
+        public void DrawText(Vector2 position, string text, Color color, float fontSize = 13f, string fontFamily = "Calibri")
         {
-            this.active.DrawText(position, text, color, fontFamily, fontSize);
+            this.active.DrawText(position, text, color, fontSize, fontFamily);
         }
     }
 }

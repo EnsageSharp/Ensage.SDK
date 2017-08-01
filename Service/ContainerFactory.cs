@@ -72,20 +72,10 @@ namespace Ensage.SDK.Service
                 Log.Debug($"====================================================");
             }
 
-            container.ComposeExportedValue<IServiceContext>(context);
+            container.ComposeExportedValue(context.EntityContext);
+            container.ComposeExportedValue(context);
+            container.SatisfyImportsOnce(context);
 
-            // switch (Drawing.RenderMode)
-            // {
-            // case RenderMode.Dx11:
-            // container.ComposeExportedValue<ID2DContext>(new D2DContext());
-            // container.ComposeExportedValue<ID2DRenderer>(new D2DRenderer());
-            // break;
-
-            // case RenderMode.Dx9:
-            // case RenderMode.OpenGL:
-            // case RenderMode.Vulkan:
-            // throw new NotSupportedException($"RenderMode({Drawing.RenderMode}) not supported.");
-            // }
             return new ContextContainer<IServiceContext>(context, container);
         }
     }

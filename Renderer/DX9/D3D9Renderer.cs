@@ -34,6 +34,7 @@ namespace Ensage.SDK.Renderer.DX9
             this.fontCache = fontCache;
 
             this.line = new Line(this.context.Device);
+            this.line.Antialias = true;
             this.sprite = new Sprite(this.context.Device);
 
             context.PreReset += this.OnPreReset;
@@ -53,9 +54,9 @@ namespace Ensage.SDK.Renderer.DX9
             }
         }
 
-        public void DrawCircle(Vector2 center, float radius, Color color)
+        public void DrawCircle(Vector2 center, float radius, Color color, float width = 1.0f)
         {
-            var quality = 60f;
+            var quality = 120f;
             var outRadius = radius / (float)Math.Cos((2 * Math.PI) / quality);
             var points = new List<Vector2>();
             var c = new ColorBGRA(color.R, color.G, color.B, color.A);
@@ -68,6 +69,7 @@ namespace Ensage.SDK.Renderer.DX9
                 points.Add(point);
             }
 
+            this.line.Width = width;
             this.line.Begin();
 
             try
@@ -102,16 +104,52 @@ namespace Ensage.SDK.Renderer.DX9
         public void DrawRectangle(RectangleF rect, Color color, float width = 1.0f)
         {
             var c = new ColorBGRA(color.R, color.G, color.B, color.A);
-
             this.line.Width = width;
             this.line.Begin();
 
+            /*
+             
+            |-----------|
+            |           |
+            |           |
+            |           |
+            |           |
+            |-----------|
+
+             */
             try
             {
-                this.line.Draw(new[] { new RawVector2(rect.X, rect.Y), new RawVector2(rect.X + rect.Width, rect.Y) }, c);
-                this.line.Draw(new[] { new RawVector2(rect.X + rect.Width, rect.Y), new RawVector2(rect.X + rect.Width, rect.Y + rect.Height) }, c);
-                this.line.Draw(new[] { new RawVector2(rect.X + rect.Width, rect.Y + rect.Height), new RawVector2(rect.X, rect.Y + rect.Height) }, c);
-                this.line.Draw(new[] { new RawVector2(rect.X, rect.Y + rect.Height), new RawVector2(rect.X, rect.Y) }, c);
+                this.line.Draw(
+                    new[]
+                    {
+                        new RawVector2(rect.X + (width / 2f), (rect.Y + rect.Height) - (width / 2f)),
+                        new RawVector2(rect.X + (width / 2f), rect.Y - (width / 2f))
+                    },
+                    c);
+
+                this.line.Draw(
+                    new[]
+                    {
+                        new RawVector2(rect.X + rect.Width, rect.Y + rect.Height),
+                        new RawVector2(rect.X, rect.Y + rect.Height)
+                    },
+                    c);
+
+                this.line.Draw(
+                    new[]
+                    {
+                        new RawVector2(rect.X, rect.Y),
+                        new RawVector2(rect.X + rect.Width, rect.Y)
+                    },
+                    c);
+
+                this.line.Draw(
+                    new[]
+                    {
+                        new RawVector2((rect.X + rect.Width) - (width / 2f), rect.Y - (width / 2f)),
+                        new RawVector2((rect.X + rect.Width) - (width / 2f), (rect.Y + rect.Height) - (width / 2f))
+                    },
+                    c);
             }
             finally
             {
@@ -119,7 +157,7 @@ namespace Ensage.SDK.Renderer.DX9
             }
         }
 
-        public void DrawText(Vector2 position, string text, Color color, string fontFamily = "Calibri", float fontSize = 13)
+        public void DrawText(Vector2 position, string text, Color color, float fontSize = 13f, string fontFamily = "Calibri")
         {
             var font = this.fontCache.GetOrCreate(fontFamily, fontSize);
             font.DrawText(null, text, (int)position.X, (int)position.Y, new ColorBGRA(color.R, color.G, color.B, color.A));

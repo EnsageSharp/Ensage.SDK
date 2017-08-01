@@ -90,7 +90,7 @@ namespace Ensage.SDK.Menu
 
         public static void Save()
         {
-            var file = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "CaptureCache", "game", "sdk.json");
+            var file = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Cache", "game", "sdk.json");
             var data = new Dictionary<string, object>();
 
             foreach (var item in Items)

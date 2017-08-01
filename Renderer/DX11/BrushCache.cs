@@ -46,8 +46,7 @@ namespace Ensage.SDK.Renderer.DX11
             }
 
             Log.Debug($"Create Brush {color} {color.R}-{color.G}-{color.B}-{color.A}");
-
-            var brush = new SolidColorBrush(this.Context.RenderTarget, new RawColor4(color.R, color.G, color.B, color.A / 255.0f));
+            var brush = new SolidColorBrush(this.Context.RenderTarget, new RawColor4(color.R / 255f, color.G / 255f, color.B / 255f, color.A / 255f));
             this.Add(color, brush);
 
             return brush;

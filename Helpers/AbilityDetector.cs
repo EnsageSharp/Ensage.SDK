@@ -6,74 +6,118 @@ namespace Ensage.SDK.Helpers
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel.Composition;
+    using System.Linq;
 
-    public delegate void AbilityEventHandler(Unit sender, AbilityEventArgs e);
+    using Ensage.SDK.Service;
 
-    public class AbilityEventArgs : EventArgs
+    [Export(typeof(IAbilityDetector))]
+    public class AbilityDetector : ControllableService, IAbilityDetector
     {
-        // public AbilityEventArgs(ActiveAbility ability)
-        // {
-        // this.Ability = ability;
-        // }   
-        public AbilityEventArgs(Ability ability)
+        private readonly HashSet<DetectedAbility> abilities = new HashSet<DetectedAbility>();
+
+        [ImportingConstructor]
+        public AbilityDetector([Import] IServiceContext context)
         {
-            this.Ability = ability;
+            this.Context = context;
         }
-
-        public Ability Ability { get; }
-    }
-
-    public class AbilityDetector
-    {
-        private static readonly HashSet<Ability> AbilitySet = new HashSet<Ability>();
-
-        static AbilityDetector()
-        {
-            Entity.OnBoolPropertyChange += Entity_OnBoolPropertyChange;
-            Entity.OnFloatPropertyChange += Entity_OnFloatPropertyChange;
-        }
-
-        /// <summary>
-        ///     Called whenever a hero starts to cast an ability.
-        /// </summary>
-        public static event AbilityEventHandler AbilityCastStarted;
 
         /// <summary>
         ///     Called whenever a hero has casted an ability.
         /// </summary>
-        public static event AbilityEventHandler AbilityCasted;
+        public event EventHandler<AbilityEventArgs> AbilityCasted;
 
-        private static void Entity_OnBoolPropertyChange(Entity sender, BoolPropertyChangeEventArgs args)
+        /// <summary>
+        ///     Called whenever a hero starts to cast an ability.
+        /// </summary>
+        public event EventHandler<AbilityEventArgs> AbilityCastStarted;
+
+        public IEnumerable<DetectedAbility> ActiveAbilities
         {
-            var ability = sender as Ability;
-            if (ability != null && args.PropertyName == "m_bInAbilityPhase")
+            get
             {
-                if (args.NewValue)
-                {
-                    AbilitySet.Remove(ability);
-
-                    var caster = ability.Owner as Unit;
-                    AbilityCastStarted?.Invoke(caster, new AbilityEventArgs(ability));
-                }
-                else
-                {
-                    AbilitySet.Add(ability);
-                }
+                return this.abilities;
             }
         }
 
-        private static void Entity_OnFloatPropertyChange(Entity sender, FloatPropertyChangeEventArgs args)
-        {
-            Ability ability = sender as Ability;
-            if (ability != null && AbilitySet.Contains(ability) && args.PropertyName == "m_fCooldown")
-            {
-                AbilitySet.Remove(ability);
+        public IServiceContext Context { get; }
 
-                if (args.NewValue > 0.0f)
+        protected override void OnActivate()
+        {
+            Entity.OnBoolPropertyChange += this.Entity_OnBoolPropertyChange;
+            Entity.OnFloatPropertyChange += this.Entity_OnFloatPropertyChange;
+
+            UpdateManager.SubscribeService(this.Cleanup, 100);
+        }
+
+        protected override void OnDeactivate()
+        {
+            Entity.OnBoolPropertyChange -= this.Entity_OnBoolPropertyChange;
+            Entity.OnFloatPropertyChange -= this.Entity_OnFloatPropertyChange;
+
+            UpdateManager.Unsubscribe(this.Cleanup);
+        }
+
+        private void Cleanup()
+        {
+            var time = Game.GameTime;
+            this.abilities.RemoveWhere(e => !e.Ability.IsValid || (e.DetectionTime + 250) > time);
+        }
+
+        private void Entity_OnBoolPropertyChange(Entity sender, BoolPropertyChangeEventArgs args)
+        {
+            if (args.PropertyName != "m_bInAbilityPhase")
+            {
+                return;
+            }
+
+            var ability = sender as Ability;
+            if (ability == null)
+            {
+                return;
+            }
+
+            if (args.NewValue)
+            {
+                var detected = this.abilities.FirstOrDefault(e => e.Ability == ability);
+                if (detected == null)
                 {
-                    var caster = ability.Owner as Unit;
-                    AbilityCasted?.Invoke(caster, new AbilityEventArgs(ability));
+                    return;
                 }
+
+                this.AbilityCastStarted?.Invoke(this, new AbilityEventArgs(detected));
+                this.abilities.Remove(detected);
+            }
+            else
+            {
+                this.abilities.Add(new DetectedAbility(ability));
+            }
+        }
+
+        private void Entity_OnFloatPropertyChange(Entity sender, FloatPropertyChangeEventArgs args)
+        {
+            if (args.PropertyName != "m_fCooldown")
+            {
+                return;
+            }
+
+            var ability = sender as Ability;
+            if (ability == null)
+            {
+                return;
+            }
+
+            var detected = this.abilities.FirstOrDefault(e => e.Ability == ability);
+            if (detected == null)
+            {
+                return;
+            }
+
+            this.abilities.Remove(detected);
+
+            if (args.NewValue > 0.0f)
+            {
+                this.AbilityCasted?.Invoke(this, new AbilityEventArgs(detected));
             }
         }
     }

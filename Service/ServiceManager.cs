@@ -10,12 +10,11 @@ namespace Ensage.SDK.Service
 
     using log4net;
 
-    using PlaySharp.Toolkit.Helper;
     using PlaySharp.Toolkit.Helper.Annotations;
     using PlaySharp.Toolkit.Logging;
 
     public abstract class ServiceManager<TService> : ControllableService, IServiceManager<TService>
-        where TService : class, IControllable
+        where TService : class
     {
         private static readonly ILog Log = AssemblyLogs.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
@@ -35,9 +34,7 @@ namespace Ensage.SDK.Service
                     try
                     {
                         this.active = this.GetSelection();
-
-                        Log.Debug($"Activate Service {this.active}");
-                        this.active?.Activate();
+                        this.active?.TryActivate();
                     }
                     catch (Exception e)
                     {
@@ -59,8 +56,7 @@ namespace Ensage.SDK.Service
                 {
                     try
                     {
-                        Log.Debug($"Deactivate Service {this.active}");
-                        this.active.Deactivate();
+                        this.active.TryDeactivate();
                         this.active = null;
                     }
                     catch (Exception e)
@@ -76,9 +72,8 @@ namespace Ensage.SDK.Service
 
                 try
                 {
-                    Log.Debug($"Activate Service {value}");
                     this.active = value;
-                    this.active?.Activate();
+                    this.active.TryActivate();
                 }
                 catch (Exception e)
                 {
@@ -93,7 +88,7 @@ namespace Ensage.SDK.Service
     }
 
     public abstract class ServiceManager<TService, TServiceMetadata> : ControllableService, IServiceManager<TService, TServiceMetadata>
-        where TService : class, IControllable
+        where TService : class
     {
         private static readonly ILog Log = AssemblyLogs.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
@@ -113,9 +108,7 @@ namespace Ensage.SDK.Service
                     try
                     {
                         this.active = this.GetSelection();
-
-                        Log.Debug($"Activate Service {this.active}");
-                        this.active?.Activate();
+                        this.active?.TryActivate();
                     }
                     catch (Exception e)
                     {
@@ -137,8 +130,7 @@ namespace Ensage.SDK.Service
                 {
                     try
                     {
-                        Log.Debug($"Deactivate Service {this.active}");
-                        this.active.Deactivate();
+                        this.active.TryDeactivate();
                         this.active = null;
                     }
                     catch (Exception e)
@@ -154,9 +146,8 @@ namespace Ensage.SDK.Service
 
                 try
                 {
-                    Log.Debug($"Activate Service {value}");
                     this.active = value;
-                    this.active?.Activate();
+                    this.active?.TryActivate();
                 }
                 catch (Exception e)
                 {

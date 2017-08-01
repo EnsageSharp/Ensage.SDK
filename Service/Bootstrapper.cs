@@ -24,8 +24,6 @@ namespace Ensage.SDK.Service
     {
         private static readonly ILog Log = AssemblyLogs.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        public SDKConfig Config { get; private set; }
-
         public ContextContainer<IServiceContext> Default { get; private set; }
 
         public List<PluginContainer> PluginContainer { get; } = new List<PluginContainer>();
@@ -86,7 +84,7 @@ namespace Ensage.SDK.Service
 
         private void CreateLogger()
         {
-            if (!this.Config.Debug.ErrorReporting)
+            if (!this.Context.Config.Settings.ErrorReporting)
             {
                 return;
             }
@@ -126,7 +124,7 @@ namespace Ensage.SDK.Service
 
                     if (assembly.Metadata.IsSupported())
                     {
-                        this.PluginContainer.Add(new PluginContainer(this.Config.Plugins.Factory, assembly));
+                        this.PluginContainer.Add(new PluginContainer(this.Context.Config.Plugins.Factory, assembly));
                     }
                     else
                     {
@@ -154,9 +152,6 @@ namespace Ensage.SDK.Service
                 Log.Debug("====================================================");
                 Log.Debug($">> Ensage.SDK Bootstrap started");
                 Log.Debug("====================================================");
-
-                Log.Debug($">> Building Menu");
-                this.Config = new SDKConfig();
 
                 Log.Debug($">> Building Context for LocalHero");
                 this.Context = new EnsageServiceContext(ObjectManager.LocalHero);

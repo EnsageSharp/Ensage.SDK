@@ -1,4 +1,4 @@
-﻿// <copyright file="ExportOrbwalkerManagerAttribute.cs" company="Ensage">
+// <copyright file="ExportOrbwalkerManagerAttribute.cs" company="Ensage">
 //    Copyright (c) 2017 Ensage.
 // </copyright>
 

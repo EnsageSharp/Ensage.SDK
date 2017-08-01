@@ -319,7 +319,10 @@
     <Compile Include="Handlers\Weak\WeakAction.cs" />
     <Compile Include="Handlers\Weak\WeakFunc.cs" />
     <Compile Include="Helpers\AbilityDetector.cs" />
+    <Compile Include="Helpers\AbilityEventArgs.cs" />
     <Compile Include="Helpers\CircularBuffer.cs" />
+    <Compile Include="Helpers\DetectedAbility.cs" />
+    <Compile Include="Helpers\IAbilityDetector.cs" />
     <Compile Include="Helpers\Messenger.cs" />
     <Compile Include="Handlers\IUpdateHandler.cs" />
     <Compile Include="Handlers\TimeoutHandler.cs" />
@@ -332,8 +335,11 @@
     <Compile Include="Orbwalker\IOrbwalkerManager.cs" />
     <Compile Include="Orbwalker\Metadata\ExportOrbwalkerManagerAttribute.cs" />
     <Compile Include="Plugins\ModifiersTools.cs" />
+    <Compile Include="Plugins\PredictionPlugin.cs" />
+    <Compile Include="Prediction\Metadata\ExportPredictionManagerAttribute.cs" />
+    <Compile Include="Prediction\IPredictionManager.cs" />
+    <Compile Include="Prediction\Metadata\IPredictionManagerMetadata.cs" />
     <Compile Include="Prediction\Metadata\ExportPredictionAttribute.cs" />
-    <Compile Include="Orbwalker\Metadata\ImportOrbwalkerManagerAttribute.cs" />
     <Compile Include="Orbwalker\Metadata\IOrbwalkerManagerMetadata.cs" />
     <Compile Include="Prediction\Metadata\IPredictionMetadata.cs" />
     <Compile Include="Orbwalker\Modes\Combo.cs" />
@@ -353,6 +359,7 @@
     <Compile Include="Prediction\IPrediction.cs" />
     <Compile Include="Prediction\Prediction.cs" />
     <Compile Include="Prediction\PredictionInput.cs" />
+    <Compile Include="Prediction\PredictionManager.cs" />
     <Compile Include="Prediction\PredictionOutput.cs" />
     <Compile Include="Prediction\PredictionSkillshotType.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
@@ -374,6 +381,7 @@
     <Compile Include="Renderer\Metadata\IRendererMetadata.cs" />
     <Compile Include="Renderer\IRenderer.cs" />
     <Compile Include="Renderer\RendererManager.cs" />
+    <Compile Include="Service\ControllableExtensions.cs" />
     <Compile Include="Service\ControllableService.cs" />
     <Compile Include="Inventory\InventoryItem.cs" />
     <Compile Include="Inventory\Metadata\ExportInventoryManagerAttribute.cs" />
@@ -387,6 +395,8 @@
     <Compile Include="Orbwalker\Modes\AttackOrbwalkingMode.cs" />
     <Compile Include="Orbwalker\Modes\AutoAttackMode.cs" />
     <Compile Include="Extensions\MetadataExtensions.cs" />
+    <Compile Include="Service\EntityContext.cs" />
+    <Compile Include="Service\IEntityContext.cs" />
     <Compile Include="Service\IExecutable.cs" />
     <Compile Include="Service\IExecutableAsync.cs" />
     <Compile Include="Service\IServiceManager.cs" />
@@ -406,7 +416,6 @@
     <Compile Include="Orbwalker\Modes\Support.cs" />
     <Compile Include="Service\SDKConfig.cs" />
     <Compile Include="Orbwalker\Metadata\ExportOrbwalkerAttribute.cs" />
-    <Compile Include="Orbwalker\Metadata\ImportOrbwalkerAttribute.cs" />
     <Compile Include="Orbwalker\Metadata\IOrbwalkerMetadata.cs" />
     <Compile Include="Prediction\Metadata\ExportHealthPredictionAttribute.cs" />
     <Compile Include="Prediction\IHealthPrediction.cs" />
@@ -443,15 +452,12 @@
     <Compile Include="Prediction\HealthPrediction.cs" />
     <Compile Include="Orbwalker\IOrbwalker.cs" />
     <Compile Include="Orbwalker\Orbwalker.cs" />
-    <Compile Include="Orbwalker\Config\OrbwalkerConfig.cs" />
     <Compile Include="Orbwalker\Modes\OrbwalkingMode.cs" />
     <Compile Include="TargetSelector\Metadata\ExportTargetSelectorManagerAttribute.cs" />
     <Compile Include="TargetSelector\Modes\DummyTargetSelector.cs" />
     <Compile Include="TargetSelector\Modes\FocusTargetSelector.cs" />
-    <Compile Include="TargetSelector\Metadata\ImportTargetSelectorManagerAttribute.cs" />
     <Compile Include="TargetSelector\ITargetSelectorManager.cs" />
     <Compile Include="TargetSelector\Metadata\ITargetSelectorManagerMetadata.cs" />
-    <Compile Include="TargetSelector\Metadata\ImportTargetSelectorAttribute.cs" />
     <Compile Include="TargetSelector\Metadata\ITargetSelectorMetadata.cs" />
     <Compile Include="Orbwalker\Config\AutoAttackModeConfig.cs" />
     <Compile Include="Persistence\CacheEntry.cs" />
@@ -487,7 +493,6 @@
     <Compile Include="TargetSelector\SelectorBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Extensions\UnitExtensions.cs" />
-    <Compile Include="TargetSelector\Config\TargetSelectorConfig.cs" />
     <Compile Include="TargetSelector\TargetSelectorManager.cs" />
     <Compile Include="Utils\Utils.cs" />
   </ItemGroup>

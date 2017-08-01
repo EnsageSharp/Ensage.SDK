@@ -14,7 +14,6 @@ namespace Ensage.SDK.Orbwalker
     using Ensage.SDK.Extensions;
     using Ensage.SDK.Helpers;
     using Ensage.SDK.Inventory;
-    using Ensage.SDK.Menu;
     using Ensage.SDK.Orbwalker.Config;
     using Ensage.SDK.Orbwalker.Metadata;
     using Ensage.SDK.Renderer.Particle;
@@ -63,7 +62,13 @@ namespace Ensage.SDK.Orbwalker
 
         private Lazy<IParticleManager> Particle { get; }
 
-        private float PingTime => Game.Ping / 2000f;
+        private float PingTime
+        {
+            get
+            {
+                return Game.Ping / 2000f;
+            }
+        }
 
         private float TurnEndTime { get; set; }
 
@@ -76,9 +81,7 @@ namespace Ensage.SDK.Orbwalker
 
             this.IsActive = true;
 
-            Log.Debug($"Activate Orbwalker: {this.Owner.GetDisplayName()}");
-
-            this.Settings = new OrbwalkerSettings(MenuFactory.Attach("Orbwalker"), this.Owner);
+            this.Settings = new OrbwalkerSettings(this.Context.Orbwalker.Value.Config.Factory, this.Owner);
             this.Settings.DrawRange.PropertyChanged += this.OnDrawRangeChanged;
             this.Settings.DrawHoldRange.PropertyChanged += this.OnDrawHoldRangeChanged;
 

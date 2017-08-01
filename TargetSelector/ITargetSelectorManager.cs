@@ -5,11 +5,10 @@
 namespace Ensage.SDK.TargetSelector
 {
     using Ensage.SDK.Service;
-    using Ensage.SDK.TargetSelector.Config;
     using Ensage.SDK.TargetSelector.Metadata;
 
     public interface ITargetSelectorManager : IServiceManager<ITargetSelector, ITargetSelectorMetadata>, ITargetSelector
     {
-        TargetSelectorConfig Config { get; }
+        SDKConfig.TargetSelectorConfig Config { get; }
     }
 }

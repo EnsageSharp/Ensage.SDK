@@ -46,24 +46,22 @@ namespace Ensage.SDK.Renderer.DX11
             }
         }
 
-        public void DrawCircle(Vector2 center, float radius, Color color)
+        public void DrawCircle(Vector2 center, float radius, Color color, float width = 1.0f)
         {
-            this.context.RenderTarget.DrawEllipse(new Ellipse(center, radius, radius), this.brushCache.GetOrCreate(color));
+            this.context.RenderTarget.DrawEllipse(new Ellipse(center, radius, radius), this.brushCache.GetOrCreate(color), width);
         }
 
         public void DrawLine(Vector2 start, Vector2 end, Color color, float width = 1.0f)
         {
-            this.context.RenderTarget.StrokeWidth = width;
-            this.context.RenderTarget.DrawLine(start, end, this.brushCache.GetOrCreate(color));
+            this.context.RenderTarget.DrawLine(start, end, this.brushCache.GetOrCreate(color), width);
         }
 
         public void DrawRectangle(RectangleF rect, Color color, float width = 1.0f)
         {
-            this.context.RenderTarget.StrokeWidth = width;
-            this.context.RenderTarget.DrawRectangle(rect, this.brushCache.GetOrCreate(color));
+            this.context.RenderTarget.DrawRectangle(rect, this.brushCache.GetOrCreate(color), width);
         }
 
-        public void DrawText(Vector2 position, string text, Color color, string fontFamily = "Arial", float fontSize = 16)
+        public void DrawText(Vector2 position, string text, Color color, float fontSize = 13f, string fontFamily = "Calibri")
         {
             var font = this.textFormatCache.GetOrCreate(fontFamily, fontSize);
             var brush = this.brushCache.GetOrCreate(color);

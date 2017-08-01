@@ -4,6 +4,10 @@
 
 namespace Ensage.SDK.Abilities.npc_dota_hero_drow_ranger
 {
+    using Ensage.SDK.Extensions;
+
+    using PlaySharp.Toolkit.Helper.Annotations;
+
     public class drow_ranger_frost_arrows : OrbAbility, IHasTargetModifier
     {
         public drow_ranger_frost_arrows(Ability ability)
@@ -12,5 +16,15 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_drow_ranger
         }
 
         public string TargetModifierName { get; } = "modifier_drow_ranger_frost_arrows_slow";
+
+        public float GetModifierDuration([NotNull] Unit target)
+        {
+            if (target is Hero)
+            {
+                return this.Ability.GetAbilitySpecialData("frost_arrows_hero_duration_tooltip");
+            }
+
+            return this.Ability.GetAbilitySpecialData("frost_arrows_creep_duration");
+        }
     }
 }

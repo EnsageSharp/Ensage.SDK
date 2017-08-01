@@ -42,48 +42,20 @@
     <AssemblyOriginatorKeyFile>Properties\key.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="clipper_library">
-      <HintPath>D:\Games\Loader\References\clipper_library.dll</HintPath>
-    </Reference>
-    <Reference Include="Ensage">
-      <HintPath>D:\Games\Loader\References\Ensage.dll</HintPath>
-    </Reference>
-    <Reference Include="Ensage.Common">
-      <HintPath>D:\Games\Loader\References\Ensage.Common.dll</HintPath>
-    </Reference>
-    <Reference Include="EnsageSharp.Sandbox">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>D:\Games\Loader\System\EnsageSharp.Sandbox.dll</HintPath>
-    </Reference>
+    <Reference Include="clipper_library"/>
+    <Reference Include="Ensage"/>
+    <Reference Include="Ensage.Common"/>
+    <Reference Include="EnsageSharp.Sandbox"/>
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>D:\Games\Loader\References\Newtonsoft.Json.dll</HintPath>
-    </Reference>
-    <Reference Include="PlaySharp.Sentry">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>D:\Games\Loader\References\PlaySharp.Sentry.dll</HintPath>
-    </Reference>
-    <Reference Include="PlaySharp.Toolkit">
-      <HintPath>D:\Games\Loader\References\PlaySharp.Toolkit.dll</HintPath>
-    </Reference>
-    <Reference Include="SharpDX">
-      <HintPath>D:\Games\Loader\References\SharpDX.dll</HintPath>
-    </Reference>
-    <Reference Include="SharpDX.Direct2D1">
-      <HintPath>D:\Games\Loader\References\SharpDX.Direct2D1.dll</HintPath>
-    </Reference>
-    <Reference Include="SharpDX.Direct3D11">
-      <HintPath>D:\Games\Loader\References\SharpDX.Direct3D11.dll</HintPath>
-    </Reference>
-    <Reference Include="SharpDX.Direct3D9">
-      <HintPath>D:\Games\Loader\References\SharpDX.Direct3D9.dll</HintPath>
-    </Reference>
-    <Reference Include="SharpDX.DXGI">
-      <HintPath>D:\Games\Loader\References\SharpDX.DXGI.dll</HintPath>
-    </Reference>
-    <Reference Include="SharpDX.Mathematics">
-      <HintPath>D:\Games\Loader\References\SharpDX.Mathematics.dll</HintPath>
-    </Reference>
+    <Reference Include="Newtonsoft.Json"/>
+    <Reference Include="PlaySharp.Sentry"/>
+    <Reference Include="PlaySharp.Toolkit"/>
+    <Reference Include="SharpDX"/>
+    <Reference Include="SharpDX.Direct2D1"/>
+    <Reference Include="SharpDX.Direct3D11"/>
+    <Reference Include="SharpDX.Direct3D9"/>
+    <Reference Include="SharpDX.DXGI"/>
+    <Reference Include="SharpDX.Mathematics"/>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Core" />

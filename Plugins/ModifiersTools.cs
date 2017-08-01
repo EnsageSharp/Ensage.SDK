@@ -38,10 +38,10 @@ namespace Ensage.SDK.Plugins
         {
             Drawing.OnDraw += this.OnDraw;
 
-            this.Input.RegisterHotkey("MoveUp", Key.Up, this.MoveUp);
-            this.Input.RegisterHotkey("MoveDown", Key.Down, this.MoveDown);
-            this.Input.RegisterHotkey("MoveLeft", Key.Left, this.MoveLeft);
-            this.Input.RegisterHotkey("MoveRight", Key.Right, this.MoveRight);
+            this.Input.RegisterHotkey("MoveUp", Key.NumPad8, this.MoveUp);
+            this.Input.RegisterHotkey("MoveDown", Key.NumPad2, this.MoveDown);
+            this.Input.RegisterHotkey("MoveLeft", Key.NumPad4, this.MoveLeft);
+            this.Input.RegisterHotkey("MoveRight", Key.NumPad6, this.MoveRight);
         }
 
         protected override void OnDeactivate()

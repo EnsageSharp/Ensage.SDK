@@ -21,9 +21,9 @@ namespace Ensage.SDK.Service
 
     public interface IServiceContext : IEntityContext<Unit>, IDisposable
     {
-        Lazy<IAbilityDetector> AbilityDetector { get; }
+        IAbilityDetector AbilityDetector { get; }
 
-        Lazy<AbilityFactory> AbilityFactory { get; }
+        AbilityFactory AbilityFactory { get; }
 
         SDKConfig Config { get; }
 
@@ -31,19 +31,19 @@ namespace Ensage.SDK.Service
 
         IEntityContext<Unit> EntityContext { get; }
 
-        Lazy<IInputManager> Input { get; }
+        IInputManager Input { get; }
 
-        Lazy<IInventoryManager> Inventory { get; }
+        IInventoryManager Inventory { get; }
 
-        Lazy<IOrbwalkerManager> Orbwalker { get; }
+        IOrbwalkerManager Orbwalker { get; }
 
-        Lazy<IParticleManager> Particle { get; }
+        IParticleManager Particle { get; }
 
-        Lazy<IPredictionManager> Prediction { get; }
+        IPredictionManager Prediction { get; }
 
-        Lazy<IRendererManager> Renderer { get; }
+        IRendererManager Renderer { get; }
 
-        Lazy<ITargetSelectorManager> TargetSelector { get; }
+        ITargetSelectorManager TargetSelector { get; }
 
         T Get<T>([CanBeNull] string contract = null);
 

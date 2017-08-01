@@ -81,7 +81,7 @@ namespace Ensage.SDK.Orbwalker
 
             this.IsActive = true;
 
-            this.Settings = new OrbwalkerSettings(this.Context.Orbwalker.Value.Config.Factory, this.Owner);
+            this.Settings = new OrbwalkerSettings(this.Context.Orbwalker.Config.Factory, this.Owner);
             this.Settings.DrawRange.PropertyChanged += this.OnDrawRangeChanged;
             this.Settings.DrawHoldRange.PropertyChanged += this.OnDrawHoldRangeChanged;
 

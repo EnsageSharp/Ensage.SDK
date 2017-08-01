@@ -20,7 +20,34 @@ namespace Ensage.SDK.Service
 
     public sealed class EnsageServiceContext : IServiceContext
     {
+        [Import]
+        private Lazy<AbilityDetector> abilityDetector;
+
+        [Import]
+        private Lazy<AbilityFactory> abilityFactory;
+
         private bool disposed;
+
+        [Import]
+        private Lazy<IInputManager> inputManager;
+
+        [Import]
+        private Lazy<IInventoryManager> inventoryManager;
+
+        [Import]
+        private Lazy<IOrbwalkerManager> orbwalkerManager;
+
+        [Import]
+        private Lazy<IParticleManager> particleManager;
+
+        [Import]
+        private Lazy<IPredictionManager> predictionManager;
+
+        [Import]
+        private Lazy<IRendererManager> rendererManager;
+
+        [Import]
+        private Lazy<ITargetSelectorManager> targetSelectorManager;
 
         public EnsageServiceContext(Unit unit)
         {
@@ -36,11 +63,21 @@ namespace Ensage.SDK.Service
             this.Container = ContainerFactory.CreateContainer(this);
         }
 
-        [Import]
-        public Lazy<IAbilityDetector> AbilityDetector { get; private set; }
+        public IAbilityDetector AbilityDetector
+        {
+            get
+            {
+                return this.abilityDetector.Value;
+            }
+        }
 
-        [Import]
-        public Lazy<AbilityFactory> AbilityFactory { get; private set; }
+        public AbilityFactory AbilityFactory
+        {
+            get
+            {
+                return this.abilityFactory.Value;
+            }
+        }
 
         public SDKConfig Config { get; }
 
@@ -48,30 +85,65 @@ namespace Ensage.SDK.Service
 
         public IEntityContext<Unit> EntityContext { get; }
 
-        [Import]
-        public Lazy<IInputManager> Input { get; private set; }
+        public IInputManager Input
+        {
+            get
+            {
+                return this.inputManager.Value;
+            }
+        }
 
-        [Import]
-        public Lazy<IInventoryManager> Inventory { get; private set; }
+        public IInventoryManager Inventory
+        {
+            get
+            {
+                return this.inventoryManager.Value;
+            }
+        }
 
         public string Name { get; }
 
-        [Import]
-        public Lazy<IOrbwalkerManager> Orbwalker { get; private set; }
+        public IOrbwalkerManager Orbwalker
+        {
+            get
+            {
+                return this.orbwalkerManager.Value;
+            }
+        }
 
         public Unit Owner { get; }
 
-        [Import]
-        public Lazy<IParticleManager> Particle { get; private set; }
+        public IParticleManager Particle
+        {
+            get
+            {
+                return this.particleManager.Value;
+            }
+        }
 
-        [Import]
-        public Lazy<IPredictionManager> Prediction { get; private set; }
+        public IPredictionManager Prediction
+        {
+            get
+            {
+                return this.predictionManager.Value;
+            }
+        }
 
-        [Import]
-        public Lazy<IRendererManager> Renderer { get; private set; }
+        public IRendererManager Renderer
+        {
+            get
+            {
+                return this.rendererManager.Value;
+            }
+        }
 
-        [Import]
-        public Lazy<ITargetSelectorManager> TargetSelector { get; private set; }
+        public ITargetSelectorManager TargetSelector
+        {
+            get
+            {
+                return this.targetSelectorManager.Value;
+            }
+        }
 
         public void Dispose()
         {

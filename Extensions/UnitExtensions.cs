@@ -593,7 +593,7 @@ namespace Ensage.SDK.Extensions
             return unit.UnitState.HasFlag(UnitState.Disarmed);
         }
 
-        public static bool IsEnemy(this Unit unit, Unit target)
+        public static bool IsEnemy(this Unit unit, Entity target)
         {
             return unit.Team != target.Team;
         }
@@ -603,9 +603,9 @@ namespace Ensage.SDK.Extensions
             return unit.HasModifiers(EtherealModifiers, false);
         }
 
-        public static bool IsInAttackRange(this Unit source, Unit target)
+        public static bool IsInAttackRange(this Unit source, Unit target, float bonusAttackRange = 0.0f)
         {
-            return source.IsInRange(target, source.AttackRange(target), true);
+            return source.IsInRange(target, source.AttackRange(target) + bonusAttackRange, true);
         }
 
         /// <summary>
@@ -687,14 +687,14 @@ namespace Ensage.SDK.Extensions
             return unit.UnitState.HasFlag(UnitState.Stunned);
         }
 
-        public static bool IsValidOrbwalkingTarget(this Unit attacker, Unit target)
+        public static bool IsValidOrbwalkingTarget(this Unit attacker, Unit target, float bonusAttackRange = 0.0f)
         {
             return target.IsValid &&
                    target.IsVisible &&
                    target.IsAlive &&
                    target.IsSpawned &&
                    !target.IsIllusion &&
-                   attacker.IsInAttackRange(target) &&
+                   attacker.IsInAttackRange(target, bonusAttackRange) &&
                    !target.IsInvulnerable() &&
                    !target.IsAttackImmune();
         }

@@ -294,6 +294,10 @@
     <Compile Include="Abilities\npc_dota_hero_undying\undying_flesh_golem.cs" />
     <Compile Include="Abilities\npc_dota_hero_undying\undying_soul_rip.cs" />
     <Compile Include="Abilities\npc_dota_hero_undying\undying_tombstone.cs" />
+    <Compile Include="Abilities\npc_dota_hero_venomancer\venomancer_plague_ward.cs" />
+    <Compile Include="Abilities\npc_dota_hero_venomancer\venomancer_poison_nova.cs" />
+    <Compile Include="Abilities\npc_dota_hero_venomancer\venomancer_poison_sting.cs" />
+    <Compile Include="Abilities\npc_dota_hero_venomancer\venomancer_venomous_gale.cs" />
     <Compile Include="Abilities\npc_dota_hero_warlock\warlock_upheaval.cs" />
     <Compile Include="Abilities\npc_dota_hero_zuus\zuus_arc_lightning.cs" />
     <Compile Include="Abilities\npc_dota_hero_zuus\zuus_cloud.cs" />
@@ -334,6 +338,8 @@
     <Compile Include="Orbwalker\Config\OrbwalkerSettings.cs" />
     <Compile Include="Orbwalker\IOrbwalkerManager.cs" />
     <Compile Include="Orbwalker\Metadata\ExportOrbwalkerManagerAttribute.cs" />
+    <Compile Include="Orbwalker\Modes\AttackOrbwalkingModeAsync.cs" />
+    <Compile Include="Orbwalker\Modes\AutoAttackModeAsync.cs" />
     <Compile Include="Plugins\ModifiersTools.cs" />
     <Compile Include="Plugins\PredictionPlugin.cs" />
     <Compile Include="Prediction\Metadata\ExportPredictionManagerAttribute.cs" />

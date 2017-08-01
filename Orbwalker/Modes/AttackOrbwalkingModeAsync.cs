@@ -8,7 +8,7 @@ namespace Ensage.SDK.Orbwalker.Modes
     using Ensage.SDK.TargetSelector;
     using Ensage.SDK.TargetSelector.Modes;
 
-    public abstract class AttackOrbwalkingMode : AutoAttackMode
+    public abstract class AttackOrbwalkingModeAsync : AutoAttackModeAsync
     {
         private readonly bool building;
 
@@ -26,7 +26,7 @@ namespace Ensage.SDK.Orbwalker.Modes
 
         private readonly bool neutral;
 
-        protected AttackOrbwalkingMode(
+        protected AttackOrbwalkingModeAsync(
             IOrbwalker orbwalker,
             ITargetSelectorManager ts,
             string name,

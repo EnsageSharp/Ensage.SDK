@@ -25,9 +25,16 @@ namespace Ensage.SDK.Orbwalker.Config
             this.Building = this.Factory.Item("Building", building);
             this.Neutral = this.Factory.Item("Neutral", neutral);
             this.Creep = this.Factory.Item("Creep", creep);
+
+            this.BonusMeleeRange = this.Factory.Item("Bonus Melee Range", new Slider(0, 0, 400));
+            this.BonusRangedRange = this.Factory.Item("Bonus Ranged Range", new Slider(0, 0, 400));
         }
 
         public MenuItem<bool> Active { get; }
+
+        public MenuItem<Slider> BonusMeleeRange { get; }
+
+        public MenuItem<Slider> BonusRangedRange { get; }
 
         public MenuItem<bool> Building { get; }
 

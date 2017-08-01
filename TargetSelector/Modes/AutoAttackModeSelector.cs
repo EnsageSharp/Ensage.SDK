@@ -4,9 +4,11 @@
 
 namespace Ensage.SDK.TargetSelector.Modes
 {
+    using System;
     using System.Linq;
     using System.Reflection;
 
+    using Ensage.Common.Extensions;
     using Ensage.SDK.Extensions;
     using Ensage.SDK.Helpers;
     using Ensage.SDK.Orbwalker.Config;
@@ -17,7 +19,7 @@ namespace Ensage.SDK.TargetSelector.Modes
     using PlaySharp.Toolkit.Helper;
     using PlaySharp.Toolkit.Logging;
 
-    internal class AutoAttackModeSelector
+    public class AutoAttackModeSelector
     {
         private static readonly ILog Log = AssemblyLogs.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
@@ -28,6 +30,14 @@ namespace Ensage.SDK.TargetSelector.Modes
             this.Owner = owner;
             this.Manager = manager;
             this.Config = config;
+        }
+
+        public float BonusRange
+        {
+            get
+            {
+                return this.Owner.IsMelee ? this.Config.BonusMeleeRange : this.Config.BonusRangedRange;
+            }
         }
 
         protected IHealthPrediction HealthPrediction
@@ -140,18 +150,29 @@ namespace Ensage.SDK.TargetSelector.Modes
 
         private bool CanKill(Unit target)
         {
-            return this.Owner.GetAttackDamage(target, true) >
-                   this.HealthPrediction.GetPrediction(target, (this.Owner.GetAutoAttackArrivalTime(target) + (Game.Ping / 2000f)) - 0.15f);
+            var extraMoveTime = 0.0f;
+            if (this.BonusRange > 0.0f && !this.Owner.IsInAttackRange(target))
+            {
+                var speed = this.Owner.MovementSpeed;
+                if (speed > 0)
+                {
+                    var distance = Math.Max(0.0f, this.Owner.Distance2D(target) - this.Owner.GetAttackRange());
+                    extraMoveTime = (distance / speed) + 0.1f;
+                }
+            }
+
+            return this.Owner.GetAttackDamage(target, true)
+                   > this.HealthPrediction.GetPrediction(target, (this.Owner.GetAutoAttackArrivalTime(target) + (Game.Ping / 2000f) + extraMoveTime) - 0.15f);
         }
 
         private bool IsValid(Unit target, bool myTeam = false)
         {
             if (myTeam)
             {
-                return target.Team == this.Owner.Team && this.Owner.IsValidOrbwalkingTarget(target);
+                return target.Team == this.Owner.Team && this.Owner.IsValidOrbwalkingTarget(target, this.BonusRange);
             }
 
-            return target.Team != this.Owner.Team && this.Owner.IsValidOrbwalkingTarget(target);
+            return target.Team != this.Owner.Team && this.Owner.IsValidOrbwalkingTarget(target, this.BonusRange);
         }
     }
 }

@@ -13,6 +13,24 @@ namespace Ensage.SDK.Abilities
 
         public Ability Ability { get; }
 
+        public virtual bool CanBeCasted
+        {
+            get
+            {
+                if (this.Ability.Level == 0 || this.Ability.IsHidden || this.Ability.Cooldown > 0)
+                {
+                    return false;
+                }
+
+                if (this.Owner.Mana < this.Ability.ManaCost)
+                {
+                    return false;
+                }
+
+                return true;
+            }
+        }
+
         public virtual float CastRange { get; } = 0;
 
         public virtual DamageType DamageType

@@ -29,8 +29,6 @@ namespace Ensage.SDK.Orbwalker
     {
         private static readonly ILog Log = AssemblyLogs.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        private IOrbwalker active;
-
         [ImportingConstructor]
         public OrbwalkerManager([Import] IServiceContext context)
         {
@@ -81,27 +79,27 @@ namespace Ensage.SDK.Orbwalker
 
         public bool Attack(Unit target)
         {
-            return this.active.Attack(target);
+            return this.Active.Attack(target);
         }
 
         public bool CanAttack(Unit target)
         {
-            return this.active.CanAttack(target);
+            return this.Active.CanAttack(target);
         }
 
         public bool CanMove()
         {
-            return this.active.CanMove();
+            return this.Active.CanMove();
         }
 
         public float GetTurnTime(Entity unit)
         {
-            return this.active.GetTurnTime(unit);
+            return this.Active.GetTurnTime(unit);
         }
 
         public bool Move(Vector3 position)
         {
-            return this.active.Move(position);
+            return this.Active.Move(position);
         }
 
         public void OnImportsSatisfied()
@@ -111,7 +109,7 @@ namespace Ensage.SDK.Orbwalker
 
         public bool OrbwalkTo(Unit target)
         {
-            return this.active.OrbwalkTo(target);
+            return this.Active.OrbwalkTo(target);
         }
 
         public void RegisterMode(IOrbwalkingMode mode)

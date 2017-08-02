@@ -8,7 +8,6 @@ namespace Ensage.SDK.Orbwalker.Modes
 
     using Ensage.SDK.Orbwalker.Metadata;
     using Ensage.SDK.Service;
-    using Ensage.SDK.TargetSelector;
 
     [ExportOrbwalkingMode]
     internal class Combo : AttackOrbwalkingMode

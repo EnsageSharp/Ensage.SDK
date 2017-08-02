@@ -32,18 +32,29 @@
     <PlatformTarget>x64</PlatformTarget>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="clipper_library"/>
-    <Reference Include="Ensage"/>
-    <Reference Include="Ensage.Common"/>
+    <Reference Include="clipper_library">
+    </Reference>
+    <Reference Include="Ensage">
+    </Reference>
+    <Reference Include="Ensage.Common">
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="Newtonsoft.Json"/>
-    <Reference Include="PlaySharp.Toolkit"/>
-    <Reference Include="SharpDX"/>
-    <Reference Include="SharpDX.Direct2D1"/>
-    <Reference Include="SharpDX.Direct3D11"/>
-    <Reference Include="SharpDX.Direct3D9"/>
-    <Reference Include="SharpDX.DXGI"/>
-    <Reference Include="SharpDX.Mathematics"/>
+    <Reference Include="Newtonsoft.Json">
+    </Reference>
+    <Reference Include="PlaySharp.Toolkit">
+    </Reference>
+    <Reference Include="SharpDX">
+    </Reference>
+    <Reference Include="SharpDX.Direct2D1">
+    </Reference>
+    <Reference Include="SharpDX.Direct3D11">
+    </Reference>
+    <Reference Include="SharpDX.Direct3D9">
+    </Reference>
+    <Reference Include="SharpDX.DXGI">
+    </Reference>
+    <Reference Include="SharpDX.Mathematics">
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Core" />

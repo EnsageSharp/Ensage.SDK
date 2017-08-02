@@ -14,6 +14,7 @@ namespace Ensage.SDK.Handlers
         public TraceHandler(int timeout = 0)
             : base(timeout)
         {
+            this.TimeHistory.Enqueue(TimeSpan.Zero);
         }
 
         public TimeSpan Time { get; private set; }

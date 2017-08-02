@@ -7,6 +7,7 @@ namespace Ensage.SDK.Menu
     using System;
     using System.Collections.Generic;
     using System.IO;
+    using System.Linq;
     using System.Reflection;
 
     using Ensage.Common.Menu;
@@ -105,6 +106,11 @@ namespace Ensage.SDK.Menu
         {
             this.Dispose(true);
             GC.SuppressFinalize(this);
+        }
+
+        public T GetValue<T>(string itemName)
+        {
+            return this.Target.Items.First(e => e.DisplayName == itemName).GetValue<T>();
         }
 
         public MenuItem<T> Item<T>(string displayName, T value)

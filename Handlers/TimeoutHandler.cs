@@ -25,9 +25,9 @@ namespace Ensage.SDK.Handlers
 
             set
             {
-                if (value <= 0)
+                if (value < 0)
                 {
-                    throw new ArgumentOutOfRangeException(nameof(value));
+                    throw new ArgumentOutOfRangeException(nameof(value), value, "Invalid Timeout");
                 }
 
                 this.timeout = value;

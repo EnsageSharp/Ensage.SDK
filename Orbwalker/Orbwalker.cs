@@ -16,7 +16,6 @@ namespace Ensage.SDK.Orbwalker
     using Ensage.SDK.Inventory;
     using Ensage.SDK.Orbwalker.Config;
     using Ensage.SDK.Orbwalker.Metadata;
-    using Ensage.SDK.Renderer.Particle;
     using Ensage.SDK.Service;
 
     using log4net;

@@ -42,7 +42,7 @@ namespace Ensage.SDK.Input
 
         public void Execute(KeyEventArgs args)
         {
-            Log.Debug($"Hotkey: {this.Name} {this.Key}");
+            // Log.Debug($"Hotkey: {this.Name} {this.Key}");
             this.action(args);
         }
     }

@@ -43,6 +43,10 @@ namespace Ensage.SDK.Service
 
             this.UpdateUntil = DateTime.Now.AddSeconds(60);
             UpdateManager.SubscribeService(this.UpdateRepositories, 100);
+
+            Game.OnEnd += this.OnEnd;
+            AppDomain.CurrentDomain.DomainUnload += this.OnDomainUnload;
+            AppDomain.CurrentDomain.ProcessExit += this.OnDomainUnload;
         }
 
         private MemoryCache Cache { get; }
@@ -53,22 +57,39 @@ namespace Ensage.SDK.Service
 
         private string[] Exclusions { get; } = { "EnsageSharp.Sandbox", "PlaySharp.Toolkit", "PlaySharp.Service" };
 
+        private bool IsEnabled { get; set; } = true;
+
         private DateTime UpdateUntil { get; }
 
         public void Capture(Exception e)
         {
+            if (!this.IsEnabled)
+            {
+                return;
+            }
+
             this.UpdateMetadata(e, Assembly.GetCallingAssembly().GetName().Name);
             this.Client.Capture(e);
         }
 
         public void CaptureAsync(Exception e, string origin)
         {
+            if (!this.IsEnabled)
+            {
+                return;
+            }
+
             this.UpdateMetadata(e, origin);
             this.Client.CaptureAsync(e);
         }
 
         protected override void Append(LoggingEvent loggingEvent)
         {
+            if (!this.IsEnabled)
+            {
+                return;
+            }
+
             if (loggingEvent.Level < Level.Error)
             {
                 return;
@@ -136,6 +157,17 @@ namespace Ensage.SDK.Service
             return this.Cache.Contains(e.StackTrace);
         }
 
+        private void OnDomainUnload(object sender, EventArgs eventArgs)
+        {
+            this.OnEnd(eventArgs);
+        }
+
+        private void OnEnd(EventArgs args)
+        {
+            Log.Info($"Stopping Logger");
+            this.IsEnabled = false;
+        }
+
         private void StoreException(Exception e, int seconds = 60)
         {
             this.Cache.Add(e.StackTrace, e, DateTimeOffset.Now.AddSeconds(seconds));
@@ -201,6 +233,11 @@ namespace Ensage.SDK.Service
 
         private void UpdateRepositories()
         {
+            if (!this.IsEnabled)
+            {
+                return;
+            }
+
             if (DateTime.Now > this.UpdateUntil)
             {
                 UpdateManager.UnsubscribeService(this.UpdateRepositories);

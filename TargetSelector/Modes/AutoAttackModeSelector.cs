@@ -161,8 +161,8 @@ namespace Ensage.SDK.TargetSelector.Modes
                 }
             }
 
-            return this.Owner.GetAttackDamage(target, true)
-                   > this.HealthPrediction.GetPrediction(target, (this.Owner.GetAutoAttackArrivalTime(target) + (Game.Ping / 2000f) + extraMoveTime) - 0.15f);
+            return this.Owner.GetAttackDamage(target, true) >
+                   this.HealthPrediction.GetPrediction(target, (this.Owner.GetAutoAttackArrivalTime(target) + (Game.Ping / 2000f) + extraMoveTime) - 0.15f);
         }
 
         private bool IsValid(Unit target, bool myTeam = false)

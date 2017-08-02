@@ -42,26 +42,41 @@
     <AssemblyOriginatorKeyFile>Properties\key.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="clipper_library"/>
-    <Reference Include="Ensage"/>
-    <Reference Include="Ensage.Common"/>
-    <Reference Include="EnsageSharp.Sandbox"/>
+    <Reference Include="clipper_library">
+    </Reference>
+    <Reference Include="Ensage">
+    </Reference>
+    <Reference Include="Ensage.Common">
+    </Reference>
+    <Reference Include="EnsageSharp.Sandbox">
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="Newtonsoft.Json"/>
-    <Reference Include="PlaySharp.Sentry"/>
-    <Reference Include="PlaySharp.Toolkit"/>
-    <Reference Include="SharpDX"/>
-    <Reference Include="SharpDX.Direct2D1"/>
-    <Reference Include="SharpDX.Direct3D11"/>
-    <Reference Include="SharpDX.Direct3D9"/>
-    <Reference Include="SharpDX.DXGI"/>
-    <Reference Include="SharpDX.Mathematics"/>
+    <Reference Include="Newtonsoft.Json">
+    </Reference>
+    <Reference Include="PlaySharp.Sentry">
+    </Reference>
+    <Reference Include="PlaySharp.Toolkit">
+    </Reference>
+    <Reference Include="SharpDX">
+    </Reference>
+    <Reference Include="SharpDX.Direct2D1">
+    </Reference>
+    <Reference Include="SharpDX.Direct3D11">
+    </Reference>
+    <Reference Include="SharpDX.Direct3D9">
+    </Reference>
+    <Reference Include="SharpDX.DXGI">
+    </Reference>
+    <Reference Include="SharpDX.Mathematics">
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Runtime.Caching" />
     <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
@@ -297,6 +312,7 @@
     <Compile Include="Helpers\AbilityDetector.cs" />
     <Compile Include="Helpers\AbilityEventArgs.cs" />
     <Compile Include="Helpers\CircularBuffer.cs" />
+    <Compile Include="Helpers\DebugTableConfig.cs" />
     <Compile Include="Helpers\DetectedAbility.cs" />
     <Compile Include="Helpers\IAbilityDetector.cs" />
     <Compile Include="Helpers\Messenger.cs" />
@@ -304,6 +320,8 @@
     <Compile Include="Handlers\TimeoutHandler.cs" />
     <Compile Include="Handlers\TraceHandler.cs" />
     <Compile Include="Handlers\InvokeHandler.cs" />
+    <Compile Include="Helpers\Table.cs" />
+    <Compile Include="Helpers\TableColumn.cs" />
     <Compile Include="Input\MouseWheelEventArgs.cs" />
     <Compile Include="Inventory\ItemBindingHandler.cs" />
     <Compile Include="Inventory\Metadata\ItemBindingAttribute.cs" />
@@ -312,7 +330,10 @@
     <Compile Include="Orbwalker\Metadata\ExportOrbwalkerManagerAttribute.cs" />
     <Compile Include="Orbwalker\Modes\AttackOrbwalkingModeAsync.cs" />
     <Compile Include="Orbwalker\Modes\AutoAttackModeAsync.cs" />
-    <Compile Include="Plugins\ModifiersTools.cs" />
+    <Compile Include="Plugins\DebugTables\CallbacksTable.cs" />
+    <Compile Include="Plugins\DebugTablePlugin.cs" />
+    <Compile Include="Plugins\DebugTables\ModifiersTable.cs" />
+    <Compile Include="Plugins\DebugTables\ObjectsTable.cs" />
     <Compile Include="Plugins\PredictionPlugin.cs" />
     <Compile Include="Prediction\Metadata\ExportPredictionManagerAttribute.cs" />
     <Compile Include="Prediction\IPredictionManager.cs" />

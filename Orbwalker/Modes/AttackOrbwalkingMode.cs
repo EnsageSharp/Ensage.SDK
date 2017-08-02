@@ -6,7 +6,6 @@ namespace Ensage.SDK.Orbwalker.Modes
 {
     using Ensage.SDK.Orbwalker.Config;
     using Ensage.SDK.Service;
-    using Ensage.SDK.TargetSelector;
     using Ensage.SDK.TargetSelector.Modes;
 
     public abstract class AttackOrbwalkingMode : AutoAttackMode

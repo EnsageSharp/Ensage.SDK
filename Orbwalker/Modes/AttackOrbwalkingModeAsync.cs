@@ -1,4 +1,4 @@
-// <copyright file="AttackOrbwalkingMode.cs" company="Ensage">
+// <copyright file="AttackOrbwalkingModeAsync.cs" company="Ensage">
 //    Copyright (c) 2017 Ensage.
 // </copyright>
 
@@ -6,7 +6,6 @@ namespace Ensage.SDK.Orbwalker.Modes
 {
     using Ensage.SDK.Orbwalker.Config;
     using Ensage.SDK.Service;
-    using Ensage.SDK.TargetSelector;
     using Ensage.SDK.TargetSelector.Modes;
 
     public abstract class AttackOrbwalkingModeAsync : AutoAttackModeAsync

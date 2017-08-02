@@ -104,7 +104,7 @@ namespace Ensage.SDK.Plugins
             var size = new Vector2(22);
             var name = "Arial";
 
-            var tables = this.Tables.Where(e => this.Config.Factory.GetValue<bool>(e.Name) && e.HasEntries).ToArray();
+            var tables = this.Tables.Where(e => this.Config.Factory.GetValue<bool>(e.Name) && e.HasEntries).OrderBy(e => e.Height).ToArray();
             var pos = new Vector2(this.OffsetX, this.OffsetY);
             var row = this.OffsetY;
             var width = tables.Length == 0 ? 0 : tables.Max(e => e.Width);

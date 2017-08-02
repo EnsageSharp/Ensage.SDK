@@ -16,7 +16,8 @@ namespace Ensage.SDK.Plugins.DebugTables
     public sealed class ModifiersTable : Table
     {
         [ImportingConstructor]
-        public ModifiersTable([Import] IServiceContext context) : base("Modifiers")
+        public ModifiersTable([Import] IServiceContext context)
+            : base("Modifiers")
         {
             this.Owner = context.Owner;
         }
@@ -27,17 +28,16 @@ namespace Ensage.SDK.Plugins.DebugTables
         {
             var data = this.Owner.Modifiers.Where(e => e.IsValid).ToArray();
 
-            var list = new List<TableColumn>
-                       {
-                           new TableColumn("Name", data.Select(e => e.Name)),
-                           new TableColumn("Texture", data.Select(e => e.Name)),
-                           new TableColumn("Remaining", data.Select(e => e.RemainingTime.ToString("N3"))),
-                           new TableColumn("Duration", data.Select(e => e.Duration.ToString("N3"))),
-                           new TableColumn("Stacks", data.Select(e => e.StackCount.ToString())),
-                           new TableColumn("Flags", data.Select(this.GetFlags))
-                       };
-
-            this.Columns = list;
+            this.Columns =
+                new List<TableColumn>
+                {
+                    new TableColumn("Name", data.Select(e => e.Name)),
+                    new TableColumn("Texture", data.Select(e => e.Name)),
+                    new TableColumn("Remaining", data.Select(e => e.RemainingTime.ToString("N3"))),
+                    new TableColumn("Duration", data.Select(e => e.Duration.ToString("N3"))),
+                    new TableColumn("Stacks", data.Select(e => e.StackCount.ToString())),
+                    new TableColumn("Flags", data.Select(this.GetFlags))
+                };
         }
 
         private string GetFlags(Modifier modifier)

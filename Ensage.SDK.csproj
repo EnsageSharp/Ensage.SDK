@@ -332,6 +332,7 @@
     <Compile Include="Orbwalker\Modes\AutoAttackModeAsync.cs" />
     <Compile Include="Plugins\DebugTables\CallbacksTable.cs" />
     <Compile Include="Plugins\DebugTablePlugin.cs" />
+    <Compile Include="Plugins\DebugTables\HeroTable.cs" />
     <Compile Include="Plugins\DebugTables\ModifiersTable.cs" />
     <Compile Include="Plugins\DebugTables\ObjectsTable.cs" />
     <Compile Include="Plugins\PredictionPlugin.cs" />

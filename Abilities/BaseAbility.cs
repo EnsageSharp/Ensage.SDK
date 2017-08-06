@@ -13,7 +13,9 @@ namespace Ensage.SDK.Abilities
 
         public Ability Ability { get; }
 
-        public virtual bool CanBeCasted
+        public abstract bool CanBeCasted { get; }
+
+        public virtual bool IsReady
         {
             get
             {

@@ -10,5 +10,13 @@ namespace Ensage.SDK.Abilities
             : base(ability)
         {
         }
+
+        public override bool CanBeCasted
+        {
+            get
+            {
+                return this.IsReady && !this.Owner.UnitState.HasFlag(UnitState.PassivesDisabled);
+            }
+        }
     }
 }

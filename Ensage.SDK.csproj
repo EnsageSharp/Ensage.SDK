@@ -242,6 +242,11 @@
     <Compile Include="Abilities\npc_dota_hero_phantom_assassin\phantom_assassin_coup_de_grace.cs" />
     <Compile Include="Abilities\npc_dota_hero_phantom_assassin\phantom_assassin_phantom_strike.cs" />
     <Compile Include="Abilities\npc_dota_hero_phantom_assassin\phantom_assassin_stifling_dagger.cs" />
+    <Compile Include="Abilities\npc_dota_hero_puck\puck_dream_coil.cs" />
+    <Compile Include="Abilities\npc_dota_hero_puck\puck_ethereal_jaunt.cs" />
+    <Compile Include="Abilities\npc_dota_hero_puck\puck_illusory_orb.cs" />
+    <Compile Include="Abilities\npc_dota_hero_puck\puck_phase_shift.cs" />
+    <Compile Include="Abilities\npc_dota_hero_puck\puck_waning_rift.cs" />
     <Compile Include="Abilities\npc_dota_hero_pudge\pudge_dismember.cs" />
     <Compile Include="Abilities\npc_dota_hero_pudge\pudge_flesh_heap.cs" />
     <Compile Include="Abilities\npc_dota_hero_pudge\pudge_rot.cs" />

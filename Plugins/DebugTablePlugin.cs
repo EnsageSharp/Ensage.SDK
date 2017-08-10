@@ -152,7 +152,7 @@ namespace Ensage.SDK.Plugins
         {
             foreach (var value in this.Tables)
             {
-                value.OnUpdate();
+                value.Columns = value.OnUpdate();
             }
         }
 

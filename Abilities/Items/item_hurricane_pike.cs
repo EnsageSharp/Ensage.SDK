@@ -6,7 +6,7 @@ namespace Ensage.SDK.Abilities.Items
 {
     using Ensage.SDK.Extensions;
 
-    public class item_hurricane_pike : RangedAbility, IHasTargetModifier
+    public class item_hurricane_pike : RangedAbility, IHasTargetModifier, IHasModifier
     {
         public item_hurricane_pike(Item item)
             : base(item)
@@ -24,5 +24,7 @@ namespace Ensage.SDK.Abilities.Items
         public float PushSpeed { get; } = 1500.0f;
 
         public string TargetModifierName { get; } = "modifier_item_hurricane_pike_active";
+
+        public string ModifierName { get; } = "modifier_item_hurricane_pike_range";
     }
 }

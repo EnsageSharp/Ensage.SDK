@@ -20,7 +20,7 @@ namespace Ensage.SDK.Plugins.DebugTables
         {
         }
 
-        internal override IReadOnlyList<TableColumn> OnUpdate()
+        public override IReadOnlyList<TableColumn> OnUpdate()
         {
             var handlers = UpdateManager.Handlers.Where(e => e.Executor is TraceHandler).ToArray();
             var tracers = handlers.Select(e => e.Executor as TraceHandler).ToArray();

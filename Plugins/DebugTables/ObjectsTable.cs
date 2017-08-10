@@ -19,7 +19,7 @@ namespace Ensage.SDK.Plugins.DebugTables
         {
         }
 
-        internal override IReadOnlyList<TableColumn> OnUpdate()
+        public override IReadOnlyList<TableColumn> OnUpdate()
         {
             var data = EntityManager<Unit>
                 .Entities.Where(e => !e.UnitState.HasFlag(UnitState.FakeAlly) && e.MaximumHealth > 0)

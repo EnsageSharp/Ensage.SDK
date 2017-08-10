@@ -19,7 +19,7 @@ namespace Ensage.SDK.Plugins.DebugTables
         {
         }
 
-        internal override IReadOnlyList<TableColumn> OnUpdate()
+        public override IReadOnlyList<TableColumn> OnUpdate()
         {
             var hero = ObjectManager.LocalHero;
             var data = new Dictionary<string, string>();

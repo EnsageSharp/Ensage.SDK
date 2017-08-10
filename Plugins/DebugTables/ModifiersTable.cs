@@ -25,7 +25,7 @@ namespace Ensage.SDK.Plugins.DebugTables
 
         private Unit Owner { get; }
 
-        internal override IReadOnlyList<TableColumn> OnUpdate()
+        public override IReadOnlyList<TableColumn> OnUpdate()
         {
             var data = this.Owner.Modifiers.Where(e => e.IsValid).ToArray();
 

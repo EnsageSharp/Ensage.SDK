@@ -40,10 +40,9 @@ namespace Ensage.SDK.Renderer.DX9
                 new FontDescription
                 {
                     FaceName = familyName,
-                    Height = (int)(fontSize * 1.2f),
+                    Height = (int)fontSize,
                     OutputPrecision = FontPrecision.Default,
                     Quality = FontQuality.Default,
-                    Width = (int)(fontSize / 1.8f),
                 });
 
             this.Add(key, font);

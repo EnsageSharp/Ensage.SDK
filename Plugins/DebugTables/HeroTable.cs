@@ -8,6 +8,7 @@ namespace Ensage.SDK.Plugins.DebugTables
     using System.ComponentModel.Composition;
     using System.Linq;
 
+    using Ensage.SDK.Extensions;
     using Ensage.SDK.Helpers;
 
     [Export(typeof(Table))]
@@ -18,7 +19,7 @@ namespace Ensage.SDK.Plugins.DebugTables
         {
         }
 
-        internal override void OnUpdate()
+        internal override IReadOnlyList<TableColumn> OnUpdate()
         {
             var hero = ObjectManager.LocalHero;
             var data = new Dictionary<string, string>();
@@ -33,12 +34,11 @@ namespace Ensage.SDK.Plugins.DebugTables
                 }
             }
 
-            this.Columns =
-                new List<TableColumn>
-                {
-                    new TableColumn("Name", data.Keys),
-                    new TableColumn("Value", data.Values)
-                };
+            return new[]
+                   {
+                       data.Keys.ToColumn("Name"),
+                       data.Keys.ToColumn("Value")
+                   };
         }
     }
 }

@@ -47,6 +47,6 @@ namespace Ensage.SDK.Helpers
             }
         }
 
-        internal abstract void OnUpdate();
+        internal abstract IReadOnlyList<TableColumn> OnUpdate();
     }
 }

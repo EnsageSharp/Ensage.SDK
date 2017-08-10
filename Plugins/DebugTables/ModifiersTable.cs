@@ -9,6 +9,7 @@ namespace Ensage.SDK.Plugins.DebugTables
     using System.Linq;
     using System.Text;
 
+    using Ensage.SDK.Extensions;
     using Ensage.SDK.Helpers;
     using Ensage.SDK.Service;
 
@@ -24,20 +25,19 @@ namespace Ensage.SDK.Plugins.DebugTables
 
         private Unit Owner { get; }
 
-        internal override void OnUpdate()
+        internal override IReadOnlyList<TableColumn> OnUpdate()
         {
             var data = this.Owner.Modifiers.Where(e => e.IsValid).ToArray();
 
-            this.Columns =
-                new List<TableColumn>
-                {
-                    new TableColumn("Name", data.Select(e => e.Name)),
-                    new TableColumn("Texture", data.Select(e => e.Name)),
-                    new TableColumn("Remaining", data.Select(e => e.RemainingTime.ToString("N3"))),
-                    new TableColumn("Duration", data.Select(e => e.Duration.ToString("N3"))),
-                    new TableColumn("Stacks", data.Select(e => e.StackCount.ToString())),
-                    new TableColumn("Flags", data.Select(this.GetFlags))
-                };
+            return new[]
+                   {
+                       data.Select(e => e.Name).ToColumn("Name"),
+                       data.Select(e => e.Name).ToColumn("Texture"),
+                       data.Select(e => e.RemainingTime.ToString("N3")).ToColumn("Remaining"),
+                       data.Select(e => e.Duration.ToString("N3")).ToColumn("Duration"),
+                       data.Select(e => e.StackCount.ToString()).ToColumn("Stacks"),
+                       data.Select(this.GetFlags).ToColumn("Flags"),
+                   };
         }
 
         private string GetFlags(Modifier modifier)

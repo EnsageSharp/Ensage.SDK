@@ -304,6 +304,7 @@
     <Compile Include="Abilities\RangedAbility.cs" />
     <Compile Include="Abilities\npc_dota_hero_pudge\pudge_meat_hook.cs" />
     <Compile Include="Extensions\EnumerableExtensions.cs" />
+    <Compile Include="Extensions\TableExtensions.cs" />
     <Compile Include="Geometry\MEC.cs" />
     <Compile Include="Handlers\Weak\IExecuteWithObject.cs" />
     <Compile Include="Handlers\Weak\IExecuteWithObjectAndResult.cs" />

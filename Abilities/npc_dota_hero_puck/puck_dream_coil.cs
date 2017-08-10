@@ -16,6 +16,14 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_puck
 
         public string TargetModifierName { get; } = "modifier_puck_coiled";
 
+        public override float Radius
+        {
+            get
+            {
+                return this.Ability.GetAbilitySpecialData("coil_radius");
+            }
+        }
+
         protected override float RawDamage
         {
             get

@@ -13,6 +13,30 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_abaddon
         {
         }
 
+        public override bool CanBeCasted
+        {
+            get
+            {
+                if (!this.IsReady)
+                {
+                    return false;
+                }
+
+                var owner = this.Owner;
+                if (owner.IsMuted() || owner.IsSilenced())
+                {
+                    return false;
+                }
+
+                if ((Game.RawGameTime - this.LastCastAttempt) < 0.1f)
+                {
+                    return false;
+                }
+
+                return true;
+            }
+        }
+
         public string ModifierName { get; } = "modifier_abaddon_borrowed_time";
 
         public float Radius

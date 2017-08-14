@@ -29,7 +29,7 @@ namespace Ensage.SDK.Abilities
         {
             get
             {
-                if (!base.CanBeCasted)
+                if (!this.IsReady)
                 {
                     return false;
                 }

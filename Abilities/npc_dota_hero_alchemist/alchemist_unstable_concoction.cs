@@ -60,9 +60,6 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_alchemist
 
         public alchemist_unstable_concoction_throw ThrowAbility { get; }
 
-        [Import(typeof(AbilityFactory))]
-        private Lazy<AbilityFactory> AbilityFactory { get; set; }
-
         public float GetDamage(float concotionDuration, params Unit[] targets)
         {
             var minDamage = this.Ability.GetAbilitySpecialData("min_damage");

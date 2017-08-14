@@ -107,16 +107,6 @@ namespace Ensage.SDK.Renderer.DX9
             this.line.Width = width;
             this.line.Begin();
 
-            /*
-             
-            |-----------|
-            |           |
-            |           |
-            |           |
-            |           |
-            |-----------|
-
-             */
             try
             {
                 this.line.Draw(

@@ -14,7 +14,7 @@ namespace Ensage.SDK.Helpers
             this.Name = name;
         }
 
-        public IReadOnlyList<TableColumn> Columns { get; protected set; } = new TableColumn[0];
+        public IReadOnlyList<TableColumn> Columns { get; set; } = new TableColumn[0];
 
         public bool HasEntries
         {
@@ -47,6 +47,6 @@ namespace Ensage.SDK.Helpers
             }
         }
 
-        internal abstract void OnUpdate();
+        public abstract IReadOnlyList<TableColumn> OnUpdate();
     }
 }

@@ -98,6 +98,18 @@ namespace Ensage.SDK.Extensions
             }
         }
 
+        [CanBeNull]
+        public static Modifier GetModifierByName(this Unit unit, string name)
+        {
+            return unit.Modifiers.FirstOrDefault(x => x.Name == name);
+        }
+
+        [CanBeNull]
+        public static Modifier GetModifierByTextureName(this Unit unit, string name)
+        {
+            return unit.Modifiers.FirstOrDefault(x => x.TextureName == name);
+        }
+
         public static float AttackRange(this Unit unit, Unit target = null)
         {
             var result = unit.AttackRange + unit.HullRadius;

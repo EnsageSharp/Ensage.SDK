@@ -472,9 +472,11 @@ namespace Ensage.SDK.Extensions
         public static float GetSpellAmplification(this Unit source)
         {
             var spellAmp = 0.0f;
-            if (source is Hero)
+
+            var hero = source as Hero;
+            if (hero != null)
             {
-                spellAmp += ((Hero)source).TotalIntelligence / 14.0f / 100.0f;
+                spellAmp += hero.TotalIntelligence / 14.0f / 100.0f;
             }
 
             var aether = source.GetItemById(AbilityId.item_aether_lens);
@@ -807,7 +809,7 @@ namespace Ensage.SDK.Extensions
                 return 0;
             }
 
-            return (0.03f / unit.TurnRate(unit is Hero)) * angle;
+            return (0.03f / unit.TurnRate()) * angle;
         }
 
         public static Vector2 Vector2FromPolarAngle(this Unit unit, float delta = 0f, float radial = 1f)

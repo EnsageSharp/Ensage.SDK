@@ -106,21 +106,24 @@ namespace Ensage.SDK.Renderer.Particle
         }
 
         /// <summary>
-        ///     Draws a red line from unit to endPosition
+        ///     Draws a line from unit to endPosition
         /// </summary>
         /// <param name="unit"></param>
         /// <param name="id"></param>
         /// <param name="endPosition"></param>
-        public void DrawDangerLine(Unit unit, string id, Vector3 endPosition)
+        /// <param name="color"></param>
+        public void DrawDangerLine(Unit unit, string id, Vector3 endPosition, Color? color = null)
         {
             this.AddOrUpdate(
                 unit,
                 id,
-                "particles/ui_mouseactions/range_finder_tower_line.vpcf",
+                "materials/ensage_ui/particles/target_d.vpcf",
                 ParticleAttachment.AbsOriginFollow,
                 false,
+                5,
+                color ?? Color.Red,
                 6,
-                true,
+                new Vector3(255), // alpha
                 2,
                 unit.Position,
                 7,
@@ -155,21 +158,24 @@ namespace Ensage.SDK.Renderer.Particle
         }
 
         /// <summary>
-        ///     Draws a red line from unit to endPosition with a red circle
+        ///     Draws a line from unit to endPosition with a circle
         /// </summary>
         /// <param name="unit"></param>
         /// <param name="id"></param>
         /// <param name="endPosition"></param>
-        public void DrawTargetLine(Unit unit, string id, Vector3 endPosition)
+        /// <param name="color"></param>
+        public void DrawTargetLine(Unit unit, string id, Vector3 endPosition, Color? color = null)
         {
             this.AddOrUpdate(
                 unit,
                 id,
-                "particles/ui_mouseactions/range_finder_tower_aoe.vpcf",
+                "materials/ensage_ui/particles/target.vpcf",
                 ParticleAttachment.AbsOriginFollow,
                 false,
+                5,
+                color ?? Color.Red,
                 6,
-                true,
+                new Vector3(255), // alpha
                 2,
                 unit.Position,
                 7,

@@ -14,13 +14,13 @@ namespace Ensage.SDK.Renderer.Particle
 
         void DrawCircle(Vector3 center, string id, float range, Color color);
 
-        void DrawDangerLine(Unit unit, string id, Vector3 endPosition);
+        void DrawDangerLine(Unit unit, string id, Vector3 endPosition, Color? color = null);
 
         void DrawLine(Unit unit, string id, Vector3 endPosition, bool red = true);
 
         void DrawRange(Unit unit, string id, float range, Color color);
 
-        void DrawTargetLine(Unit unit, string id, Vector3 endPosition);
+        void DrawTargetLine(Unit unit, string id, Vector3 endPosition, Color? color = null);
 
         bool HasParticle(string name);
 

@@ -590,6 +590,19 @@ namespace Ensage.SDK.Extensions
         }
 
         /// <summary>
+        ///     returns true if source is directly facing to pos
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="pos"></param>
+        /// <returns></returns>
+        public static bool IsDirectlyFacing(this Unit source, Vector3 pos)
+        {
+            var vector1 = pos - source.NetworkPosition;
+            var diff = Math.Abs(Math.Atan2(vector1.Y, vector1.X) - source.RotationRad);
+            return diff < 0.025f;
+        }
+
+        /// <summary>
         ///     returns true if source is directly facing to target
         /// </summary>
         /// <param name="source"></param>
@@ -597,9 +610,7 @@ namespace Ensage.SDK.Extensions
         /// <returns></returns>
         public static bool IsDirectlyFacing(this Unit source, Unit target)
         {
-            var vector1 = target.NetworkPosition - source.NetworkPosition;
-            var diff = Math.Abs(Math.Atan2(vector1.Y, vector1.X) - source.RotationRad);
-            return diff < 0.025f;
+            return source.IsDirectlyFacing(target.NetworkPosition);
         }
 
         public static bool IsDisarmed(this Unit unit)

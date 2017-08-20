@@ -157,12 +157,12 @@ namespace Ensage.SDK.TargetSelector.Modes
                 if (speed > 0)
                 {
                     var distance = Math.Max(0.0f, this.Owner.Distance2D(target) - this.Owner.GetAttackRange());
-                    extraMoveTime = (distance / speed) + 0.1f;
+                    extraMoveTime = distance / speed;
                 }
             }
 
-            return this.Owner.GetAttackDamage(target, true) >
-                   this.HealthPrediction.GetPrediction(target, (this.Owner.GetAutoAttackArrivalTime(target) + (Game.Ping / 2000f) + extraMoveTime) - 0.15f);
+            return this.Owner.GetAttackDamage(target, true)
+                   > this.HealthPrediction.GetPrediction(target, (this.Owner.GetAutoAttackArrivalTime(target) + (Game.Ping / 2000f) + extraMoveTime) - 0.05f);
         }
 
         private bool IsValid(Unit target, bool myTeam = false)

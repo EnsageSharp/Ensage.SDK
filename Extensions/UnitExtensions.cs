@@ -386,7 +386,7 @@ namespace Ensage.SDK.Extensions
                 mult *= 2.50f;
             }
 
-            if (target.IsNeutral || target is Creep)
+            if (target.IsNeutral || target is Creep && source.IsEnemy(target))
             {
                 var isMelee = source.IsMelee;
 

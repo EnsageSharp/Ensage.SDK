@@ -53,7 +53,7 @@ namespace Ensage.SDK.Prediction
             foreach (var pair in this.CreepStatuses.Where(e => e.Value.IsValid && e.Value.Team != team && e.Value.Target?.Handle == handle))
             {
                 var entry = pair.Value;
-                var damage = entry.Source.GetAttackDamage(unit);
+                var damage = entry.Source.GetAttackDamage(unit, true);
 
                 float attackHitTime;
 
@@ -72,6 +72,9 @@ namespace Ensage.SDK.Prediction
                     // ranged creeps
                     attackHitTime = (entry.LastAttackAnimationTime - entry.TimeBetweenAttacks) + entry.GetAutoAttackArrivalTime(unit);
                 }
+
+                // delete next line and improve prediction if Stop() will be used to cancel auto attack :broscience:
+                attackHitTime -= 0.05f;
 
                 while (attackHitTime <= untilTime)
                 {

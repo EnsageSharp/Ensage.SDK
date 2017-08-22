@@ -40,7 +40,7 @@ namespace Ensage.SDK.Prediction
             this.PredictionSkillshotType = type;
             this.AreaOfEffect = areaOfEffect;
             this.AreaOfEffectHitMainTarget = areaOfEffectHitMainTarget;
-            this.AreaOfEffectTargets = aoeTargets ?? (areaOfEffect ? target.GetUnitsInRange<Hero>(range + (radius / 2)).ToArray() : new Unit[0]);
+            this.AreaOfEffectTargets = aoeTargets ?? (areaOfEffect ? target.GetEnemiesInRange<Hero>(range + (radius / 2)).ToArray() : new Unit[0]);
         }
 
         public PredictionInput(Unit owner, Unit target, float delay, float speed, float range, float radius)

@@ -12,7 +12,7 @@ namespace Ensage.SDK.Prediction
 
     public class PredictionOutput
     {
-        public IReadOnlyList<PredictionOutput> AoeTargetsHit { get; set; }
+        public IReadOnlyList<PredictionOutput> AoeTargetsHit { get; set; } = new List<PredictionOutput>();
 
         public float ArrivalTime { get; set; }
 

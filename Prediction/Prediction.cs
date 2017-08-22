@@ -158,14 +158,8 @@ namespace Ensage.SDK.Prediction
         {
             var targets = new List<PredictionOutput>();
 
-            // main target
-            output.AoeTargetsHit = new List<PredictionOutput>
-                                   {
-                                       output
-                                   };
-            targets.Add(output);
-
-            foreach (var target in input.AreaOfEffectTargets)
+            // aoe targets
+            foreach (var target in input.AreaOfEffectTargets.Where(e => e.Handle != output.Unit.Handle))
             {
                 var targetPrediction = this.GetSimplePrediction(input.WithTarget(target));
 
@@ -181,6 +175,9 @@ namespace Ensage.SDK.Prediction
 
                     if (input.AreaOfEffectHitMainTarget)
                     {
+                        // main target
+                        targets.Insert(0, output);
+
                         while (targets.Count > 1)
                         {
                             var mecResult = MEC.GetMec(targets.Select((target) => target.UnitPosition.ToVector2()).ToList());

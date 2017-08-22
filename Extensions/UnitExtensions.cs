@@ -10,6 +10,7 @@ namespace Ensage.SDK.Extensions
     using System.Reflection;
 
     using Ensage.SDK.Abilities;
+    using Ensage.SDK.Helpers;
 
     using log4net;
 
@@ -20,66 +21,69 @@ namespace Ensage.SDK.Extensions
 
     public static class UnitExtensions
     {
-        private static readonly HashSet<string> ChannelAnimations = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
-                                                                    {
-                                                                        "death_ward_anim",
-                                                                        "powershot_cast_anim",
-                                                                        "rearm1_anim",
-                                                                        "warlock_cast3_upheaval",
-                                                                        "warlock_cast3_upheaval_channel_anim",
-                                                                        "cast_channel_shackles_anim",
-                                                                        "channel_shackles",
-                                                                        "sand_king_epicast_anim",
-                                                                        "cast4_tricks_trade",
-                                                                        "life drain_anim",
-                                                                        "pudge_dismember_start",
-                                                                        "pudge_dismember_mid_anim",
-                                                                        "cast1_FortunesEnd_anim_anim",
-                                                                        "cast04_spring",
-                                                                        "Illuminate_anim",
-                                                                        "cast1_echo_stomp_anim",
-                                                                        "cast4_black_hole_anim",
-                                                                        "freezing_field_anim_10s",
-                                                                        "fiends_grip_cast_anim",
-                                                                        "fiends_grip_loop_anim",
-                                                                        "drain_anim"
-                                                                    };
+        private static readonly HashSet<string> ChannelAnimations =
+            new HashSet<string>(StringComparer.OrdinalIgnoreCase)
+            {
+                "death_ward_anim",
+                "powershot_cast_anim",
+                "rearm1_anim",
+                "warlock_cast3_upheaval",
+                "warlock_cast3_upheaval_channel_anim",
+                "cast_channel_shackles_anim",
+                "channel_shackles",
+                "sand_king_epicast_anim",
+                "cast4_tricks_trade",
+                "life drain_anim",
+                "pudge_dismember_start",
+                "pudge_dismember_mid_anim",
+                "cast1_FortunesEnd_anim_anim",
+                "cast04_spring",
+                "Illuminate_anim",
+                "cast1_echo_stomp_anim",
+                "cast4_black_hole_anim",
+                "freezing_field_anim_10s",
+                "fiends_grip_cast_anim",
+                "fiends_grip_loop_anim",
+                "drain_anim"
+            };
 
-        private static readonly HashSet<string> DisableModifiers = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
-                                                                   {
-                                                                       "modifier_shadow_demon_disruption",
-                                                                       "modifier_obsidian_destroyer_astral_imprisonment_prison",
-                                                                       "modifier_eul_cyclone",
-                                                                       "modifier_invoker_tornado",
-                                                                       "modifier_bane_nightmare",
-                                                                       "modifier_shadow_shaman_shackles",
-                                                                       "modifier_crystal_maiden_frostbite",
-                                                                       "modifier_ember_spirit_searing_chains",
-                                                                       "modifier_axe_berserkers_call",
-                                                                       "modifier_lone_druid_spirit_bear_entangle_effect",
-                                                                       "modifier_meepo_earthbind",
-                                                                       "modifier_naga_siren_ensnare",
-                                                                       "modifier_storm_spirit_electric_vortex_pull",
-                                                                       "modifier_treant_overgrowth",
-                                                                       "modifier_cyclone",
-                                                                       "modifier_sheepstick_debuff",
-                                                                       "modifier_shadow_shaman_voodoo",
-                                                                       "modifier_lion_voodoo",
-                                                                       "modifier_sheepstick",
-                                                                       "modifier_brewmaster_storm_cyclone",
-                                                                       "modifier_puck_phase_shift",
-                                                                       "modifier_dark_troll_warlord_ensnare",
-                                                                       "modifier_invoker_deafening_blast_knockback",
-                                                                       "modifier_pudge_meat_hook"
-                                                                   };
+        private static readonly HashSet<string> DisableModifiers =
+            new HashSet<string>(StringComparer.OrdinalIgnoreCase)
+            {
+                "modifier_shadow_demon_disruption",
+                "modifier_obsidian_destroyer_astral_imprisonment_prison",
+                "modifier_eul_cyclone",
+                "modifier_invoker_tornado",
+                "modifier_bane_nightmare",
+                "modifier_shadow_shaman_shackles",
+                "modifier_crystal_maiden_frostbite",
+                "modifier_ember_spirit_searing_chains",
+                "modifier_axe_berserkers_call",
+                "modifier_lone_druid_spirit_bear_entangle_effect",
+                "modifier_meepo_earthbind",
+                "modifier_naga_siren_ensnare",
+                "modifier_storm_spirit_electric_vortex_pull",
+                "modifier_treant_overgrowth",
+                "modifier_cyclone",
+                "modifier_sheepstick_debuff",
+                "modifier_shadow_shaman_voodoo",
+                "modifier_lion_voodoo",
+                "modifier_sheepstick",
+                "modifier_brewmaster_storm_cyclone",
+                "modifier_puck_phase_shift",
+                "modifier_dark_troll_warlord_ensnare",
+                "modifier_invoker_deafening_blast_knockback",
+                "modifier_pudge_meat_hook"
+            };
 
-        private static readonly HashSet<string> EtherealModifiers = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
-                                                                    {
-                                                                        "modifier_ghost_state",
-                                                                        "modifier_item_ethereal_blade_ethereal",
-                                                                        "modifier_pugna_decrepify",
-                                                                        "modifier_necrolyte_sadist_active"
-                                                                    };
+        private static readonly HashSet<string> EtherealModifiers =
+            new HashSet<string>(StringComparer.OrdinalIgnoreCase)
+            {
+                "modifier_ghost_state",
+                "modifier_item_ethereal_blade_ethereal",
+                "modifier_pugna_decrepify",
+                "modifier_necrolyte_sadist_active"
+            };
 
         private static readonly ILog Log = AssemblyLogs.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
@@ -552,7 +556,7 @@ namespace Ensage.SDK.Extensions
 
         public static bool IsAttackImmune(this Unit unit)
         {
-            return unit.UnitState.HasFlag(UnitState.AttackImmune);
+            return (unit.UnitState & UnitState.AttackImmune) == UnitState.AttackImmune;
         }
 
         public static bool IsChannelAnimation(this Animation animation)
@@ -590,7 +594,7 @@ namespace Ensage.SDK.Extensions
 
         public static bool IsDisarmed(this Unit unit)
         {
-            return unit.UnitState.HasFlag(UnitState.Disarmed);
+            return (unit.UnitState & UnitState.Disarmed) == UnitState.Disarmed;
         }
 
         public static bool IsEnemy(this Unit unit, Entity target)
@@ -622,12 +626,12 @@ namespace Ensage.SDK.Extensions
 
         public static bool IsInvisible(this Unit unit)
         {
-            return unit.UnitState.HasFlag(UnitState.Invisible);
+            return (unit.UnitState & UnitState.Invisible) == UnitState.Invisible;
         }
 
         public static bool IsInvulnerable(this Unit unit)
         {
-            return unit.UnitState.HasFlag(UnitState.Invulnerable);
+            return (unit.UnitState & UnitState.Invulnerable) == UnitState.Invulnerable;
         }
 
         public static bool IsLinkensProtected(this Unit unit)
@@ -638,17 +642,17 @@ namespace Ensage.SDK.Extensions
 
         public static bool IsMagicImmune(this Unit unit)
         {
-            return unit.UnitState.HasFlag(UnitState.MagicImmune);
+            return (unit.UnitState & UnitState.MagicImmune) == UnitState.MagicImmune;
         }
 
         public static bool IsMuted(this Unit unit)
         {
-            return unit.UnitState.HasFlag(UnitState.Muted);
+            return (unit.UnitState & UnitState.Muted) == UnitState.Muted;
         }
 
         public static bool IsRealUnit(this Unit unit)
         {
-            return unit.UnitType != 0 && !unit.UnitState.HasFlag(UnitState.FakeAlly);
+            return unit.UnitType != 0 && (unit.UnitState & UnitState.FakeAlly) == UnitState.FakeAlly;
         }
 
         public static bool IsReflectingAbilities(this Unit unit)
@@ -669,7 +673,7 @@ namespace Ensage.SDK.Extensions
 
         public static bool IsRooted(this Unit unit)
         {
-            return unit.UnitState.HasFlag(UnitState.Rooted);
+            return (unit.UnitState & UnitState.Rooted) == UnitState.Rooted;
         }
 
         public static bool IsRotating(this Unit unit)
@@ -677,14 +681,39 @@ namespace Ensage.SDK.Extensions
             return unit.RotationDifference != 0;
         }
 
+        public static IEnumerable<TEntity> GetUnitsInRange<TEntity>(this Unit unit, float range)
+            where TEntity : Unit, new()
+        {
+            var handle = unit.Handle;
+            var pos = unit.NetworkPosition;
+            var sqrRange = range * range;
+
+            return EntityManager<TEntity>
+                .Entities.Where(e => e.Handle != handle && e.IsVisible && e.IsAlive && pos.DistanceSquared(e.NetworkPosition) < sqrRange)
+                .OrderBy(e => pos.DistanceSquared(e.NetworkPosition));
+        }
+
+        public static IEnumerable<TEntity> GetEnemiesInRange<TEntity>(this Unit unit, float range)
+            where TEntity : Unit, new()
+        {
+            var handle = unit.Handle;
+            var team = unit.Team;
+            var pos = unit.NetworkPosition;
+            var sqrRange = range * range;
+
+            return EntityManager<TEntity>
+                .Entities.Where(e => e.Handle != handle && e.IsVisible && e.IsAlive && e.Team != team && pos.DistanceSquared(e.NetworkPosition) < sqrRange)
+                .OrderBy(e => pos.DistanceSquared(e.NetworkPosition));
+        }
+
         public static bool IsSilenced(this Unit unit)
         {
-            return unit.UnitState.HasFlag(UnitState.Silenced);
+            return (unit.UnitState & UnitState.Silenced) == UnitState.Silenced;
         }
 
         public static bool IsStunned(this Unit unit)
         {
-            return unit.UnitState.HasFlag(UnitState.Stunned);
+            return (unit.UnitState & UnitState.Stunned) == UnitState.Stunned;
         }
 
         public static bool IsValidOrbwalkingTarget(this Unit attacker, Unit target, float bonusAttackRange = 0.0f)

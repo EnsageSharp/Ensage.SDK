@@ -5,7 +5,9 @@
 namespace Ensage.SDK.Prediction
 {
     using System.Collections.Generic;
+    using System.Linq;
 
+    using Ensage.SDK.Extensions;
     using Ensage.SDK.Prediction.Collision;
 
     using PlaySharp.Toolkit.Helper.Annotations;
@@ -38,7 +40,9 @@ namespace Ensage.SDK.Prediction
             this.PredictionSkillshotType = type;
             this.AreaOfEffect = areaOfEffect;
             this.AreaOfEffectHitMainTarget = areaOfEffectHitMainTarget;
-            this.AreaOfEffectTargets = aoeTargets ?? new Unit[0];
+            this.AreaOfEffectTargets = aoeTargets ?? (areaOfEffect ? target.GetUnitsInRange<Hero>(range + (radius / 2)).ToArray() : new Unit[0]);
+
+            target.GetUnitsInRange<Hero>(range);
         }
 
         public PredictionInput(Unit owner, Unit target, float delay, float speed, float range, float radius)

@@ -255,23 +255,6 @@ namespace Ensage.SDK.Geometry
             }
         }
 
-        public class Cone : Rectangle
-        {
-            public float EndWidth;
-
-            public Cone(Vector3 start, Vector3 end, float startWidth, float endWidth)
-                : base(start, end, startWidth)
-            {
-                this.EndWidth = endWidth;
-            }
-
-            public Cone(Vector2 start, Vector2 end, float startWidth, float endWidth)
-                : base(start, end, startWidth)
-            {
-                this.EndWidth = endWidth;
-            }
-        }
-
         /// <summary>
         ///     Represents a line polygon.
         /// </summary>
@@ -587,10 +570,10 @@ namespace Ensage.SDK.Geometry
                 var line = Vector2.Subtract(point2, point1);
 
                 var newline = new Vector2
-                              {
-                                  X = (float)((line.X * Math.Cos(angle)) - (line.Y * Math.Sin(angle))),
-                                  Y = (float)((line.X * Math.Sin(angle)) + (line.Y * Math.Cos(angle)))
-                              };
+                                  {
+                                      X = (float)((line.X * Math.Cos(angle)) - (line.Y * Math.Sin(angle))),
+                                      Y = (float)((line.X * Math.Sin(angle)) + (line.Y * Math.Cos(angle)))
+                                  };
 
                 return Vector2.Add(newline, point1);
             }
@@ -610,6 +593,102 @@ namespace Ensage.SDK.Geometry
                     var cDirection = side1.Rotated((i * this.Angle) / this._quality).Normalized();
                     this.Points.Add(new Vector2(this.Center.X + (outRadius * cDirection.X), this.Center.Y + (outRadius * cDirection.Y)));
                 }
+            }
+        }
+
+        /// <summary>
+        ///     Represents a Trapezoid polygon.
+        /// </summary>
+        public class Trapezoid : Polygon
+        {
+            /// <summary>
+            ///     The end
+            /// </summary>
+            public Vector2 End;
+
+            /// <summary>
+            ///     The end width
+            /// </summary>
+            public float endWidth;
+
+            /// <summary>
+            ///     The start
+            /// </summary>
+            public Vector2 Start;
+
+            /// <summary>
+            ///     The start width
+            ///     <summary>
+            public float startWidth;
+
+            /// <summary>
+            ///     Initializes a new instance of the <see cref="Polygon.Trapezoid" /> class.
+            /// </summary>
+            /// <param name="start">The start.</param>
+            /// <param name="end">The end.</param>
+            /// <param name="t_width">The width of the end.</param>
+            /// <param name="b_width">The width of the start.</param>
+            public Trapezoid(Vector3 start, Vector3 end, float startWidth, float endWidth)
+                : this(start.To2D(), end.To2D(), startWidth, endWidth)
+            {
+            }
+
+            /// <summary>
+            ///     Initializes a new instance of the <see cref="Polygon.Trapezoid" /> class.
+            /// </summary>
+            /// <param name="start">The start.</param>
+            /// <param name="end">The end.</param>
+            /// <param name="t_width">The width of the end.</param>
+            /// <param name="b_width">The width of the start.</param>
+            public Trapezoid(Vector2 start, Vector2 end, float startWidth, float endWidth)
+            {
+                this.Start = start;
+                this.End = end;
+                this.endWidth = endWidth;
+                this.startWidth = startWidth;
+                this.UpdatePolygon();
+            }
+
+            /// <summary>
+            ///     Gets the direction.
+            /// </summary>
+            /// <value>
+            ///     The direction.
+            /// </value>
+            public Vector2 Direction
+            {
+                get
+                {
+                    return (this.End - this.Start).Normalized();
+                }
+            }
+
+            /// <summary>
+            ///     Gets the perpendicular.
+            /// </summary>
+            /// <value>
+            ///     The perpendicular.
+            /// </value>
+            public Vector2 Perpendicular
+            {
+                get
+                {
+                    return this.Direction.Perpendicular();
+                }
+            }
+
+            /// <summary>
+            ///     Updates the polygon.
+            /// </summary>
+            /// <param name="offset">The offset.</param>
+            /// <param name="overrideWidth">Width of the override.</param>
+            public void UpdatePolygon(int offset = 0, float overrideWidth = -1)
+            {
+                this.Points.Clear();
+                this.Points.Add((this.Start + ((overrideWidth > 0 ? overrideWidth : this.startWidth + offset) * this.Perpendicular)) - (offset * this.Direction));
+                this.Points.Add(this.Start - ((overrideWidth > 0 ? overrideWidth : this.startWidth + offset) * this.Perpendicular) - (offset * this.Direction));
+                this.Points.Add((this.End - ((overrideWidth > 0 ? overrideWidth : this.endWidth + offset) * this.Perpendicular)) + (offset * this.Direction));
+                this.Points.Add(this.End + ((overrideWidth > 0 ? overrideWidth : this.endWidth + offset) * this.Perpendicular) + (offset * this.Direction));
             }
         }
     }

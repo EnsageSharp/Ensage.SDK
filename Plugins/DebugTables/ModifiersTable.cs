@@ -32,7 +32,7 @@ namespace Ensage.SDK.Plugins.DebugTables
             return new[]
                    {
                        data.Select(e => e.Name).ToColumn("Name"),
-                       data.Select(e => e.Name).ToColumn("Texture"),
+                       data.Select(e => e.TextureName).ToColumn("Texture"),
                        data.Select(e => e.RemainingTime.ToString("N3")).ToColumn("Remaining"),
                        data.Select(e => e.Duration.ToString("N3")).ToColumn("Duration"),
                        data.Select(e => e.StackCount.ToString()).ToColumn("Stacks"),

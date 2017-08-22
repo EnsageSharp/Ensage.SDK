@@ -195,6 +195,10 @@
     <Compile Include="Abilities\npc_dota_hero_axe\axe_berserkers_call.cs" />
     <Compile Include="Abilities\npc_dota_hero_axe\axe_counter_helix.cs" />
     <Compile Include="Abilities\npc_dota_hero_axe\axe_culling_blade.cs" />
+    <Compile Include="Abilities\npc_dota_hero_broodmother\broodmother_incapacitating_bite.cs" />
+    <Compile Include="Abilities\npc_dota_hero_broodmother\broodmother_insatiable_hunger.cs" />
+    <Compile Include="Abilities\npc_dota_hero_broodmother\broodmother_spawn_spiderlings.cs" />
+    <Compile Include="Abilities\npc_dota_hero_broodmother\broodmother_spin_web.cs" />
     <Compile Include="Abilities\npc_dota_hero_clinkz\clinkz_death_pact.cs" />
     <Compile Include="Abilities\npc_dota_hero_clinkz\clinkz_searing_arrows.cs" />
     <Compile Include="Abilities\npc_dota_hero_clinkz\clinkz_strafe.cs" />

@@ -206,7 +206,11 @@ namespace Ensage.SDK.Helpers
         {
             var result = this.Source.GetProjectileArrivalTime(target, this.AttackPoint, this.MissileSpeed, !this.IsTower);
 
-            if (!this.IsTower && !this.IsSiege)
+            if (this.IsTower)
+            {
+                result += 0.15f;
+            }
+            else
             {
                 result -= 0.10f;
             }

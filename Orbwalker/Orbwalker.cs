@@ -307,6 +307,11 @@ namespace Ensage.SDK.Orbwalker
 
         private void OnUpdateDrawings()
         {
+            if (!this.Owner.IsValid)
+            {
+                return;
+            }
+
             if (this.Settings.DrawRange)
             {
                 this.Context.Particle.DrawRange(this.Owner, "AttackRange", this.Owner.AttackRange(this.Owner), Color.LightGreen);

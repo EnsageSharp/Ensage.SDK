@@ -102,6 +102,18 @@ namespace Ensage.SDK.Extensions
             }
         }
 
+        [CanBeNull]
+        public static Modifier GetModifierByName(this Unit unit, string name)
+        {
+            return unit.Modifiers.FirstOrDefault(x => x.Name == name);
+        }
+
+        [CanBeNull]
+        public static Modifier GetModifierByTextureName(this Unit unit, string name)
+        {
+            return unit.Modifiers.FirstOrDefault(x => x.TextureName == name);
+        }
+
         public static float AttackRange(this Unit unit, Unit target = null)
         {
             var result = unit.AttackRange + unit.HullRadius;
@@ -378,7 +390,7 @@ namespace Ensage.SDK.Extensions
                 mult *= 2.50f;
             }
 
-            if (target.IsNeutral || target is Creep)
+            if (target.IsNeutral || target is Creep && source.IsEnemy(target))
             {
                 var isMelee = source.IsMelee;
 
@@ -464,9 +476,11 @@ namespace Ensage.SDK.Extensions
         public static float GetSpellAmplification(this Unit source)
         {
             var spellAmp = 0.0f;
-            if (source is Hero)
+
+            var hero = source as Hero;
+            if (hero != null)
             {
-                spellAmp += ((Hero)source).TotalIntelligence / 14.0f / 100.0f;
+                spellAmp += hero.TotalIntelligence / 14.0f / 100.0f;
             }
 
             var aether = source.GetItemById(AbilityId.item_aether_lens);
@@ -580,6 +594,19 @@ namespace Ensage.SDK.Extensions
         }
 
         /// <summary>
+        ///     returns true if source is directly facing to pos
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="pos"></param>
+        /// <returns></returns>
+        public static bool IsDirectlyFacing(this Unit source, Vector3 pos)
+        {
+            var vector1 = pos - source.NetworkPosition;
+            var diff = Math.Abs(Math.Atan2(vector1.Y, vector1.X) - source.RotationRad);
+            return diff < 0.025f;
+        }
+
+        /// <summary>
         ///     returns true if source is directly facing to target
         /// </summary>
         /// <param name="source"></param>
@@ -587,9 +614,7 @@ namespace Ensage.SDK.Extensions
         /// <returns></returns>
         public static bool IsDirectlyFacing(this Unit source, Unit target)
         {
-            var vector1 = target.NetworkPosition - source.NetworkPosition;
-            var diff = Math.Abs(Math.Atan2(vector1.Y, vector1.X) - source.RotationRad);
-            return diff < 0.025f;
+            return source.IsDirectlyFacing(target.NetworkPosition);
         }
 
         public static bool IsDisarmed(this Unit unit)
@@ -824,7 +849,7 @@ namespace Ensage.SDK.Extensions
                 return 0;
             }
 
-            return (0.03f / unit.TurnRate(unit is Hero)) * angle;
+            return (0.03f / unit.TurnRate()) * angle;
         }
 
         public static Vector2 Vector2FromPolarAngle(this Unit unit, float delta = 0f, float radial = 1f)

@@ -27,8 +27,8 @@ namespace Ensage.SDK.Prediction
             float radius,
             PredictionSkillshotType type,
             bool areaOfEffect = false,
-            bool areaOfEffectHitMainTarget = true,
-            IReadOnlyList<Unit> aoeTargets = null)
+            IReadOnlyList<Unit> aoeTargets = null,
+            bool areaOfEffectHitMainTarget = true)
         {
             this.Owner = owner;
             this.Target = target;
@@ -41,8 +41,6 @@ namespace Ensage.SDK.Prediction
             this.AreaOfEffect = areaOfEffect;
             this.AreaOfEffectHitMainTarget = areaOfEffectHitMainTarget;
             this.AreaOfEffectTargets = aoeTargets ?? (areaOfEffect ? target.GetUnitsInRange<Hero>(range + (radius / 2)).ToArray() : new Unit[0]);
-
-            target.GetUnitsInRange<Hero>(range);
         }
 
         public PredictionInput(Unit owner, Unit target, float delay, float speed, float range, float radius)

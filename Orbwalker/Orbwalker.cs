@@ -302,6 +302,14 @@ namespace Ensage.SDK.Orbwalker
 
                     this.LastAttackTime = Game.RawGameTime - this.PingTime;
                     break;
+                case NetworkActivity.Idle:
+                case NetworkActivity.IdleRare:
+                case NetworkActivity.Move:
+                    if (!this.CanMove(Game.RawGameTime + 0.05f))
+                    {
+                        this.LastAttackTime = 0;
+                    }
+                    break;
             }
         }
 

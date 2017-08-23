@@ -16,7 +16,7 @@ namespace Ensage.SDK.Renderer.DX11
     using Color = System.Drawing.Color;
 
     [ExportRenderer(RenderMode.Dx11)]
-    public class D3D11Renderer : IRenderer
+    public sealed class D3D11Renderer : IRenderer
     {
         private readonly BrushCache brushCache;
 

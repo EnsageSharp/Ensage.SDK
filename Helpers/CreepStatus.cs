@@ -8,7 +8,7 @@ namespace Ensage.SDK.Helpers
 
     using Ensage.SDK.Extensions;
 
-    internal class CreepStatus
+    internal sealed class CreepStatus
     {
         private float _attackPoint;
 

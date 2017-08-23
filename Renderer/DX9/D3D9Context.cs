@@ -11,7 +11,7 @@ namespace Ensage.SDK.Renderer.DX9
     using SharpDX.Direct3D9;
 
     [Export(typeof(ID3D9Context))]
-    public class D3D9Context : ID3D9Context, IDisposable
+    public sealed class D3D9Context : ID3D9Context, IDisposable
     {
         public D3D9Context()
         {

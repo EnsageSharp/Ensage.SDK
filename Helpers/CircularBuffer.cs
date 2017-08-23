@@ -8,7 +8,7 @@ namespace Ensage.SDK.Helpers
     using System.Collections;
     using System.Collections.Generic;
 
-    public class CircularBuffer<T> : IEnumerable<T>
+    public sealed class CircularBuffer<T> : IEnumerable<T>
     {
         private readonly T[] values;
 

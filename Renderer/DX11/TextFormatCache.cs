@@ -15,7 +15,7 @@ namespace Ensage.SDK.Renderer.DX11
     using SharpDX.DirectWrite;
 
     [Export(typeof(TextFormatCache))]
-    public class TextFormatCache : Dictionary<string, TextFormat>
+    public sealed class TextFormatCache : Dictionary<string, TextFormat>
     {
         private static readonly ILog Log = AssemblyLogs.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 

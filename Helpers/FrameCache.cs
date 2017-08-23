@@ -8,7 +8,7 @@ namespace Ensage.SDK.Helpers
 
     using PlaySharp.Toolkit.Helper.Annotations;
 
-    public class FrameCache<TValue> : IDisposable
+    public sealed class FrameCache<TValue> : IDisposable
     {
         private bool disposed;
 
@@ -46,7 +46,7 @@ namespace Ensage.SDK.Helpers
             GC.SuppressFinalize(this);
         }
 
-        protected virtual void Dispose(bool disposing)
+        private void Dispose(bool disposing)
         {
             if (this.disposed)
             {

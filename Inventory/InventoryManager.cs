@@ -24,7 +24,7 @@ namespace Ensage.SDK.Inventory
     using Inventory = Ensage.Inventory;
 
     [ExportInventoryManager]
-    public class InventoryManager : ControllableService, IInventoryManager
+    public sealed class InventoryManager : ControllableService, IInventoryManager
     {
         private static readonly ILog Log = AssemblyLogs.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 

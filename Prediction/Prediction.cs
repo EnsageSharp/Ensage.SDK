@@ -18,7 +18,7 @@ namespace Ensage.SDK.Prediction
     using SharpDX;
 
     [ExportPrediction("SDK")]
-    public class Prediction : IPrediction
+    public sealed class Prediction : IPrediction
     {
         [ImportingConstructor]
         public Prediction()

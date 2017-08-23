@@ -14,7 +14,7 @@ namespace Ensage.SDK.Menu
 
     using PlaySharp.Toolkit.Helper;
 
-    public class MenuFactory : IDisposable
+    public sealed class MenuFactory : IDisposable
     {
         static MenuFactory()
         {
@@ -192,7 +192,7 @@ namespace Ensage.SDK.Menu
             return menu;
         }
 
-        protected virtual void Dispose(bool disposing)
+        private void Dispose(bool disposing)
         {
             if (disposing)
             {

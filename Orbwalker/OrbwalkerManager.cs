@@ -25,7 +25,7 @@ namespace Ensage.SDK.Orbwalker
     using SharpDX;
 
     [ExportOrbwalkerManager]
-    public class OrbwalkerManager : ServiceManager<IOrbwalker, IOrbwalkerMetadata>, IOrbwalkerManager, IPartImportsSatisfiedNotification
+    public sealed class OrbwalkerManager : ServiceManager<IOrbwalker, IOrbwalkerMetadata>, IOrbwalkerManager, IPartImportsSatisfiedNotification
     {
         private static readonly ILog Log = AssemblyLogs.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 

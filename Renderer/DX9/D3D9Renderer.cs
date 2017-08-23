@@ -17,7 +17,7 @@ namespace Ensage.SDK.Renderer.DX9
     using Color = System.Drawing.Color;
 
     [ExportRenderer(RenderMode.Dx9)]
-    public class D3D9Renderer : IRenderer
+    public sealed class D3D9Renderer : IRenderer
     {
         private readonly ID3D9Context context;
 

@@ -14,7 +14,7 @@ namespace Ensage.SDK.Prediction
     using Ensage.SDK.Service;
 
     [ExportPredictionManager]
-    public class PredictionManager : ServiceManager<IPrediction, IPredictionMetadata>, IPredictionManager, IPartImportsSatisfiedNotification
+    public sealed class PredictionManager : ServiceManager<IPrediction, IPredictionMetadata>, IPredictionManager, IPartImportsSatisfiedNotification
     {
         [ImportingConstructor]
         public PredictionManager([Import] IServiceContext context)

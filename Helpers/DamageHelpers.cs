@@ -16,7 +16,7 @@ namespace Ensage.SDK.Helpers
         public static float GetDamageReduction(this Ability ability, Unit target, DamageType damageType)
         {
             // TODO: modifiers
-            if (damageType.HasFlag(DamageType.HealthRemoval))
+            if ((damageType & DamageType.HealthRemoval) == DamageType.HealthRemoval)
             {
                 return 0.0f;
             }

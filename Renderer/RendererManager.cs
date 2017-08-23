@@ -16,7 +16,7 @@ namespace Ensage.SDK.Renderer
     using Color = System.Drawing.Color;
 
     [Export(typeof(IRendererManager))]
-    public class RendererManager : IRendererManager
+    public sealed class RendererManager : IRendererManager
     {
         private readonly IRenderer active;
 

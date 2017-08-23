@@ -24,7 +24,7 @@ namespace Ensage.SDK.TargetSelector
     using SharpDX;
 
     [ExportTargetSelectorManager]
-    public class TargetSelectorManager : ServiceManager<ITargetSelector, ITargetSelectorMetadata>, ITargetSelectorManager, IPartImportsSatisfiedNotification
+    public sealed class TargetSelectorManager : ServiceManager<ITargetSelector, ITargetSelectorMetadata>, ITargetSelectorManager, IPartImportsSatisfiedNotification
     {
         private static readonly ILog Log = AssemblyLogs.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 

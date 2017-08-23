@@ -53,7 +53,7 @@ namespace Ensage.SDK.Helpers
         }
     }
 
-    public class EntityManager<T>
+    public static class EntityManager<T>
         where T : Entity, new()
     {
         private static HashSet<T> cache = new HashSet<T>();
@@ -78,11 +78,6 @@ namespace Ensage.SDK.Helpers
             {
                 return cache.Where(x => x.IsValid);
             }
-        }
-
-        public override string ToString()
-        {
-            return $"EntityManager<{typeof(T).Name}>";
         }
 
         internal static HashSet<T> GetEntities()

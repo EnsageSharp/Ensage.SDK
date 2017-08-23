@@ -9,7 +9,7 @@ namespace Ensage.SDK.Renderer.Particle
 
     using SharpDX;
 
-    public class ParticleEffectContainer : IDisposable, IEquatable<ParticleEffectContainer>
+    public sealed class ParticleEffectContainer : IDisposable, IEquatable<ParticleEffectContainer>
     {
         private bool disposed;
 
@@ -151,7 +151,7 @@ namespace Ensage.SDK.Renderer.Particle
             }
         }
 
-        protected virtual void Dispose(bool disposing)
+        private void Dispose(bool disposing)
         {
             if (this.disposed)
             {

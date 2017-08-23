@@ -12,7 +12,7 @@ namespace Ensage.SDK.Helpers
     using Ensage.SDK.Service;
 
     [Export(typeof(IAbilityDetector))]
-    public class AbilityDetector : ControllableService, IAbilityDetector
+    public sealed class AbilityDetector : ControllableService, IAbilityDetector
     {
         private readonly HashSet<DetectedAbility> abilities = new HashSet<DetectedAbility>();
 

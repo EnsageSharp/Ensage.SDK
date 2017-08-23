@@ -16,7 +16,7 @@ namespace Ensage.SDK.Renderer.DX9
     using SharpDX.Direct3D9;
 
     [Export(typeof(FontCache))]
-    public class FontCache : Dictionary<string, Font>
+    public sealed class FontCache : Dictionary<string, Font>
     {
         private static readonly ILog Log = AssemblyLogs.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 

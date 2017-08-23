@@ -23,7 +23,7 @@ namespace Ensage.SDK.Input
     [ExportInputManager]
     [SuppressMessage("ReSharper", "InconsistentNaming")]
     [SuppressMessage("ReSharper", "StyleCop.SA1310")]
-    public class InputManager : ControllableService, IInputManager
+    public sealed class InputManager : ControllableService, IInputManager
     {
         private const uint WM_KEYDOWN = 0x0100;
 

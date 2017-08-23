@@ -21,7 +21,7 @@ namespace Ensage.SDK.Renderer.DX11
     using Factory = SharpDX.Direct2D1.Factory;
 
     [Export(typeof(ID3D11Context))]
-    public class D3D11Context : ID3D11Context, IDisposable
+    public sealed class D3D11Context : ID3D11Context, IDisposable
     {
         private static readonly ILog Log = AssemblyLogs.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 

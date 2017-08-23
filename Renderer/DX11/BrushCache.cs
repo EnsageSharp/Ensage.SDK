@@ -18,7 +18,7 @@ namespace Ensage.SDK.Renderer.DX11
     using SharpDX.Mathematics.Interop;
 
     [Export(typeof(BrushCache))]
-    public class BrushCache : Dictionary<Color, SolidColorBrush>, IDisposable
+    public sealed class BrushCache : Dictionary<Color, SolidColorBrush>, IDisposable
     {
         private static readonly ILog Log = AssemblyLogs.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
@@ -63,7 +63,7 @@ namespace Ensage.SDK.Renderer.DX11
             return this.Create(color);
         }
 
-        protected virtual void Dispose(bool disposing)
+        private void Dispose(bool disposing)
         {
             if (this.disposed)
             {

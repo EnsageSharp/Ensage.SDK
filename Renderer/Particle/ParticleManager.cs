@@ -18,7 +18,7 @@ namespace Ensage.SDK.Renderer.Particle
     using SharpDX;
 
     [ExportParticleManager]
-    public class ParticleManager : IParticleManager
+    public sealed class ParticleManager : IParticleManager
     {
         private static readonly ILog Log = AssemblyLogs.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
@@ -227,7 +227,7 @@ namespace Ensage.SDK.Renderer.Particle
                 new Vector3(color.R, color.G, color.B));
         }
 
-        protected virtual void Dispose(bool disposing)
+        private void Dispose(bool disposing)
         {
             if (this.disposed)
             {

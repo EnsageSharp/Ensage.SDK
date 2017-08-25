@@ -171,30 +171,28 @@ namespace Ensage.SDK.Prediction
         private void OnAnimationChanged(Entity sender, EventArgs args)
         {
             var creep = sender as Creep;
-            var hero = sender as Hero;
-            var unit = sender as Unit;
 
-            if (creep == null && hero == null)
+            if (creep == null)
             {
                 return;
             }
 
-            if (this.Owner.Distance2D(unit) > 3000)
+            if (this.Owner.Distance2D(creep) > 3000)
             {
                 return;
             }
 
-            if (unit.IsNeutral)
+            if (creep.IsNeutral)
             {
                 return;
             }
 
-            if (!unit.Animation.Name.ToLowerInvariant().Contains("attack"))
+            if (!creep.Animation.Name.ToLowerInvariant().Contains("attack"))
             {
                 return;
             }
 
-            var creepStatus = this.GetCreepStatusEntry(unit);
+            var creepStatus = this.GetCreepStatusEntry(creep);
             creepStatus.LastAttackAnimationTime = Game.RawGameTime - (Game.Ping / 2000f);
         }
 
@@ -223,36 +221,31 @@ namespace Ensage.SDK.Prediction
 
         private void OnTrackingProjectile(TrackingProjectileEventArgs args)
         {
-            var sourceUnit = args.Projectile.Source as Unit;
-            var sourceHero = args.Projectile.Source as Hero;
             var sourceCreep = args.Projectile.Source as Creep;
             var sourceTower = args.Projectile.Source as Tower;
 
-            if (sourceUnit == null)
-            {
-                return;
-            }
-
-            if (this.Owner.Distance2D(sourceUnit) > 3000)
-            {
-                return;
-            }
-
             if (sourceCreep != null)
             {
+                if (this.Owner.Distance2D(sourceCreep) > 3000)
+                {
+                    return;
+                }
+
                 if (sourceCreep.IsNeutral)
                 {
                     return;
                 }
 
-                this.GetCreepStatusEntry(sourceCreep).Target = args.Projectile.Target as Creep;
-            }
-            else if (sourceHero != null)
-            {
-                this.GetCreepStatusEntry(sourceHero).Target = args.Projectile.Target as Creep;
+                var creepStatus = this.GetCreepStatusEntry(sourceCreep);
+                creepStatus.Target = args.Projectile.Target as Creep;
             }
             else if (sourceTower != null)
             {
+                if (this.Owner.Distance2D(sourceTower) > 3000)
+                {
+                    return;
+                }
+
                 var creepStatus = this.GetCreepStatusEntry(sourceTower);
                 creepStatus.LastAttackAnimationTime = Game.RawGameTime - creepStatus.AttackPoint - (Game.Ping / 2000f);
             }

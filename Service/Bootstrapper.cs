@@ -153,6 +153,8 @@ namespace Ensage.SDK.Service
                 Log.Debug($">> Ensage.SDK Bootstrap started");
                 Log.Debug("====================================================");
 
+                Game.UnhandledException += this.OnUnhandledException;
+
                 Log.Debug($">> Building Context for LocalHero");
                 this.Context = new EnsageServiceContext(ObjectManager.LocalHero);
 
@@ -198,6 +200,11 @@ namespace Ensage.SDK.Service
 
             UpdateManager.Unsubscribe(this.OnLoad);
             UpdateManager.BeginInvoke(this.OnBootstrap);
+        }
+
+        private void OnUnhandledException(object sender, Exception e)
+        {
+            Log.Error(e);
         }
     }
 }

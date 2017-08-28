@@ -18,6 +18,11 @@ namespace Ensage.SDK.Geometry
         /// </summary>
         public List<Vector3> Points = new List<Vector3>();
 
+        public WorldPolygon(params Vector3[] points)
+        {
+            this.Points = points.ToList();
+        }
+
         /// <summary>
         ///     Adds the specified point.
         /// </summary>

@@ -6,6 +6,9 @@ namespace Ensage.SDK.Extensions
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
+    using System.Linq;
+    using System.Reflection;
 
     public static class TypeExtensions
     {
@@ -20,6 +23,14 @@ namespace Ensage.SDK.Extensions
             }
 
             return val;
+        }
+
+        public static bool IsAssemblyDebugBuild(this Assembly assembly)
+        {
+            return assembly.GetCustomAttributes(false)
+                           .OfType<DebuggableAttribute>()
+                           .Select(da => da.IsJITTrackingEnabled)
+                           .FirstOrDefault();
         }
 
         public static bool IsNumericType(this Type type)

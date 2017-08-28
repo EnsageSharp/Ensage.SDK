@@ -10,6 +10,8 @@ namespace Ensage.SDK.Service
     using System.Linq;
     using System.Reflection;
 
+    using Ensage.SDK.Extensions;
+
     using log4net;
 
     using PlaySharp.Toolkit.Logging;
@@ -33,7 +35,7 @@ namespace Ensage.SDK.Service
             }
         }
 
-        internal static ContextContainer<IServiceContext> CreateContainer(IServiceContext context, bool disableSilentRejection = true)
+        internal static ContextContainer<IServiceContext> CreateContainer(IServiceContext context)
         {
             if (context == null)
             {
@@ -41,8 +43,9 @@ namespace Ensage.SDK.Service
             }
 
             var flags = CompositionOptions.IsThreadSafe;
-            if (disableSilentRejection)
+            if (Assembly.GetExecutingAssembly().IsAssemblyDebugBuild())
             {
+                Log.Info($"SET DisableSilentRejection");
                 flags |= CompositionOptions.DisableSilentRejection;
             }
 

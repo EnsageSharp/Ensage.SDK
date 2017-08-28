@@ -12,6 +12,7 @@ namespace Ensage.SDK.Samples
     using System.Windows.Input;
 
     using Ensage.SDK.Geometry;
+    using Ensage.SDK.Helpers;
     using Ensage.SDK.Service;
     using Ensage.SDK.Service.Metadata;
 
@@ -66,9 +67,16 @@ namespace Ensage.SDK.Samples
             this.Polygon.Add(pos);
         }
 
+        [Import]
+        public Map Map { get; set; }
+
         private void OnDraw(EventArgs args)
         {
             this.Polygon.Draw(Color.Yellow);
+
+            this.Map.Top.Draw(Color.Red);
+            this.Map.Mid.Draw(Color.Aqua);
+            this.Map.Bottom.Draw(Color.Green);
         }
 
         private void OnMouseClick(object sender, MouseEventArgs args)

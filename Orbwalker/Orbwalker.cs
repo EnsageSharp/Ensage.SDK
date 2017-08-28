@@ -31,14 +31,14 @@ namespace Ensage.SDK.Orbwalker
     {
         private static readonly ILog Log = AssemblyLogs.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        private readonly List<NetworkActivity> attackActivities = new List<NetworkActivity>
+        private readonly HashSet<NetworkActivity> attackActivities = new HashSet<NetworkActivity>
         {
             NetworkActivity.Attack,
             NetworkActivity.Attack2,
             NetworkActivity.AttackEvent
         };
 
-        private readonly List<NetworkActivity> attackCancelActivities = new List<NetworkActivity>
+        private readonly HashSet<NetworkActivity> attackCancelActivities = new HashSet<NetworkActivity>
         {
             NetworkActivity.Idle,
             NetworkActivity.IdleRare,

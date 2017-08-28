@@ -73,10 +73,6 @@ namespace Ensage.SDK.Samples
         private void OnDraw(EventArgs args)
         {
             this.Polygon.Draw(Color.Yellow);
-
-            this.Map.Top.Draw(Color.Red);
-            this.Map.Mid.Draw(Color.Aqua);
-            this.Map.Bottom.Draw(Color.Green);
         }
 
         private void OnMouseClick(object sender, MouseEventArgs args)

@@ -332,6 +332,8 @@
     <Compile Include="Handlers\TimeoutHandler.cs" />
     <Compile Include="Handlers\TraceHandler.cs" />
     <Compile Include="Handlers\InvokeHandler.cs" />
+    <Compile Include="Helpers\Metadata\ExportMapAttribute.cs" />
+    <Compile Include="Helpers\Metadata\IMapMetadata.cs" />
     <Compile Include="Helpers\Table.cs" />
     <Compile Include="Helpers\TableColumn.cs" />
     <Compile Include="Input\MouseWheelEventArgs.cs" />
@@ -514,11 +516,18 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
-    <EmbeddedResource Include="Resources\bot.json" />
-    <EmbeddedResource Include="Resources\mid.json" />
-    <EmbeddedResource Include="Resources\top.json" />
+    <EmbeddedResource Include="Resources\Bottom.json" />
+    <EmbeddedResource Include="Resources\DireBase.json" />
+    <EmbeddedResource Include="Resources\DireBottomJungle.json" />
+    <EmbeddedResource Include="Resources\DireTopJungle.json" />
+    <EmbeddedResource Include="Resources\Middle.json" />
+    <EmbeddedResource Include="Resources\RadiantBase.json" />
+    <EmbeddedResource Include="Resources\RadiantBottomJungle.json" />
+    <EmbeddedResource Include="Resources\RadiantTopJungle.json" />
+    <EmbeddedResource Include="Resources\River.json" />
+    <EmbeddedResource Include="Resources\Roshan.json" />
+    <EmbeddedResource Include="Resources\Top.json" />
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -9,6 +9,7 @@ namespace Ensage.SDK.Helpers
     using System.Reflection;
 
     using Ensage.SDK.Geometry;
+    using Ensage.SDK.Helpers.Metadata;
 
     using log4net;
 
@@ -27,13 +28,20 @@ namespace Ensage.SDK.Helpers
         {
             try
             {
-                var top = JsonFactory.FromResource<Vector3[]>("Resources.top.json", Assembly.GetExecutingAssembly());
-                var mid = JsonFactory.FromResource<Vector3[]>("Resources.mid.json", Assembly.GetExecutingAssembly());
-                var bot = JsonFactory.FromResource<Vector3[]>("Resources.bot.json", Assembly.GetExecutingAssembly());
+                this.Top = this.Load("Top");
+                this.Middle = this.Load("Middle");
+                this.Bottom = this.Load("Bottom");
 
-                this.Top = new WorldPolygon(top);
-                this.Mid = new WorldPolygon(mid);
-                this.Bottom = new WorldPolygon(bot);
+                this.DireBase = this.Load("DireBase");
+                this.RadiantBase = this.Load("RadiantBase");
+                this.River = this.Load("River");
+                this.Roshan = this.Load("Roshan");
+
+                this.DireBottomJungle = this.Load("DireBottomJungle");
+                this.DireTopJungle = this.Load("DireTopJungle");
+
+                this.RadiantBottomJungle = this.Load("RadiantBottomJungle");
+                this.RadiantTopJungle = this.Load("RadiantTopJungle");
             }
             catch (Exception e)
             {
@@ -43,26 +51,30 @@ namespace Ensage.SDK.Helpers
 
         public WorldPolygon Bottom { get; }
 
-        public WorldPolygon Mid { get; }
+        public WorldPolygon DireBase { get; }
+
+        public WorldPolygon DireBottomJungle { get; }
+
+        public WorldPolygon DireTopJungle { get; }
+
+        public WorldPolygon Middle { get; }
+
+        public WorldPolygon RadiantBase { get; }
+
+        public WorldPolygon RadiantBottomJungle { get; }
+
+        public WorldPolygon RadiantTopJungle { get; }
+
+        public WorldPolygon River { get; }
+
+        public WorldPolygon Roshan { get; }
 
         public WorldPolygon Top { get; }
-    }
 
-    public interface IMapMetadata
-    {
-        string Name { get; }
-    }
-
-    [MetadataAttribute]
-    [AttributeUsage(AttributeTargets.Class)]
-    public class ExportMapAttribute : ExportAttribute, IMapMetadata
-    {
-        public ExportMapAttribute(string name)
-            : base(typeof(Map))
+        private WorldPolygon Load(string name)
         {
-            this.Name = name;
+            var data = JsonFactory.FromResource<Vector3[]>($"Resources.{name}.json", Assembly.GetExecutingAssembly());
+            return new WorldPolygon(data);
         }
-
-        public string Name { get; }
     }
 }

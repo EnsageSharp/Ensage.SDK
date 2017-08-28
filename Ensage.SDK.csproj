@@ -315,6 +315,7 @@
     <Compile Include="Extensions\EnumerableExtensions.cs" />
     <Compile Include="Extensions\TableExtensions.cs" />
     <Compile Include="Geometry\MEC.cs" />
+    <Compile Include="Geometry\WorldPolygon.cs" />
     <Compile Include="Handlers\Weak\IExecuteWithObject.cs" />
     <Compile Include="Handlers\Weak\IExecuteWithObjectAndResult.cs" />
     <Compile Include="Handlers\Weak\WeakAction.cs" />

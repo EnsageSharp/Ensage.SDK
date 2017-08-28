@@ -5,6 +5,7 @@
 namespace Ensage.SDK.Orbwalker
 {
     using System;
+    using System.Collections.Generic;
     using System.Collections.Specialized;
     using System.ComponentModel;
     using System.ComponentModel.Composition;
@@ -29,6 +30,20 @@ namespace Ensage.SDK.Orbwalker
     public sealed class Orbwalker : IOrbwalker
     {
         private static readonly ILog Log = AssemblyLogs.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
+        private readonly HashSet<NetworkActivity> attackActivities = new HashSet<NetworkActivity>
+        {
+            NetworkActivity.Attack,
+            NetworkActivity.Attack2,
+            NetworkActivity.AttackEvent
+        };
+
+        private readonly HashSet<NetworkActivity> attackCancelActivities = new HashSet<NetworkActivity>
+        {
+            NetworkActivity.Idle,
+            NetworkActivity.IdleRare,
+            NetworkActivity.Move
+        };
 
         [ImportingConstructor]
         public Orbwalker([Import] IServiceContext context)
@@ -83,8 +98,24 @@ namespace Ensage.SDK.Orbwalker
                 UpdateManager.Subscribe(this.OnUpdateDrawings, 1000);
             }
 
-            Entity.OnInt32PropertyChange += this.OnNetworkActivity;
             this.Context.Inventory.CollectionChanged += this.OnItemsChanged;
+
+            var hero = this.Owner as Hero;
+            if (hero?.HeroId == HeroId.npc_dota_hero_visage)
+            {
+                //HACK visage workaround
+                Player.OnExecuteOrder += this.OnExecuteOrder;
+            }
+            else
+            {
+                if (hero?.HeroId == HeroId.npc_dota_hero_viper)
+                {
+                    //HACK viper Q workaround
+                    this.attackActivities.Add(NetworkActivity.CastAbilityQ);
+                }
+
+                Entity.OnInt32PropertyChange += this.OnNetworkActivity;
+            }
         }
 
         public bool Attack(Unit unit, float time)
@@ -147,6 +178,8 @@ namespace Ensage.SDK.Orbwalker
             Log.Debug($"Deactivate Orbwalker: {this.Owner.GetDisplayName()}");
             UpdateManager.Unsubscribe(this.OnUpdateDrawings);
             Entity.OnInt32PropertyChange -= this.OnNetworkActivity;
+            Player.OnExecuteOrder -= this.OnExecuteOrder;
+            this.attackActivities.Remove(NetworkActivity.CastAbilityQ);
             this.Context.Inventory.CollectionChanged -= this.OnItemsChanged;
             this.Context.Particle.Remove("AttackRange");
             this.Settings.DrawRange.PropertyChanged -= this.OnDrawRangeChanged;
@@ -251,6 +284,25 @@ namespace Ensage.SDK.Orbwalker
             }
         }
 
+        private void OnExecuteOrder(Player sender, ExecuteOrderEventArgs args)
+        {
+            if (args.OrderId != OrderId.AttackTarget || args.IsQueued || !args.Process || !args.Entities.Contains(this.Owner))
+            {
+                return;
+            }
+
+            var target = args.Target as Unit;
+            if (target == null || !target.IsValid)
+            {
+                return;
+            }
+
+            if (this.CanMove())
+            {
+                this.LastAttackTime = this.GetTurnTime(target) - this.PingTime;
+            }
+        }
+
         private void OnItemsChanged(object sender, NotifyCollectionChangedEventArgs args)
         {
             if (args.Action == NotifyCollectionChangedAction.Add)
@@ -290,26 +342,21 @@ namespace Ensage.SDK.Orbwalker
 
             var newNetworkActivity = (NetworkActivity)args.NewValue;
 
-            switch (newNetworkActivity)
+            if (this.attackActivities.Contains(newNetworkActivity))
             {
-                case NetworkActivity.Attack:
-                case NetworkActivity.Attack2:
-                case NetworkActivity.AttackEvent:
-                    if (this.EchoSabre?.IsValid == true && Math.Abs(this.EchoSabre.Item.Cooldown) < 0.15)
-                    {
-                        return;
-                    }
+                if (this.EchoSabre?.IsValid == true && Math.Abs(this.EchoSabre.Item.Cooldown) < 0.15)
+                {
+                    return;
+                }
 
-                    this.LastAttackTime = Game.RawGameTime - this.PingTime;
-                    break;
-                case NetworkActivity.Idle:
-                case NetworkActivity.IdleRare:
-                case NetworkActivity.Move:
-                    if (!this.CanMove(Game.RawGameTime + 0.05f))
-                    {
-                        this.LastAttackTime = 0;
-                    }
-                    break;
+                this.LastAttackTime = Game.RawGameTime - this.PingTime;
+            }
+            else if (this.attackCancelActivities.Contains(newNetworkActivity))
+            {
+                if (!this.CanMove(Game.RawGameTime + 0.05f))
+                {
+                    this.LastAttackTime = 0;
+                }
             }
         }
 

@@ -527,6 +527,12 @@
     <EmbeddedResource Include="Resources\River.json" />
     <EmbeddedResource Include="Resources\Roshan.json" />
     <EmbeddedResource Include="Resources\Top.json" />
+    <EmbeddedResource Include="Resources\DireBottomRoute.json" />
+    <EmbeddedResource Include="Resources\DireMiddleRoute.json" />
+    <EmbeddedResource Include="Resources\DireTopRoute.json" />
+    <EmbeddedResource Include="Resources\RadiantBottomRoute.json" />
+    <EmbeddedResource Include="Resources\RadiantMiddleRoute.json" />
+    <EmbeddedResource Include="Resources\RadiantTopRoute.json" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

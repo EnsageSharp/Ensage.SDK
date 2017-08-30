@@ -90,6 +90,7 @@
     <Compile Include="Abilities\IAuraAbility.cs" />
     <Compile Include="Abilities\Dagon.cs" />
     <Compile Include="Abilities\DiffusalBlade.cs" />
+    <Compile Include="Abilities\TravelBoots.cs" />
     <Compile Include="Abilities\Items\IItemInfo.cs" />
     <Compile Include="Abilities\Items\item_abyssal_blade.cs" />
     <Compile Include="Abilities\Items\item_ancient_janggo.cs" />

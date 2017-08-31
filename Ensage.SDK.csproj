@@ -43,31 +43,44 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="clipper_library">
+      <HintPath>C:\Users\osman\Desktop\Dota 2\EnsageSharp\References\clipper_library.dll</HintPath>
     </Reference>
     <Reference Include="Ensage">
+      <HintPath>C:\Users\osman\Desktop\Dota 2\EnsageSharp\References\Ensage.dll</HintPath>
     </Reference>
     <Reference Include="Ensage.Common">
+      <HintPath>C:\Users\osman\Desktop\Dota 2\EnsageSharp\References\Ensage.Common.dll</HintPath>
     </Reference>
     <Reference Include="EnsageSharp.Sandbox">
+      <HintPath>C:\Users\osman\Desktop\Dota 2\EnsageSharp\System\EnsageSharp.Sandbox.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Newtonsoft.Json">
+      <HintPath>C:\Users\osman\Desktop\Dota 2\EnsageSharp\References\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="PlaySharp.Sentry">
+      <HintPath>C:\Users\osman\Desktop\Dota 2\EnsageSharp\References\PlaySharp.Sentry.dll</HintPath>
     </Reference>
     <Reference Include="PlaySharp.Toolkit">
+      <HintPath>C:\Users\osman\Desktop\Dota 2\EnsageSharp\References\PlaySharp.Toolkit.dll</HintPath>
     </Reference>
     <Reference Include="SharpDX">
+      <HintPath>C:\Users\osman\Desktop\Dota 2\EnsageSharp\References\SharpDX.dll</HintPath>
     </Reference>
     <Reference Include="SharpDX.Direct2D1">
+      <HintPath>C:\Users\osman\Desktop\Dota 2\EnsageSharp\References\SharpDX.Direct2D1.dll</HintPath>
     </Reference>
     <Reference Include="SharpDX.Direct3D11">
+      <HintPath>C:\Users\osman\Desktop\Dota 2\EnsageSharp\References\SharpDX.Direct3D11.dll</HintPath>
     </Reference>
     <Reference Include="SharpDX.Direct3D9">
+      <HintPath>C:\Users\osman\Desktop\Dota 2\EnsageSharp\References\SharpDX.Direct3D9.dll</HintPath>
     </Reference>
     <Reference Include="SharpDX.DXGI">
+      <HintPath>C:\Users\osman\Desktop\Dota 2\EnsageSharp\References\SharpDX.DXGI.dll</HintPath>
     </Reference>
     <Reference Include="SharpDX.Mathematics">
+      <HintPath>C:\Users\osman\Desktop\Dota 2\EnsageSharp\References\SharpDX.Mathematics.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
@@ -90,6 +103,10 @@
     <Compile Include="Abilities\IAuraAbility.cs" />
     <Compile Include="Abilities\Dagon.cs" />
     <Compile Include="Abilities\DiffusalBlade.cs" />
+    <Compile Include="Abilities\npc_dota_hero_visage\visage_gravekeepers_cloak.cs" />
+    <Compile Include="Abilities\npc_dota_hero_visage\visage_grave_chill.cs" />
+    <Compile Include="Abilities\npc_dota_hero_visage\visage_soul_assumption.cs" />
+    <Compile Include="Abilities\npc_dota_hero_visage\visage_summon_familiars.cs" />
     <Compile Include="Abilities\TravelBoots.cs" />
     <Compile Include="Abilities\Items\IItemInfo.cs" />
     <Compile Include="Abilities\Items\item_abyssal_blade.cs" />

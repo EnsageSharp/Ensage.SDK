@@ -103,6 +103,10 @@
     <Compile Include="Abilities\IAuraAbility.cs" />
     <Compile Include="Abilities\Dagon.cs" />
     <Compile Include="Abilities\DiffusalBlade.cs" />
+    <Compile Include="Abilities\npc_dota_hero_magnataur\magnataur_reverse_polarity.cs" />
+    <Compile Include="Abilities\npc_dota_hero_magnataur\magnataur_empower.cs" />
+    <Compile Include="Abilities\npc_dota_hero_magnataur\magnataur_skewer.cs" />
+    <Compile Include="Abilities\npc_dota_hero_magnataur\magnataur_shockwave.cs" />
     <Compile Include="Abilities\npc_dota_hero_visage\visage_gravekeepers_cloak.cs" />
     <Compile Include="Abilities\npc_dota_hero_visage\visage_grave_chill.cs" />
     <Compile Include="Abilities\npc_dota_hero_visage\visage_soul_assumption.cs" />

@@ -25,7 +25,14 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_magnataur
         {
             get
             {
-                return this.Ability.GetAbilitySpecialData("cleave_damage_pct");
+                var damage = this.Ability.GetAbilitySpecialData("cleave_damage_pct");
+                var talent = this.Owner.GetAbilityById(AbilityId.special_bonus_unique_magnus_2);
+                if (talent != null && talent.Level > 0)
+                {
+                    damage += talent.GetAbilitySpecialData("value");
+                }
+
+                return damage;
             }
         }
 

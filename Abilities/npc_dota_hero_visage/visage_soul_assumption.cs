@@ -25,6 +25,14 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_visage
             }
         }
 
+        public bool MaxStack
+        {
+            get
+            {
+                return StackCount == this.Ability.GetAbilitySpecialData("stack_limit");
+            }
+        }
+
         protected override float RawDamage
         {
             get

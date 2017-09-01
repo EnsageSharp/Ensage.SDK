@@ -23,19 +23,13 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_magnataur
             {
                 var castRange = this.Ability.GetAbilitySpecialData("range");
 
-                var aetherLense = Owner.GetItemById(AbilityId.item_aether_lens);
-                if (aetherLense != null)
-                {
-                    castRange += aetherLense.GetAbilitySpecialData("cast_range_bonus");
-                }
-
                 var talent = this.Owner.GetAbilityById(AbilityId.special_bonus_unique_magnus_3);
                 if (talent != null && talent.Level > 0)
                 {
                     castRange += talent.GetAbilitySpecialData("value");
                 }
 
-                return castRange;
+                return castRange + this.Owner.BonusCastRange();
             }
         }
 

@@ -21,12 +21,12 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_puck
                 var range = this.Ability.GetAbilitySpecialData("max_distance");
 
                 var talent = this.Owner.GetAbilityById(AbilityId.special_bonus_unique_puck);
-                if (talent?.Level > 0)
+                if (talent != null && talent.Level > 0)
                 {
                     range *= (talent.GetAbilitySpecialData("value") / 100) + 1;
                 }
 
-                return range;
+                return range + this.Owner.BonusCastRange();
             }
         }
 

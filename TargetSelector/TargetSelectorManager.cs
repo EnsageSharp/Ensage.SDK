@@ -42,7 +42,7 @@ namespace Ensage.SDK.TargetSelector
         [ImportMany(typeof(ITargetSelector), AllowRecomposition = true)]
         public override IEnumerable<Lazy<ITargetSelector, ITargetSelectorMetadata>> Services { get; protected set; }
 
-        protected IServiceContext Context { get; }
+        public IServiceContext Context { get; }
 
         public IEnumerable<Unit> GetTargets()
         {

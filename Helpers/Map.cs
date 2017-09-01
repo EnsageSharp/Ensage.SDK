@@ -177,6 +177,35 @@ namespace Ensage.SDK.Helpers
             return MapArea.Unknown;
         }
 
+        public List<Vector3> GetCreepRoute(Creep unit, MapArea lane = MapArea.Unknown)
+        {
+            var team = unit.Team;
+            if (team != Team.Dire && team != Team.Radiant)
+            {
+                return new List<Vector3>();
+            }
+
+            if (lane == MapArea.Unknown)
+            {
+                lane = this.GetLane(unit);
+            }
+
+            if (lane == MapArea.Top)
+            {
+                return team == Team.Dire ? this.DireTopRoute : this.RadiantTopRoute;
+            }
+            else if (lane == MapArea.Middle)
+            {
+                return team == Team.Dire ? this.DireMiddleRoute : this.RadiantMiddleRoute;
+            }
+            else if (lane == MapArea.Bottom)
+            {
+                return team == Team.Dire ? this.DireBottomRoute : this.RadiantBottomRoute;
+            }
+
+            return new List<Vector3>();
+        }
+
         private WorldPolygon Load(string name)
         {
             var data = JsonFactory.FromResource<Vector3[]>($"Resources.{name}.json", Assembly.GetExecutingAssembly());

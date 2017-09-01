@@ -102,6 +102,19 @@ namespace Ensage.SDK.Extensions
             }
         }
 
+        public static float BonusCastRange(this Unit unit)
+        {
+            var bonusRange = 0.0f;
+
+            var aetherLense = unit.GetItemById(AbilityId.item_aether_lens);
+            if (aetherLense != null)
+            {
+                bonusRange += aetherLense.GetAbilitySpecialData("cast_range_bonus");
+            }
+
+            return bonusRange;
+        }
+
         [CanBeNull]
         public static Modifier GetModifierByName(this Unit unit, string name)
         {

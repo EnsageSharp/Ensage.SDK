@@ -17,7 +17,7 @@ namespace Ensage.SDK.Abilities
         {
             get
             {
-                return this.Ability.GetCastRange();
+                return this.Ability.GetCastRange() + this.Owner.BonusCastRange();
             }
         }
     }

@@ -92,7 +92,7 @@ namespace Ensage.SDK.Samples
         private void Remove()
         {
             var pos = Game.MousePosition;
-            this.Polygon.Points.RemoveAll(point => pos.Distance(point) < 100);
+            this.Polygon.Points.RemoveAll(point => pos.Distance2D(point) < 100);
         }
 
         private void SavePolygon(KeyEventArgs obj)

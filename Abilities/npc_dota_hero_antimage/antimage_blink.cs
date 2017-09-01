@@ -25,7 +25,7 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_antimage
         {
             get
             {
-                return this.Ability.GetAbilitySpecialData("blink_range");
+                return this.Ability.GetAbilitySpecialData("blink_range") + this.Owner.BonusCastRange();
             }
         }
     }

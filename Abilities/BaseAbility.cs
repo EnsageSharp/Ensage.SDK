@@ -35,6 +35,17 @@ namespace Ensage.SDK.Abilities
 
         public virtual float CastRange { get; } = 0;
 
+        /// <summary>
+        /// Gets the total cast range including the bonus range of the owner
+        /// </summary>
+        public virtual float TotalCastRange
+        {
+            get
+            {
+                return this.CastRange;
+            }
+        }
+
         public virtual DamageType DamageType
         {
             get

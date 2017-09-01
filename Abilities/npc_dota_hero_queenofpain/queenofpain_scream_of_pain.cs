@@ -4,14 +4,24 @@
 
 namespace Ensage.SDK.Abilities.npc_dota_hero_queenofpain
 {
+    using System.Linq;
+
     using Ensage.SDK.Extensions;
     using Ensage.SDK.Helpers;
 
-    public class queenofpain_scream_of_pain : AreaOfEffectAbility
+    public class queenofpain_scream_of_pain : ActiveAbility, IAreaOfEffectAbility
     {
         public queenofpain_scream_of_pain(Ability ability)
             : base(ability)
         {
+        }
+
+        public virtual float Radius
+        {
+            get
+            {
+                return this.Ability.GetAbilitySpecialData("area_of_effect");
+            }
         }
 
         public override float Speed
@@ -22,7 +32,10 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_queenofpain
             }
         }
 
-        protected override string RadiusName { get; } = "area_of_effect";
+        public override bool CanHit(params Unit[] targets)
+        {
+            return targets.All(x => x.Distance2D(this.Owner) < (this.CastRange + this.Radius));
+        }
 
         public override float GetDamage(params Unit[] targets)
         {

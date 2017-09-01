@@ -21,11 +21,11 @@ namespace Ensage.SDK.Abilities.Items
             }
         }
 
-        public override float CastRange
+        protected override float BaseCastRange
         {
             get
             {
-                return this.Ability.GetAbilitySpecialData("blink_range") + this.Owner.BonusCastRange();
+                return this.Ability.GetAbilitySpecialData("blink_range");
             }
         }
     }

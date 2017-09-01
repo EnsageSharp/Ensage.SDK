@@ -17,7 +17,7 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_magnataur
 
         protected override string SpeedName { get; } = "skewer_speed";
 
-        public override float CastRange
+        protected override float BaseCastRange
         {
             get
             {
@@ -29,7 +29,7 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_magnataur
                     castRange += talent.GetAbilitySpecialData("value");
                 }
 
-                return castRange + this.Owner.BonusCastRange();
+                return castRange;
             }
         }
 

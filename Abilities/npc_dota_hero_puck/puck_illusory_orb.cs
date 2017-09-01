@@ -14,22 +14,6 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_puck
         {
         }
 
-        public override float CastRange
-        {
-            get
-            {
-                var range = this.Ability.GetAbilitySpecialData("max_distance");
-
-                var talent = this.Owner.GetAbilityById(AbilityId.special_bonus_unique_puck);
-                if (talent != null && talent.Level > 0)
-                {
-                    range *= (talent.GetAbilitySpecialData("value") / 100) + 1;
-                }
-
-                return range + this.Owner.BonusCastRange();
-            }
-        }
-
         public override float Speed
         {
             get
@@ -43,6 +27,22 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_puck
                 }
 
                 return speed;
+            }
+        }
+
+        protected override float BaseCastRange
+        {
+            get
+            {
+                var range = this.Ability.GetAbilitySpecialData("max_distance");
+
+                var talent = this.Owner.GetAbilityById(AbilityId.special_bonus_unique_puck);
+                if (talent != null && talent.Level > 0)
+                {
+                    range *= (talent.GetAbilitySpecialData("value") / 100) + 1;
+                }
+
+                return range;
             }
         }
 

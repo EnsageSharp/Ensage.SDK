@@ -17,7 +17,23 @@ namespace Ensage.SDK.Abilities
         {
             get
             {
-                return this.Ability.GetCastRange() + this.Owner.BonusCastRange();
+                var bonusRange = 0.0f;
+
+                var aetherLense = this.Owner.GetItemById(AbilityId.item_aether_lens);
+                if (aetherLense != null)
+                {
+                    bonusRange += aetherLense.GetAbilitySpecialData("cast_range_bonus");
+                }
+
+                return this.BaseCastRange + bonusRange;
+            }
+        }
+
+        protected override float BaseCastRange
+        {
+            get
+            {
+                return this.Ability.GetCastRange();
             }
         }
     }

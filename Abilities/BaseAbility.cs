@@ -15,6 +15,22 @@ namespace Ensage.SDK.Abilities
 
         public abstract bool CanBeCasted { get; }
 
+        public virtual float CastRange
+        {
+            get
+            {
+                return this.BaseCastRange;
+            }
+        }
+
+        public virtual DamageType DamageType
+        {
+            get
+            {
+                return this.Ability.DamageType;
+            }
+        }
+
         public virtual bool IsReady
         {
             get
@@ -30,16 +46,6 @@ namespace Ensage.SDK.Abilities
                 }
 
                 return true;
-            }
-        }
-
-        public virtual float CastRange { get; } = 0;
-
-        public virtual DamageType DamageType
-        {
-            get
-            {
-                return this.Ability.DamageType;
             }
         }
 
@@ -66,6 +72,8 @@ namespace Ensage.SDK.Abilities
                 return this.Ability.SpellPierceImmunityType;
             }
         }
+
+        protected virtual float BaseCastRange { get; } = 0;
 
         protected virtual float RawDamage
         {

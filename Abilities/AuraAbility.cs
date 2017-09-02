@@ -19,7 +19,7 @@ namespace Ensage.SDK.Abilities
         {
             get
             {
-                return this.Ability.GetCastRange();
+                return this.Ability.GetAbilitySpecialData("aura_radius");
             }
         }
     }

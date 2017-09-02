@@ -4,6 +4,8 @@
 
 namespace Ensage.SDK.Abilities.npc_dota_hero_obsidian_destroyer
 {
+    using Ensage.SDK.Extensions;
+
     public class obsidian_destroyer_essence_aura : AuraAbility
     {
         public obsidian_destroyer_essence_aura(Ability ability)
@@ -12,5 +14,13 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_obsidian_destroyer
         }
 
         public override string AuraModifierName { get; } = "modifier_obsidian_destroyer_essence_aura_effect";
+
+        public override float AuraRadius
+        {
+            get
+            {
+                return this.Ability.GetAbilitySpecialData("radius");
+            }
+        }
     }
 }

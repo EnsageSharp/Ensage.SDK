@@ -21,7 +21,7 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_visage
         {
             get
             {
-                return this.Owner.Modifiers.FirstOrDefault(x => x.Name == "modifier_visage_soul_assumption").StackCount;
+                return this.Owner.Modifiers.FirstOrDefault(x => x.Name == "modifier_visage_soul_assumption")?.StackCount ?? 0;
             }
         }
 

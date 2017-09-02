@@ -4,6 +4,8 @@
 
 namespace Ensage.SDK.Abilities
 {
+    using System.Linq;
+
     using Ensage.SDK.Extensions;
 
     public abstract class RangedAbility : ActiveAbility
@@ -19,6 +21,11 @@ namespace Ensage.SDK.Abilities
             {
                 var bonusRange = 0.0f;
 
+                foreach (var talent in this.Owner.Spellbook.Spells.Where(x => x.Level > 0 && x.Name.StartsWith("special_bonus_cast_range_")))
+                {
+                    bonusRange += talent.GetAbilitySpecialData("value");
+                }
+
                 var aetherLense = this.Owner.GetItemById(AbilityId.item_aether_lens);
                 if (aetherLense != null)
                 {
@@ -33,7 +40,7 @@ namespace Ensage.SDK.Abilities
         {
             get
             {
-                return this.Ability.GetCastRange();
+                return this.Ability.CastRange;
             }
         }
     }

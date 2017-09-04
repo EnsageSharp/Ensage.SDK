@@ -4,7 +4,7 @@
 
 namespace Ensage.SDK.Abilities.Items
 {
-    public class item_necronomicon : ActiveAbility
+    public class item_necronomicon : Necronomicon
     {
         public item_necronomicon(Item item)
             : base(item)

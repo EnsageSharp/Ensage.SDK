@@ -1,4 +1,4 @@
-﻿// <copyright file="Sleeper.cs" company="Ensage">
+﻿// <copyright file="Timer.cs" company="Ensage">
 //    Copyright (c) 2017 Ensage.
 // </copyright>
 
@@ -6,9 +6,9 @@ namespace Ensage.SDK.Helpers
 {
     using System;
 
-    public sealed class Sleeper
+    public sealed class Timer
     {
-        public Sleeper(TimeSpan timeout)
+        public Timer(TimeSpan timeout)
         {
             this.Timeout = timeout;
             UpdateManager.Subscribe(this.OnUpdate);
@@ -17,7 +17,7 @@ namespace Ensage.SDK.Helpers
         /// <param name="timeout">
         ///     <see cref="Elapsed" /> timeout in Milliseconds
         /// </param>
-        public Sleeper(int timeout)
+        public Timer(int timeout)
         {
             this.Timeout = TimeSpan.FromMilliseconds(timeout);
             UpdateManager.Subscribe(this.OnUpdate);

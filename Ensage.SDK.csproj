@@ -99,6 +99,7 @@
     <Compile Include="Abilities\ActiveAbility.cs" />
     <Compile Include="Abilities\AutocastAbility.cs" />
     <Compile Include="Abilities\BaseAbility.cs" />
+    <Compile Include="Abilities\Necronomicon.cs" />
     <Compile Include="Abilities\IAreaOfEffectAbility.cs" />
     <Compile Include="Abilities\IAuraAbility.cs" />
     <Compile Include="Abilities\Dagon.cs" />

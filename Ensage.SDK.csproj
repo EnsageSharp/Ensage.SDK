@@ -357,6 +357,7 @@
     <Compile Include="Handlers\InvokeHandler.cs" />
     <Compile Include="Helpers\Metadata\ExportMapAttribute.cs" />
     <Compile Include="Helpers\Metadata\IMapMetadata.cs" />
+    <Compile Include="Helpers\Sleeper.cs" />
     <Compile Include="Helpers\Table.cs" />
     <Compile Include="Helpers\TableColumn.cs" />
     <Compile Include="Input\MouseWheelEventArgs.cs" />

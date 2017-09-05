@@ -154,7 +154,7 @@ namespace Ensage.SDK.Renderer.Particle
         /// <param name="color"></param>
         public void DrawRange(Unit unit, string id, float range, Color color)
         {
-            this.AddOrUpdate(unit, id, "particles/ui_mouseactions/drag_selected_ring.vpcf", ParticleAttachment.AbsOriginFollow, RestartType.FullRestart, 1, color, 2, range * 1.1f);
+            this.AddOrUpdate(unit, id, "particles/ui_mouseactions/drag_selected_ring.vpcf", ParticleAttachment.AbsOriginFollow, RestartType.FullRestart, 1, color, 2, range * -1.1f);
         }
 
         /// <summary>

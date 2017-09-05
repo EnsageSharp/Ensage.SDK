@@ -9,6 +9,12 @@ namespace Ensage.SDK.Renderer.Particle
 
     using SharpDX;
 
+    public enum RestartType
+    {
+        NormalRestart,
+        FullRestart
+    }
+
     public sealed class ParticleEffectContainer : IDisposable, IEquatable<ParticleEffectContainer>
     {
         private bool disposed;
@@ -114,7 +120,7 @@ namespace Ensage.SDK.Renderer.Particle
             }
         }
 
-        public void SetControlPoints(bool restart = true, params object[] controlPoints)
+        public void SetControlPoints(RestartType restart = RestartType.FullRestart, params object[] controlPoints)
         {
             if (controlPoints?.Length > 0)
             {
@@ -145,7 +151,11 @@ namespace Ensage.SDK.Renderer.Particle
                 }
             }
 
-            if (restart)
+            if (restart == RestartType.FullRestart)
+            {
+                this.Effect.FullRestart();
+            }
+            else if (restart == RestartType.NormalRestart)
             {
                 this.Effect.Restart();
             }

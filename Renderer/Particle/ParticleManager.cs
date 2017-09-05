@@ -26,7 +26,7 @@ namespace Ensage.SDK.Renderer.Particle
 
         private bool disposed;
 
-        public void AddOrUpdate(Entity unit, string name, string file, ParticleAttachment attachment, bool restart = true, params object[] controlPoints)
+        public void AddOrUpdate(Entity unit, string name, string file, ParticleAttachment attachment, RestartType restart = RestartType.FullRestart, params object[] controlPoints)
         {
             if (unit == null)
             {
@@ -96,7 +96,7 @@ namespace Ensage.SDK.Renderer.Particle
                 id,
                 "particles/ui_mouseactions/drag_selected_ring.vpcf",
                 ParticleAttachment.AbsOrigin,
-                true,
+                RestartType.FullRestart,
                 0,
                 center,
                 1,
@@ -119,7 +119,7 @@ namespace Ensage.SDK.Renderer.Particle
                 id,
                 "materials/ensage_ui/particles/target_d.vpcf",
                 ParticleAttachment.AbsOriginFollow,
-                false,
+                RestartType.FullRestart,
                 5,
                 color ?? Color.Red,
                 6,
@@ -142,7 +142,7 @@ namespace Ensage.SDK.Renderer.Particle
             var startPos = unit.Position;
             var pos1 = !red ? startPos : endPosition;
 
-            this.AddOrUpdate(unit, id, "particles/ui_mouseactions/range_finder_line.vpcf", ParticleAttachment.AbsOrigin, true, 0, startPos, 1, pos1, 2, endPosition);
+            this.AddOrUpdate(unit, id, "particles/ui_mouseactions/range_finder_line.vpcf", ParticleAttachment.AbsOrigin, RestartType.FullRestart, 0, startPos, 1, pos1, 2, endPosition);
         }
 
         /// <summary>
@@ -154,7 +154,7 @@ namespace Ensage.SDK.Renderer.Particle
         /// <param name="color"></param>
         public void DrawRange(Unit unit, string id, float range, Color color)
         {
-            this.AddOrUpdate(unit, id, "particles/ui_mouseactions/drag_selected_ring.vpcf", ParticleAttachment.AbsOriginFollow, true, 1, color, 2, range * 1.1f);
+            this.AddOrUpdate(unit, id, "particles/ui_mouseactions/drag_selected_ring.vpcf", ParticleAttachment.AbsOriginFollow, RestartType.FullRestart, 1, color, 2, range * 1.1f);
         }
 
         /// <summary>
@@ -171,7 +171,7 @@ namespace Ensage.SDK.Renderer.Particle
                 id,
                 "materials/ensage_ui/particles/target.vpcf",
                 ParticleAttachment.AbsOriginFollow,
-                false,
+                RestartType.FullRestart,
                 5,
                 color ?? Color.Red,
                 6,
@@ -220,7 +220,7 @@ namespace Ensage.SDK.Renderer.Particle
                 id,
                 "particles/ui_mouseactions/clicked_basemove.vpcf",
                 ParticleAttachment.AbsOrigin,
-                true,
+                RestartType.FullRestart,
                 0,
                 position,
                 1,

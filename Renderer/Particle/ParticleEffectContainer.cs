@@ -147,7 +147,7 @@ namespace Ensage.SDK.Renderer.Particle
 
             if (restart)
             {
-                this.Effect.FullRestart();
+                this.Effect.Restart();
             }
         }
 

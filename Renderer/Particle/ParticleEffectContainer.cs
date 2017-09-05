@@ -11,7 +11,19 @@ namespace Ensage.SDK.Renderer.Particle
 
     public enum RestartType
     {
+        /// <summary>
+        /// Don't restart the particle
+        /// </summary>
+        None,
+
+        /// <summary>
+        /// Restart the particle
+        /// </summary>
         NormalRestart,
+
+        /// <summary>
+        /// Fully restart the particle
+        /// </summary>
         FullRestart
     }
 

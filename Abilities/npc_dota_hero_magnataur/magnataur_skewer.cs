@@ -13,6 +13,14 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_magnataur
         {
         }
 
+        public override bool CanBeCasted
+        {
+            get
+            {
+                return base.CanBeCasted && !this.Owner.IsRooted();
+            }
+        }
+
         protected override string RadiusName { get; } = "skewer_radius";
 
         protected override string SpeedName { get; } = "skewer_speed";

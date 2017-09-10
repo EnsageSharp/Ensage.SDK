@@ -26,10 +26,10 @@ namespace Ensage.SDK.Abilities
                     bonusRange += talent.GetAbilitySpecialData("value");
                 }
 
-                var aetherLense = this.Owner.GetItemById(AbilityId.item_aether_lens);
-                if (aetherLense != null)
+                var aetherLens = this.Owner.GetItemById(AbilityId.item_aether_lens);
+                if (aetherLens != null)
                 {
-                    bonusRange += aetherLense.GetAbilitySpecialData("cast_range_bonus");
+                    bonusRange += aetherLens.GetAbilitySpecialData("cast_range_bonus");
                 }
 
                 return this.BaseCastRange + bonusRange;

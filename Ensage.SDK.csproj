@@ -108,6 +108,10 @@
     <Compile Include="Abilities\npc_dota_hero_magnataur\magnataur_empower.cs" />
     <Compile Include="Abilities\npc_dota_hero_magnataur\magnataur_skewer.cs" />
     <Compile Include="Abilities\npc_dota_hero_magnataur\magnataur_shockwave.cs" />
+    <Compile Include="Abilities\npc_dota_hero_storm_spirit\storm_spirit_ball_lightning.cs" />
+    <Compile Include="Abilities\npc_dota_hero_storm_spirit\storm_spirit_electric_vortex.cs" />
+    <Compile Include="Abilities\npc_dota_hero_storm_spirit\storm_spirit_overload.cs" />
+    <Compile Include="Abilities\npc_dota_hero_storm_spirit\storm_spirit_static_remnant.cs" />
     <Compile Include="Abilities\npc_dota_hero_visage\visage_gravekeepers_cloak.cs" />
     <Compile Include="Abilities\npc_dota_hero_visage\visage_grave_chill.cs" />
     <Compile Include="Abilities\npc_dota_hero_visage\visage_soul_assumption.cs" />

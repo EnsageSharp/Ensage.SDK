@@ -164,9 +164,12 @@ namespace Ensage.SDK.Service
             public TargetSelectorConfig(MenuFactory parent)
             {
                 this.Factory = parent.Menu("Target Selector");
+                this.ShowTargetParticle = this.Factory.Item("Show target particle", true);
             }
 
             public MenuFactory Factory { get; }
+
+            public MenuItem<bool> ShowTargetParticle { get; }
 
             public void Dispose()
             {

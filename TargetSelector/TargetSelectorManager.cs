@@ -11,6 +11,7 @@ namespace Ensage.SDK.TargetSelector
     using System.Linq;
     using System.Reflection;
 
+    using Ensage.SDK.Handlers;
     using Ensage.SDK.Helpers;
     using Ensage.SDK.Renderer.Particle;
     using Ensage.SDK.Service;
@@ -28,6 +29,8 @@ namespace Ensage.SDK.TargetSelector
     {
         private static readonly ILog Log = AssemblyLogs.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
+        private IUpdateHandler updateHandler;
+
         [ImportingConstructor]
         public TargetSelectorManager([Import] IServiceContext context, [Import] Lazy<IParticleManager> particle)
         {
@@ -37,12 +40,12 @@ namespace Ensage.SDK.TargetSelector
 
         public SDKConfig.TargetSelectorConfig Config { get; private set; }
 
+        public IServiceContext Context { get; }
+
         public Lazy<IParticleManager> Particle { get; }
 
         [ImportMany(typeof(ITargetSelector), AllowRecomposition = true)]
         public override IEnumerable<Lazy<ITargetSelector, ITargetSelectorMetadata>> Services { get; protected set; }
-
-        public IServiceContext Context { get; }
 
         public IEnumerable<Unit> GetTargets()
         {
@@ -69,11 +72,13 @@ namespace Ensage.SDK.TargetSelector
             // activate selection
             this.Active = this.GetSelection();
 
-            UpdateManager.Subscribe(this.OnDrawingsUpdate, 250);
+            this.updateHandler = UpdateManager.Subscribe(this.OnDrawingsUpdate, 250, this.Config.ShowTargetParticle);
+            this.Config.ShowTargetParticle.PropertyChanged += this.ShowTargetParticleOnPropertyChanged;
         }
 
         protected override void OnDeactivate()
         {
+            this.Config.ShowTargetParticle.PropertyChanged -= this.ShowTargetParticleOnPropertyChanged;
             UpdateManager.Unsubscribe(this.OnDrawingsUpdate);
             this.Particle.Value.Remove("ActiveTargetSelectorTarget");
 
@@ -100,6 +105,12 @@ namespace Ensage.SDK.TargetSelector
         private void OnSelectionChanged(object sender, PropertyChangedEventArgs e)
         {
             this.Active = this.GetSelection();
+        }
+
+        private void ShowTargetParticleOnPropertyChanged(object sender, PropertyChangedEventArgs args)
+        {
+            this.updateHandler.IsEnabled = this.Config.ShowTargetParticle;
+            this.Particle.Value.Remove("ActiveTargetSelectorTarget");
         }
     }
 }

@@ -4,32 +4,31 @@
 
 namespace Ensage.SDK.Abilities.npc_dota_hero_visage
 {
-    using System.Linq;
-
     using Ensage.SDK.Extensions;
 
-    public class visage_soul_assumption : RangedAbility, IHasModifier
+    public class visage_soul_assumption : RangedAbility
     {
         public visage_soul_assumption(Ability ability)
             : base(ability)
         {
         }
 
-        public string ModifierName { get; } = "modifier_visage_soul_assumption";
+        public string ChargeModifierName { get; } = "modifier_visage_soul_assumption";
 
-        public float StackCount
+        public float Charges
         {
             get
             {
-                return this.Owner.Modifiers.FirstOrDefault(x => x.Name == "modifier_visage_soul_assumption")?.StackCount ?? 0;
+                var modifier = this.Owner.GetModifierByName(this.ChargeModifierName);
+                return modifier?.StackCount ?? 0;
             }
         }
 
-        public bool MaxStack
+        public bool MaxCharges
         {
             get
             {
-                return StackCount == this.Ability.GetAbilitySpecialData("stack_limit");
+                return this.Charges == this.Ability.GetAbilitySpecialData("stack_limit");
             }
         }
 
@@ -40,7 +39,7 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_visage
                 var damage = this.Ability.GetAbilitySpecialData("soul_base_damage");
 
                 var bonus = this.Ability.GetAbilitySpecialData("soul_charge_damage");
-                damage += StackCount * bonus;
+                damage += this.Charges * bonus;
 
                 return damage;
             }

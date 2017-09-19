@@ -104,6 +104,10 @@
     <Compile Include="Abilities\IAuraAbility.cs" />
     <Compile Include="Abilities\Dagon.cs" />
     <Compile Include="Abilities\DiffusalBlade.cs" />
+    <Compile Include="Abilities\npc_dota_hero_silencer\silencer_global_silence.cs" />
+    <Compile Include="Abilities\npc_dota_hero_silencer\silencer_last_word.cs" />
+    <Compile Include="Abilities\npc_dota_hero_silencer\silencer_glaives_of_wisdom.cs" />
+    <Compile Include="Abilities\npc_dota_hero_silencer\silencer_curse_of_the_silent.cs" />
     <Compile Include="Abilities\npc_dota_hero_terrorblade\terrorblade_metamorphosis.cs" />
     <Compile Include="Abilities\npc_dota_hero_terrorblade\terrorblade_conjure_image.cs" />
     <Compile Include="Abilities\npc_dota_hero_terrorblade\terrorblade_sunder.cs" />

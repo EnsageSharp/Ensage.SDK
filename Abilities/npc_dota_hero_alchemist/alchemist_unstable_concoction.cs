@@ -4,8 +4,6 @@
 
 namespace Ensage.SDK.Abilities.npc_dota_hero_alchemist
 {
-    using System;
-    using System.ComponentModel.Composition;
     using System.Linq;
 
     using Ensage.SDK.Extensions;

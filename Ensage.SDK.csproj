@@ -104,6 +104,10 @@
     <Compile Include="Abilities\IAuraAbility.cs" />
     <Compile Include="Abilities\Dagon.cs" />
     <Compile Include="Abilities\DiffusalBlade.cs" />
+    <Compile Include="Abilities\npc_dota_hero_terrorblade\terrorblade_metamorphosis.cs" />
+    <Compile Include="Abilities\npc_dota_hero_terrorblade\terrorblade_conjure_image.cs" />
+    <Compile Include="Abilities\npc_dota_hero_terrorblade\terrorblade_sunder.cs" />
+    <Compile Include="Abilities\npc_dota_hero_terrorblade\terrorblade_reflection.cs" />
     <Compile Include="Abilities\npc_dota_hero_legion_commander\legion_commander_press_the_attack.cs" />
     <Compile Include="Abilities\npc_dota_hero_legion_commander\legion_commander_duel.cs" />
     <Compile Include="Abilities\npc_dota_hero_legion_commander\legion_commander_overwhelming_odds.cs" />

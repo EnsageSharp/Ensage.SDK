@@ -66,7 +66,7 @@ namespace Ensage.SDK.Inventory
         {
             var targetType = target.GetType();
 
-            foreach (var property in targetType.GetProperties())
+            foreach (var property in targetType.GetProperties(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic))
             {
                 try
                 {

@@ -803,8 +803,16 @@ namespace Ensage.SDK.Extensions
         {
             try
             {
-                var turnRate = Game.FindKeyValues($"{unit.Name}/MovementTurnRate", unit is Hero ? KeyValueSource.Hero : KeyValueSource.Unit).FloatValue;
-
+                var turnRate = 0.0f;
+                if (unit.IsNeutral)
+                {
+                    turnRate = 0.5f;
+                }
+                else
+                {
+                    turnRate = Game.FindKeyValues($"{unit.Name}/MovementTurnRate", unit is Hero ? KeyValueSource.Hero : KeyValueSource.Unit).FloatValue;
+                }
+                
                 if (currentTurnRate)
                 {
                     if (unit.HasModifier("modifier_medusa_stone_gaze_slow"))

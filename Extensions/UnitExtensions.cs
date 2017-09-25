@@ -801,30 +801,32 @@ namespace Ensage.SDK.Extensions
 
         public static float TurnRate(this Unit unit, bool currentTurnRate = true)
         {
+            float turnRate;
+            
             try
             {
-                var turnRate = Game.FindKeyValues($"{unit.Name}/MovementTurnRate", unit is Hero ? KeyValueSource.Hero : KeyValueSource.Unit).FloatValue;
-
-                if (currentTurnRate)
-                {
-                    if (unit.HasModifier("modifier_medusa_stone_gaze_slow"))
-                    {
-                        turnRate *= 0.65f;
-                    }
-
-                    if (unit.HasModifier("modifier_batrider_sticky_napalm"))
-                    {
-                        turnRate *= 0.3f;
-                    }
-                }
-
-                return turnRate;
+                turnRate = Game.FindKeyValues($"{unit.Name}/MovementTurnRate", unit is Hero ? KeyValueSource.Hero : KeyValueSource.Unit).FloatValue;
             }
             catch (KeyValuesNotFoundException)
             {
-                Log.Warn($"Missing MovementTurnRate for {unit.Name}");
-                return 0.5f;
+                // Log.Warn($"Missing MovementTurnRate for {unit.Name}");
+                turnRate = 0.5f;
             }
+
+            if (currentTurnRate)
+            {
+                if (unit.HasModifier("modifier_medusa_stone_gaze_slow"))
+                {
+                    turnRate *= 0.65f;
+                }
+
+                if (unit.HasModifier("modifier_batrider_sticky_napalm"))
+                {
+                    turnRate *= 0.3f;
+                }
+            }
+
+            return turnRate;
         }
 
         public static float TurnTime(this Unit unit, Vector3 position)

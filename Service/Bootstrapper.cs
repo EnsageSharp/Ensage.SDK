@@ -162,7 +162,8 @@ namespace Ensage.SDK.Service
                 this.Default.RegisterValue(this);
 
                 Log.Debug($">> Building Logger");
-                this.CreateLogger();
+                // TODO: setup new logging server
+                // this.CreateLogger();
 
                 Log.Debug($">> Initializing Services");
                 IoC.Initialize(this.BuildUp, this.GetInstance, this.GetAllInstances);

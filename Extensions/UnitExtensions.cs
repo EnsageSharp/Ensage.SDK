@@ -483,10 +483,9 @@ namespace Ensage.SDK.Extensions
                 spellAmp += hero.TotalIntelligence / 14.0f / 100.0f;
             }
 
-            var aether = source.GetItemById(AbilityId.item_aether_lens);
-            if (aether != null)
+            foreach (var item in source.Inventory.Items.Where(x => x.Id == AbilityId.item_aether_lens))
             {
-                spellAmp += aether.AbilitySpecialData.First(x => x.Name == "spell_amp").Value / 100.0f;
+                spellAmp += item.AbilitySpecialData.First(x => x.Name == "spell_amp").Value / 100.0f;
             }
 
             var talents = source.Spellbook.Spells.Where(x => x.Level > 0 && x.Name.StartsWith("special_bonus_spell_amplify_"));

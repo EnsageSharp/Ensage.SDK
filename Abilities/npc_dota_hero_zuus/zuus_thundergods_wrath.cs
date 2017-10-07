@@ -7,11 +7,26 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_zuus
     using Ensage.SDK.Extensions;
     using Ensage.SDK.Helpers;
 
-    public class zuus_thundergods_wrath : ActiveAbility
+    public class zuus_thundergods_wrath : ActiveAbility, IAreaOfEffectAbility
     {
+        private readonly zuus_static_field staticField;
+
         public zuus_thundergods_wrath(Ability ability)
             : base(ability)
         {
+            var passive = this.Owner.GetAbilityById(AbilityId.zuus_static_field);
+            if (passive != null)
+            {
+                this.staticField = new zuus_static_field(passive);
+            }
+        }
+
+        public float Radius
+        {
+            get
+            {
+                return float.MaxValue;
+            }
         }
 
         protected override float RawDamage
@@ -39,7 +54,7 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_zuus
                 totalDamage += DamageHelpers.GetSpellDamage(damage, amplify, reduction);
             }
 
-            return totalDamage;
+            return totalDamage + (this.staticField?.GetDamage(targets) ?? 0);
         }
     }
 }

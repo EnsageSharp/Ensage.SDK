@@ -4,6 +4,8 @@
 
 namespace Ensage.SDK.Abilities.npc_dota_hero_zuus
 {
+    using System.Linq;
+
     using Ensage.SDK.Extensions;
     using Ensage.SDK.Helpers;
 
@@ -22,22 +24,29 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_zuus
             }
         }
 
+        protected override float RawDamage
+        {
+            get
+            {
+                var damagePercent = this.Ability.GetAbilitySpecialData("damage_health_pct");
+
+                var talent = this.Owner.GetAbilityById(AbilityId.special_bonus_unique_zeus);
+                if (talent != null && talent.Level > 0)
+                {
+                    damagePercent += talent.GetAbilitySpecialData("value");
+                }
+
+                return damagePercent / 100;
+            }
+        }
+
         public override float GetDamage(params Unit[] targets)
         {
-            // "4 6 8 10"
-            var damagePercent = this.Ability.GetAbilitySpecialData("damage_health_pct");
-
-            var talent = this.Owner.GetAbilityById(AbilityId.special_bonus_unique_zeus);
-            if (talent != null && talent.Level > 0)
-            {
-                damagePercent += talent.GetAbilitySpecialData("value");
-            }
-
-            damagePercent /= 100.0f;
+            var damagePercent = this.RawDamage;
             var amplify = this.Owner.GetSpellAmplification();
 
             var totalDamage = 0.0f;
-            foreach (var target in targets)
+            foreach (var target in targets.Where(x => x.Distance2D(this.Owner) <= this.Radius))
             {
                 var reduction = this.Ability.GetDamageReduction(target, this.DamageType);
                 var damage = damagePercent * target.Health;

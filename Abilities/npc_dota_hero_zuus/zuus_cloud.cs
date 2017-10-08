@@ -16,7 +16,7 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_zuus
         public zuus_cloud(Ability ability)
             : base(ability)
         {
-            var bolt = this.Owner.GetAbilityById(AbilityId.zuus_arc_lightning);
+            var bolt = this.Owner.GetAbilityById(AbilityId.zuus_lightning_bolt);
             if (bolt != null)
             {
                 this.lightningBolt = new zuus_lightning_bolt(bolt);

@@ -17,7 +17,7 @@ namespace Ensage.SDK.Helpers
     using SharpDX;
 
     // WIP
-    private class CreepWave
+    public class CreepWave
     {
         private const float BoostSpeed = 422.5f;
 

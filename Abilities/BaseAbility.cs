@@ -4,6 +4,8 @@
 
 namespace Ensage.SDK.Abilities
 {
+    using PlaySharp.Toolkit.Helper.Annotations;
+
     public abstract class BaseAbility
     {
         protected BaseAbility(Ability ability)
@@ -49,6 +51,7 @@ namespace Ensage.SDK.Abilities
             }
         }
 
+        [CanBeNull]
         public Item Item
         {
             get
@@ -94,6 +97,11 @@ namespace Ensage.SDK.Abilities
         }
 
         public virtual float GetDamage(params Unit[] targets)
+        {
+            return 0;
+        }
+
+        public virtual float GetDamage(Unit target, float damageModifier, float targetHealth = float.MinValue)
         {
             return 0;
         }

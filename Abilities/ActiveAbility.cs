@@ -12,6 +12,7 @@ namespace Ensage.SDK.Abilities
 
     using log4net;
 
+    using PlaySharp.Toolkit.Helper.Annotations;
     using PlaySharp.Toolkit.Logging;
 
     using SharpDX;
@@ -177,6 +178,20 @@ namespace Ensage.SDK.Abilities
             return DamageHelpers.GetSpellDamage(damage, amplify, reduction);
         }
 
+        public override float GetDamage([NotNull] Unit target, float damageModifier, float targetHealth = float.MinValue)
+        {
+            var damage = this.RawDamage;
+            if (damage == 0)
+            {
+                return 0;
+            }
+
+            var amplify = this.Owner.GetSpellAmplification();
+            var reduction = this.Ability.GetDamageReduction(target, this.DamageType);
+   
+            return DamageHelpers.GetSpellDamage(damage, amplify, -reduction, damageModifier);
+        }
+
         /// <summary>
         ///     Gets the time until the ability lands on the target. This includes the cast time and assumes that you are in range
         ///     to cast.
@@ -230,7 +245,20 @@ namespace Ensage.SDK.Abilities
                 return false;
             }
 
-            var result = this.Ability.UseAbility(target);
+            bool result;
+            if ((this.Ability.AbilityBehavior & AbilityBehavior.NoTarget) == AbilityBehavior.NoTarget)
+            {
+                result = this.Ability.UseAbility();    
+            }
+            else if ((this.Ability.AbilityBehavior & AbilityBehavior.Point) == AbilityBehavior.Point)
+            {
+                result = this.Ability.UseAbility(target.NetworkPosition);
+            }
+            else
+            {
+                result = this.Ability.UseAbility(target);
+            }
+
             if (result)
             {
                 this.LastCastAttempt = Game.RawGameTime;
@@ -264,7 +292,16 @@ namespace Ensage.SDK.Abilities
                 return false;
             }
 
-            var result = this.Ability.UseAbility(position);
+            bool result;
+            if ((this.Ability.AbilityBehavior & AbilityBehavior.NoTarget) == AbilityBehavior.NoTarget)
+            {
+                result = this.Ability.UseAbility();
+            }
+            else
+            {
+                result = this.Ability.UseAbility(position);
+            }
+
             if (result)
             {
                 this.LastCastAttempt = Game.RawGameTime;

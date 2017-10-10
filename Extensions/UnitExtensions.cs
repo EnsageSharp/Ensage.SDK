@@ -350,7 +350,7 @@ namespace Ensage.SDK.Extensions
         /// <param name="source">The attacker</param>
         /// <param name="target">The target</param>
         /// <returns></returns>
-        public static float GetAttackDamage(this Unit source, Unit target, bool useMinimumDamage = false)
+        public static float GetAttackDamage(this Unit source, Unit target, bool useMinimumDamage = false, float damageAmplifier = 0.0f)
         {
             float damage = (!useMinimumDamage ? source.DamageAverage : source.MinimumDamage) + source.BonusDamage;
             var mult = 1f;
@@ -412,7 +412,7 @@ namespace Ensage.SDK.Extensions
             var armor = target.Armor;
 
             mult *= 1 - ((0.06f * armor) / (1 + (0.06f * Math.Abs(armor))));
-
+            mult *= (1.0f + damageAmplifier);
             return damage * mult;
         }
 

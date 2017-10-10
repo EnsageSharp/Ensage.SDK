@@ -1,4 +1,8 @@
-namespace Ensage.SDK.Abilities
+// <copyright file="TravelBoots.cs" company="Ensage">
+//    Copyright (c) 2017 Ensage.
+// </copyright>
+
+namespace Ensage.SDK.Abilities.Aggregation
 {
     public abstract class TravelBoots : RangedAbility, IChannable, IHasModifier
     {
@@ -28,7 +32,9 @@ namespace Ensage.SDK.Abilities
                 return this.Ability.IsChanneling;
             }
         }
-        
+
+        public string ModifierName { get; } = "modifier_teleporting";
+
         public float RemainingDuration
         {
             get
@@ -41,7 +47,5 @@ namespace Ensage.SDK.Abilities
                 return this.Duration - this.Ability.ChannelTime;
             }
         }
-
-        public string ModifierName { get; } = "modifier_teleporting";
     }
 }

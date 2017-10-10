@@ -4,7 +4,12 @@
 
 namespace Ensage.SDK.Abilities.Items
 {
-    public class item_veil_of_discord : AreaOfEffectAbility, IHasTargetModifier
+    using Ensage.SDK.Abilities.Components;
+    using Ensage.SDK.Extensions;
+    using PlaySharp.Toolkit.Helper.Annotations;
+
+    [PublicAPI]
+    public class item_veil_of_discord : AreaOfEffectAbility, IHasTargetModifier, IHasDamageAmplifier
     {
         public item_veil_of_discord(Item item)
             : base(item)
@@ -12,6 +17,16 @@ namespace Ensage.SDK.Abilities.Items
         }
 
         public string TargetModifierName { get; } = "modifier_item_veil_of_discord_debuff";
+
+        public DamageType AmplifierType { get; } = DamageType.Magical;
+
+        public float Value
+        {
+            get
+            {
+                return -this.Ability.GetAbilitySpecialData("resist_debuff") / 100.0f; // -25
+            }
+        }
 
         protected override string RadiusName { get; } = "debuff_radius";
     }

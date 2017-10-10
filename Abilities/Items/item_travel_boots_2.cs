@@ -4,6 +4,8 @@
 
 namespace Ensage.SDK.Abilities.Items
 {
+    using Ensage.SDK.Abilities.Aggregation;
+
     public class item_travel_boots_2 : TravelBoots, IHasModifierTexture
     {
         public item_travel_boots_2(Item item)

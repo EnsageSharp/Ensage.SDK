@@ -6,15 +6,20 @@ namespace Ensage.SDK.Abilities.Items
 {
     using System.Linq;
 
+    using Ensage.SDK.Abilities.Components;
     using Ensage.SDK.Extensions;
     using Ensage.SDK.Helpers;
+    using PlaySharp.Toolkit.Helper.Annotations;
 
-    public class item_ethereal_blade : RangedAbility, IHasTargetModifier
+    [PublicAPI]
+    public class item_ethereal_blade : RangedAbility, IHasTargetModifier, IHasDamageAmplifier
     {
         public item_ethereal_blade(Item item)
             : base(item)
         {
         }
+
+        public DamageType AmplifierType { get; } = DamageType.Magical;
 
         public override DamageType DamageType
         {
@@ -33,6 +38,14 @@ namespace Ensage.SDK.Abilities.Items
         }
 
         public string TargetModifierName { get; } = "modifier_item_ethereal_blade_ethereal";
+
+        public float Value
+        {
+            get
+            {
+                return -this.Ability.GetAbilitySpecialData("ethereal_damage_bonus") / 100.0f;
+            }
+        }
 
         protected override float RawDamage
         {

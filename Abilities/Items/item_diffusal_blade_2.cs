@@ -4,6 +4,8 @@
 
 namespace Ensage.SDK.Abilities.Items
 {
+    using Ensage.SDK.Abilities.Aggregation;
+
     public class item_diffusal_blade_2 : DiffusalBlade
     {
         public item_diffusal_blade_2(Item item)

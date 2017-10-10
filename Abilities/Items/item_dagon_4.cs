@@ -4,6 +4,8 @@
 
 namespace Ensage.SDK.Abilities.Items
 {
+    using Ensage.SDK.Abilities.Aggregation;
+
     public class item_dagon_4 : Dagon
     {
         public item_dagon_4(Item item)

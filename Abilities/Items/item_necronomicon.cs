@@ -4,6 +4,8 @@
 
 namespace Ensage.SDK.Abilities.Items
 {
+    using Ensage.SDK.Abilities.Aggregation;
+
     public class item_necronomicon : Necronomicon
     {
         public item_necronomicon(Item item)

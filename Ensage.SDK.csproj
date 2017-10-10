@@ -43,44 +43,44 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="clipper_library">
-      <HintPath>C:\Users\osman\Desktop\Dota 2\EnsageSharp\References\clipper_library.dll</HintPath>
+      <HintPath>C:\EnsageSharp\References\clipper_library.dll</HintPath>
     </Reference>
     <Reference Include="Ensage">
-      <HintPath>C:\Users\osman\Desktop\Dota 2\EnsageSharp\References\Ensage.dll</HintPath>
+      <HintPath>C:\EnsageSharp\References\Ensage.dll</HintPath>
     </Reference>
     <Reference Include="Ensage.Common">
-      <HintPath>C:\Users\osman\Desktop\Dota 2\EnsageSharp\References\Ensage.Common.dll</HintPath>
+      <HintPath>C:\EnsageSharp\References\Ensage.Common.dll</HintPath>
     </Reference>
     <Reference Include="EnsageSharp.Sandbox">
-      <HintPath>C:\Users\osman\Desktop\Dota 2\EnsageSharp\System\EnsageSharp.Sandbox.dll</HintPath>
+      <HintPath>C:\EnsageSharp\System\EnsageSharp.Sandbox.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Newtonsoft.Json">
-      <HintPath>C:\Users\osman\Desktop\Dota 2\EnsageSharp\References\Newtonsoft.Json.dll</HintPath>
+      <HintPath>C:\EnsageSharp\References\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="PlaySharp.Sentry">
-      <HintPath>C:\Users\osman\Desktop\Dota 2\EnsageSharp\References\PlaySharp.Sentry.dll</HintPath>
+      <HintPath>C:\EnsageSharp\References\PlaySharp.Sentry.dll</HintPath>
     </Reference>
     <Reference Include="PlaySharp.Toolkit">
-      <HintPath>C:\Users\osman\Desktop\Dota 2\EnsageSharp\References\PlaySharp.Toolkit.dll</HintPath>
+      <HintPath>C:\EnsageSharp\References\PlaySharp.Toolkit.dll</HintPath>
     </Reference>
     <Reference Include="SharpDX">
-      <HintPath>C:\Users\osman\Desktop\Dota 2\EnsageSharp\References\SharpDX.dll</HintPath>
+      <HintPath>C:\EnsageSharp\References\SharpDX.dll</HintPath>
     </Reference>
     <Reference Include="SharpDX.Direct2D1">
-      <HintPath>C:\Users\osman\Desktop\Dota 2\EnsageSharp\References\SharpDX.Direct2D1.dll</HintPath>
+      <HintPath>C:\EnsageSharp\References\SharpDX.Direct2D1.dll</HintPath>
     </Reference>
     <Reference Include="SharpDX.Direct3D11">
-      <HintPath>C:\Users\osman\Desktop\Dota 2\EnsageSharp\References\SharpDX.Direct3D11.dll</HintPath>
+      <HintPath>C:\EnsageSharp\References\SharpDX.Direct3D11.dll</HintPath>
     </Reference>
     <Reference Include="SharpDX.Direct3D9">
-      <HintPath>C:\Users\osman\Desktop\Dota 2\EnsageSharp\References\SharpDX.Direct3D9.dll</HintPath>
+      <HintPath>C:\EnsageSharp\References\SharpDX.Direct3D9.dll</HintPath>
     </Reference>
     <Reference Include="SharpDX.DXGI">
-      <HintPath>C:\Users\osman\Desktop\Dota 2\EnsageSharp\References\SharpDX.DXGI.dll</HintPath>
+      <HintPath>C:\EnsageSharp\References\SharpDX.DXGI.dll</HintPath>
     </Reference>
     <Reference Include="SharpDX.Mathematics">
-      <HintPath>C:\Users\osman\Desktop\Dota 2\EnsageSharp\References\SharpDX.Mathematics.dll</HintPath>
+      <HintPath>C:\EnsageSharp\References\SharpDX.Mathematics.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
@@ -99,11 +99,12 @@
     <Compile Include="Abilities\ActiveAbility.cs" />
     <Compile Include="Abilities\AutocastAbility.cs" />
     <Compile Include="Abilities\BaseAbility.cs" />
-    <Compile Include="Abilities\Necronomicon.cs" />
+    <Compile Include="Abilities\Components\IHasDamageAmplifier.cs" />
+    <Compile Include="Abilities\Aggregation\Necronomicon.cs" />
     <Compile Include="Abilities\IAreaOfEffectAbility.cs" />
     <Compile Include="Abilities\IAuraAbility.cs" />
-    <Compile Include="Abilities\Dagon.cs" />
-    <Compile Include="Abilities\DiffusalBlade.cs" />
+    <Compile Include="Abilities\Aggregation\Dagon.cs" />
+    <Compile Include="Abilities\Aggregation\DiffusalBlade.cs" />
     <Compile Include="Abilities\npc_dota_hero_silencer\silencer_global_silence.cs" />
     <Compile Include="Abilities\npc_dota_hero_silencer\silencer_last_word.cs" />
     <Compile Include="Abilities\npc_dota_hero_silencer\silencer_glaives_of_wisdom.cs" />
@@ -138,7 +139,7 @@
     <Compile Include="Abilities\npc_dota_hero_visage\visage_grave_chill.cs" />
     <Compile Include="Abilities\npc_dota_hero_visage\visage_soul_assumption.cs" />
     <Compile Include="Abilities\npc_dota_hero_visage\visage_summon_familiars.cs" />
-    <Compile Include="Abilities\TravelBoots.cs" />
+    <Compile Include="Abilities\Aggregation\TravelBoots.cs" />
     <Compile Include="Abilities\Items\IItemInfo.cs" />
     <Compile Include="Abilities\Items\item_abyssal_blade.cs" />
     <Compile Include="Abilities\Items\item_ancient_janggo.cs" />
@@ -257,8 +258,8 @@
     <Compile Include="Abilities\npc_dota_hero_crystal_maiden\crystal_maiden_freezing_field.cs" />
     <Compile Include="Abilities\npc_dota_hero_crystal_maiden\crystal_maiden_frostbite.cs" />
     <Compile Include="Abilities\npc_dota_hero_drow_ranger\drow_ranger_frost_arrows.cs" />
-    <Compile Include="Abilities\IHasModifier.cs" />
-    <Compile Include="Abilities\IHasTargetModifier.cs" />
+    <Compile Include="Abilities\Components\IHasModifier.cs" />
+    <Compile Include="Abilities\Components\IHasTargetModifier.cs" />
     <Compile Include="Abilities\npc_dota_hero_drow_ranger\drow_ranger_marksmanship.cs" />
     <Compile Include="Abilities\npc_dota_hero_drow_ranger\drow_ranger_wave_of_silence.cs" />
     <Compile Include="Abilities\npc_dota_hero_ember_spirit\ember_spirit_activate_fire_remnant.cs" />
@@ -269,7 +270,7 @@
     <Compile Include="Abilities\npc_dota_hero_enigma\enigma_black_hole.cs" />
     <Compile Include="Abilities\npc_dota_hero_enigma\enigma_demonic_conversion.cs" />
     <Compile Include="Abilities\npc_dota_hero_enigma\enigma_malefice.cs" />
-    <Compile Include="Abilities\IHasDot.cs" />
+    <Compile Include="Abilities\Components\IHasDot.cs" />
     <Compile Include="Abilities\npc_dota_hero_enigma\enigma_midnight_pulse.cs" />
     <Compile Include="Abilities\npc_dota_hero_juggernaut\juggernaut_blade_dance.cs" />
     <Compile Include="Abilities\npc_dota_hero_juggernaut\juggernaut_blade_fury.cs" />
@@ -284,10 +285,10 @@
     <Compile Include="Abilities\AuraAbility.cs" />
     <Compile Include="Abilities\npc_dota_hero_drow_ranger\drow_ranger_trueshot.cs" />
     <Compile Include="Abilities\AreaOfEffectAbility.cs" />
-    <Compile Include="Abilities\IHasHealthCost.cs" />
+    <Compile Include="Abilities\Components\IHasHealthCost.cs" />
     <Compile Include="Abilities\IChannable.cs" />
-    <Compile Include="Abilities\IHasCritChance.cs" />
-    <Compile Include="Abilities\IHasProcChance.cs" />
+    <Compile Include="Abilities\Components\IHasCritChance.cs" />
+    <Compile Include="Abilities\Components\IHasProcChance.cs" />
     <Compile Include="Abilities\npc_dota_hero_obsidian_destroyer\obsidian_destroyer_astral_imprisonment.cs" />
     <Compile Include="Abilities\npc_dota_hero_obsidian_destroyer\obsidian_destroyer_essence_aura.cs" />
     <Compile Include="Abilities\npc_dota_hero_obsidian_destroyer\obsidian_destroyer_sanity_eclipse.cs" />
@@ -307,8 +308,8 @@
     <Compile Include="Abilities\npc_dota_hero_queenofpain\queenofpain_shadow_strike.cs" />
     <Compile Include="Abilities\npc_dota_hero_queenofpain\queenofpain_sonic_wave.cs" />
     <Compile Include="Abilities\CircleAbility.cs" />
-    <Compile Include="Abilities\IHasModifierTexture.cs" />
-    <Compile Include="Abilities\IHasTargetModifierTexture.cs" />
+    <Compile Include="Abilities\Components\IHasModifierTexture.cs" />
+    <Compile Include="Abilities\Components\IHasTargetModifierTexture.cs" />
     <Compile Include="Abilities\npc_dota_hero_rattletrap\rattletrap_battery_assault.cs" />
     <Compile Include="Abilities\npc_dota_hero_rattletrap\rattletrap_hookshot.cs" />
     <Compile Include="Abilities\npc_dota_hero_rattletrap\rattletrap_power_cogs.cs" />
@@ -372,6 +373,8 @@
     <Compile Include="Helpers\AbilityDetector.cs" />
     <Compile Include="Helpers\AbilityEventArgs.cs" />
     <Compile Include="Helpers\CircularBuffer.cs" />
+    <Compile Include="Helpers\Combo.cs" />
+    <Compile Include="Helpers\CreepInfo.cs" />
     <Compile Include="Helpers\DebugTableConfig.cs" />
     <Compile Include="Helpers\DetectedAbility.cs" />
     <Compile Include="Helpers\IAbilityDetector.cs" />
@@ -584,6 +587,7 @@
     <EmbeddedResource Include="Resources\RadiantMiddleRoute.json" />
     <EmbeddedResource Include="Resources\RadiantTopRoute.json" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

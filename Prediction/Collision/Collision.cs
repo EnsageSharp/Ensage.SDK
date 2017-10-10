@@ -19,13 +19,13 @@ namespace Ensage.SDK.Prediction.Collision
             var buffer = 0f;
             foreach (var obj in collisionObjects)
             {
-                if (obj.Position.Distance(startPosition, endPosition, true, true) < ((radius + obj.Radius + buffer) * (radius + obj.Radius + buffer)))
+                if (obj.Position.Distance2D(startPosition, endPosition, true, true) < ((radius + obj.Radius + buffer) * (radius + obj.Radius + buffer)))
                 {
                     objects.Add(obj);
                 }
             }
 
-            objects = objects.OrderBy((obj) => startPosition.Distance(obj.Position)).ToList();
+            objects = objects.OrderBy((obj) => startPosition.Distance2D(obj.Position)).ToList();
 
             return new CollisionResult(objects);
         }

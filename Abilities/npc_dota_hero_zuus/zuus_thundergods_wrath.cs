@@ -4,9 +4,14 @@
 
 namespace Ensage.SDK.Abilities.npc_dota_hero_zuus
 {
+    using System.Linq;
+
     using Ensage.SDK.Extensions;
     using Ensage.SDK.Helpers;
 
+    using PlaySharp.Toolkit.Helper.Annotations;
+
+    [PublicAPI]
     public class zuus_thundergods_wrath : ActiveAbility, IAreaOfEffectAbility
     {
         private readonly zuus_static_field staticField;
@@ -21,13 +26,7 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_zuus
             }
         }
 
-        public float Radius
-        {
-            get
-            {
-                return float.MaxValue;
-            }
-        }
+        public float Radius { get; } = float.MaxValue;
 
         protected override float RawDamage
         {
@@ -35,6 +34,11 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_zuus
             {
                 return this.Ability.GetAbilitySpecialData("damage");
             }
+        }
+
+        public override bool CanHit(params Unit[] targets)
+        {
+            return targets.All(x => x.Distance2D(this.Owner) < (this.CastRange + this.Radius));
         }
 
         public override float GetDamage(params Unit[] targets)

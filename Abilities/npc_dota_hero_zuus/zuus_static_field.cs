@@ -9,6 +9,8 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_zuus
     using Ensage.SDK.Extensions;
     using Ensage.SDK.Helpers;
 
+    using PlaySharp.Toolkit.Helper.Annotations;
+
     public class zuus_static_field : PassiveAbility, IAreaOfEffectAbility
     {
         public zuus_static_field(Ability ability)
@@ -54,6 +56,26 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_zuus
             }
 
             return totalDamage;
+        }
+
+        public override float GetDamage([NotNull] Unit target, float damageModifier, float targetHealth = float.MinValue)
+        {
+            if (target.Distance2D(this.Owner) > this.Radius)
+            {
+                return 0;
+            }
+
+            if (targetHealth == float.MinValue)
+            {
+                targetHealth = target.Health;
+            }
+
+            var damagePercent = this.RawDamage;
+            var damage = damagePercent * targetHealth;
+            var amplify = this.Owner.GetSpellAmplification();
+            var reduction = this.Ability.GetDamageReduction(target, this.DamageType);
+
+            return DamageHelpers.GetSpellDamage(damage, amplify, -reduction, damageModifier);
         }
     }
 }

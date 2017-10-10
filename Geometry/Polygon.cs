@@ -309,7 +309,7 @@ namespace Ensage.SDK.Geometry
             {
                 get
                 {
-                    return this.LineStart.Distance(this.LineEnd);
+                    return this.LineStart.Distance2D(this.LineEnd);
                 }
 
                 set

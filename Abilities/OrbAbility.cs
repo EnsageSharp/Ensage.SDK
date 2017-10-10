@@ -4,6 +4,7 @@
 
 namespace Ensage.SDK.Abilities
 {
+    using System;
     using System.Linq;
 
     using Ensage.SDK.Extensions;
@@ -56,6 +57,11 @@ namespace Ensage.SDK.Abilities
             }
 
             return owner.GetAttackDamage(targets.First());
+        }
+
+        public override float GetDamage(Unit target, float physicalDamageModifier, float targetHealth = float.MinValue)
+        {
+            return this.Owner.GetAttackDamage(target, false, physicalDamageModifier);
         }
     }
 }

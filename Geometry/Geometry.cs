@@ -70,7 +70,7 @@ namespace Ensage.SDK.Geometry
         /// <returns></returns>
         public static Vector2[] CircleCircleIntersection(Vector2 center1, Vector2 center2, float radius1, float radius2)
         {
-            var D = center1.Distance(center2);
+            var D = center1.Distance2D(center2);
 
             // The Circles dont intersect:
             if (D > (radius1 + radius2) || D <= Math.Abs(radius1 - radius2))
@@ -157,6 +157,65 @@ namespace Ensage.SDK.Geometry
             return result;
         }
 
+        public static Vector3 GetClosestPoint(List<Vector3> route, Vector3 v)
+        {
+            int tmp;
+            return GetClosestPoint(route, v, out tmp);
+        }
+
+        public static Vector3 GetClosestPoint(List<Vector3> route, Vector3 v, out int index)
+        {
+            index = 0;
+            Vector3 bestResult = v;
+            var bestDistance = float.MaxValue;
+            for (var i = 0; i < route.Count - 1; ++i)
+            {
+                var p1 = route[i];
+                var p2 = route[i + 1];
+
+                var AP = v - p1; 
+                var AB = p2 - p1; 
+
+                var magnitudeAB = AB.LengthSquared();  
+                var ABAPproduct = Vector3.Dot(AP, AB); 
+                var distance = ABAPproduct / magnitudeAB;
+
+                if (distance < 0)
+                {
+                    distance = AP.Length();
+                    if (bestDistance < distance)
+                    {
+                        bestDistance = distance;
+                        bestResult = p1;
+                        index = i;
+                    }
+                }
+                else if (distance > 1)
+                {
+                    distance = (v - p2).Length();
+                    if (bestDistance < distance)
+                    {
+                        bestDistance = distance;
+                        bestResult = p2;
+                        index = i + 1;
+                    }
+                }
+                else
+                {
+                    var p = p1 + (AB * distance);
+                    distance = (v - p).Length();
+                    if (bestDistance < distance)
+                    {
+                        bestDistance = distance;
+                        bestResult = p;
+                        index = i;
+                    }
+                }
+            }
+
+            return bestResult;
+        }
+
         /// <summary>
         ///     Returns the cross product Z value.
         /// </summary>
@@ -185,9 +244,9 @@ namespace Ensage.SDK.Geometry
         /// <param name="other">The other.</param>
         /// <param name="squared">if set to <c>true</c> [squared].</param>
         /// <returns></returns>
-        public static float Distance(this Vector3 v, Vector3 other, bool squared = false)
+        public static float Distance2D(this Vector3 v, Vector3 other, bool squared = false)
         {
-            return v.To2D().Distance(other, squared);
+            return v.To2D().Distance2D(other, squared);
         }
 
         /// <summary>
@@ -197,7 +256,7 @@ namespace Ensage.SDK.Geometry
         /// <param name="to">To.</param>
         /// <param name="squared">if set to <c>true</c> gets the distance squared.</param>
         /// <returns></returns>
-        public static float Distance(this Vector2 v, Vector2 to, bool squared = false)
+        public static float Distance2D(this Vector2 v, Vector2 to, bool squared = false)
         {
             return squared ? Vector2.DistanceSquared(v, to) : Vector2.Distance(v, to);
         }
@@ -209,12 +268,12 @@ namespace Ensage.SDK.Geometry
         /// <param name="to">To.</param>
         /// <param name="squared">if set to <c>true</c> gets the distance squared.</param>
         /// <returns></returns>
-        public static float Distance(this Vector2 v, Vector3 to, bool squared = false)
+        public static float Distance2D(this Vector2 v, Vector3 to, bool squared = false)
         {
-            return v.Distance(to.To2D(), squared);
+            return v.Distance2D(to.To2D(), squared);
         }
 
-        public static float Distance(this Vector2 point, Vector2 segmentStart, Vector2 segmentEnd, bool onlyIfOnSegment = false, bool squared = false)
+        public static float Distance2D(this Vector2 point, Vector2 segmentStart, Vector2 segmentEnd, bool onlyIfOnSegment = false, bool squared = false)
         {
             var objects = point.ProjectOn(segmentStart, segmentEnd);
 
@@ -409,7 +468,7 @@ namespace Ensage.SDK.Geometry
             var distance = 0f;
             for (var i = 0; i < (path.Count - 1); i++)
             {
-                distance += path[i].Distance(path[i + 1]);
+                distance += path[i].Distance2D(path[i + 1]);
             }
 
             return distance;
@@ -481,7 +540,7 @@ namespace Ensage.SDK.Geometry
             {
                 var from = self[i];
                 var to = self[i + 1];
-                var d = (int)to.Distance(from);
+                var d = (int)to.Distance2D(from);
                 if (d > distance)
                 {
                     return from + (distance * (to - @from).Normalized());

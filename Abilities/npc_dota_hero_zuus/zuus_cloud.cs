@@ -9,6 +9,8 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_zuus
     using Ensage.SDK.Extensions;
     using Ensage.SDK.Helpers;
 
+    using PlaySharp.Toolkit.Helper.Annotations;
+
     public class zuus_cloud : RangedAbility, IAreaOfEffectAbility
     {
         private readonly zuus_lightning_bolt lightningBolt;
@@ -56,6 +58,20 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_zuus
 
             // no spell amp on cloud
             return DamageHelpers.GetSpellDamage(rawLightningDamage, 0, reduction);
+        }
+
+        public override float GetDamage([NotNull] Unit target, float damageModifier, float targetHealth = float.MinValue)
+        {
+            if (this.lightningBolt == null)
+            {
+                return 0;
+            }
+
+            var rawLightningDamage = this.lightningBolt.GetDamage();
+            var reduction = this.Ability.GetDamageReduction(target, this.DamageType);
+
+            // no spell amp on cloud
+            return DamageHelpers.GetSpellDamage(rawLightningDamage, 0, -reduction, damageModifier);
         }
     }
 }

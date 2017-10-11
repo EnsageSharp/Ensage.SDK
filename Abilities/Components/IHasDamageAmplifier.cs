@@ -8,6 +8,6 @@ namespace Ensage.SDK.Abilities.Components
     {
         DamageType AmplifierType { get; }
 
-        float Value { get; }
+        float DamageAmplification { get; }
     }
 }

@@ -152,8 +152,9 @@ namespace Ensage.SDK.Helpers
             }
 
             var damage = 0.0f;
-            var physicalDmgModifier = 0.0f;
-            var magicDmgModifier = 0.0f;
+            var physicalDmgModifier = 1f;
+            var magicDmgModifier = 1f;
+            var pureDmgModifier = 1f;
             var health = (float)target.Health;
             foreach (var ability in this.abilities)
             {
@@ -175,30 +176,38 @@ namespace Ensage.SDK.Helpers
                     var modifier = ability as IHasTargetModifier;
                     if (modifier == null || !target.HasModifier(modifier.TargetModifierName))
                     {
-                        if (amplifier.AmplifierType == DamageType.Physical)
+                        if (amplifier.AmplifierType.HasFlag(DamageType.Physical))
                         {
-                            physicalDmgModifier = ((1 + physicalDmgModifier) * (1 + amplifier.Value)) - 1;
+                            physicalDmgModifier *= 1 + amplifier.DamageAmplification;
                         }
-                        else if (amplifier.AmplifierType == DamageType.Magical)
+                        if (amplifier.AmplifierType.HasFlag(DamageType.Magical))
                         {
-                            magicDmgModifier = ((1 + magicDmgModifier) * (1 + amplifier.Value)) - 1;
+                            magicDmgModifier *= 1 + amplifier.DamageAmplification;
+                        }
+                        if (amplifier.AmplifierType.HasFlag(DamageType.Pure))
+                        {
+                            pureDmgModifier *= 1 + amplifier.DamageAmplification;
                         }
                     }
                 }
 
                 if (this.staticField != null && this.staticField.CanBeCasted && ability.Item == null && ability is ActiveAbility)
                 {
-                    damage += this.staticField.GetDamage(target, magicDmgModifier, Math.Max(0, health - damage));
+                    damage += this.staticField.GetDamage(target, magicDmgModifier - 1, Math.Max(0, health - damage));
                 }
 
                 var currentHealth = Math.Max(0, health - damage);
                 if (ability.DamageType == DamageType.Physical)
                 {
-                    damage += ability.GetDamage(target, physicalDmgModifier, currentHealth);
+                    damage += ability.GetDamage(target, physicalDmgModifier - 1, currentHealth);
                 }
                 else if (ability.DamageType == DamageType.Magical)
                 {
-                    damage += ability.GetDamage(target, magicDmgModifier, currentHealth);
+                    damage += ability.GetDamage(target, magicDmgModifier - 1, currentHealth);
+                }
+                else if (ability.DamageType == DamageType.Pure)
+                {
+                    damage += ability.GetDamage(target, pureDmgModifier - 1, currentHealth);
                 }
                 else
                 {

@@ -21,11 +21,11 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_skywrath_mage
 
         public DamageType AmplifierType { get; } = DamageType.Magical;
 
-        public float Value
+        public float DamageAmplification
         {
             get
             {
-                return -this.Ability.GetAbilitySpecialData("resist_debuff") / 100.0f;
+                return this.Ability.GetAbilitySpecialData("resist_debuff") / -100.0f;
             }
         }
     }

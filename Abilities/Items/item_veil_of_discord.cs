@@ -20,11 +20,11 @@ namespace Ensage.SDK.Abilities.Items
 
         public DamageType AmplifierType { get; } = DamageType.Magical;
 
-        public float Value
+        public float DamageAmplification
         {
             get
             {
-                return -this.Ability.GetAbilitySpecialData("resist_debuff") / 100.0f; // -25
+                return this.Ability.GetAbilitySpecialData("resist_debuff") / -100.0f; // -25
             }
         }
 

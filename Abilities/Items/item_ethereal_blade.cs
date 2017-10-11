@@ -39,11 +39,11 @@ namespace Ensage.SDK.Abilities.Items
 
         public string TargetModifierName { get; } = "modifier_item_ethereal_blade_ethereal";
 
-        public float Value
+        public float DamageAmplification
         {
             get
             {
-                return -this.Ability.GetAbilitySpecialData("ethereal_damage_bonus") / 100.0f;
+                return this.Ability.GetAbilitySpecialData("ethereal_damage_bonus") / -100.0f;
             }
         }
 
@@ -85,7 +85,7 @@ namespace Ensage.SDK.Abilities.Items
                 return DamageHelpers.GetSpellDamage(damage, amplify);
             }
 
-            var damageBonus = -this.Ability.GetAbilitySpecialData("ethereal_damage_bonus") / 100.0f; // -40 => 0.4
+            var damageBonus = this.Ability.GetAbilitySpecialData("ethereal_damage_bonus") / -100.0f; // -40 => 0.4
             var resist = this.Ability.GetDamageReduction(targets.First(), this.DamageType);
 
             return DamageHelpers.GetSpellDamage(damage, amplify, -resist, damageBonus);

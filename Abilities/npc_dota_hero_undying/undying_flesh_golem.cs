@@ -9,12 +9,14 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_undying
     using Ensage.SDK.Abilities.Components;
     using Ensage.SDK.Extensions;
 
-    public class undying_flesh_golem : ActiveAbility, IAuraAbility, IHasModifier
+    public class undying_flesh_golem : ActiveAbility, IAuraAbility, IHasModifier, IHasDamageAmplifier
     {
         public undying_flesh_golem(Ability ability)
             : base(ability)
         {
         }
+
+        public DamageType AmplifierType { get; } = DamageType.Magical | DamageType.Physical | DamageType.Pure;
 
         public string AuraModifierName { get; } = "modifier_undying_flesh_golem_plague_aura";
 
@@ -23,6 +25,14 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_undying
             get
             {
                 return this.Ability.GetAbilitySpecialData("radius");
+            }
+        }
+
+        public float DamageAmplification
+        {
+            get
+            {
+                return this.Ability.GetAbilitySpecialData("max_damage_amp") / 100f;
             }
         }
 

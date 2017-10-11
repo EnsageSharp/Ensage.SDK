@@ -44,7 +44,7 @@ namespace Ensage.SDK.Abilities
 
                 if ((Game.RawGameTime - this.LastCastAttempt) < 0.1f)
                 {
-                    Log.Debug($"blocked {this}");
+                    //Log.Debug($"blocked {this}");
                     return false;
                 }
 

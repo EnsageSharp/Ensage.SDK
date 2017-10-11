@@ -4,6 +4,8 @@
 
 namespace Ensage.SDK.Abilities.Items
 {
+    using Ensage.SDK.Abilities.Components;
+
     public class item_medallion_of_courage : RangedAbility, IHasTargetModifier
     {
         public item_medallion_of_courage(Item item)

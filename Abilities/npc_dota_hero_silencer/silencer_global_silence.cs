@@ -4,6 +4,8 @@
 
 namespace Ensage.SDK.Abilities.npc_dota_hero_silencer
 {
+    using Ensage.SDK.Abilities.Components;
+
     public class silencer_global_silence : ActiveAbility, IHasTargetModifier
     {
         public silencer_global_silence(Ability ability)

@@ -4,6 +4,7 @@
 
 namespace Ensage.SDK.Abilities.npc_dota_hero_phantom_assassin
 {
+    using Ensage.SDK.Abilities.Components;
     using Ensage.SDK.Extensions;
 
     public class phantom_assassin_coup_de_grace : PassiveAbility, IHasCritChance

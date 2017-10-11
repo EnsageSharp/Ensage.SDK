@@ -1,16 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿// <copyright file="IHasDamageAmplifier.cs" company="Ensage">
+//    Copyright (c) 2017 Ensage.
+// </copyright>
 
 namespace Ensage.SDK.Abilities.Components
 {
-    interface IHasDamageAmplifier
+    public interface IHasDamageAmplifier
     {
         DamageType AmplifierType { get; }
 
         float Value { get; }
-
     }
 }

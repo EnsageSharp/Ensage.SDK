@@ -4,6 +4,8 @@
 
 namespace Ensage.SDK.Abilities.Items
 {
+    using Ensage.SDK.Abilities.Components;
+
     public class item_solar_crest : RangedAbility, IHasTargetModifier
     {
         public item_solar_crest(Item item)

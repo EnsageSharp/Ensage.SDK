@@ -4,6 +4,8 @@
 
 namespace Ensage.SDK.Abilities.Items
 {
+    using Ensage.SDK.Abilities.Components;
+
     public class item_clarity : RangedAbility, IHasTargetModifier
     {
         public item_clarity(Item item)

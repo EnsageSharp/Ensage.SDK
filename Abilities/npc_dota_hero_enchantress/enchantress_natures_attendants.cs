@@ -4,6 +4,8 @@
 
 namespace Ensage.SDK.Abilities.npc_dota_hero_enchantress
 {
+    using Ensage.SDK.Abilities.Components;
+
     public class enchantress_natures_attendants : ActiveAbility, IHasModifier
     {
         public enchantress_natures_attendants(Ability ability)

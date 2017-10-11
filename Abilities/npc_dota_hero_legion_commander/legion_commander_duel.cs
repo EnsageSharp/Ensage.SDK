@@ -4,6 +4,8 @@
 
 namespace Ensage.SDK.Abilities.npc_dota_hero_legion_commander
 {
+    using Ensage.SDK.Abilities.Components;
+
     public class legion_commander_duel : RangedAbility, IHasModifier, IHasTargetModifier
     {
         public legion_commander_duel(Ability ability)

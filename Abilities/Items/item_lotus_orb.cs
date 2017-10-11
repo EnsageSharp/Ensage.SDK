@@ -4,6 +4,8 @@
 
 namespace Ensage.SDK.Abilities.Items
 {
+    using Ensage.SDK.Abilities.Components;
+
     public class item_lotus_orb : RangedAbility, IHasTargetModifier
     {
         public item_lotus_orb(Item item)

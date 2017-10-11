@@ -4,6 +4,8 @@
 
 namespace Ensage.SDK.Abilities.Items
 {
+    using Ensage.SDK.Abilities.Components;
+
     public class item_flask : RangedAbility, IHasTargetModifier
     {
         public item_flask(Item item)

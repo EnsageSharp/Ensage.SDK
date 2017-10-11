@@ -4,6 +4,7 @@
 
 namespace Ensage.SDK.Abilities.npc_dota_hero_silencer
 {
+    using Ensage.SDK.Abilities.Components;
     using Ensage.SDK.Extensions;
 
     public class silencer_last_word : RangedAbility, IHasTargetModifier

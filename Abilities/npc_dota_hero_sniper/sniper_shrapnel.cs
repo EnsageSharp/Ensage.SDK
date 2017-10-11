@@ -4,6 +4,7 @@
 
 namespace Ensage.SDK.Abilities.npc_dota_hero_sniper
 {
+    using Ensage.SDK.Abilities.Components;
     using Ensage.SDK.Extensions;
     using Ensage.SDK.Helpers;
     using Ensage.SDK.Prediction;

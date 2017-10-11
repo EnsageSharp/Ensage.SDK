@@ -4,6 +4,8 @@
 
 namespace Ensage.SDK.Abilities.Aggregation
 {
+    using Ensage.SDK.Abilities.Components;
+
     public abstract class DiffusalBlade : RangedAbility, IHasTargetModifier
     {
         protected DiffusalBlade(Item item)

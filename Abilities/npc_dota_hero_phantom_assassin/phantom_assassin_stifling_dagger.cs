@@ -4,6 +4,7 @@
 
 namespace Ensage.SDK.Abilities.npc_dota_hero_phantom_assassin
 {
+    using Ensage.SDK.Abilities.Components;
     using Ensage.SDK.Extensions;
 
     public class phantom_assassin_stifling_dagger : RangedAbility, IHasTargetModifier, IHasModifier

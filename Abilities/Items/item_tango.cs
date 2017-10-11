@@ -4,6 +4,8 @@
 
 namespace Ensage.SDK.Abilities.Items
 {
+    using Ensage.SDK.Abilities.Components;
+
     public class item_tango : RangedAbility, IHasModifier
     {
         public item_tango(Item item)

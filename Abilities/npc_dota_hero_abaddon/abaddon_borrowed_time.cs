@@ -4,6 +4,7 @@
 
 namespace Ensage.SDK.Abilities.npc_dota_hero_abaddon
 {
+    using Ensage.SDK.Abilities.Components;
     using Ensage.SDK.Extensions;
 
     public class abaddon_borrowed_time : ActiveAbility, IHasModifier, IAreaOfEffectAbility

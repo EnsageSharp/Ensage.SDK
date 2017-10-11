@@ -4,6 +4,7 @@
 
 namespace Ensage.SDK.Abilities.npc_dota_hero_magnataur
 {
+    using Ensage.SDK.Abilities.Components;
     using Ensage.SDK.Extensions;
 
     public class magnataur_empower : RangedAbility, IHasTargetModifier, IAreaOfEffectAbility

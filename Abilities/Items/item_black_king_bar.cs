@@ -4,6 +4,8 @@
 
 namespace Ensage.SDK.Abilities.Items
 {
+    using Ensage.SDK.Abilities.Components;
+
     public class item_black_king_bar : ActiveAbility, IHasModifier
     {
         public item_black_king_bar(Item item)

@@ -4,6 +4,7 @@
 
 namespace Ensage.SDK.Abilities.npc_dota_hero_abaddon
 {
+    using Ensage.SDK.Abilities.Components;
     using Ensage.SDK.Extensions;
 
     public class abaddon_aphotic_shield : RangedAbility, IHasTargetModifier, IAreaOfEffectAbility

@@ -4,6 +4,8 @@
 
 namespace Ensage.SDK.Abilities.npc_dota_hero_enchantress
 {
+    using Ensage.SDK.Abilities.Components;
+
     public class enchantress_enchant : RangedAbility, IHasTargetModifier
     {
         public enchantress_enchant(Ability ability)

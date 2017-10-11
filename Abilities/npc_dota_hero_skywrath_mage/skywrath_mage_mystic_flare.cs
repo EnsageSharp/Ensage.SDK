@@ -6,6 +6,7 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_skywrath_mage
 {
     using System.Linq;
 
+    using Ensage.SDK.Abilities.Components;
     using Ensage.SDK.Extensions;
     using Ensage.SDK.Helpers;
 

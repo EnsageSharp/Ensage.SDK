@@ -4,6 +4,8 @@
 
 namespace Ensage.SDK.Abilities.Items
 {
+    using Ensage.SDK.Abilities.Components;
+
     public class item_mask_of_madness : ActiveAbility, IHasModifier
     {
         public item_mask_of_madness(Item item)

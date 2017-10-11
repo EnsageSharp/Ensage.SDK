@@ -4,6 +4,7 @@
 
 namespace Ensage.SDK.Abilities.npc_dota_hero_sven
 {
+    using Ensage.SDK.Abilities.Components;
     using Ensage.SDK.Extensions;
 
     public class sven_storm_bolt : RangedAbility, IHasTargetModifierTexture, IAreaOfEffectAbility

@@ -4,6 +4,8 @@
 
 namespace Ensage.SDK.Abilities.Items
 {
+    using Ensage.SDK.Abilities.Components;
+
     public class item_glimmer_cape : RangedAbility, IHasTargetModifier, IHasModifierTexture
     {
         public item_glimmer_cape(Item item)

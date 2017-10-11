@@ -4,6 +4,8 @@
 
 namespace Ensage.SDK.Abilities.npc_dota_hero_warlock
 {
+    using Ensage.SDK.Abilities.Components;
+
     public class warlock_upheaval : AreaOfEffectAbility, IChannable, IHasTargetModifier
     {
         public warlock_upheaval(Ability ability)

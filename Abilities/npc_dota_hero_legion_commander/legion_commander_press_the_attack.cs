@@ -4,6 +4,8 @@
 
 namespace Ensage.SDK.Abilities.npc_dota_hero_legion_commander
 {
+    using Ensage.SDK.Abilities.Components;
+
     public class legion_commander_press_the_attack : RangedAbility, IHasTargetModifier
     {
         public legion_commander_press_the_attack(Ability ability)

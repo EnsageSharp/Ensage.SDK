@@ -6,6 +6,7 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_enigma
 {
     using System.Linq;
 
+    using Ensage.SDK.Abilities.Components;
     using Ensage.SDK.Extensions;
 
     public class enigma_midnight_pulse : CircleAbility, IHasDot

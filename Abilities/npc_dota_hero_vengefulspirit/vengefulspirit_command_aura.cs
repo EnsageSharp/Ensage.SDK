@@ -4,6 +4,8 @@
 
 namespace Ensage.SDK.Abilities.npc_dota_hero_vengefulspirit
 {
+    using Ensage.SDK.Abilities.Components;
+
     public class vengefulspirit_command_aura : AuraAbility, IHasTargetModifier
     {
         public vengefulspirit_command_aura(Ability ability)

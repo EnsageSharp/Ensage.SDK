@@ -4,6 +4,8 @@
 
 namespace Ensage.SDK.Abilities.Items
 {
+    using Ensage.SDK.Abilities.Components;
+
     public class item_orchid : RangedAbility, IHasTargetModifier
     {
         public item_orchid(Item item)

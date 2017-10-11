@@ -4,6 +4,7 @@
 
 namespace Ensage.SDK.Abilities.Items
 {
+    using Ensage.SDK.Abilities.Components;
     using Ensage.SDK.Extensions;
 
     public class item_buckler : ActiveAbility, IAreaOfEffectAbility, IHasModifier

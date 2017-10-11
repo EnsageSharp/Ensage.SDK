@@ -5,6 +5,7 @@
 namespace Ensage.SDK.Abilities.Items
 {
     using Ensage.Items;
+    using Ensage.SDK.Abilities.Components;
 
     public class item_bottle : RangedAbility, IHasTargetModifier
     {

@@ -4,6 +4,8 @@
 
 namespace Ensage.SDK.Abilities.npc_dota_hero_abaddon
 {
+    using Ensage.SDK.Abilities.Components;
+
     public class abaddon_frostmourne : PassiveAbility, IHasModifier, IHasTargetModifier
     {
         public abaddon_frostmourne(Ability ability)

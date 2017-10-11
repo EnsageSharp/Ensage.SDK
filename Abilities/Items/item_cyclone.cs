@@ -4,6 +4,8 @@
 
 namespace Ensage.SDK.Abilities.Items
 {
+    using Ensage.SDK.Abilities.Components;
+
     public class item_cyclone : RangedAbility, IHasTargetModifier
     {
         public item_cyclone(Item item)

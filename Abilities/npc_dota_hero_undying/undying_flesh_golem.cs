@@ -6,6 +6,7 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_undying
 {
     using System.Linq;
 
+    using Ensage.SDK.Abilities.Components;
     using Ensage.SDK.Extensions;
 
     public class undying_flesh_golem : ActiveAbility, IAuraAbility, IHasModifier

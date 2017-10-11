@@ -4,6 +4,8 @@
 
 namespace Ensage.SDK.Abilities.npc_dota_hero_sven
 {
+    using Ensage.SDK.Abilities.Components;
+
     public class sven_gods_strength : ActiveAbility, IHasModifier
     {
         public sven_gods_strength(Ability ability)

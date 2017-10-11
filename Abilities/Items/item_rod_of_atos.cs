@@ -4,6 +4,8 @@
 
 namespace Ensage.SDK.Abilities.Items
 {
+    using Ensage.SDK.Abilities.Components;
+
     public class item_rod_of_atos : RangedAbility, IHasTargetModifier
     {
         public item_rod_of_atos(Item item)

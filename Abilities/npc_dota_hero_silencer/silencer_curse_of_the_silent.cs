@@ -6,6 +6,7 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_silencer
 {
     using System;
 
+    using Ensage.SDK.Abilities.Components;
     using Ensage.SDK.Extensions;
     using Ensage.SDK.Helpers;
 

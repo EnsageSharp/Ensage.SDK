@@ -4,6 +4,8 @@
 
 namespace Ensage.SDK.Abilities.Items
 {
+    using Ensage.SDK.Abilities.Components;
+
     public class item_tpscroll : RangedAbility, IChannable, IHasModifier, IHasModifierTexture
     {
         public item_tpscroll(Item item)

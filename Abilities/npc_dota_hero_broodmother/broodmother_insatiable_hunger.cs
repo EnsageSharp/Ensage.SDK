@@ -4,6 +4,8 @@
 
 namespace Ensage.SDK.Abilities.npc_dota_hero_broodmother
 {
+    using Ensage.SDK.Abilities.Components;
+
     using PlaySharp.Toolkit.Helper.Annotations;
 
     public class broodmother_insatiable_hunger : ActiveAbility, IHasModifier

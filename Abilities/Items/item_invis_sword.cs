@@ -4,6 +4,8 @@
 
 namespace Ensage.SDK.Abilities.Items
 {
+    using Ensage.SDK.Abilities.Components;
+
     public class item_invis_sword : ActiveAbility, IHasModifier
     {
         public item_invis_sword(Item item)

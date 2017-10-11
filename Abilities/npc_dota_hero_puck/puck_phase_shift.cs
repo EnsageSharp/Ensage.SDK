@@ -4,6 +4,8 @@
 
 namespace Ensage.SDK.Abilities.npc_dota_hero_puck
 {
+    using Ensage.SDK.Abilities.Components;
+
     public class puck_phase_shift : ActiveAbility, IChannable, IHasModifier
     {
         public puck_phase_shift(Ability ability)

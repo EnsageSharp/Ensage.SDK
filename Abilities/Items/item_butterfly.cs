@@ -4,6 +4,8 @@
 
 namespace Ensage.SDK.Abilities.Items
 {
+    using Ensage.SDK.Abilities.Components;
+
     public class item_butterfly : ActiveAbility, IHasModifier
     {
         public item_butterfly(Item item)

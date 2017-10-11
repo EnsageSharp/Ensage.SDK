@@ -4,6 +4,7 @@
 
 namespace Ensage.SDK.Abilities.npc_dota_hero_storm_spirit
 {
+    using Ensage.SDK.Abilities.Components;
     using Ensage.SDK.Extensions;
 
     public class storm_spirit_electric_vortex : RangedAbility, IHasTargetModifier, IHasModifier

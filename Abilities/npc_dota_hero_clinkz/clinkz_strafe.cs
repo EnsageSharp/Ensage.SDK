@@ -4,6 +4,8 @@
 
 namespace Ensage.SDK.Abilities.npc_dota_hero_clinkz
 {
+    using Ensage.SDK.Abilities.Components;
+
     public class clinkz_strafe : ActiveAbility, IHasModifier
     {
         public clinkz_strafe(Ability ability)

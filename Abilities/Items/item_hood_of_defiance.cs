@@ -4,6 +4,8 @@
 
 namespace Ensage.SDK.Abilities.Items
 {
+    using Ensage.SDK.Abilities.Components;
+
     public class item_hood_of_defiance : ActiveAbility, IHasModifier
     {
         public item_hood_of_defiance(Item item)

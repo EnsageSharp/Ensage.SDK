@@ -6,6 +6,7 @@ namespace Ensage.SDK.Abilities.Items
 {
     using System.Linq;
 
+    using Ensage.SDK.Abilities.Components;
     using Ensage.SDK.Extensions;
 
     public class item_smoke_of_deceit : ActiveAbility, IAreaOfEffectAbility, IItemInfo, IHasModifier

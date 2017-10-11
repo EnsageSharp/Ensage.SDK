@@ -4,6 +4,8 @@
 
 namespace Ensage.SDK.Abilities.Items
 {
+    using Ensage.SDK.Abilities.Components;
+
     public class item_satanic : ActiveAbility, IHasModifier
     {
         public item_satanic(Item item)

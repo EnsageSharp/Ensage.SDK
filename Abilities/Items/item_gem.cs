@@ -6,6 +6,7 @@ namespace Ensage.SDK.Abilities.Items
 {
     using System.Linq;
 
+    using Ensage.SDK.Abilities.Components;
     using Ensage.SDK.Extensions;
 
     public class item_gem : PassiveAbility, IItemInfo, IHasModifier, IAreaOfEffectAbility

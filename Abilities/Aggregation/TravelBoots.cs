@@ -4,6 +4,8 @@
 
 namespace Ensage.SDK.Abilities.Aggregation
 {
+    using Ensage.SDK.Abilities.Components;
+
     public abstract class TravelBoots : RangedAbility, IChannable, IHasModifier
     {
         protected TravelBoots(Item item)

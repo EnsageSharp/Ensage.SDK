@@ -4,6 +4,8 @@
 
 namespace Ensage.SDK.Abilities.Items
 {
+    using Ensage.SDK.Abilities.Components;
+
     public class item_phase_boots : ActiveAbility, IHasModifier
     {
         public item_phase_boots(Item item)

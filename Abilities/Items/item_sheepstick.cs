@@ -4,6 +4,8 @@
 
 namespace Ensage.SDK.Abilities.Items
 {
+    using Ensage.SDK.Abilities.Components;
+
     public class item_sheepstick : RangedAbility, IHasTargetModifier
     {
         public item_sheepstick(Item item)

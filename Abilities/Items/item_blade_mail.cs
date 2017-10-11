@@ -4,6 +4,8 @@
 
 namespace Ensage.SDK.Abilities.Items
 {
+    using Ensage.SDK.Abilities.Components;
+
     public class item_blade_mail : ActiveAbility, IHasModifier
     {
         public item_blade_mail(Item item)

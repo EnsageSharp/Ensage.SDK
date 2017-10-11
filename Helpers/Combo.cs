@@ -38,11 +38,10 @@ namespace Ensage.SDK.Helpers
             this.abilities = abilities.Where(x => x != null).ToList();
 
             // special dmg abilities
-            var tmp = this.abilities.FirstOrDefault(x => x.Ability.Id == AbilityId.zuus_static_field);
-            if (tmp != null)
+            this.staticField = this.abilities.FirstOrDefault(x => x.Ability.Id == AbilityId.zuus_static_field) as zuus_static_field;
+            if (this.staticField != null)
             {
-                this.staticField = (zuus_static_field)tmp;
-                this.abilities.Remove(tmp);
+                this.abilities.Remove(this.staticField);
             }
 
             this.activeAbilities = this.abilities.OfType<ActiveAbility>().ToList();
@@ -178,11 +177,11 @@ namespace Ensage.SDK.Helpers
                     {
                         if (amplifier.AmplifierType == DamageType.Physical)
                         {
-                            physicalDmgModifier += amplifier.Value;
+                            physicalDmgModifier = ((1 + physicalDmgModifier) * (1 + amplifier.Value)) - 1;
                         }
                         else if (amplifier.AmplifierType == DamageType.Magical)
                         {
-                            magicDmgModifier += amplifier.Value;
+                            magicDmgModifier = ((1 + magicDmgModifier) * (1 + amplifier.Value)) - 1;
                         }
                     }
                 }

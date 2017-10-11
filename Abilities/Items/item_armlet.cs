@@ -4,6 +4,8 @@
 
 namespace Ensage.SDK.Abilities.Items
 {
+    using Ensage.SDK.Abilities.Components;
+
     public class item_armlet : ToggleAbility, IHasModifier
     {
         public item_armlet(Item item)

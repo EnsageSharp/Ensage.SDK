@@ -6,6 +6,7 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_terrorblade
 {
     using System.Linq;
 
+    using Ensage.SDK.Abilities.Components;
     using Ensage.SDK.Extensions;
 
     public class terrorblade_reflection : ActiveAbility, IAreaOfEffectAbility, IHasTargetModifier

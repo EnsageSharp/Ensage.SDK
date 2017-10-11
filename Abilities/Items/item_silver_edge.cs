@@ -4,6 +4,8 @@
 
 namespace Ensage.SDK.Abilities.Items
 {
+    using Ensage.SDK.Abilities.Components;
+
     public class item_silver_edge : ActiveAbility, IHasModifier, IHasTargetModifier
     {
         public item_silver_edge(Item item)

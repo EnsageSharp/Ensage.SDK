@@ -4,6 +4,8 @@
 
 namespace Ensage.SDK.Abilities.npc_dota_hero_visage
 {
+    using Ensage.SDK.Abilities.Components;
+
     public class visage_grave_chill : RangedAbility, IHasTargetModifier, IHasModifier
     {
         public visage_grave_chill(Ability ability)

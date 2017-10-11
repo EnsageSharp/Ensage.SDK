@@ -4,6 +4,8 @@
 
 namespace Ensage.SDK.Abilities.npc_dota_hero_alchemist
 {
+    using Ensage.SDK.Abilities.Components;
+
     public class alchemist_chemical_rage : ActiveAbility, IHasModifier
     {
         public alchemist_chemical_rage(Ability ability)

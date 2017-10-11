@@ -4,6 +4,7 @@
 
 namespace Ensage.SDK.Abilities.npc_dota_hero_rubick
 {
+    using Ensage.SDK.Abilities.Components;
     using Ensage.SDK.Extensions;
 
     public class rubick_telekinesis : RangedAbility, IHasTargetModifier, IHasTargetModifierTexture

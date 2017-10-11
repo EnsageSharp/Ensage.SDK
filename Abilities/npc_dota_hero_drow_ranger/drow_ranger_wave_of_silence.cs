@@ -4,6 +4,8 @@
 
 namespace Ensage.SDK.Abilities.npc_dota_hero_drow_ranger
 {
+    using Ensage.SDK.Abilities.Components;
+
     public class drow_ranger_wave_of_silence : LineAbility, IHasTargetModifier
     {
         public drow_ranger_wave_of_silence(Ability ability)

@@ -4,6 +4,8 @@
 
 namespace Ensage.SDK.Abilities.npc_dota_hero_visage
 {
+    using Ensage.SDK.Abilities.Components;
+
     public class visage_gravekeepers_cloak : PassiveAbility, IHasModifier
     {
         public visage_gravekeepers_cloak(Ability ability)

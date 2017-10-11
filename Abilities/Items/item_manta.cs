@@ -4,6 +4,8 @@
 
 namespace Ensage.SDK.Abilities.Items
 {
+    using Ensage.SDK.Abilities.Components;
+
     public class item_manta : ActiveAbility, IHasModifier
     {
         public item_manta(Item item)

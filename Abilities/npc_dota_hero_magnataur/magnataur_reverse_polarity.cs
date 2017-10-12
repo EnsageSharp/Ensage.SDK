@@ -28,12 +28,7 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_magnataur
 
         public override bool CanHit(params Unit[] targets)
         {
-            if (!targets.Any())
-            {
-                return true;
-            }
-
-            return this.Owner.Distance2D(targets.First()) < this.Radius;
+            return targets.All(x => x.Distance2D(this.Owner) < this.Radius);
         }
     }
 }

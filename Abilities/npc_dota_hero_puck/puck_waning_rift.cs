@@ -4,6 +4,8 @@
 
 namespace Ensage.SDK.Abilities.npc_dota_hero_puck
 {
+    using System.Linq;
+
     using Ensage.SDK.Abilities.Components;
     using Ensage.SDK.Extensions;
     using Ensage.SDK.Helpers;
@@ -21,6 +23,11 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_puck
             {
                 return this.Ability.GetAbilitySpecialData("radius");
             }
+        }
+
+        public override bool CanHit(params Unit[] targets)
+        {
+            return targets.All(x => x.Distance2D(this.Owner) < this.Radius);
         }
 
         public string[] TargetModifierTextureName { get; } = { "puck_waning_rift" };

@@ -4,6 +4,8 @@
 
 namespace Ensage.SDK.Abilities.Items
 {
+    using System.Linq;
+
     using Ensage.SDK.Abilities.Components;
     using Ensage.SDK.Extensions;
     using Ensage.SDK.Helpers;
@@ -50,6 +52,16 @@ namespace Ensage.SDK.Abilities.Items
         }
 
         public string TargetModifierName { get; } = "modifier_item_shivas_guard_blast";
+
+        public override bool CanHit(params Unit[] targets)
+        {
+            if (!targets.Any())
+            {
+                return true;
+            }
+
+            return this.Owner.Distance2D(targets.First()) < this.Radius;
+        }
 
         protected override float RawDamage
         {

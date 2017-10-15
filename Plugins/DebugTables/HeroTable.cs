@@ -37,7 +37,7 @@ namespace Ensage.SDK.Plugins.DebugTables
             return new[]
                    {
                        data.Keys.ToColumn("Name"),
-                       data.Keys.ToColumn("Value")
+                       data.Values.ToColumn("Value")
                    };
         }
     }

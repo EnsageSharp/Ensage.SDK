@@ -128,15 +128,15 @@ namespace Ensage.SDK.Inventory
         {
             if (this.Owner.HasInventory)
             {
-                UpdateManager.Subscribe(this.OnInventoryUpdate, 500);
-                UpdateManager.SubscribeService(this.OnInventoryClear);
+                this.OnInventoryUpdate();
+                Entity.OnInt32PropertyChange += this.OnInt32PropertyChange;
             }
         }
 
         protected override void OnDeactivate()
         {
-            UpdateManager.Unsubscribe(this.OnInventoryUpdate);
-            UpdateManager.Unsubscribe(this.OnInventoryClear);
+            Entity.OnInt32PropertyChange -= this.OnInt32PropertyChange;
+            this.items = null;
         }
 
         private object GetOrCreateItem(Item item)
@@ -168,9 +168,18 @@ namespace Ensage.SDK.Inventory
             return cacheItem;
         }
 
-        private void OnInventoryClear()
+        private void OnInt32PropertyChange(Entity sender, Int32PropertyChangeEventArgs args)
         {
-            this.items = null;
+            if (args.NewValue == args.OldValue || args.PropertyName != "m_iParity")
+            {
+                return;
+            }
+
+            if (sender == this.Owner)
+            {
+                this.items = null;
+                UpdateManager.BeginInvoke(this.OnInventoryUpdate);
+            }
         }
 
         private void OnInventoryUpdate()

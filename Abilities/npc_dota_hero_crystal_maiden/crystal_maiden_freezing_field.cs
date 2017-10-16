@@ -101,13 +101,7 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_crystal_maiden
                 return true;
             }
 
-            if (this.Owner.Distance2D(targets.First()) < this.Radius)
-            {
-                return true;
-            }
-
-            // moar checks
-            return false;
+            return targets.All(x => x.Distance2D(this.Owner) < this.Radius);
         }
 
         public override float GetDamage(params Unit[] targets)

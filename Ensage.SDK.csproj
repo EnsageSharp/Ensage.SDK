@@ -105,6 +105,11 @@
     <Compile Include="Abilities\IAuraAbility.cs" />
     <Compile Include="Abilities\Aggregation\Dagon.cs" />
     <Compile Include="Abilities\Aggregation\DiffusalBlade.cs" />
+    <Compile Include="Abilities\npc_dota_hero_troll_warlord\troll_warlord_fervor.cs" />
+    <Compile Include="Abilities\npc_dota_hero_troll_warlord\troll_warlord_battle_trance.cs" />
+    <Compile Include="Abilities\npc_dota_hero_troll_warlord\troll_warlord_whirling_axes_melee.cs" />
+    <Compile Include="Abilities\npc_dota_hero_troll_warlord\troll_warlord_whirling_axes_ranged.cs" />
+    <Compile Include="Abilities\npc_dota_hero_troll_warlord\troll_warlord_berserkers_rage.cs" />
     <Compile Include="Abilities\npc_dota_hero_silencer\silencer_global_silence.cs" />
     <Compile Include="Abilities\npc_dota_hero_silencer\silencer_last_word.cs" />
     <Compile Include="Abilities\npc_dota_hero_silencer\silencer_glaives_of_wisdom.cs" />

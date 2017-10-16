@@ -62,7 +62,7 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_skywrath_mage
 
         public override float GetDamage(params Unit[] targets)
         {
-            if (!targets.Any(x => x == TargetHit))
+            if (!targets.Any(x => x == this.TargetHit))
             {
                 return 0;
             }
@@ -82,7 +82,7 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_skywrath_mage
 
         public override float GetDamage([NotNull] Unit target, float damageModifier, float targetHealth = float.MinValue)
         {
-            if (TargetHit != target)
+            if (this.TargetHit != target)
             {
                 return 0;
             }

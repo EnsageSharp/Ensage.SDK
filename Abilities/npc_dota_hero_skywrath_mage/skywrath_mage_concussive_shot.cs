@@ -55,7 +55,7 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_skywrath_mage
                                     !x.IsIllusion &&
                                     x.IsValid &&
                                     x.IsEnemy(Owner) &&
-                                    CanHit(x)).OrderBy(x => x.Distance2D(this.Owner)).FirstOrDefault();
+                                    this.CanHit(x)).OrderBy(x => x.Distance2D(this.Owner)).FirstOrDefault();
             }
         }
 

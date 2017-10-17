@@ -4,22 +4,23 @@
 
 namespace Ensage.SDK.Abilities.npc_dota_hero_visage
 {
+    using Ensage.SDK.Abilities.Components;
     using Ensage.SDK.Extensions;
 
-    public class visage_soul_assumption : RangedAbility
+    public class visage_soul_assumption : RangedAbility, IHasModifier
     {
         public visage_soul_assumption(Ability ability)
             : base(ability)
         {
         }
 
-        public string ChargeModifierName { get; } = "modifier_visage_soul_assumption";
+        public string ModifierName { get; } = "modifier_visage_soul_assumption";
 
         public float Charges
         {
             get
             {
-                var modifier = this.Owner.GetModifierByName(this.ChargeModifierName);
+                var modifier = this.Owner.GetModifierByName(this.ModifierName);
                 return modifier?.StackCount ?? 0;
             }
         }

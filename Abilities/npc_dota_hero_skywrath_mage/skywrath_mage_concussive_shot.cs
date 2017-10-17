@@ -23,7 +23,7 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_skywrath_mage
         {
             get
             {
-                return this.Ability.GetAbilitySpecialData("launch_radius") - 25f;  // bug fixed
+                return this.Ability.GetAbilitySpecialData("launch_radius");
             }
         }
 
@@ -49,53 +49,49 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_skywrath_mage
         {
             get
             {
-                return EntityManager<Hero>.Entities.OrderBy(x => 
-                              x.Distance2D(this.Owner)).FirstOrDefault(x =>
+                return EntityManager<Hero>.Entities.Where(x =>
                                     x.IsAlive &&
                                     x.IsVisible &&
                                     !x.IsIllusion &&
                                     x.IsValid &&
                                     x.IsEnemy(Owner) &&
-                                    x.Distance2D(Owner) <= this.Radius);
+                                    CanHit(x)).OrderBy(x => x.Distance2D(this.Owner)).FirstOrDefault();
             }
         }
 
         public override float GetDamage(params Unit[] targets)
         {
-            if (!targets.Any(x => x == this.TargetHit))
+            var targetHit = this.TargetHit;
+            if (!targets.Any(x => x == targetHit))
             {
                 return 0;
             }
 
-            var totalDamage = 0.0f;
-
             var damage = this.RawDamage;
             var amplify = this.Owner.GetSpellAmplification();
-            foreach (var target in targets)
-            {
-                var reduction = this.Ability.GetDamageReduction(target, this.DamageType);
-                totalDamage += DamageHelpers.GetSpellDamage(damage, amplify, reduction);
-            }
+            var reduction = this.Ability.GetDamageReduction(targetHit, this.DamageType);
 
-            return totalDamage;
+            return DamageHelpers.GetSpellDamage(damage, amplify, reduction);
         }
 
         public override float GetDamage([NotNull] Unit target, float damageModifier, float targetHealth = float.MinValue)
         {
-            if (this.TargetHit != target)
+            var targetHit = this.TargetHit;
+            if (targetHit != target)
             {
                 return 0;
             }
 
+            var damage = this.RawDamage;
             var amplify = this.Owner.GetSpellAmplification();
-            var reduction = this.Ability.GetDamageReduction(target, this.DamageType);
+            var reduction = this.Ability.GetDamageReduction(targetHit, this.DamageType);
 
-            return DamageHelpers.GetSpellDamage(this.RawDamage, amplify, -reduction, damageModifier);
+            return DamageHelpers.GetSpellDamage(damage, amplify, -reduction, damageModifier);
         }
 
         public override bool CanHit(params Unit[] targets)
         {
-            return targets.All(x => x.Distance2D(this.Owner) < this.Radius);
+            return targets.All(x => x.Distance2D(this.Owner) < this.Radius - this.Owner.HullRadius);
         }
     }
 }

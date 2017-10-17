@@ -1,8 +1,8 @@
-﻿// <copyright file="puck_waning_rift.cs" company="Ensage">
+﻿// <copyright file="troll_warlord_whirling_axes_melee.cs" company="Ensage">
 //    Copyright (c) 2017 Ensage.
 // </copyright>
 
-namespace Ensage.SDK.Abilities.npc_dota_hero_puck
+namespace Ensage.SDK.Abilities.npc_dota_hero_troll_warlord
 {
     using System.Linq;
 
@@ -10,9 +10,9 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_puck
     using Ensage.SDK.Extensions;
     using Ensage.SDK.Helpers;
 
-    public class puck_waning_rift : ActiveAbility, IAreaOfEffectAbility, IHasTargetModifierTexture
+    public class troll_warlord_whirling_axes_melee : ActiveAbility, IAreaOfEffectAbility, IHasTargetModifier
     {
-        public puck_waning_rift(Ability ability)
+        public troll_warlord_whirling_axes_melee(Ability ability)
             : base(ability)
         {
         }
@@ -21,16 +21,16 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_puck
         {
             get
             {
-                return this.Ability.GetAbilitySpecialData("radius");
+                return this.Ability.GetAbilitySpecialData("max_range");
             }
         }
+
+        public string TargetModifierName { get; } = "modifier_troll_warlord_whirling_axes_blind";
 
         public override bool CanHit(params Unit[] targets)
         {
             return targets.All(x => x.Distance2D(this.Owner) < this.Radius);
         }
-
-        public string[] TargetModifierTextureName { get; } = { "puck_waning_rift" };
 
         public override float GetDamage(params Unit[] targets)
         {
@@ -40,7 +40,7 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_puck
             var amplify = this.Owner.GetSpellAmplification();
             foreach (var target in targets)
             {
-                var reduction = this.Ability.GetDamageReduction(target);
+                var reduction = this.Ability.GetDamageReduction(target, this.DamageType);
                 totalDamage += DamageHelpers.GetSpellDamage(damage, amplify, reduction);
             }
 

@@ -5,8 +5,6 @@ VisualStudioVersion = 15.0.26430.4
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ensage.SDK", "Ensage.SDK.csproj", "{B2151AD0-6F00-4BC9-ADB9-46AA656670EB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ensage.SDK.Samples", "Samples\Ensage.SDK.Samples.csproj", "{78600741-3D7C-456C-8877-E22ACC6A7E69}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -29,18 +27,6 @@ Global
 		{B2151AD0-6F00-4BC9-ADB9-46AA656670EB}.Release|x64.Build.0 = Release|Any CPU
 		{B2151AD0-6F00-4BC9-ADB9-46AA656670EB}.Release|x86.ActiveCfg = Release|Any CPU
 		{B2151AD0-6F00-4BC9-ADB9-46AA656670EB}.Release|x86.Build.0 = Release|Any CPU
-		{78600741-3D7C-456C-8877-E22ACC6A7E69}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{78600741-3D7C-456C-8877-E22ACC6A7E69}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{78600741-3D7C-456C-8877-E22ACC6A7E69}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{78600741-3D7C-456C-8877-E22ACC6A7E69}.Debug|x64.Build.0 = Debug|Any CPU
-		{78600741-3D7C-456C-8877-E22ACC6A7E69}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{78600741-3D7C-456C-8877-E22ACC6A7E69}.Debug|x86.Build.0 = Debug|Any CPU
-		{78600741-3D7C-456C-8877-E22ACC6A7E69}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{78600741-3D7C-456C-8877-E22ACC6A7E69}.Release|Any CPU.Build.0 = Release|Any CPU
-		{78600741-3D7C-456C-8877-E22ACC6A7E69}.Release|x64.ActiveCfg = Release|Any CPU
-		{78600741-3D7C-456C-8877-E22ACC6A7E69}.Release|x64.Build.0 = Release|Any CPU
-		{78600741-3D7C-456C-8877-E22ACC6A7E69}.Release|x86.ActiveCfg = Release|Any CPU
-		{78600741-3D7C-456C-8877-E22ACC6A7E69}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

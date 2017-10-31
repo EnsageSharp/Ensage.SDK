@@ -43,46 +43,56 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="clipper_library">
-      <HintPath>C:\EnsageSharp\References\clipper_library.dll</HintPath>
+      <HintPath>..\..\..\..\..\Program Files (x86)\Ensage\References\clipper_library.dll</HintPath>
     </Reference>
     <Reference Include="Ensage">
-      <HintPath>C:\EnsageSharp\References\Ensage.dll</HintPath>
+      <HintPath>..\..\..\..\..\Program Files (x86)\Ensage\References\Ensage.dll</HintPath>
     </Reference>
     <Reference Include="Ensage.Common">
-      <HintPath>C:\EnsageSharp\References\Ensage.Common.dll</HintPath>
+      <HintPath>..\..\..\..\..\Program Files (x86)\Ensage\References\Ensage.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Ensage.SDK">
+      <HintPath>..\..\..\..\..\Program Files (x86)\Ensage\References\Ensage.SDK.dll</HintPath>
     </Reference>
     <Reference Include="EnsageSharp.Sandbox">
-      <HintPath>C:\EnsageSharp\System\EnsageSharp.Sandbox.dll</HintPath>
+      <HintPath>..\..\..\..\..\Program Files (x86)\Ensage\System\EnsageSharp.Sandbox.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Newtonsoft.Json">
-      <HintPath>C:\EnsageSharp\References\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\..\..\..\..\Program Files (x86)\Ensage\References\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="PlaySharp.Sentry">
-      <HintPath>C:\EnsageSharp\References\PlaySharp.Sentry.dll</HintPath>
+      <HintPath>..\..\..\..\..\Program Files (x86)\Ensage\References\PlaySharp.Sentry.dll</HintPath>
+    </Reference>
+    <Reference Include="PlaySharp.Service">
+      <HintPath>..\..\..\..\..\Program Files (x86)\Ensage\References\PlaySharp.Service.dll</HintPath>
     </Reference>
     <Reference Include="PlaySharp.Toolkit">
-      <HintPath>C:\EnsageSharp\References\PlaySharp.Toolkit.dll</HintPath>
+      <HintPath>..\..\..\..\..\Program Files (x86)\Ensage\References\PlaySharp.Toolkit.dll</HintPath>
     </Reference>
     <Reference Include="SharpDX">
-      <HintPath>C:\EnsageSharp\References\SharpDX.dll</HintPath>
+      <HintPath>..\..\..\..\..\Program Files (x86)\Ensage\References\SharpDX.dll</HintPath>
     </Reference>
     <Reference Include="SharpDX.Direct2D1">
-      <HintPath>C:\EnsageSharp\References\SharpDX.Direct2D1.dll</HintPath>
+      <HintPath>..\..\..\..\..\Program Files (x86)\Ensage\References\SharpDX.Direct2D1.dll</HintPath>
     </Reference>
     <Reference Include="SharpDX.Direct3D11">
-      <HintPath>C:\EnsageSharp\References\SharpDX.Direct3D11.dll</HintPath>
+      <HintPath>..\..\..\..\..\Program Files (x86)\Ensage\References\SharpDX.Direct3D11.dll</HintPath>
     </Reference>
     <Reference Include="SharpDX.Direct3D9">
-      <HintPath>C:\EnsageSharp\References\SharpDX.Direct3D9.dll</HintPath>
+      <HintPath>..\..\..\..\..\Program Files (x86)\Ensage\References\SharpDX.Direct3D9.dll</HintPath>
     </Reference>
     <Reference Include="SharpDX.DXGI">
-      <HintPath>C:\EnsageSharp\References\SharpDX.DXGI.dll</HintPath>
+      <HintPath>..\..\..\..\..\Program Files (x86)\Ensage\References\SharpDX.DXGI.dll</HintPath>
     </Reference>
     <Reference Include="SharpDX.Mathematics">
-      <HintPath>C:\EnsageSharp\References\SharpDX.Mathematics.dll</HintPath>
+      <HintPath>..\..\..\..\..\Program Files (x86)\Ensage\References\SharpDX.Mathematics.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Collections.Immutable, Version=1.1.37.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\Program Files (x86)\Ensage\References\System.Collections.Immutable.dll</HintPath>
+    </Reference>
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data" />
@@ -104,7 +114,6 @@
     <Compile Include="Abilities\IAreaOfEffectAbility.cs" />
     <Compile Include="Abilities\IAuraAbility.cs" />
     <Compile Include="Abilities\Aggregation\Dagon.cs" />
-    <Compile Include="Abilities\Aggregation\DiffusalBlade.cs" />
     <Compile Include="Abilities\npc_dota_hero_troll_warlord\troll_warlord_fervor.cs" />
     <Compile Include="Abilities\npc_dota_hero_troll_warlord\troll_warlord_battle_trance.cs" />
     <Compile Include="Abilities\npc_dota_hero_troll_warlord\troll_warlord_whirling_axes_melee.cs" />
@@ -170,7 +179,6 @@
     <Compile Include="Abilities\Items\item_dagon_4.cs" />
     <Compile Include="Abilities\Items\item_dagon_5.cs" />
     <Compile Include="Abilities\Items\item_diffusal_blade.cs" />
-    <Compile Include="Abilities\Items\item_diffusal_blade_2.cs" />
     <Compile Include="Abilities\Items\item_dust.cs" />
     <Compile Include="Abilities\Items\item_enchanted_mango.cs" />
     <Compile Include="Abilities\Items\item_ethereal_blade.cs" />
@@ -189,7 +197,6 @@
     <Compile Include="Abilities\Items\item_hurricane_pike.cs" />
     <Compile Include="Abilities\Items\item_infused_raindrop.cs" />
     <Compile Include="Abilities\Items\item_invis_sword.cs" />
-    <Compile Include="Abilities\Items\item_iron_talon.cs" />
     <Compile Include="Abilities\Items\item_lotus_orb.cs" />
     <Compile Include="Abilities\Items\item_magic_stick.cs" />
     <Compile Include="Abilities\Items\item_magic_wand.cs" />
@@ -197,10 +204,12 @@
     <Compile Include="Abilities\Items\item_mask_of_madness.cs" />
     <Compile Include="Abilities\Items\item_medallion_of_courage.cs" />
     <Compile Include="Abilities\Items\item_mekansm.cs" />
+	<Compile Include="Abilities\Items\item_meteor_hammer.cs" />
     <Compile Include="Abilities\Items\item_mjollnir.cs" />
     <Compile Include="Abilities\Items\item_necronomicon.cs" />
     <Compile Include="Abilities\Items\item_necronomicon_2.cs" />
     <Compile Include="Abilities\Items\item_necronomicon_3.cs" />
+	<Compile Include="Abilities\Items\item_nullifier.cs" />
     <Compile Include="Abilities\Items\item_orb_of_venom.cs" />
     <Compile Include="Abilities\Items\item_orchid.cs" />
     <Compile Include="Abilities\Items\item_phase_boots.cs" />
@@ -209,6 +218,7 @@
     <Compile Include="Abilities\Items\item_quelling_blade.cs" />
     <Compile Include="Abilities\Items\item_radiance.cs" />
     <Compile Include="Abilities\Items\item_refresher.cs" />
+	<Compile Include="Abilities\Items\item_refresher_shard.cs" />
     <Compile Include="Abilities\Items\item_ring_of_aquila.cs" />
     <Compile Include="Abilities\Items\item_ring_of_basilius.cs" />
     <Compile Include="Abilities\Items\item_satanic.cs" />
@@ -220,6 +230,7 @@
     <Compile Include="Abilities\Items\item_solar_crest.cs" />
     <Compile Include="Abilities\Items\item_soul_ring.cs" />
     <Compile Include="Abilities\Items\item_sphere.cs" />
+	<Compile Include="Abilities\Items\item_spirit_vessel.cs" />
     <Compile Include="Abilities\Items\item_tango.cs" />
     <Compile Include="Abilities\Items\item_tango_single.cs" />
     <Compile Include="Abilities\Items\item_tome_of_knowledge.cs" />

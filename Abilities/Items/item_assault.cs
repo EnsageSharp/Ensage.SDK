@@ -4,13 +4,23 @@
 
 namespace Ensage.SDK.Abilities.Items
 {
-    public class item_assault : AuraAbility
+    using Ensage.SDK.Extensions;
+
+    public class item_assault : PassiveAbility, IAuraAbility
     {
         public item_assault(Item item)
             : base(item)
         {
         }
 
-        public override string AuraModifierName { get; } = "modifier_item_assault_negative_armor";
+        public string AuraModifierName { get; } = "modifier_item_assault_negative_armor";
+
+        public float AuraRadius
+        {
+            get
+            {
+                return this.Ability.GetAbilitySpecialData("aura_radius");
+            }
+        }
     }
 }

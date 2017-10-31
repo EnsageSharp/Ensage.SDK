@@ -4,13 +4,13 @@
 
 namespace Ensage.SDK.Abilities.Items
 {
-    using Ensage.SDK.Abilities.Aggregation;
-
-    public class item_diffusal_blade : DiffusalBlade
+    public class item_diffusal_blade : RangedAbility, IHasTargetModifier
     {
         public item_diffusal_blade(Item item)
             : base(item)
         {
         }
+
+        public string TargetModifierName { get; } = "modifier_item_diffusal_blade_slow";
     }
 }

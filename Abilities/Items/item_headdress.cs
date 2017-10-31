@@ -4,13 +4,24 @@
 
 namespace Ensage.SDK.Abilities.Items
 {
-    public class item_headdress : AuraAbility
+    using Ensage.SDK.Abilities.Components;
+    using Ensage.SDK.Extensions;
+
+    public class item_headdress : PassiveAbility, IAuraAbility
     {
         public item_headdress(Item item)
             : base(item)
         {
         }
 
-        public override string AuraModifierName { get; } = "modifier_item_headdress_aura";
+        public string AuraModifierName { get; } = "modifier_item_headdress_aura";
+
+        public float AuraRadius
+        {
+            get
+            {
+                return this.Ability.GetAbilitySpecialData("aura_radius");
+            }
+        }
     }
 }

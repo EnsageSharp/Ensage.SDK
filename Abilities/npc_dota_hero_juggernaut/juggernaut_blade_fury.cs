@@ -21,13 +21,15 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_juggernaut
         {
             get
             {
-                var level = this.Ability.Level;
-                if (level == 0)
+                var duration = this.Ability.GetAbilitySpecialData("duration");
+
+                var talent = this.Owner.GetAbilityById(AbilityId.special_bonus_unique_juggernaut);
+                if (talent?.Level > 0)
                 {
-                    return 0.0f;
+                    duration += talent.GetAbilitySpecialData("value");
                 }
 
-                return this.Ability.GetDuration(level - 1);
+                return duration;
             }
         }
 
@@ -49,7 +51,7 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_juggernaut
             {
                 var damage = this.Ability.GetAbilitySpecialData("blade_fury_damage");
 
-                var talent = this.Owner.GetAbilityById(AbilityId.special_bonus_unique_juggernaut);
+                var talent = this.Owner.GetAbilityById(AbilityId.special_bonus_unique_juggernaut_3);
                 if (talent != null && talent.Level > 0)
                 {
                     damage += talent.GetAbilitySpecialData("value");

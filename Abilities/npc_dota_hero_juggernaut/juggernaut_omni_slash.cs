@@ -22,6 +22,13 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_juggernaut
             get
             {
                 var jumps = this.Ability.GetAbilitySpecialData(this.Owner.HasAghanimsScepter() ? "omni_slash_jumps_scepter" : "omni_slash_jumps");
+
+                var talent = this.Owner.GetAbilityById(AbilityId.special_bonus_unique_juggernaut_2);
+                if (talent?.Level > 0)
+                {
+                    jumps += talent.GetAbilitySpecialData("value");
+                }
+
                 return (jumps - 1) * this.TickRate;
             }
         }

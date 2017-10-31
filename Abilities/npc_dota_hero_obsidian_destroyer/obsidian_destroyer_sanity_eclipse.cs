@@ -6,6 +6,7 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_obsidian_destroyer
 {
     using System.Linq;
 
+    using Ensage.SDK.Abilities.Components;
     using Ensage.SDK.Extensions;
     using Ensage.SDK.Helpers;
 
@@ -20,7 +21,15 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_obsidian_destroyer
         {
             get
             {
-                return this.Ability.GetAbilitySpecialData("damage_multiplier");
+                var multiplier = this.Ability.GetAbilitySpecialData("damage_multiplier");
+
+                var talent = this.Owner.GetAbilityById(AbilityId.special_bonus_unique_outworld_devourer_3);
+                if (talent?.Level > 0)
+                {
+                    multiplier += talent.GetAbilitySpecialData("value");
+                }
+
+                return multiplier;
             }
         }
 

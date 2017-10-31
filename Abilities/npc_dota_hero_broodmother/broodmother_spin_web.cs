@@ -50,15 +50,7 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_broodmother
         {
             get
             {
-                var count = this.Ability.GetAbilitySpecialData("count");
-
-                var talent = this.Owner.GetAbilityById(AbilityId.special_bonus_unique_broodmother_1);
-                if (talent != null && talent.Level > 0)
-                {
-                    count += talent.GetAbilitySpecialData("value");
-                }
-
-                return (int)count;
+                return this.Ability.GetAbilitySpecialData("count");
             }
         }
 

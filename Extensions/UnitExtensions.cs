@@ -411,7 +411,7 @@ namespace Ensage.SDK.Extensions
 
             var armor = target.Armor;
 
-            mult *= 1 - ((0.06f * armor) / (1 + (0.06f * Math.Abs(armor))));
+            mult *= 1 - ((0.05f * armor) / (1 + (0.05f * Math.Abs(armor))));
             mult *= (1.0f + damageAmplifier);
             return damage * mult;
         }

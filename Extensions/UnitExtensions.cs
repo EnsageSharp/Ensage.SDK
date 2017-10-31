@@ -180,6 +180,11 @@ namespace Ensage.SDK.Extensions
                         var metamorphosis = hero.GetAbilityById(AbilityId.terrorblade_metamorphosis);
                         if (metamorphosis != null && hero.HasModifier("modifier_terrorblade_metamorphosis"))
                         {
+                            var talent = hero.GetAbilityById(AbilityId.special_bonus_unique_terrorblade_3);
+                            if (talent?.Level > 0)
+                            {
+                                result += talent.GetAbilitySpecialData("value");
+                            }
                             result += metamorphosis.GetAbilitySpecialData("bonus_range");
                         }
 

@@ -38,6 +38,13 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_troll_warlord
 
             var damage = this.RawDamage;
             var amplify = this.Owner.GetSpellAmplification();
+
+            var talent = this.Owner.GetAbilityById(AbilityId.special_bonus_unique_troll_warlord_3);
+            if (talent?.Level > 0)
+            {
+                damage += talent.GetAbilitySpecialData("value");
+            }
+
             foreach (var target in targets)
             {
                 var reduction = this.Ability.GetDamageReduction(target, this.DamageType);

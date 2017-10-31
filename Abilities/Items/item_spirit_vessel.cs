@@ -2,11 +2,12 @@
 //    Copyright (c) 2017 Ensage.
 // </copyright>
 
-using System.Linq;
-using Ensage.SDK.Helpers;
-
 namespace Ensage.SDK.Abilities.Items
 {
+    using System.Linq;
+
+    using Ensage.SDK.Abilities.Components;
+    using Ensage.SDK.Helpers;
     using Ensage.SDK.Extensions;
 
     public class item_spirit_vessel : RangedAbility, IHasDot
@@ -50,7 +51,7 @@ namespace Ensage.SDK.Abilities.Items
             }
         }
 
-        public string TargetModifierName { get; } = "modifier_item_spirit_vessel_damage"; //todo: get correct name
+        public string TargetModifierName { get; } = "modifier_item_spirit_vessel_damage";
 
         public float TickRate { get; } = 1.0f;
 

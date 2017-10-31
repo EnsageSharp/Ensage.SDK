@@ -1,13 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Ensage.SDK.Extensions;
-using Ensage.SDK.Helpers;
+﻿// <copyright file="item_meteor_hammer.cs" company="Ensage">
+//    Copyright (c) 2017 Ensage.
+// </copyright>
 
 namespace Ensage.SDK.Abilities.Items
 {
+    using System.Linq;
+    using Ensage.SDK.Abilities.Components;
+    using Ensage.SDK.Extensions;
+    using Ensage.SDK.Helpers;
+
     public class item_meteor_hammer : RangedAbility, IAreaOfEffectAbility, IChannable, IHasDot
     {
         public item_meteor_hammer(Item item)
@@ -16,7 +17,7 @@ namespace Ensage.SDK.Abilities.Items
         }
 
         public bool HasInitialDamage { get; } = true;
-        public string TargetModifierName { get; } = "modifier_meteor_hammer_burn"; //todo: get correct modifier
+        public string TargetModifierName { get; } = "modifier_meteor_hammer_burn";
 
         public float Radius
         {

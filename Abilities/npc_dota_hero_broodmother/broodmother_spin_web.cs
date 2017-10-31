@@ -50,7 +50,7 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_broodmother
         {
             get
             {
-                return this.Ability.GetAbilitySpecialData("count");
+                return (int)this.Ability.GetAbilitySpecialData("count");
             }
         }
 

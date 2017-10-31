@@ -14,13 +14,5 @@ namespace Ensage.SDK.Abilities.Items
         }
 
         public override string AuraModifierName { get; } = "modifier_item_vladmir_aura";
-
-        public float AuraRadius
-        {
-            get
-            {
-                return this.Ability.GetAbilitySpecialData("aura_radius");
-            }
-        }
     }
 }

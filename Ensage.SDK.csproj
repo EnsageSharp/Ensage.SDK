@@ -51,9 +51,6 @@
     <Reference Include="Ensage.Common">
       <HintPath>..\..\..\..\..\Program Files (x86)\Ensage\References\Ensage.Common.dll</HintPath>
     </Reference>
-    <Reference Include="Ensage.SDK">
-      <HintPath>..\..\..\..\..\Program Files (x86)\Ensage\References\Ensage.SDK.dll</HintPath>
-    </Reference>
     <Reference Include="EnsageSharp.Sandbox">
       <HintPath>..\..\..\..\..\Program Files (x86)\Ensage\System\EnsageSharp.Sandbox.dll</HintPath>
     </Reference>
@@ -204,12 +201,12 @@
     <Compile Include="Abilities\Items\item_mask_of_madness.cs" />
     <Compile Include="Abilities\Items\item_medallion_of_courage.cs" />
     <Compile Include="Abilities\Items\item_mekansm.cs" />
-	<Compile Include="Abilities\Items\item_meteor_hammer.cs" />
+    <Compile Include="Abilities\Items\item_meteor_hammer.cs" />
     <Compile Include="Abilities\Items\item_mjollnir.cs" />
     <Compile Include="Abilities\Items\item_necronomicon.cs" />
     <Compile Include="Abilities\Items\item_necronomicon_2.cs" />
     <Compile Include="Abilities\Items\item_necronomicon_3.cs" />
-	<Compile Include="Abilities\Items\item_nullifier.cs" />
+    <Compile Include="Abilities\Items\item_nullifier.cs" />
     <Compile Include="Abilities\Items\item_orb_of_venom.cs" />
     <Compile Include="Abilities\Items\item_orchid.cs" />
     <Compile Include="Abilities\Items\item_phase_boots.cs" />
@@ -218,7 +215,7 @@
     <Compile Include="Abilities\Items\item_quelling_blade.cs" />
     <Compile Include="Abilities\Items\item_radiance.cs" />
     <Compile Include="Abilities\Items\item_refresher.cs" />
-	<Compile Include="Abilities\Items\item_refresher_shard.cs" />
+    <Compile Include="Abilities\Items\item_refresher_shard.cs" />
     <Compile Include="Abilities\Items\item_ring_of_aquila.cs" />
     <Compile Include="Abilities\Items\item_ring_of_basilius.cs" />
     <Compile Include="Abilities\Items\item_satanic.cs" />
@@ -230,7 +227,7 @@
     <Compile Include="Abilities\Items\item_solar_crest.cs" />
     <Compile Include="Abilities\Items\item_soul_ring.cs" />
     <Compile Include="Abilities\Items\item_sphere.cs" />
-	<Compile Include="Abilities\Items\item_spirit_vessel.cs" />
+    <Compile Include="Abilities\Items\item_spirit_vessel.cs" />
     <Compile Include="Abilities\Items\item_tango.cs" />
     <Compile Include="Abilities\Items\item_tango_single.cs" />
     <Compile Include="Abilities\Items\item_tome_of_knowledge.cs" />

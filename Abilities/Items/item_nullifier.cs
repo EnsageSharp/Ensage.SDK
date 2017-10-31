@@ -1,12 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Ensage.SDK.Extensions;
+﻿// <copyright file="item_nullifier.cs" company="Ensage">
+//    Copyright (c) 2017 Ensage.
+// </copyright>
 
 namespace Ensage.SDK.Abilities.Items
 {
+    using Ensage.SDK.Abilities.Components;
+    using Ensage.SDK.Extensions;
+
     class item_nullifier : RangedAbility, IHasTargetModifier
     {
         public item_nullifier(Item item)
@@ -22,7 +22,7 @@ namespace Ensage.SDK.Abilities.Items
             }
         }
 
-        public string TargetModifierName { get; } = "modifier_nullifier_debuff"; //todo
+        public string TargetModifierName { get; } = "modifier_nullifier_mute";
 
     }
 }

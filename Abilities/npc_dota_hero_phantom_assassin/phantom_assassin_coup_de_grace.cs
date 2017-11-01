@@ -28,7 +28,15 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_phantom_assassin
         {
             get
             {
-                return this.Ability.GetAbilitySpecialData("crit_chance") / 100.0f;
+                var chance = this.Ability.GetAbilitySpecialData("crit_chance");
+
+                var talent = this.Owner.GetAbilityById(AbilityId.special_bonus_unique_phantom_assassin_2);
+                if (talent?.Level > 0)
+                {
+                    chance += talent.GetAbilitySpecialData("value");
+                }
+
+                return chance / 100.0f;
             }
         }
     }

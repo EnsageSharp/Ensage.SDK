@@ -26,7 +26,7 @@ namespace Ensage.SDK.Abilities.Items
         {
             get
             {
-                return DamageType.Pure;
+                return DamageType.Magical;
             }
         }
 

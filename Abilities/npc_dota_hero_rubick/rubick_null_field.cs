@@ -4,18 +4,19 @@
 
 namespace Ensage.SDK.Abilities.npc_dota_hero_rubick
 {
+    using Ensage.SDK.Abilities.Components;
     using Ensage.SDK.Extensions;
 
-    public class rubick_null_field : AuraAbility
+    public class rubick_null_field : ToggleAbility, IAuraAbility
     {
         public rubick_null_field(Ability ability)
             : base(ability)
         {
         }
 
-        public override string AuraModifierName { get; } = "modifier_rubick_null_field_effect";
+        public string AuraModifierName { get; } = "modifier_rubick_null_field_effect";
 
-        public override float AuraRadius
+        public float AuraRadius
         {
             get
             {

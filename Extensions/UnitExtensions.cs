@@ -180,6 +180,11 @@ namespace Ensage.SDK.Extensions
                         var metamorphosis = hero.GetAbilityById(AbilityId.terrorblade_metamorphosis);
                         if (metamorphosis != null && hero.HasModifier("modifier_terrorblade_metamorphosis"))
                         {
+                            var talent = hero.GetAbilityById(AbilityId.special_bonus_unique_terrorblade_3);
+                            if (talent?.Level > 0)
+                            {
+                                result += talent.GetAbilitySpecialData("value");
+                            }
                             result += metamorphosis.GetAbilitySpecialData("bonus_range");
                         }
 
@@ -411,7 +416,7 @@ namespace Ensage.SDK.Extensions
 
             var armor = target.Armor;
 
-            mult *= 1 - ((0.06f * armor) / (1 + (0.06f * Math.Abs(armor))));
+            mult *= 1 - ((0.05f * armor) / (1 + (0.05f * Math.Abs(armor))));
             mult *= (1.0f + damageAmplifier);
             return damage * mult;
         }

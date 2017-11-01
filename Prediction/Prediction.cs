@@ -109,6 +109,15 @@ namespace Ensage.SDK.Prediction
                     }
                 }
 
+                // runes for pudge
+                if (input.CollisionTypes.HasFlag(CollisionTypes.Runes))
+                {
+                    foreach (var rune in EntityManager<Rune>.Entities.Where(unit => input.Owner.IsInRange(unit, scanRange)))
+                    {
+                        collisionObjects.Add(new CollisionObject(rune, rune.NetworkPosition, 75f));
+                    }
+                }
+
                 var collisionResult = Collision.Collision.GetCollision(input.Owner.NetworkPosition.ToVector2(), result.CastPosition.ToVector2(), input.Radius, collisionObjects);
                 if (collisionResult.Collides)
                 {

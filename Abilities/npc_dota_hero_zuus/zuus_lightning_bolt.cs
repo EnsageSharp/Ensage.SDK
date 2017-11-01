@@ -28,7 +28,7 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_zuus
             }
         }
 
-        public bool UseAbility(Unit target, bool onlyTarget = false)
+        public override bool UseAbility(Unit target)
         {
             if (!this.CanBeCasted)
             {
@@ -36,20 +36,7 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_zuus
                 return false;
             }
 
-            bool result;
-            if ((this.Ability.AbilityBehavior & AbilityBehavior.NoTarget) == AbilityBehavior.NoTarget)
-            {
-                result = this.Ability.UseAbility();
-            }
-            else if ((this.Ability.AbilityBehavior & AbilityBehavior.Point) == AbilityBehavior.Point && !onlyTarget)
-            {
-                result = this.Ability.UseAbility(target.NetworkPosition);
-            }
-            else
-            {
-                result = this.Ability.UseAbility(target);
-            }
-
+            var result = this.Ability.UseAbility(target);
             if (result)
             {
                 this.LastCastAttempt = Game.RawGameTime;

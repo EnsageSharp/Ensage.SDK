@@ -33,7 +33,7 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_zuus
         {
             get
             {
-                var damage = base.RawDamage;
+                var damage = this.Ability.GetAbilitySpecialData("arc_damage");
 
                 var talent = this.Owner.GetAbilityById(AbilityId.special_bonus_unique_zeus_2);
                 if (talent != null && talent.Level > 0)

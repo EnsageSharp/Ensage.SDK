@@ -485,7 +485,7 @@ namespace Ensage.SDK.Extensions
             var hero = source as Hero;
             if (hero != null)
             {
-                spellAmp += hero.TotalIntelligence / 14.0f / 100.0f;
+                spellAmp += hero.TotalIntelligence / 15.0f / 100.0f;
             }
 
             var kaya = source.GetItemById(AbilityId.item_trident);

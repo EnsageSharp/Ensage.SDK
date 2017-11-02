@@ -4,7 +4,6 @@
 
 namespace Ensage.SDK.Abilities
 {
-    using System;
     using System.Linq;
 
     using Ensage.SDK.Extensions;

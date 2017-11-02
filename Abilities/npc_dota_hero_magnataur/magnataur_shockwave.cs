@@ -15,19 +15,27 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_magnataur
 
         protected override string RadiusName { get; } = "shock_width";
 
+        protected override float RawDamage
+        {
+            get
+            {
+                var damage = this.Ability.GetAbilitySpecialData("shock_damage");
+
+                var talent = this.Owner.GetAbilityById(AbilityId.special_bonus_unique_magnus_4);
+                if (talent?.Level > 0)
+                {
+                    damage += talent.GetAbilitySpecialData("value");
+                }
+
+                return damage;
+            }
+        }
+
         protected override string SpeedName
         {
             get
             {
                 return this.Owner.HasAghanimsScepter() ? "scepter_speed" : "shock_speed";
-            }
-        }
-
-        protected override float RawDamage
-        {
-            get
-            {
-                return this.Ability.GetAbilitySpecialData("shock_damage");
             }
         }
     }

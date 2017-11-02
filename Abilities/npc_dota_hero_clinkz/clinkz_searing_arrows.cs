@@ -4,7 +4,6 @@
 
 namespace Ensage.SDK.Abilities.npc_dota_hero_clinkz
 {
-    using System;
     using System.Linq;
 
     using Ensage.SDK.Extensions;

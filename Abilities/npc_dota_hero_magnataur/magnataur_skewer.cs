@@ -22,9 +22,9 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_magnataur
             }
         }
 
-        protected override string RadiusName { get; } = "skewer_radius";
+        public string ModifierName { get; } = "modifier_magnataur_skewer_movement";
 
-        protected override string SpeedName { get; } = "skewer_speed";
+        public string TargetModifierName { get; } = "modifier_magnataur_skewer_impact";
 
         protected override float BaseCastRange
         {
@@ -42,6 +42,8 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_magnataur
             }
         }
 
+        protected override string RadiusName { get; } = "skewer_radius";
+
         protected override float RawDamage
         {
             get
@@ -50,8 +52,6 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_magnataur
             }
         }
 
-        public string ModifierName { get; } = "modifier_magnataur_skewer_movement";
-
-        public string TargetModifierName { get; } = "modifier_magnataur_skewer_impact";
+        protected override string SpeedName { get; } = "skewer_speed";
     }
 }

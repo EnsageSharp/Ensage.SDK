@@ -15,13 +15,11 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_troll_warlord
         {
         }
 
-        public string TargetModifierName { get; } = "modifier_troll_warlord_whirling_axes_slow";
-
-        public override float Range
+        public override bool CanBeCasted
         {
             get
             {
-                return this.Ability.GetAbilitySpecialData("axe_range");
+                return this.Ability.IsActivated && base.CanBeCasted;
             }
         }
 
@@ -32,6 +30,16 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_troll_warlord
                 return 206.17f; // no in special data
             }
         }
+
+        public override float Range
+        {
+            get
+            {
+                return this.Ability.GetAbilitySpecialData("axe_range");
+            }
+        }
+
+        public string TargetModifierName { get; } = "modifier_troll_warlord_whirling_axes_slow";
 
         protected override string RadiusName { get; } = "axe_width";
 
@@ -50,6 +58,8 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_troll_warlord
                 return damage;
             }
         }
+
+        protected override string SpeedName { get; } = "axe_speed";
 
         public override float GetDamage(params Unit[] targets)
         {

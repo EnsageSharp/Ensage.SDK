@@ -17,6 +17,14 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_juggernaut
         {
         }
 
+        public override bool CanBeCasted
+        {
+            get
+            {
+                return this.Ability.IsActivated && base.CanBeCasted;
+            }
+        }
+
         public float Duration
         {
             get

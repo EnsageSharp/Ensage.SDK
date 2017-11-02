@@ -488,10 +488,10 @@ namespace Ensage.SDK.Extensions
                 spellAmp += hero.TotalIntelligence / 14.0f / 100.0f;
             }
 
-            var aethers = source.Inventory.Items.Where(x => x.Id == AbilityId.item_aether_lens);
-            foreach (var aether in aethers)
+            var kaya = source.GetItemById(AbilityId.item_trident);
+            if (kaya != null)
             {
-                spellAmp += aether.AbilitySpecialData.First(x => x.Name == "spell_amp").Value / 100.0f;
+                spellAmp += kaya.AbilitySpecialData.First(x => x.Name == "spell_amp").Value / 100.0f;
             }
 
             var talents = source.Spellbook.Spells.Where(x => x.Level > 0 && x.Name.StartsWith("special_bonus_spell_amplify_"));
@@ -505,7 +505,7 @@ namespace Ensage.SDK.Extensions
 
         public static bool HasAghanimsScepter(this Unit unit)
         {
-            return unit.HasAnyModifiers("modifier_item_ultimate_scepter", "modifier_item_ultimate_scepter_consumed");
+            return unit.HasAnyModifiers("modifier_item_ultimate_scepter", "modifier_item_ultimate_scepter_consumed", "modifier_wisp_tether_scepter");
         }
 
         public static bool HasAnyModifiers(this Unit unit, params string[] modifierNames)

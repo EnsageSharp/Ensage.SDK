@@ -111,6 +111,7 @@
     <Compile Include="Abilities\IAreaOfEffectAbility.cs" />
     <Compile Include="Abilities\IAuraAbility.cs" />
     <Compile Include="Abilities\Aggregation\Dagon.cs" />
+    <Compile Include="Abilities\Items\item_combo_breaker.cs" />
     <Compile Include="Abilities\npc_dota_hero_troll_warlord\troll_warlord_fervor.cs" />
     <Compile Include="Abilities\npc_dota_hero_troll_warlord\troll_warlord_battle_trance.cs" />
     <Compile Include="Abilities\npc_dota_hero_troll_warlord\troll_warlord_whirling_axes_melee.cs" />

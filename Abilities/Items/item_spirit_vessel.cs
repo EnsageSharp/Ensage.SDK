@@ -7,8 +7,8 @@ namespace Ensage.SDK.Abilities.Items
     using System.Linq;
 
     using Ensage.SDK.Abilities.Components;
-    using Ensage.SDK.Helpers;
     using Ensage.SDK.Extensions;
+    using Ensage.SDK.Helpers;
 
     public class item_spirit_vessel : RangedAbility, IHasDot
     {
@@ -59,7 +59,7 @@ namespace Ensage.SDK.Abilities.Items
         {
             var damage = this.RawTickDamage;
             var amplify = this.Ability.SpellAmplification();
-            var drain = Ability.GetAbilitySpecialData("enemy_hp_drain");
+            var drain = this.Ability.GetAbilitySpecialData("enemy_hp_drain");
             var reduction = 0.0f;
             if (targets.Any())
             {
@@ -73,12 +73,7 @@ namespace Ensage.SDK.Abilities.Items
 
         public float GetTotalDamage(params Unit[] targets)
         {
-            if (targets.Any())
-            {
-                return this.GetTickDamage(targets) * this.TickRate;
-            }
-
             return this.GetTickDamage(targets) * (this.Duration / this.TickRate);
         }
     }
-} 
+}

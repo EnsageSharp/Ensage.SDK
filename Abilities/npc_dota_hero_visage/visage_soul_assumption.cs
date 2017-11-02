@@ -14,8 +14,6 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_visage
         {
         }
 
-        public string ModifierName { get; } = "modifier_visage_soul_assumption";
-
         public float Charges
         {
             get
@@ -33,13 +31,21 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_visage
             }
         }
 
+        public string ModifierName { get; } = "modifier_visage_soul_assumption";
+
         protected override float RawDamage
         {
             get
             {
                 var damage = this.Ability.GetAbilitySpecialData("soul_base_damage");
-
                 var bonus = this.Ability.GetAbilitySpecialData("soul_charge_damage");
+
+                var talent = this.Owner.GetAbilityById(AbilityId.special_bonus_unique_visage_4);
+                if (talent?.Level > 0)
+                {
+                    bonus += talent.GetAbilitySpecialData("value");
+                }
+
                 damage += this.Charges * bonus;
 
                 return damage;

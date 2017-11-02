@@ -4,7 +4,7 @@
 
 namespace Ensage.SDK.Abilities.Items
 {
-    internal class item_magic_stick : ActiveAbility
+    public class item_magic_stick : ActiveAbility
     {
         public item_magic_stick(Item item)
             : base(item)

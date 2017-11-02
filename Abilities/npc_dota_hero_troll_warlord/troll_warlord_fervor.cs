@@ -14,8 +14,6 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_troll_warlord
         {
         }
 
-        public string ModifierName { get; } = "modifier_troll_warlord_fervor";
-
         public float Charges
         {
             get
@@ -24,5 +22,7 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_troll_warlord
                 return modifier?.StackCount ?? 0;
             }
         }
+
+        public string ModifierName { get; } = "modifier_troll_warlord_fervor";
     }
 }

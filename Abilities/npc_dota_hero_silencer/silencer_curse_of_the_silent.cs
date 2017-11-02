@@ -4,24 +4,16 @@
 
 namespace Ensage.SDK.Abilities.npc_dota_hero_silencer
 {
-    using System;
-
     using Ensage.SDK.Abilities.Components;
     using Ensage.SDK.Extensions;
     using Ensage.SDK.Helpers;
 
-    using PlaySharp.Toolkit.Helper.Annotations;
-
-    public class silencer_curse_of_the_silent : CircleAbility, IHasTargetModifier
+    public class silencer_curse_of_the_silent : CircleAbility, IHasDot
     {
         public silencer_curse_of_the_silent(Ability ability)
             : base(ability)
         {
         }
-
-        public override float Speed { get; } = float.MaxValue;
-
-        public string TargetModifierName { get; } = "modifier_silencer_curse_of_the_silent";
 
         public float Duration
         {
@@ -31,13 +23,27 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_silencer
             }
         }
 
+        public bool HasInitialDamage { get; } = false;
+
         public float RawTickDamage
         {
             get
             {
-                return this.Ability.GetAbilitySpecialData("damage");
+                var damage = this.Ability.GetAbilitySpecialData("damage");
+
+                var talent = this.Owner.GetAbilityById(AbilityId.special_bonus_unique_silencer);
+                if (talent?.Level > 0)
+                {
+                    damage += talent.GetAbilitySpecialData("value");
+                }
+
+                return damage;
             }
         }
+
+        public override float Speed { get; } = float.MaxValue;
+
+        public string TargetModifierName { get; } = "modifier_silencer_curse_of_the_silent";
 
         public float TickRate { get; } = 1.0f;
 

@@ -14,8 +14,6 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_silencer
         {
         }
 
-        public string TargetModifierName { get; } = "modifier_silencer_last_word_disarm";
-
         public float DebuffDuration
         {
             get
@@ -31,6 +29,8 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_silencer
                 return this.Ability.GetAbilitySpecialData("brew_time");
             }
         }
+
+        public string TargetModifierName { get; } = "modifier_silencer_last_word_disarm";
 
         protected override float RawDamage
         {

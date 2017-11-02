@@ -7,7 +7,7 @@ namespace Ensage.SDK.Abilities.Items
     using Ensage.SDK.Abilities.Components;
     using Ensage.SDK.Extensions;
 
-    class item_nullifier : RangedAbility, IHasTargetModifier
+    public class item_nullifier : RangedAbility, IHasTargetModifier
     {
         public item_nullifier(Item item)
             : base(item)
@@ -18,11 +18,10 @@ namespace Ensage.SDK.Abilities.Items
         {
             get
             {
-                return Ability.GetAbilitySpecialData("projectile_speed");
+                return this.Ability.GetAbilitySpecialData("projectile_speed");
             }
         }
 
         public string TargetModifierName { get; } = "modifier_nullifier_mute";
-
     }
 }

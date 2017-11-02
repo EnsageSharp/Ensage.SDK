@@ -21,7 +21,8 @@ namespace Ensage.SDK.Abilities
             {
                 var bonusRange = 0.0f;
 
-                foreach (var talent in this.Owner.Spellbook.Spells.Where(x => x.Level > 0 && x.Name.StartsWith("special_bonus_cast_range_")))
+                var talent = this.Owner.Spellbook.Spells.FirstOrDefault(x => x.Level > 0 && x.Name.StartsWith("special_bonus_cast_range_"));
+                if (talent != null)
                 {
                     bonusRange += talent.GetAbilitySpecialData("value");
                 }

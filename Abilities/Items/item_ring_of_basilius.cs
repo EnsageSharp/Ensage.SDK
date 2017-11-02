@@ -6,7 +6,7 @@ namespace Ensage.SDK.Abilities.Items
 {
     using Ensage.SDK.Extensions;
 
-    internal class item_ring_of_basilius : ToggleAbility, IAuraAbility
+    public class item_ring_of_basilius : ToggleAbility, IAuraAbility
     {
         public item_ring_of_basilius(Item item)
             : base(item)

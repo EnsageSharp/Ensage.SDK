@@ -5,6 +5,7 @@
 namespace Ensage.SDK.Abilities.Items
 {
     using System.Linq;
+
     using Ensage.SDK.Abilities.Components;
     using Ensage.SDK.Extensions;
     using Ensage.SDK.Helpers;
@@ -16,14 +17,11 @@ namespace Ensage.SDK.Abilities.Items
         {
         }
 
-        public bool HasInitialDamage { get; } = true;
-        public string TargetModifierName { get; } = "modifier_meteor_hammer_burn";
-
-        public float Radius
+        public override DamageType DamageType
         {
             get
             {
-               return Ability.GetAbilitySpecialData("impact_radius");
+                return DamageType.Magical;
             }
         }
 
@@ -31,15 +29,34 @@ namespace Ensage.SDK.Abilities.Items
         {
             get
             {
-                return Ability.GetAbilitySpecialData("burn_duration");
+                return this.Ability.GetAbilitySpecialData("burn_duration");
             }
         }
+
+        public bool HasInitialDamage { get; } = false;
 
         public bool IsChanneling
         {
             get
             {
                 return this.Ability.IsChanneling;
+            }
+        }
+
+        public float Radius
+        {
+            get
+            {
+                return this.Ability.GetAbilitySpecialData("impact_radius");
+            }
+        }
+
+        public float RawTickDamage
+        {
+            get
+            {
+                // burn_dps_buildings for buildings
+                return this.Ability.GetAbilitySpecialData("burn_dps_units");
             }
         }
 
@@ -52,24 +69,17 @@ namespace Ensage.SDK.Abilities.Items
                     return 0;
                 }
 
-                return (Ability.GetAbilitySpecialData("max_duration") + Ability.GetAbilitySpecialData("land_time")) - this.Ability.ChannelTime;
+                return this.Ability.GetAbilitySpecialData("max_duration") - this.Ability.ChannelTime;
             }
         }
+
+        public string TargetModifierName { get; } = "modifier_meteor_hammer_burn";
 
         public float TickRate
         {
             get
             {
-                return 1.0f;
-            }
-        }
-
-        public float RawTickDamage
-        {
-            get
-            {
-                // burn_dps_buildings for buildings
-                return this.Ability.GetAbilitySpecialData("burn_dps_units");
+                return this.Ability.GetAbilitySpecialData("burn_interval");
             }
         }
 
@@ -90,6 +100,5 @@ namespace Ensage.SDK.Abilities.Items
         {
             return this.GetTickDamage(targets) * (this.Duration / this.TickRate);
         }
-
     }
 }

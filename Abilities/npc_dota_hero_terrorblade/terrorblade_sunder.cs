@@ -16,6 +16,30 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_terrorblade
         {
         }
 
+        public override float GetDamage(params Unit[] targets)
+        {
+            if (!targets.Any())
+            {
+                return 0;
+            }
+
+            var minDamagePercent = this.Ability.GetAbilitySpecialData("hit_point_minimum_pct");
+
+            var target = targets.First();
+            var targetDamagePercent = Math.Max((float)target.Health / target.MaximumHealth, minDamagePercent / 100);
+            var ownerDamagePercent = Math.Max((float)this.Owner.Health / this.Owner.MaximumHealth, minDamagePercent / 100);
+
+            var percent = targetDamagePercent - ownerDamagePercent;
+
+            var damage = 0.0f;
+            if (percent >= 0)
+            {
+                damage = (float)Math.Ceiling(target.MaximumHealth * percent);
+            }
+
+            return damage;
+        }
+
         public float OwnerHealth(params Unit[] targets)
         {
             if (!targets.Any())
@@ -58,30 +82,6 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_terrorblade
             }
 
             return health;
-        }
-
-        public override float GetDamage(params Unit[] targets)
-        {
-            if (!targets.Any())
-            {
-                return 0;
-            }
-
-            var minDamagePercent = this.Ability.GetAbilitySpecialData("hit_point_minimum_pct");
-
-            var target = targets.First();
-            var targetDamagePercent = Math.Max((float)target.Health / target.MaximumHealth, minDamagePercent / 100);
-            var ownerDamagePercent = Math.Max((float)this.Owner.Health / this.Owner.MaximumHealth, minDamagePercent / 100);
-
-            var percent = targetDamagePercent - ownerDamagePercent;
-
-            var damage = 0.0f;
-            if (percent >= 0)
-            {
-                damage = (float)Math.Ceiling(target.MaximumHealth * percent);
-            }
-
-            return damage;
         }
     }
 }

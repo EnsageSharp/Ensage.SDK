@@ -13,12 +13,8 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_nyx_assassin
             : base(ability)
         {
         }
-        
+
         public string TargetModifierName { get; } = "modifier_nyx_assassin_impale";
-
-        protected override string RadiusName { get; } = "width";
-
-        protected override string SpeedName { get; } = "speed";
 
         protected override float BaseCastRange
         {
@@ -35,11 +31,13 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_nyx_assassin
             }
         }
 
+        protected override string RadiusName { get; } = "width";
+
         protected override float RawDamage
         {
             get
             {
-                var damage = this.Ability.GetAbilitySpecialData("#AbilityDamage");
+                var damage = this.Ability.GetAbilitySpecialData("impale_damage");
 
                 var damageTalent = this.Owner.GetAbilityById(AbilityId.special_bonus_unique_nyx_2);
                 if (damageTalent != null && damageTalent.Level > 0)

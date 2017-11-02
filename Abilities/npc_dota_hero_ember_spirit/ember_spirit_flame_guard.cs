@@ -49,7 +49,7 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_ember_spirit
                     damage += talent.GetAbilitySpecialData("value");
                 }
 
-                return damage * TickRate;
+                return damage * this.TickRate;
             }
         }
 

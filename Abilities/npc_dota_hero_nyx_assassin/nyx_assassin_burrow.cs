@@ -16,8 +16,8 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_nyx_assassin
             this.UnAbility = new nyx_assassin_unburrow(unAbility);
         }
 
-        public nyx_assassin_unburrow UnAbility { get; set; }
-
         public string ModifierName { get; } = "modifier_nyx_assassin_burrow";
+
+        public nyx_assassin_unburrow UnAbility { get; set; }
     }
 }

@@ -39,7 +39,7 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_skywrath_mage
                     damage += talent.GetAbilitySpecialData("value");
                 }
 
-                return (damage / Duration) * this.TickRate; ;
+                return (damage / this.Duration) * this.TickRate;
             }
         }
 

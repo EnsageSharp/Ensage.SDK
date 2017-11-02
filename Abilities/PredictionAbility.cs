@@ -87,16 +87,16 @@ namespace Ensage.SDK.Abilities
         public virtual PredictionInput GetPredictionInput(params Unit[] targets)
         {
             var input = new PredictionInput
-                        {
-                            Owner = this.Owner,
-                            AreaOfEffect = this.HasAreaOfEffect,
-                            CollisionTypes = this.CollisionTypes,
-                            Delay = this.CastPoint,
-                            Speed = this.Speed,
-                            Range = this.CastRange,
-                            Radius = this.Radius,
-                            PredictionSkillshotType = this.PredictionSkillshotType
-                        };
+            {
+                Owner = this.Owner,
+                AreaOfEffect = this.HasAreaOfEffect,
+                CollisionTypes = this.CollisionTypes,
+                Delay = this.CastPoint,
+                Speed = this.Speed,
+                Range = this.CastRange,
+                Radius = this.Radius,
+                PredictionSkillshotType = this.PredictionSkillshotType
+            };
 
             if (this.HasAreaOfEffect)
             {

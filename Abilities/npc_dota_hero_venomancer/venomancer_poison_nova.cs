@@ -19,11 +19,35 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_venomancer
         {
             get
             {
-                return this.Ability.GetAbilitySpecialData("duration");
+                var duration = this.Ability.GetAbilitySpecialData("duration");
+
+                var talent = this.Owner.GetAbilityById(AbilityId.special_bonus_unique_venomancer_4);
+                if (talent?.Level > 0)
+                {
+                    duration += talent.GetAbilitySpecialData("value");
+                }
+
+                return duration;
             }
         }
 
         public bool HasInitialDamage { get; } = true;
+
+        public override float Radius
+        {
+            get
+            {
+                var radius = base.Radius;
+
+                var talent = this.Owner.GetAbilityById(AbilityId.special_bonus_unique_venomancer_6);
+                if (talent?.Level > 0)
+                {
+                    radius += talent.GetAbilitySpecialData("value");
+                }
+
+                return radius;
+            }
+        }
 
         public float RawTickDamage
         {

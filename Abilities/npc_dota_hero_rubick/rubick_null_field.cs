@@ -4,7 +4,6 @@
 
 namespace Ensage.SDK.Abilities.npc_dota_hero_rubick
 {
-    using Ensage.SDK.Abilities.Components;
     using Ensage.SDK.Extensions;
 
     public class rubick_null_field : ToggleAbility, IAuraAbility
@@ -21,6 +20,43 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_rubick
             get
             {
                 return this.Ability.GetAbilitySpecialData("radius");
+            }
+        }
+
+        public override bool Enabled
+        {
+            get
+            {
+                return base.Enabled;
+            }
+            set
+            {
+                // toggleable ability, but needs UseAbility() to toggle
+                if (!this.CanBeCasted)
+                {
+                    return;
+                }
+
+                var result = false;
+                if (value)
+                {
+                    if (!this.Enabled)
+                    {
+                        result = this.Ability.UseAbility();
+                    }
+                }
+                else
+                {
+                    if (this.Enabled)
+                    {
+                        result = this.Ability.UseAbility();
+                    }
+                }
+
+                if (result)
+                {
+                    this.LastCastAttempt = Game.RawGameTime;
+                }
             }
         }
     }

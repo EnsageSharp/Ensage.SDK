@@ -15,8 +15,6 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_puck
         {
         }
 
-        public string TargetModifierName { get; } = "modifier_puck_coiled";
-
         public override float Radius
         {
             get
@@ -24,6 +22,9 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_puck
                 return this.Ability.GetAbilitySpecialData("coil_radius");
             }
         }
+
+        public string TargetModifierName { get; } = "modifier_puck_coiled";
+
         // There is no more a initial damage. So I replaced this values with break damage.
         protected override float RawDamage
         {

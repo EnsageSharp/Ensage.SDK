@@ -109,6 +109,16 @@
     <Compile Include="Abilities\IAuraAbility.cs" />
     <Compile Include="Abilities\Aggregation\Dagon.cs" />
     <Compile Include="Abilities\Items\item_combo_breaker.cs" />
+    <Compile Include="Abilities\npc_dota_hero_dark_willow\dark_willow_bedlam.cs" />
+    <Compile Include="Abilities\npc_dota_hero_dark_willow\dark_willow_bramble_maze.cs" />
+    <Compile Include="Abilities\npc_dota_hero_dark_willow\dark_willow_cursed_crown.cs" />
+    <Compile Include="Abilities\npc_dota_hero_dark_willow\dark_willow_shadow_realm.cs" />
+    <Compile Include="Abilities\npc_dota_hero_dark_willow\dark_willow_terrorize.cs" />
+    <Compile Include="Abilities\npc_dota_hero_pangolier\pangolier_gyroshell.cs" />
+    <Compile Include="Abilities\npc_dota_hero_pangolier\pangolier_gyroshell_stop.cs" />
+    <Compile Include="Abilities\npc_dota_hero_pangolier\pangolier_heartpiercer.cs" />
+    <Compile Include="Abilities\npc_dota_hero_pangolier\pangolier_shield_crash.cs" />
+    <Compile Include="Abilities\npc_dota_hero_pangolier\pangolier_swashbuckle.cs" />
     <Compile Include="Abilities\npc_dota_hero_troll_warlord\troll_warlord_fervor.cs" />
     <Compile Include="Abilities\npc_dota_hero_troll_warlord\troll_warlord_battle_trance.cs" />
     <Compile Include="Abilities\npc_dota_hero_troll_warlord\troll_warlord_whirling_axes_melee.cs" />

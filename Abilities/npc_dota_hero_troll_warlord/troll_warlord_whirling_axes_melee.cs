@@ -21,7 +21,7 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_troll_warlord
         {
             get
             {
-                return this.Ability.IsActivated && base.CanBeCasted;
+                return this.IsActivated && base.CanBeCasted;
             }
         }
 

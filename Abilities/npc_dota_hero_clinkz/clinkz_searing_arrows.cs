@@ -4,7 +4,6 @@
 
 namespace Ensage.SDK.Abilities.npc_dota_hero_clinkz
 {
-    using System;
     using System.Linq;
 
     using Ensage.SDK.Extensions;
@@ -44,13 +43,6 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_clinkz
             var amplify = this.Ability.SpellAmplification();
 
             return base.GetDamage(targets) + DamageHelpers.GetSpellDamage(this.RawDamage, amplify, reduction);
-        }
-
-        public override float GetDamage(Unit target, float physicalDamageModifier, float targetHealth = float.MinValue)
-        {
-            var amplify = this.Ability.SpellAmplification();
-            var reduction = this.Ability.GetDamageReduction(target, this.DamageType);
-            return base.GetDamage(target, physicalDamageModifier, targetHealth) + DamageHelpers.GetSpellDamage(this.RawDamage, amplify, -reduction, physicalDamageModifier);
         }
     }
 }

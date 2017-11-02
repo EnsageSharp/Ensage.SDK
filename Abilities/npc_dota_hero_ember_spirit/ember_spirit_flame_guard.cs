@@ -41,7 +41,15 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_ember_spirit
         {
             get
             {
-                return this.Ability.GetAbilitySpecialData("damage_per_second") * this.TickRate;
+                var damage = this.Ability.GetAbilitySpecialData("damage_per_second");
+
+                var talent = this.Owner.GetAbilityById(AbilityId.special_bonus_unique_ember_spirit_3);
+                if (talent?.Level > 0)
+                {
+                    damage += talent.GetAbilitySpecialData("value");
+                }
+
+                return damage * this.TickRate;
             }
         }
 

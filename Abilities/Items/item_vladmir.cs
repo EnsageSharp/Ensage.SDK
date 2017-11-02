@@ -4,8 +4,6 @@
 
 namespace Ensage.SDK.Abilities.Items
 {
-    using Ensage.SDK.Extensions;
-
     public class item_vladmir : AuraAbility
     {
         public item_vladmir(Item item)

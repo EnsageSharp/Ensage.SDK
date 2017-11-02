@@ -29,13 +29,15 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_pudge
         {
             get
             {
-                var level = this.Ability.Level;
-                if (level == 0)
+                var duration = this.Ability.GetAbilitySpecialData("ticks");
+
+                var talent = this.Owner.GetAbilityById(AbilityId.special_bonus_unique_pudge_3);
+                if (talent?.Level > 0)
                 {
-                    return 0;
+                    duration += talent.GetAbilitySpecialData("value");
                 }
 
-                return this.Ability.GetChannelTime(level - 1);
+                return duration;
             }
         }
 

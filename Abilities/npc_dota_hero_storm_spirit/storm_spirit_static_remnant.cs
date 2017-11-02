@@ -44,7 +44,15 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_storm_spirit
         {
             get
             {
-                return this.Ability.GetAbilitySpecialData("static_remnant_damage");
+                var damage = this.Ability.GetAbilitySpecialData("static_remnant_damage");
+
+                var talent = this.Owner.GetAbilityById(AbilityId.special_bonus_unique_storm_spirit_5);
+                if (talent?.Level > 0)
+                {
+                    damage += talent.GetAbilitySpecialData("value");
+                }
+
+                return damage;
             }
         }
 

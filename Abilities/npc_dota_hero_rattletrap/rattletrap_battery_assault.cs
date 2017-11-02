@@ -18,15 +18,7 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_rattletrap
         {
             get
             {
-                var duration = this.Ability.GetAbilitySpecialData("duration");
-
-                var talent = this.Owner.GetAbilityById(AbilityId.special_bonus_unique_clockwerk);
-                if (talent?.Level > 0)
-                {
-                    duration += talent.GetAbilitySpecialData("value");
-                }
-
-                return duration;
+                return this.Ability.GetAbilitySpecialData("duration");
             }
         }
 
@@ -58,7 +50,15 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_rattletrap
         {
             get
             {
-                return this.Ability.GetAbilitySpecialData("interval");
+                var interval = this.Ability.GetAbilitySpecialData("interval");
+
+                var talent = this.Owner.GetAbilityById(AbilityId.special_bonus_unique_clockwerk);
+                if (talent?.Level > 0)
+                {
+                    interval += talent.GetAbilitySpecialData("value");
+                }
+
+                return interval;
             }
         }
 

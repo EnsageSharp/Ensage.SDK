@@ -37,7 +37,7 @@ namespace Ensage.SDK.Abilities
 
                 var owner = this.Owner;
                 var isItem = this.Ability is Item;
-                if (owner.IsStunned() || owner.IsMuted() || !isItem && owner.IsSilenced())
+                if (owner.IsStunned() || isItem && owner.IsMuted() || !isItem && owner.IsSilenced())
                 {
                     return false;
                 }
@@ -188,7 +188,7 @@ namespace Ensage.SDK.Abilities
 
             var amplify = this.Owner.GetSpellAmplification();
             var reduction = this.Ability.GetDamageReduction(target, this.DamageType);
-   
+
             return DamageHelpers.GetSpellDamage(damage, amplify, -reduction, damageModifier);
         }
 
@@ -246,9 +246,9 @@ namespace Ensage.SDK.Abilities
             }
 
             bool result;
-            if ((this.Ability.AbilityBehavior & AbilityBehavior.NoTarget) == AbilityBehavior.NoTarget)
+            if ((this.Ability.AbilityBehavior & AbilityBehavior.UnitTarget) == AbilityBehavior.UnitTarget)
             {
-                result = this.Ability.UseAbility();    
+                result = this.Ability.UseAbility(target);
             }
             else if ((this.Ability.AbilityBehavior & AbilityBehavior.Point) == AbilityBehavior.Point)
             {
@@ -256,7 +256,7 @@ namespace Ensage.SDK.Abilities
             }
             else
             {
-                result = this.Ability.UseAbility(target);
+                result = this.Ability.UseAbility();
             }
 
             if (result)
@@ -293,13 +293,13 @@ namespace Ensage.SDK.Abilities
             }
 
             bool result;
-            if ((this.Ability.AbilityBehavior & AbilityBehavior.NoTarget) == AbilityBehavior.NoTarget)
+            if ((this.Ability.AbilityBehavior & AbilityBehavior.Point) == AbilityBehavior.Point)
             {
-                result = this.Ability.UseAbility();
+                result = this.Ability.UseAbility(position);
             }
             else
             {
-                result = this.Ability.UseAbility(position);
+                result = this.Ability.UseAbility();
             }
 
             if (result)

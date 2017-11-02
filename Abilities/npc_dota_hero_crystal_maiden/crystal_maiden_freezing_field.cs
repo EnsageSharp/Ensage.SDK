@@ -90,7 +90,15 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_crystal_maiden
         {
             get
             {
-                return this.Ability.GetAbilitySpecialData("damage");
+                var damage = this.Ability.GetAbilitySpecialData("damage");
+
+                var talent = this.Owner.GetAbilityById(AbilityId.special_bonus_unique_crystal_maiden_3);
+                if (talent?.Level > 0)
+                {
+                    damage += talent.GetAbilitySpecialData("value");
+                }
+
+                return damage;
             }
         }
 
@@ -101,7 +109,13 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_crystal_maiden
                 return true;
             }
 
-            return targets.All(x => x.Distance2D(this.Owner) < this.Radius);
+            if (this.Owner.Distance2D(targets.First()) < this.Radius)
+            {
+                return true;
+            }
+
+            // moar checks
+            return false;
         }
 
         public override float GetDamage(params Unit[] targets)

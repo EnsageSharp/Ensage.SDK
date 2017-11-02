@@ -14,6 +14,8 @@ namespace Ensage.SDK.Abilities.Items
         {
         }
 
+        public string ModifierName { get; } = "modifier_item_hurricane_pike_range";
+
         public float PushLength
         {
             get
@@ -25,7 +27,5 @@ namespace Ensage.SDK.Abilities.Items
         public float PushSpeed { get; } = 1500.0f;
 
         public string TargetModifierName { get; } = "modifier_item_hurricane_pike_active";
-
-        public string ModifierName { get; } = "modifier_item_hurricane_pike_range";
     }
 }

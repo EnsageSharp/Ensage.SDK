@@ -13,6 +13,7 @@ namespace Ensage.SDK.Abilities.Items
             : base(item)
         {
         }
+
         public string[] ModifierTextureName { get; } = { "item_travel_boots", "item_travel_boots_tinker" };
     }
 }

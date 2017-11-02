@@ -23,6 +23,11 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_skywrath_mage
         {
             get
             {
+                if (this.Owner.GetAbilityById(AbilityId.special_bonus_unique_skywrath_4)?.Level > 0)
+                {
+                    return float.MaxValue;
+                }
+
                 return this.Ability.GetAbilitySpecialData("launch_radius");
             }
         }
@@ -32,6 +37,16 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_skywrath_mage
             get
             {
                 return this.Ability.GetAbilitySpecialData("speed");
+            }
+        }
+
+        public Hero TargetHit
+        {
+            get
+            {
+                return EntityManager<Hero>.Entities.Where(x => x.IsValid && x.IsVisible && x.IsAlive && !x.IsIllusion && x.IsEnemy(this.Owner) && this.CanHit(x))
+                                          .OrderBy(x => x.Distance2D(this.Owner))
+                                          .FirstOrDefault();
             }
         }
 
@@ -45,18 +60,9 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_skywrath_mage
             }
         }
 
-        public Hero TargetHit
+        public override bool CanHit(params Unit[] targets)
         {
-            get
-            {
-                return EntityManager<Hero>.Entities.Where(x =>
-                                    x.IsAlive &&
-                                    x.IsVisible &&
-                                    !x.IsIllusion &&
-                                    x.IsValid &&
-                                    x.IsEnemy(Owner) &&
-                                    this.CanHit(x)).OrderBy(x => x.Distance2D(this.Owner)).FirstOrDefault();
-            }
+            return targets.All(x => x.Distance2D(this.Owner) < (this.Radius - this.Owner.HullRadius));
         }
 
         public override float GetDamage(params Unit[] targets)
@@ -87,11 +93,6 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_skywrath_mage
             var reduction = this.Ability.GetDamageReduction(targetHit, this.DamageType);
 
             return DamageHelpers.GetSpellDamage(damage, amplify, -reduction, damageModifier);
-        }
-
-        public override bool CanHit(params Unit[] targets)
-        {
-            return targets.All(x => x.Distance2D(this.Owner) < this.Radius - this.Owner.HullRadius);
         }
     }
 }

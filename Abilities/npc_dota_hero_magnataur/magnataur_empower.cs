@@ -22,6 +22,8 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_magnataur
             }
         }
 
+        public string TargetModifierName { get; } = "modifier_magnataur_empower";
+
         protected override float RawDamage
         {
             get
@@ -36,7 +38,5 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_magnataur
                 return damage;
             }
         }
-
-        public string TargetModifierName { get; } = "modifier_magnataur_empower";
     }
 }

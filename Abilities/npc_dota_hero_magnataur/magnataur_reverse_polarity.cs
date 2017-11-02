@@ -16,8 +16,6 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_magnataur
         {
         }
 
-        public string TargetModifierName { get; } = "modifier_magnataur_reverse_polarity";
-
         public float Radius
         {
             get
@@ -25,6 +23,8 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_magnataur
                 return this.Ability.GetAbilitySpecialData("pull_radius");
             }
         }
+
+        public string TargetModifierName { get; } = "modifier_magnataur_reverse_polarity";
 
         public override bool CanHit(params Unit[] targets)
         {

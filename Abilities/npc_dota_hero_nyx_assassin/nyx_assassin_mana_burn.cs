@@ -29,20 +29,6 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_nyx_assassin
             }
         }
 
-        public float ManaBurn(params Unit[] targets)
-        {
-            var multiplier = this.Ability.GetAbilitySpecialData("float_multiplier");
-
-            var totalMana = 0.0f;
-            foreach (var target in targets)
-            {
-                var hero = target as Hero;
-                totalMana = multiplier * hero.TotalIntelligence;
-            }
-
-            return totalMana;
-        }
-
         public override float GetDamage(params Unit[] targets)
         {
             var multiplier = this.Ability.GetAbilitySpecialData("float_multiplier");
@@ -58,6 +44,20 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_nyx_assassin
             }
 
             return totalDamage;
+        }
+
+        public float ManaBurn(params Unit[] targets)
+        {
+            var multiplier = this.Ability.GetAbilitySpecialData("float_multiplier");
+
+            var totalMana = 0.0f;
+            foreach (var target in targets)
+            {
+                var hero = target as Hero;
+                totalMana = multiplier * hero.TotalIntelligence;
+            }
+
+            return totalMana;
         }
     }
 }

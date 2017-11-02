@@ -22,7 +22,7 @@ namespace Ensage.SDK.Abilities
         /// <summary>
         ///     Gets or sets a value indicating whether the ability is enabled or disabled.
         /// </summary>
-        public bool Enabled
+        public virtual bool Enabled
         {
             get
             {

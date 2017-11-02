@@ -180,6 +180,11 @@ namespace Ensage.SDK.Extensions
                         var metamorphosis = hero.GetAbilityById(AbilityId.terrorblade_metamorphosis);
                         if (metamorphosis != null && hero.HasModifier("modifier_terrorblade_metamorphosis"))
                         {
+                            var talent = hero.GetAbilityById(AbilityId.special_bonus_unique_terrorblade_3);
+                            if (talent?.Level > 0)
+                            {
+                                result += talent.GetAbilitySpecialData("value");
+                            }
                             result += metamorphosis.GetAbilitySpecialData("bonus_range");
                         }
 
@@ -411,7 +416,7 @@ namespace Ensage.SDK.Extensions
 
             var armor = target.Armor;
 
-            mult *= 1 - ((0.06f * armor) / (1 + (0.06f * Math.Abs(armor))));
+            mult *= 1 - ((0.05f * armor) / (1 + (0.05f * Math.Abs(armor))));
             mult *= (1.0f + damageAmplifier);
             return damage * mult;
         }
@@ -483,10 +488,10 @@ namespace Ensage.SDK.Extensions
                 spellAmp += hero.TotalIntelligence / 14.0f / 100.0f;
             }
 
-            var aethers = source.Inventory.Items.Where(x => x.Id == AbilityId.item_aether_lens);
-            foreach (var aether in aethers)
+            var kaya = source.GetItemById(AbilityId.item_trident);
+            if (kaya != null)
             {
-                spellAmp += aether.AbilitySpecialData.First(x => x.Name == "spell_amp").Value / 100.0f;
+                spellAmp += kaya.AbilitySpecialData.First(x => x.Name == "spell_amp").Value / 100.0f;
             }
 
             var talents = source.Spellbook.Spells.Where(x => x.Level > 0 && x.Name.StartsWith("special_bonus_spell_amplify_"));
@@ -500,7 +505,7 @@ namespace Ensage.SDK.Extensions
 
         public static bool HasAghanimsScepter(this Unit unit)
         {
-            return unit.HasAnyModifiers("modifier_item_ultimate_scepter", "modifier_item_ultimate_scepter_consumed");
+            return unit.HasAnyModifiers("modifier_item_ultimate_scepter", "modifier_item_ultimate_scepter_consumed", "modifier_wisp_tether_scepter");
         }
 
         public static bool HasAnyModifiers(this Unit unit, params string[] modifierNames)

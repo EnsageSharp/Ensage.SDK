@@ -53,17 +53,17 @@ namespace Ensage.SDK.Abilities.Items
 
         public string TargetModifierName { get; } = "modifier_item_shivas_guard_blast";
 
-        public override bool CanHit(params Unit[] targets)
-        {
-            return targets.All(x => x.Distance2D(this.Owner) < this.Radius);
-        }
-
         protected override float RawDamage
         {
             get
             {
                 return this.Ability.GetAbilitySpecialData("blast_damage");
             }
+        }
+
+        public override bool CanHit(params Unit[] targets)
+        {
+            return targets.All(x => x.Distance2D(this.Owner) < this.Radius);
         }
 
         public override float GetDamage(params Unit[] targets)

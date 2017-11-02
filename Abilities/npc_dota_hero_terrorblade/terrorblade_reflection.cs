@@ -16,8 +16,6 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_terrorblade
         {
         }
 
-        public string TargetModifierName { get; } = "modifier_terrorblade_reflection_slow";
-
         public float Radius
         {
             get
@@ -25,6 +23,8 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_terrorblade
                 return this.Ability.GetAbilitySpecialData("range");
             }
         }
+
+        public string TargetModifierName { get; } = "modifier_terrorblade_reflection_slow";
 
         public override bool CanHit(params Unit[] targets)
         {

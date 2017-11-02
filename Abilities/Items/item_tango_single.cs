@@ -6,7 +6,7 @@ namespace Ensage.SDK.Abilities.Items
 {
     using Ensage.SDK.Abilities.Components;
 
-    internal class item_tango_single : RangedAbility, IHasModifier
+    public class item_tango_single : RangedAbility, IHasModifier
     {
         public item_tango_single(Item item)
             : base(item)

@@ -22,7 +22,15 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_axe
         {
             get
             {
-                return this.Ability.GetAbilitySpecialData("radius");
+                var radius = this.Ability.GetAbilitySpecialData("radius");
+
+                var talent = this.Owner.GetAbilityById(AbilityId.special_bonus_unique_axe_2);
+                if (talent?.Level > 0)
+                {
+                    radius += talent.GetAbilitySpecialData("value");
+                }
+
+                return radius;
             }
         }
 

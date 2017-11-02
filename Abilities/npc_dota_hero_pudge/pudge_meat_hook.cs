@@ -14,7 +14,7 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_pudge
         {
         }
 
-        public override CollisionTypes CollisionTypes { get; } = CollisionTypes.AllUnits;
+        public override CollisionTypes CollisionTypes { get; } = CollisionTypes.AllUnits | CollisionTypes.Runes;
 
         public string TargetModifierName { get; } = "modifier_pudge_meat_hook";
 

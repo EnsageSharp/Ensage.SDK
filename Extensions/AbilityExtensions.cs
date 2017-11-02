@@ -70,14 +70,15 @@ namespace Ensage.SDK.Extensions
             var owner = (Unit)ability.Owner;
 
             // items
-            var aetherLense = owner.GetItemById(AbilityId.item_aether_lens);
-            if (aetherLense != null)
+            var aetherLens = owner.GetItemById(AbilityId.item_aether_lens);
+            if (aetherLens != null)
             {
-                castRange += aetherLense.GetAbilitySpecialData("cast_range_bonus");
+                castRange += aetherLens.GetAbilitySpecialData("cast_range_bonus");
             }
 
             // talents
-            foreach (var talent in owner.Spellbook.Spells.Where(x => x.Level > 0 && x.Name.StartsWith("special_bonus_cast_range_")))
+            var talent = owner.Spellbook.Spells.FirstOrDefault(x => x.Level > 0 && x.Name.StartsWith("special_bonus_cast_range_"));
+            if (talent != null)
             {
                 castRange += talent.GetAbilitySpecialData("value");
             }

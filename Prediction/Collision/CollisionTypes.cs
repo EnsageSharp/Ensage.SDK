@@ -25,6 +25,8 @@ namespace Ensage.SDK.Prediction.Collision
 
         EnemyHeroes = 1 << 7,
 
+        Runes = 1 << 8,
+
         AllUnits = AllyCreeps | AllyHeroes | EnemyCreeps | EnemyHeroes,
 
         AlliedUnits = AllyCreeps | AllyHeroes,

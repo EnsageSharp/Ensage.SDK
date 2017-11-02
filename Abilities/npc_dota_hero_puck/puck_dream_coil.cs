@@ -15,8 +15,6 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_puck
         {
         }
 
-        public string TargetModifierName { get; } = "modifier_puck_coiled";
-
         public override float Radius
         {
             get
@@ -25,11 +23,14 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_puck
             }
         }
 
+        public string TargetModifierName { get; } = "modifier_puck_coiled";
+
+        // There is no more a initial damage. So I replaced this values with break damage.
         protected override float RawDamage
         {
             get
             {
-                return this.Ability.GetAbilitySpecialData("coil_init_damage_tooltip");
+                return this.Ability.GetAbilitySpecialData(this.Owner.HasAghanimsScepter() ? "coil_break_damage_scepter" : "coil_break_damage");
             }
         }
 

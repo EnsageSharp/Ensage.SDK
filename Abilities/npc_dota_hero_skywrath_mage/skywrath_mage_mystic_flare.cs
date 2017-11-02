@@ -31,7 +31,15 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_skywrath_mage
         {
             get
             {
-                return (this.Ability.GetAbilitySpecialData("damage") / this.Duration) * this.TickRate;
+                var damage = this.Ability.GetAbilitySpecialData("damage");
+
+                var talent = this.Owner.GetAbilityById(AbilityId.special_bonus_unique_skywrath_5);
+                if (talent?.Level > 0)
+                {
+                    damage += talent.GetAbilitySpecialData("value");
+                }
+
+                return (damage / this.Duration) * this.TickRate;
             }
         }
 

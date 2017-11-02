@@ -15,13 +15,11 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_troll_warlord
         {
         }
 
-        public string TargetModifierName { get; } = "modifier_troll_warlord_whirling_axes_slow";
-
-        public override float Range
+        public override bool CanBeCasted
         {
             get
             {
-                return this.Ability.GetAbilitySpecialData("axe_range");
+                return this.Ability.IsActivated && base.CanBeCasted;
             }
         }
 
@@ -33,15 +31,35 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_troll_warlord
             }
         }
 
+        public override float Range
+        {
+            get
+            {
+                return this.Ability.GetAbilitySpecialData("axe_range");
+            }
+        }
+
+        public string TargetModifierName { get; } = "modifier_troll_warlord_whirling_axes_slow";
+
         protected override string RadiusName { get; } = "axe_width";
 
         protected override float RawDamage
         {
             get
             {
-                return this.Ability.GetAbilitySpecialData("axe_damage");
+                var damage = this.Ability.GetAbilitySpecialData("axe_damage");
+
+                var talent = this.Owner.GetAbilityById(AbilityId.special_bonus_unique_troll_warlord_3);
+                if (talent?.Level > 0)
+                {
+                    damage += talent.GetAbilitySpecialData("value");
+                }
+
+                return damage;
             }
         }
+
+        protected override string SpeedName { get; } = "axe_speed";
 
         public override float GetDamage(params Unit[] targets)
         {
@@ -49,6 +67,7 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_troll_warlord
 
             var damage = this.RawDamage;
             var amplify = this.Owner.GetSpellAmplification();
+
             foreach (var target in targets)
             {
                 var reduction = this.Ability.GetDamageReduction(target, this.DamageType);

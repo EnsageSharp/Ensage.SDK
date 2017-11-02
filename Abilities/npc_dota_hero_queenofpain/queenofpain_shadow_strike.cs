@@ -10,7 +10,7 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_queenofpain
     using Ensage.SDK.Extensions;
     using Ensage.SDK.Helpers;
 
-    public class queenofpain_shadow_strike : RangedAbility, IHasDot
+    public class queenofpain_shadow_strike : RangedAbility, IHasDot, IAreaOfEffectAbility
     {
         public queenofpain_shadow_strike(Ability ability)
             : base(ability)
@@ -26,6 +26,20 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_queenofpain
         }
 
         public bool HasInitialDamage { get; } = true;
+
+        public float Radius
+        {
+            get
+            {
+                var talent = this.Owner.GetAbilityById(AbilityId.special_bonus_unique_queen_of_pain);
+                if (talent?.Level > 0)
+                {
+                    return talent.GetAbilitySpecialData("value");
+                }
+
+                return 0;
+            }
+        }
 
         public float RawTickDamage
         {

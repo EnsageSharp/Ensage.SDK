@@ -82,23 +82,6 @@ namespace Ensage.SDK.Service
             }
         }
 
-        private void CreateLogger()
-        {
-            if (!this.Context.Config.Settings.ErrorReporting)
-            {
-                return;
-            }
-
-            try
-            {
-                this.Default.Get<SentryAppender>();
-            }
-            catch (Exception e)
-            {
-                Log.Error(e);
-            }
-        }
-
         private void DeactivatePlugins()
         {
             foreach (var plugin in this.PluginContainer.OrderByDescending(e => e.Metadata.Priority))

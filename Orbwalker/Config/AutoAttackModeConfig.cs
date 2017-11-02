@@ -20,11 +20,17 @@ namespace Ensage.SDK.Orbwalker.Config
             this.Active = this.Factory.Item("Active", true);
             this.Key = this.Factory.Item("Key", new KeyBind(key));
             this.Deny = this.Factory.Item("Deny", deny);
+            this.Deny.Item.Tooltip = "Deny creeps";
             this.Farm = this.Factory.Item("Lasthit", lasthit);
+            this.Farm.Item.Tooltip = "Last hit creeps";
             this.Hero = this.Factory.Item("Hero", hero);
+            this.Hero.Item.Tooltip = "Attack heroes";
             this.Building = this.Factory.Item("Building", building);
+            this.Building.Item.Tooltip = "Attack buildings";
             this.Neutral = this.Factory.Item("Neutral", neutral);
+            this.Neutral.Item.Tooltip = "Attack neutral creeps";
             this.Creep = this.Factory.Item("Creep", creep);
+            this.Creep.Item.Tooltip = "Attack creeps";
 
             this.BonusMeleeRange = this.Factory.Item("Bonus Melee Range", new Slider(0, 0, 400));
             this.BonusRangedRange = this.Factory.Item("Bonus Ranged Range", new Slider(0, 0, 400));

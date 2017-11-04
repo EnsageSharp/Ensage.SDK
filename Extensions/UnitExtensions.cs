@@ -399,11 +399,10 @@ namespace Ensage.SDK.Extensions
             {
                 var isMelee = source.IsMelee;
 
-                // quelling blade and talon does not stack
-                var bonusDmgItem = source.GetItemById(AbilityId.item_quelling_blade) ?? source.GetItemById(AbilityId.item_iron_talon);
-                if (bonusDmgItem != null)
+                var quellingBlade = source.GetItemById(AbilityId.item_quelling_blade);
+                if (quellingBlade != null)
                 {
-                    damage += bonusDmgItem.GetAbilitySpecialData(isMelee ? "damage_bonus" : "damage_bonus_ranged");
+                    damage += quellingBlade.GetAbilitySpecialData(isMelee ? "damage_bonus" : "damage_bonus_ranged");
                 }
 
                 // apply percentage bonus damage from battle fury to base dmg
@@ -494,8 +493,8 @@ namespace Ensage.SDK.Extensions
                 spellAmp += kaya.AbilitySpecialData.First(x => x.Name == "spell_amp").Value / 100.0f;
             }
 
-            var talents = source.Spellbook.Spells.Where(x => x.Level > 0 && x.Name.StartsWith("special_bonus_spell_amplify_"));
-            foreach (var talent in talents)
+            var talent = source.Spellbook.Spells.FirstOrDefault(x => x.Level > 0 && x.Name.StartsWith("special_bonus_spell_amplify_"));
+            if (talent != null)
             {
                 spellAmp += talent.AbilitySpecialData.First(x => x.Name == "value").Value / 100.0f;
             }

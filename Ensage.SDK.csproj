@@ -58,9 +58,6 @@
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\..\..\..\..\Program Files (x86)\Ensage\References\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="PlaySharp.Sentry">
-      <HintPath>..\..\..\..\..\Program Files (x86)\Ensage\References\PlaySharp.Sentry.dll</HintPath>
-    </Reference>
     <Reference Include="PlaySharp.Service">
       <HintPath>..\..\..\..\..\Program Files (x86)\Ensage\References\PlaySharp.Service.dll</HintPath>
     </Reference>
@@ -112,6 +109,16 @@
     <Compile Include="Abilities\IAuraAbility.cs" />
     <Compile Include="Abilities\Aggregation\Dagon.cs" />
     <Compile Include="Abilities\Items\item_combo_breaker.cs" />
+    <Compile Include="Abilities\npc_dota_hero_dark_willow\dark_willow_bedlam.cs" />
+    <Compile Include="Abilities\npc_dota_hero_dark_willow\dark_willow_bramble_maze.cs" />
+    <Compile Include="Abilities\npc_dota_hero_dark_willow\dark_willow_cursed_crown.cs" />
+    <Compile Include="Abilities\npc_dota_hero_dark_willow\dark_willow_shadow_realm.cs" />
+    <Compile Include="Abilities\npc_dota_hero_dark_willow\dark_willow_terrorize.cs" />
+    <Compile Include="Abilities\npc_dota_hero_pangolier\pangolier_gyroshell.cs" />
+    <Compile Include="Abilities\npc_dota_hero_pangolier\pangolier_gyroshell_stop.cs" />
+    <Compile Include="Abilities\npc_dota_hero_pangolier\pangolier_heartpiercer.cs" />
+    <Compile Include="Abilities\npc_dota_hero_pangolier\pangolier_shield_crash.cs" />
+    <Compile Include="Abilities\npc_dota_hero_pangolier\pangolier_swashbuckle.cs" />
     <Compile Include="Abilities\npc_dota_hero_troll_warlord\troll_warlord_fervor.cs" />
     <Compile Include="Abilities\npc_dota_hero_troll_warlord\troll_warlord_battle_trance.cs" />
     <Compile Include="Abilities\npc_dota_hero_troll_warlord\troll_warlord_whirling_axes_melee.cs" />
@@ -443,11 +450,6 @@
     <Compile Include="Prediction\PredictionManager.cs" />
     <Compile Include="Prediction\PredictionOutput.cs" />
     <Compile Include="Prediction\PredictionSkillshotType.cs" />
-    <Compile Include="Properties\Settings.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-      <DependentUpon>Settings.settings</DependentUpon>
-    </Compile>
     <Compile Include="Renderer\DX11\BrushCache.cs" />
     <Compile Include="Renderer\DX11\D3D11Context.cs" />
     <Compile Include="Renderer\DX11\D3D11Renderer.cs" />
@@ -486,7 +488,6 @@
     <Compile Include="Service\Metadata\IPluginLoaderMetadata.cs" />
     <Compile Include="Service\Metadata\StartupMode.cs" />
     <Compile Include="Service\PluginContainer.cs" />
-    <Compile Include="Service\SentryAppender.cs" />
     <Compile Include="Service\ServiceManager.cs" />
     <Compile Include="TargetSelector\Modes\AutoAttackModeSelector.cs" />
     <Compile Include="Orbwalker\Metadata\ExportOrbwalkingModeAttribute.cs" />
@@ -579,10 +580,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Properties\key.snk" />
-    <None Include="Properties\Settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
-    </None>
     <EmbeddedResource Include="Resources\Bottom.json" />
     <EmbeddedResource Include="Resources\DireBase.json" />
     <EmbeddedResource Include="Resources\DireBottomJungle.json" />

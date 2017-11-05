@@ -15,6 +15,8 @@ namespace Ensage.SDK.Abilities
 
         public Ability Ability { get; }
 
+        public virtual float ActivationDelay { get; } = 0;
+
         public abstract bool CanBeCasted { get; }
 
         public virtual float CastRange
@@ -78,13 +80,7 @@ namespace Ensage.SDK.Abilities
 
         protected virtual float BaseCastRange { get; } = 0;
 
-        protected virtual float RawDamage
-        {
-            get
-            {
-                return 0;
-            }
-        }
+        protected virtual float RawDamage { get; } = 0;
 
         public static implicit operator Item(BaseAbility ability)
         {

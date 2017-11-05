@@ -14,6 +14,14 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_dark_willow
         {
         }
 
+        public override float ActivationDelay
+        {
+            get
+            {
+                return (this.Ability.GetAbilitySpecialData("initial_creation_delay") + this.Ability.GetAbilitySpecialData("latch_creation_delay")) * 1000;
+            }
+        }
+
         public string TargetModifierName { get; } = "modifier_dark_willow_bramble_maze";
 
         protected override string RadiusName { get; } = "placement_range";

@@ -14,6 +14,14 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_pangolier
         {
         }
 
+        public override float ActivationDelay
+        {
+            get
+            {
+                return this.Ability.GetAbilitySpecialData("debuff_delay") * 1000;
+            }
+        }
+
         public bool IsPseudoChance { get; } = true;
 
         public float ProcChance

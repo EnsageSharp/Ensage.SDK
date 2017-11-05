@@ -14,6 +14,14 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_dark_willow
         {
         }
 
+        public override float ActivationDelay
+        {
+            get
+            {
+                return this.Ability.GetAbilitySpecialData("delay") * 1000;
+            }
+        }
+
         public float Radius
         {
             get

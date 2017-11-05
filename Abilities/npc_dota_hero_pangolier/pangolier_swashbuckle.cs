@@ -29,7 +29,7 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_pangolier
         {
             get
             {
-                return this.Ability.GetAbilitySpecialData("dash_range");
+                return this.Ability.GetAbilitySpecialData("range");
             }
         }
 
@@ -37,7 +37,7 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_pangolier
         {
             get
             {
-                return this.Ability.GetAbilitySpecialData("range");
+                return this.Ability.GetAbilitySpecialData("dash_range");
             }
         }
 
@@ -64,16 +64,35 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_pangolier
 
         protected override string SpeedName { get; } = "dash_speed";
 
-        public override bool UseAbility(Unit target)
+        public bool UseAbility(Vector3 startPosition, Vector3 direction)
         {
-            //todo fix after core update
-            throw new NotImplementedException();
+            if (!this.CanBeCasted)
+            {
+                return false;
+            }
+
+            if (!this.Ability.TargetPosition(startPosition) || !this.Ability.TargetPosition(direction))
+            {
+                return false;
+            }
+
+            var result = this.Ability.UseAbility(startPosition);
+
+            if (result)
+            {
+                this.LastCastAttempt = Game.RawGameTime;
+            }
+
+            return result;
         }
 
         public override bool UseAbility(Vector3 position)
         {
-            //todo fix after core update
-            throw new NotImplementedException();
+            // simple position to get as close as possible to target
+            var distance = Math.Max(this.Owner.AttackRange(), this.Owner.Distance2D(position) - this.CastRange);
+            var startPosition = position.Extend(this.Owner.Position, distance);
+
+            return this.UseAbility(startPosition, position);
         }
     }
 }

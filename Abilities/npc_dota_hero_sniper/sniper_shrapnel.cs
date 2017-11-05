@@ -16,6 +16,14 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_sniper
         {
         }
 
+        public override float ActivationDelay
+        {
+            get
+            {
+                return this.Ability.GetAbilitySpecialData("damage_delay") * 1000;
+            }
+        }
+
         public float Duration
         {
             get

@@ -10,8 +10,6 @@ namespace Ensage.SDK.Abilities.Items
     using Ensage.SDK.Extensions;
     using Ensage.SDK.Helpers;
 
-    using PlaySharp.Toolkit.Helper.Annotations;
-
     public class item_ethereal_blade : RangedAbility, IHasTargetModifier, IHasDamageAmplifier
     {
         public item_ethereal_blade(Item item)

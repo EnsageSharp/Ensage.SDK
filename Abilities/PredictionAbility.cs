@@ -91,7 +91,7 @@ namespace Ensage.SDK.Abilities
                 Owner = this.Owner,
                 AreaOfEffect = this.HasAreaOfEffect,
                 CollisionTypes = this.CollisionTypes,
-                Delay = this.CastPoint,
+                Delay = this.CastPoint + this.ActivationDelay,
                 Speed = this.Speed,
                 Range = this.CastRange,
                 Radius = this.Radius,

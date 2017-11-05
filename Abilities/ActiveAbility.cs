@@ -213,11 +213,11 @@ namespace Ensage.SDK.Abilities
         {
             if (this.Speed == float.MaxValue || this.Speed == 0)
             {
-                return this.GetCastDelay(position);
+                return this.GetCastDelay(position) + (int)this.ActivationDelay;
             }
 
             var time = this.Owner.Distance2D(position) / this.Speed;
-            return this.GetCastDelay(position) + (int)(time * 1000.0f);
+            return this.GetCastDelay(position) + (int)(time * 1000.0f) + (int)this.ActivationDelay;
         }
 
         public virtual bool UseAbility()

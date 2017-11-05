@@ -7,8 +7,6 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_storm_spirit
     using Ensage.SDK.Extensions;
     using Ensage.SDK.Helpers;
 
-    using SharpDX;
-
     public class storm_spirit_static_remnant : ActiveAbility, IAreaOfEffectAbility
     {
         public storm_spirit_static_remnant(Ability ability)
@@ -16,7 +14,7 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_storm_spirit
         {
         }
 
-        public float AdditionalDelay
+        public override float ActivationDelay
         {
             get
             {
@@ -68,11 +66,6 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_storm_spirit
             }
 
             return totalDamage;
-        }
-
-        public override int GetHitTime(Vector3 position)
-        {
-            return this.GetCastDelay() + (int)this.AdditionalDelay;
         }
     }
 }

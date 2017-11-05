@@ -4,6 +4,8 @@
 
 namespace Ensage.SDK.Abilities.npc_dota_hero_nyx_assassin
 {
+    using System;
+
     using Ensage.SDK.Extensions;
     using Ensage.SDK.Helpers;
 
@@ -40,7 +42,9 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_nyx_assassin
             foreach (var target in targets)
             {
                 var hero = target as Hero;
-                var damage = multiplier * hero.TotalIntelligence;
+                var manaBurnDamage = multiplier * hero.TotalIntelligence;
+
+                var damage = Math.Min(manaBurnDamage, target.Mana);
                 var reduction = target.MagicDamageResist;
                 totalDamage = DamageHelpers.GetSpellDamage(damage, amplify, reduction);
             }
@@ -54,8 +58,9 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_nyx_assassin
             var amplify = this.Owner.GetSpellAmplification();
 
             var hero = target as Hero;
-            var damage = multiplier * hero.TotalIntelligence;
+            var manaBurnDamage = multiplier * hero.TotalIntelligence;
 
+            var damage = Math.Min(manaBurnDamage, target.Mana);
             var reduction = this.Ability.GetDamageReduction(target, this.DamageType);
 
             return DamageHelpers.GetSpellDamage(damage, amplify, -reduction, damageModifier);

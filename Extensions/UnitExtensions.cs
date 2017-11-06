@@ -688,7 +688,7 @@ namespace Ensage.SDK.Extensions
 
             // todo qop talent somehow ?
 
-            return true;
+            return false;
         }
 
         public static bool IsReflectingAbilities(this Unit unit)

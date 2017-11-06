@@ -14,7 +14,7 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_rattletrap
         {
         }
 
-        public float Duration
+        public float DamageDuration
         {
             get
             {
@@ -85,7 +85,7 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_rattletrap
 
         public float GetTotalDamage(params Unit[] targets)
         {
-            return this.GetTickDamage(targets) * (this.Duration / this.TickRate);
+            return this.GetTickDamage(targets) * (this.DamageDuration / this.TickRate);
         }
     }
 }

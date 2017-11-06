@@ -17,7 +17,7 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_crystal_maiden
         {
         }
 
-        public float CreepDuration
+        public float CreepDamageDuration
         {
             get
             {
@@ -25,7 +25,7 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_crystal_maiden
             }
         }
 
-        public float Duration
+        public float DamageDuration
         {
             get
             {
@@ -82,7 +82,7 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_crystal_maiden
         public float GetTotalDamage(params Unit[] targets)
         {
             var target = targets.FirstOrDefault();
-            var duration = target != null && target.IsNeutral ? this.CreepDuration : this.Duration;
+            var duration = target != null && target.IsNeutral ? this.CreepDamageDuration : this.DamageDuration;
 
             return this.GetTickDamage(targets) * (duration / this.TickRate);
         }

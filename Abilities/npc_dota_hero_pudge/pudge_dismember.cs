@@ -17,15 +17,7 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_pudge
         {
         }
 
-        public float CreepDuration
-        {
-            get
-            {
-                return this.Duration * 2;
-            }
-        }
-
-        public float Duration
+        public float ChannelDuration
         {
             get
             {
@@ -38,6 +30,22 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_pudge
                 }
 
                 return duration;
+            }
+        }
+
+        public float CreepChannelDuration
+        {
+            get
+            {
+                return this.ChannelDuration * 2;
+            }
+        }
+
+        public float DamageDuration
+        {
+            get
+            {
+                return this.ChannelDuration;
             }
         }
 
@@ -68,7 +76,7 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_pudge
             }
         }
 
-        public float RemainingCreepDuration
+        public float RemainingCreepChannelDuration
         {
             get
             {
@@ -77,7 +85,7 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_pudge
                     return 0;
                 }
 
-                return this.CreepDuration - this.Ability.ChannelTime;
+                return this.CreepChannelDuration - this.Ability.ChannelTime;
             }
         }
 
@@ -90,7 +98,7 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_pudge
                     return 0;
                 }
 
-                return this.Duration - this.Ability.ChannelTime;
+                return this.ChannelDuration - this.Ability.ChannelTime;
             }
         }
 
@@ -127,10 +135,10 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_pudge
             // TODO: better .IsCreep method
             if (targets.Any() && !(targets.First() is Hero))
             {
-                return this.GetTickDamage(targets) * (this.CreepDuration / this.TickRate);
+                return this.GetTickDamage(targets) * (this.CreepChannelDuration / this.TickRate);
             }
 
-            return this.GetTickDamage(targets) * (this.Duration / this.TickRate);
+            return this.GetTickDamage(targets) * (this.ChannelDuration / this.TickRate);
         }
     }
 }

@@ -17,7 +17,7 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_skywrath_mage
         {
         }
 
-        public float Duration
+        public float DamageDuration
         {
             get
             {
@@ -39,7 +39,7 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_skywrath_mage
                     damage += talent.GetAbilitySpecialData("value");
                 }
 
-                return (damage / this.Duration) * this.TickRate;
+                return (damage / this.DamageDuration) * this.TickRate;
             }
         }
 
@@ -76,7 +76,7 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_skywrath_mage
 
         public float GetTotalDamage(params Unit[] targets)
         {
-            return this.GetTickDamage(targets) * (this.Duration / this.TickRate);
+            return this.GetTickDamage(targets) * (this.DamageDuration / this.TickRate);
         }
     }
 }

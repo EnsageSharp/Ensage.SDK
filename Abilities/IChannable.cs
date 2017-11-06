@@ -9,7 +9,7 @@ namespace Ensage.SDK.Abilities
         /// <summary>
         ///     Gets the maximum duration of the channeling ability.
         /// </summary>
-        float Duration { get; }
+        float ChannelDuration { get; }
 
         /// <summary>
         ///     Gets a value indicating whether the ability is currently channeled.

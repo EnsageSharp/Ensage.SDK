@@ -13,7 +13,7 @@ namespace Ensage.SDK.Abilities.Aggregation
         {
         }
 
-        public float Duration
+        public float ChannelDuration
         {
             get
             {
@@ -46,7 +46,7 @@ namespace Ensage.SDK.Abilities.Aggregation
                     return 0;
                 }
 
-                return this.Duration - this.Ability.ChannelTime;
+                return this.ChannelDuration - this.Ability.ChannelTime;
             }
         }
     }

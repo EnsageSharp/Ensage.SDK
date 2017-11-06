@@ -17,7 +17,7 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_pudge
         {
         }
 
-        public float Duration { get; } = 0.5f;
+        public float DamageDuration { get; } = 0.5f;
 
         public bool HasInitialDamage { get; } = false;
 
@@ -95,7 +95,7 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_pudge
 
         public float GetTotalDamage(params Unit[] targets)
         {
-            return this.GetTickDamage(targets) * (this.Duration / this.TickRate);
+            return this.GetTickDamage(targets) * (this.DamageDuration / this.TickRate);
         }
     }
 }

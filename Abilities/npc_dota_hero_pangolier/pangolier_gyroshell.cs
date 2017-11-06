@@ -7,7 +7,7 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_pangolier
     using Ensage.SDK.Abilities.Components;
     using Ensage.SDK.Extensions;
 
-    public class pangolier_gyroshell : ActiveAbility, IChannable, IAreaOfEffectAbility, IHasModifier, IHasTargetModifier
+    public class pangolier_gyroshell : ActiveAbility, IAreaOfEffectAbility, IHasModifier, IHasTargetModifier
     {
         public pangolier_gyroshell(Ability ability)
             : base(ability)
@@ -16,23 +16,7 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_pangolier
             this.GyroshellStopAbility = new pangolier_gyroshell_stop(stopAbility);
         }
 
-        public float Duration
-        {
-            get
-            {
-                return this.Ability.GetAbilitySpecialData("cast_time_tooltip");
-            }
-        }
-
         public pangolier_gyroshell_stop GyroshellStopAbility { get; }
-
-        public bool IsChanneling
-        {
-            get
-            {
-                return this.Ability.IsChanneling;
-            }
-        }
 
         public string ModifierName { get; } = "modifier_pangolier_gyroshell";
 
@@ -44,16 +28,11 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_pangolier
             }
         }
 
-        public float RemainingDuration
+        public override float Speed
         {
             get
             {
-                if (!this.IsChanneling)
-                {
-                    return 0;
-                }
-
-                return this.Duration - this.Ability.ChannelTime;
+                return this.Ability.GetAbilitySpecialData("forward_move_speed");
             }
         }
 

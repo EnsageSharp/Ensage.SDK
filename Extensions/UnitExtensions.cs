@@ -632,11 +632,38 @@ namespace Ensage.SDK.Extensions
             return (unit.UnitState & UnitState.Invulnerable) == UnitState.Invulnerable;
         }
 
-        [Obsolete("Use IsBlockingAbilities()")]
         public static bool IsLinkensProtected(this Unit unit)
         {
             var linkens = unit.GetItemById(AbilityId.item_sphere);
-            return linkens != null && linkens.Cooldown <= 0 || unit.HasModifier("modifier_item_sphere_target");
+            return linkens?.Cooldown <= 0 || unit.HasModifier("modifier_item_sphere_target");
+        }
+
+        public static bool IsSpellShieldProtected(this Unit unit)
+        {
+            var spellShield = unit.GetAbilityById(AbilityId.antimage_spell_shield);
+            return spellShield?.Cooldown <= 0 && unit.HasAghanimsScepter();
+        }
+
+        public static bool IsBlockingAbilities(this Unit unit, bool checkReflecting = false)
+        {
+            if (checkReflecting && unit.HasModifier("modifier_item_lotus_orb_active"))
+            {
+                return true;
+            }
+
+            if (IsLinkensProtected(unit))
+            {
+                return true;
+            }
+
+            if (IsSpellShieldProtected(unit))
+            {
+                return true;
+            }
+
+            // todo qop talent somehow ?
+
+            return false;
         }
 
         public static bool IsMagicImmune(this Unit unit)
@@ -665,30 +692,6 @@ namespace Ensage.SDK.Extensions
         public static bool IsReflectingDamage(this Unit unit)
         {
             return unit.HasAnyModifiers("modifier_nyx_assassin_spiked_carapace", "modifier_item_blade_mail_reflect");
-        }
-
-        public static bool IsBlockingAbilities(this Unit unit, bool checkReflecting = false)
-        {
-            if (checkReflecting && unit.HasModifier("modifier_item_lotus_orb_active"))
-            {
-                return true;
-            }
-
-            var spellShield = unit.GetAbilityById(AbilityId.antimage_spell_shield);
-            if (spellShield?.Cooldown <= 0 && unit.HasAghanimsScepter())
-            {
-                return true;
-            }
-
-            var linkens = unit.GetItemById(AbilityId.item_sphere);
-            if (linkens?.Cooldown <= 0 || unit.HasModifier("modifier_item_sphere_target"))
-            {
-                return true;
-            }
-
-            // todo qop talent somehow ?
-
-            return false;
         }
 
         public static bool IsReflectingAbilities(this Unit unit)

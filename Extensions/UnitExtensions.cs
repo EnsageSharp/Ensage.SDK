@@ -21,32 +21,6 @@ namespace Ensage.SDK.Extensions
 
     public static class UnitExtensions
     {
-        private static readonly HashSet<string> ChannelAnimations =
-            new HashSet<string>(StringComparer.OrdinalIgnoreCase)
-            {
-                "death_ward_anim",
-                "powershot_cast_anim",
-                "rearm1_anim",
-                "warlock_cast3_upheaval",
-                "warlock_cast3_upheaval_channel_anim",
-                "cast_channel_shackles_anim",
-                "channel_shackles",
-                "sand_king_epicast_anim",
-                "cast4_tricks_trade",
-                "life drain_anim",
-                "pudge_dismember_start",
-                "pudge_dismember_mid_anim",
-                "cast1_FortunesEnd_anim_anim",
-                "cast04_spring",
-                "Illuminate_anim",
-                "cast1_echo_stomp_anim",
-                "cast4_black_hole_anim",
-                "freezing_field_anim_10s",
-                "fiends_grip_cast_anim",
-                "fiends_grip_loop_anim",
-                "drain_anim"
-            };
-
         private static readonly HashSet<string> DisableModifiers =
             new HashSet<string>(StringComparer.OrdinalIgnoreCase)
             {
@@ -577,11 +551,6 @@ namespace Ensage.SDK.Extensions
             return (unit.UnitState & UnitState.AttackImmune) == UnitState.AttackImmune;
         }
 
-        public static bool IsChannelAnimation(this Animation animation)
-        {
-            return ChannelAnimations.Contains(animation.Name);
-        }
-
         /// <summary>
         ///     Check if the unit is channeling a spell
         /// </summary>
@@ -589,7 +558,7 @@ namespace Ensage.SDK.Extensions
         /// <returns></returns>
         public static bool IsChanneling(this Unit unit)
         {
-            if (ChannelAnimations.Contains(unit.Animation.Name))
+            if (unit.HasInventory && unit.Inventory.Items.Any(x => x.IsChanneling))
             {
                 return true;
             }
@@ -663,6 +632,7 @@ namespace Ensage.SDK.Extensions
             return (unit.UnitState & UnitState.Invulnerable) == UnitState.Invulnerable;
         }
 
+        [Obsolete("Use IsBlockingAbilities()")]
         public static bool IsLinkensProtected(this Unit unit)
         {
             var linkens = unit.GetItemById(AbilityId.item_sphere);
@@ -682,6 +652,43 @@ namespace Ensage.SDK.Extensions
         public static bool IsRealUnit(this Unit unit)
         {
             return unit.UnitType != 0 && (unit.UnitState & UnitState.FakeAlly) == UnitState.FakeAlly;
+        }
+
+        public static bool IsBlockingDamage(this Unit unit)
+        {
+            return unit.HasAnyModifiers(
+                "modifier_nyx_assassin_spiked_carapace",
+                "modifier_item_combo_breaker_buff",
+                "modifier_templar_assassin_refraction_absorb");
+        }
+
+        public static bool IsReflectingDamage(this Unit unit)
+        {
+            return unit.HasAnyModifiers("modifier_nyx_assassin_spiked_carapace", "modifier_item_blade_mail_reflect");
+        }
+
+        public static bool IsBlockingAbilities(this Unit unit, bool checkReflecting = false)
+        {
+            if (checkReflecting && unit.HasModifier("modifier_item_lotus_orb_active"))
+            {
+                return true;
+            }
+
+            var spellShield = unit.GetAbilityById(AbilityId.antimage_spell_shield);
+            if (spellShield?.Cooldown <= 0 && unit.HasAghanimsScepter())
+            {
+                return true;
+            }
+
+            var linkens = unit.GetItemById(AbilityId.item_sphere);
+            if (linkens?.Cooldown <= 0 || unit.HasModifier("modifier_item_sphere_target"))
+            {
+                return true;
+            }
+
+            // todo qop talent somehow ?
+
+            return true;
         }
 
         public static bool IsReflectingAbilities(this Unit unit)

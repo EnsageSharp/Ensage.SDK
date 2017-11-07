@@ -17,6 +17,30 @@ namespace Ensage.SDK.Abilities.Items
         {
         }
 
+        public override float ActivationDelay
+        {
+            get
+            {
+                return this.Ability.GetAbilitySpecialData("land_time");
+            }
+        }
+
+        public float ChannelDuration
+        {
+            get
+            {
+                return this.Ability.GetAbilitySpecialData("max_duration");
+            }
+        }
+
+        public float DamageDuration
+        {
+            get
+            {
+                return this.Ability.GetAbilitySpecialData("burn_duration");
+            }
+        }
+
         public override DamageType DamageType
         {
             get
@@ -25,15 +49,7 @@ namespace Ensage.SDK.Abilities.Items
             }
         }
 
-        public float Duration
-        {
-            get
-            {
-                return this.Ability.GetAbilitySpecialData("burn_duration");
-            }
-        }
-
-        public bool HasInitialDamage { get; } = false;
+        public bool HasInitialDamage { get; } = true;
 
         public bool IsChanneling
         {
@@ -69,7 +85,7 @@ namespace Ensage.SDK.Abilities.Items
                     return 0;
                 }
 
-                return this.Ability.GetAbilitySpecialData("max_duration") - this.Ability.ChannelTime;
+                return this.ChannelDuration - this.Ability.ChannelTime;
             }
         }
 
@@ -80,6 +96,14 @@ namespace Ensage.SDK.Abilities.Items
             get
             {
                 return this.Ability.GetAbilitySpecialData("burn_interval");
+            }
+        }
+
+        protected override float RawDamage
+        {
+            get
+            {
+                return this.Ability.GetAbilitySpecialData("impact_damage_units");
             }
         }
 
@@ -98,7 +122,7 @@ namespace Ensage.SDK.Abilities.Items
 
         public float GetTotalDamage(params Unit[] targets)
         {
-            return this.GetTickDamage(targets) * (this.Duration / this.TickRate);
+            return this.GetDamage(targets) + (this.GetTickDamage(targets) * (this.DamageDuration / this.TickRate));
         }
     }
 }

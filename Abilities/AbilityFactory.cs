@@ -74,7 +74,9 @@ namespace Ensage.SDK.Abilities
 
         public BaseAbility GetAbility(AbilityId id)
         {
-            var ability = this.Context.Owner.Spellbook.Spells.FirstOrDefault(x => x.Id == id);
+            var ability = id < AbilityId.default_attack
+                              ? this.Context.Owner.Inventory.Items.FirstOrDefault(x => x.Id == id)
+                              : this.Context.Owner.Spellbook.Spells.FirstOrDefault(x => x.Id == id);
             if (ability == null)
             {
                 throw new AbilityNotFoundException($"Could not find {id} for {this.Context}");
@@ -83,18 +85,21 @@ namespace Ensage.SDK.Abilities
             return this.GetAbility(ability);
         }
 
+        [Obsolete("Use GetAbility")]
         public T GetItem<T>([NotNull] Item item)
             where T : BaseAbility
         {
             return (T)this.GetAbility(item);
         }
 
+        [Obsolete("Use GetAbility")]
         public T GetItem<T>(AbilityId id)
             where T : BaseAbility
         {
             return (T)this.GetItem(id);
         }
 
+        [Obsolete("Use GetAbility")]
         public T GetItem<T>()
             where T : BaseAbility
         {
@@ -109,6 +114,7 @@ namespace Ensage.SDK.Abilities
             return this.GetItem<T>(id);
         }
 
+        [Obsolete("Use GetAbility")]
         public BaseAbility GetItem(AbilityId id)
         {
             var ability = this.Context.Owner.Inventory.Items.FirstOrDefault(x => x.Id == id);

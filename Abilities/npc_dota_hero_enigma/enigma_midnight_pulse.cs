@@ -16,7 +16,7 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_enigma
         {
         }
 
-        public float Duration
+        public float DamageDuration
         {
             get
             {
@@ -48,7 +48,7 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_enigma
 
         public float GetTotalDamage(params Unit[] target)
         {
-            return this.GetTickDamage(target) * (this.Duration / this.TickRate);
+            return this.GetTickDamage(target) * (this.DamageDuration / this.TickRate);
         }
     }
 }

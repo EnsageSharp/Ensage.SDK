@@ -25,19 +25,19 @@ namespace Ensage.SDK.Abilities.Items
             }
         }
 
+        public float DamageDuration
+        {
+            get
+            {
+                return this.Ability.GetAbilitySpecialData("duration");
+            }
+        }
+
         public override DamageType DamageType
         {
             get
             {
                 return DamageType.Magical;
-            }
-        }
-
-        public float Duration
-        {
-            get
-            {
-                return this.Ability.GetAbilitySpecialData("duration");
             }
         }
 
@@ -73,7 +73,7 @@ namespace Ensage.SDK.Abilities.Items
 
         public float GetTotalDamage(params Unit[] targets)
         {
-            return this.GetTickDamage(targets) * (this.Duration / this.TickRate);
+            return this.GetTickDamage(targets) * (this.DamageDuration / this.TickRate);
         }
     }
 }

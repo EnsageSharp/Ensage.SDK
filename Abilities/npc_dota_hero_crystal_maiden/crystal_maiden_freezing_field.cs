@@ -17,7 +17,7 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_crystal_maiden
         {
         }
 
-        public float Duration
+        public float ChannelDuration
         {
             get
             {
@@ -82,7 +82,7 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_crystal_maiden
                     return 0;
                 }
 
-                return this.Duration - this.Ability.ChannelTime;
+                return this.ChannelDuration - this.Ability.ChannelTime;
             }
         }
 

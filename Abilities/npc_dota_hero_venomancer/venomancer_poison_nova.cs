@@ -15,7 +15,7 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_venomancer
         {
         }
 
-        public float Duration
+        public float DamageDuration
         {
             get
             {
@@ -83,7 +83,7 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_venomancer
 
         public float GetTotalDamage(params Unit[] targets)
         {
-            return this.GetDamage(targets) + (this.GetTickDamage(targets) * (this.Duration / this.TickRate));
+            return this.GetDamage(targets) + (this.GetTickDamage(targets) * (this.DamageDuration / this.TickRate));
         }
     }
 }

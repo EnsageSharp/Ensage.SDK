@@ -9,7 +9,7 @@ namespace Ensage.SDK.Abilities.Components
         /// <summary>
         ///     Gets the duration of the dot.
         /// </summary>
-        float Duration { get; }
+        float DamageDuration { get; }
 
         /// <summary>
         ///     Gets a value indicating whether the dot has an initial damage instance or applies its first tick immediately. Use

@@ -22,19 +22,19 @@ namespace Ensage.SDK.Abilities.Items
             }
         }
 
+        public float DamageDuration
+        {
+            get
+            {
+                return this.Ability.GetAbilitySpecialData("soul_damage_duration");
+            }
+        }
+
         public override DamageType DamageType
         {
             get
             {
                 return DamageType.Magical;
-            }
-        }
-
-        public float Duration
-        {
-            get
-            {
-                return this.Ability.GetAbilitySpecialData("soul_damage_duration");
             }
         }
 
@@ -44,7 +44,7 @@ namespace Ensage.SDK.Abilities.Items
         {
             get
             {
-                return this.GetTotalDamage() / this.Duration;
+                return this.GetTotalDamage() / this.DamageDuration;
             }
         }
 

@@ -4,9 +4,12 @@
 
 namespace Ensage.SDK.Orbwalker.Modes
 {
+    using System.ComponentModel;
     using System.Windows.Input;
 
+    using Ensage.Common.Menu;
     using Ensage.SDK.Input;
+    using Ensage.SDK.Menu;
     using Ensage.SDK.Service;
 
     public abstract class KeyPressOrbwalkingModeAsync : OrbwalkingModeAsync
@@ -20,6 +23,12 @@ namespace Ensage.SDK.Orbwalker.Modes
             this.Key = key;
         }
 
+        protected KeyPressOrbwalkingModeAsync(IServiceContext context, MenuItem<KeyBind> key)
+            : base(context)
+        {
+            this.MenuKey = key;
+        }
+
         public override bool CanExecute
         {
             get
@@ -30,20 +39,36 @@ namespace Ensage.SDK.Orbwalker.Modes
 
         public Key Key { get; set; }
 
+        public MenuItem<KeyBind> MenuKey { get; }
+
         private IInputManager Input { get; }
 
         protected override void OnActivate()
         {
             base.OnActivate();
-            this.Input.KeyUp += this.OnKeyUp;
-            this.Input.KeyDown += this.KeyDown;
+            if (this.MenuKey != null)
+            {
+                this.MenuKey.PropertyChanged += this.MenuKeyOnPropertyChanged;
+            }
+            else
+            {
+                this.Input.KeyUp += this.OnKeyUp;
+                this.Input.KeyDown += this.KeyDown;
+            }
         }
 
         protected override void OnDeactivate()
         {
             base.OnDeactivate();
-            this.Input.KeyUp -= this.OnKeyUp;
-            this.Input.KeyDown -= this.KeyDown;
+            if (this.MenuKey != null)
+            {
+                this.MenuKey.PropertyChanged -= this.MenuKeyOnPropertyChanged;
+            }
+            else
+            {
+                this.Input.KeyUp -= this.OnKeyUp;
+                this.Input.KeyDown -= this.KeyDown;
+            }
         }
 
         private void KeyDown(object sender, KeyEventArgs e)
@@ -51,6 +76,19 @@ namespace Ensage.SDK.Orbwalker.Modes
             if (e.Key == this.Key)
             {
                 this.canExecute = true;
+            }
+        }
+
+        private void MenuKeyOnPropertyChanged(object sender, PropertyChangedEventArgs propertyChangedEventArgs)
+        {
+            if (this.MenuKey)
+            {
+                this.canExecute = true;
+            }
+            else
+            {
+                this.canExecute = false;
+                this.Cancel();
             }
         }
 

@@ -18,7 +18,7 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_pangolier
         {
             get
             {
-                return this.Ability.GetAbilitySpecialData("debuff_delay") * 1000;
+                return this.Ability.GetAbilitySpecialData("debuff_delay");
             }
         }
 

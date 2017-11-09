@@ -18,7 +18,7 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_storm_spirit
         {
             get
             {
-                return this.Ability.GetAbilitySpecialData("static_remnant_delay") * 1000;
+                return this.Ability.GetAbilitySpecialData("static_remnant_delay");
             }
         }
 

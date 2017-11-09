@@ -18,7 +18,7 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_dark_willow
         {
             get
             {
-                return this.Ability.GetAbilitySpecialData("initial_delay") * 1000;
+                return this.Ability.GetAbilitySpecialData("initial_delay");
             }
         }
 

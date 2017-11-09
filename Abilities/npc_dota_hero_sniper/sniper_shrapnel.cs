@@ -20,7 +20,7 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_sniper
         {
             get
             {
-                return this.Ability.GetAbilitySpecialData("damage_delay") * 1000;
+                return this.Ability.GetAbilitySpecialData("damage_delay");
             }
         }
 

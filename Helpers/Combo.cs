@@ -141,10 +141,10 @@ namespace Ensage.SDK.Helpers
         ///     Returns the damage of the combo.
         /// </summary>
         /// <param name="target"></param>
-        /// <param name="canBeCasted">Only includes abilities of the combo which can be casted.</param>
+        /// <param name="isReady">Only includes abilities of the combo which is ready.</param>
         /// <param name="canHit">Only includes abilities of the combo which can hit.</param>
         /// <returns></returns>
-        public float GetDamage([NotNull] Unit target, bool canBeCasted = true, bool canHit = true)
+        public float GetDamage([NotNull] Unit target, bool isReady = true, bool canHit = true)
         {
             if (target == null)
             {
@@ -158,7 +158,7 @@ namespace Ensage.SDK.Helpers
             var health = (float)target.Health;
             foreach (var ability in this.abilities)
             {
-                if (canBeCasted && !ability.CanBeCasted)
+                if (isReady && !ability.IsReady)
                 {
                     continue;
                 }
@@ -222,28 +222,28 @@ namespace Ensage.SDK.Helpers
         ///     Returns the health of the target after executing the combo.
         /// </summary>
         /// <param name="target"></param>
-        /// <param name="canBeCasted">Only includes abilities of the combo which can be casted.</param>
+        /// <param name="isReady">Only includes abilities of the combo which is ready.</param>
         /// <param name="canHit">Only includes abilities of the combo which can hit.</param>
         /// <returns></returns>
-        public float GetEstimatedHealth([NotNull] Unit target, bool canBeCasted = true, bool canHit = true)
+        public float GetEstimatedHealth([NotNull] Unit target, bool isReady = true, bool canHit = true)
         {
             if (target == null)
             {
                 throw new ArgumentNullException(nameof(target));
             }
 
-            var executionTime = this.GetExecutionTime(target, canBeCasted, canHit) / 1000.0f;
-            return Math.Min((float)target.MaximumHealth, ((float)target.Health + (executionTime * target.HealthRegeneration)) - this.GetDamage(target, canBeCasted, canHit));
+            var executionTime = this.GetExecutionTime(target, isReady, canHit) / 1000.0f;
+            return Math.Min((float)target.MaximumHealth, ((float)target.Health + (executionTime * target.HealthRegeneration)) - this.GetDamage(target, isReady, canHit));
         }
 
         /// <summary>
         ///     Calculates the execution time of the combo.
         /// </summary>
         /// <param name="target"></param>
-        /// <param name="canBeCasted">Only includes abilities of the combo which can be casted.</param>
+        /// <param name="isReady">Only includes abilities of the combo which is ready.</param>
         /// <param name="canHit">Only includes abilities of the combo which can hit.</param>
         /// <returns>Time in ms.</returns>
-        public float GetExecutionTime([CanBeNull] Unit target, bool canBeCasted = true, bool canHit = true)
+        public float GetExecutionTime([CanBeNull] Unit target, bool isReady = true, bool canHit = true)
         {
             var time = 0.0f;
             if (this.activeAbilities.Any())
@@ -255,7 +255,7 @@ namespace Ensage.SDK.Helpers
 
                 foreach (var ability in this.activeAbilities)
                 {
-                    if (canBeCasted && !ability.CanBeCasted)
+                    if (isReady && !ability.IsReady)
                     {
                         continue;
                     }

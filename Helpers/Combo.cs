@@ -158,7 +158,7 @@ namespace Ensage.SDK.Helpers
             var health = (float)target.Health;
             foreach (var ability in this.abilities)
             {
-                if (canBeCasted && !ability.CanBeCasted)
+                if (canBeCasted && !this.CanBeCasted(ability))
                 {
                     continue;
                 }
@@ -191,7 +191,7 @@ namespace Ensage.SDK.Helpers
                     }
                 }
 
-                if (this.staticField != null && this.staticField.CanBeCasted && ability.Item == null && ability is ActiveAbility)
+                if (this.staticField != null && this.CanBeCasted(staticField) && ability.Item == null && ability is ActiveAbility)
                 {
                     damage += this.staticField.GetDamage(target, magicDmgModifier - 1, Math.Max(0, health - damage));
                 }
@@ -255,7 +255,7 @@ namespace Ensage.SDK.Helpers
 
                 foreach (var ability in this.activeAbilities)
                 {
-                    if (canBeCasted && !ability.CanBeCasted)
+                    if (canBeCasted && !this.CanBeCasted(ability))
                     {
                         continue;
                     }
@@ -289,6 +289,23 @@ namespace Ensage.SDK.Helpers
             {
                 args.Process = false;
             }
+        }
+
+        private bool CanBeCasted(BaseAbility ability)
+        {
+            if (!ability.IsReady)
+            {
+                return false;
+            }
+
+            var owner = ability.Owner;
+            var isItem = ability.Ability is Item;
+            if (owner.IsStunned() || isItem && owner.IsMuted() || !isItem && owner.IsSilenced())
+            {
+                return false;
+            }
+
+            return true;
         }
     }
 }

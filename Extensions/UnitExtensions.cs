@@ -678,7 +678,7 @@ namespace Ensage.SDK.Extensions
 
         public static bool IsRealUnit(this Unit unit)
         {
-            return unit.UnitType != 0 && (unit.UnitState & UnitState.FakeAlly) == UnitState.FakeAlly;
+            return unit.UnitType != 0 && (unit.UnitState & UnitState.FakeAlly) != UnitState.FakeAlly;
         }
 
         public static bool IsBlockingDamage(this Unit unit)

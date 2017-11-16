@@ -311,7 +311,7 @@ namespace Ensage.SDK.Extensions
 
             if (angle > Math.PI)
             {
-                angle = (Math.PI * 2) - angle;
+                angle = Math.Abs((Math.PI * 2) - angle);
             }
 
             return (float)angle;
@@ -753,6 +753,11 @@ namespace Ensage.SDK.Extensions
         public static bool IsStunned(this Unit unit)
         {
             return (unit.UnitState & UnitState.Stunned) == UnitState.Stunned;
+        }
+
+        public static bool IsHexed(this Unit unit)
+        {
+            return (unit.UnitState & UnitState.Hexed) == UnitState.Hexed;
         }
 
         public static bool IsValidOrbwalkingTarget(this Unit attacker, Unit target, float bonusAttackRange = 0.0f)

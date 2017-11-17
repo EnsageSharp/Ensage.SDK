@@ -865,7 +865,7 @@ namespace Ensage.SDK.Extensions
                 return 0;
             }
 
-            if (angle <= 0.5f)
+            if (angle <= 0.2f)
             {
                 return 0;
             }

@@ -13,6 +13,8 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_silencer
         {
         }
 
+        public float Radius { get; } = float.MaxValue;
+
         public string TargetModifierName { get; } = "modifier_silencer_global_silence";
     }
 }

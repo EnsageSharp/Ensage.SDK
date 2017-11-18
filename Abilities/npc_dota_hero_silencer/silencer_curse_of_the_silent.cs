@@ -41,16 +41,9 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_silencer
             }
         }
 
-        public override float Speed { get; } = float.MaxValue;
-
         public string TargetModifierName { get; } = "modifier_silencer_curse_of_the_silent";
 
         public float TickRate { get; } = 1.0f;
-
-        public override float GetDamage(params Unit[] targets)
-        {
-            return this.GetTickDamage(targets);
-        }
 
         public float GetTickDamage(params Unit[] targets)
         {

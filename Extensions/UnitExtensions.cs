@@ -860,7 +860,7 @@ namespace Ensage.SDK.Extensions
 
         public static float TurnTime(this Unit unit, float angle)
         {
-            if (unit.ClassId == ClassId.CDOTA_Unit_Hero_Wisp)
+            if ((unit as Hero)?.HeroId == HeroId.npc_dota_hero_wisp)
             {
                 return 0;
             }

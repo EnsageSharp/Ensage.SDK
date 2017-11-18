@@ -13,10 +13,18 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_bane
             : base(ability)
         {
             var end = this.Owner.GetAbilityById(AbilityId.bane_nightmare_end);
-            this.NightmareEnd = new bane_nightmare_end(end);
+            this.EndAbility = new bane_nightmare_end(end);
         }
 
-        public bane_nightmare_end NightmareEnd { get; }
+        public bane_nightmare_end EndAbility { get; }
+
+        public override bool IsReady
+        {
+            get
+            {
+                return !this.Ability.IsHidden && base.IsReady;
+            }
+        }
 
         public string TargetModifierName { get; } = "modifier_bane_nightmare";
     }

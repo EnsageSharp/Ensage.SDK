@@ -32,7 +32,7 @@ namespace Ensage.SDK.Abilities
         {
             get
             {
-                return this.Ability.GetAbilitySpecialData(this.EndRadiusName);
+                return this.Radius;
             }
         }
 
@@ -50,7 +50,7 @@ namespace Ensage.SDK.Abilities
         {
             get
             {
-                return this.Ability.GetAbilitySpecialData(this.RadiusName);
+                return this.Ability.GetAbilitySpecialData("radius");
             }
         }
 
@@ -66,23 +66,11 @@ namespace Ensage.SDK.Abilities
         {
             get
             {
-                return this.Ability.GetAbilitySpecialData(this.SpeedName);
-            }
-        }
-
-        protected virtual string EndRadiusName
-        {
-            get
-            {
-                return this.RadiusName;
+                return this.Ability.GetAbilitySpecialData("speed");
             }
         }
 
         protected IPrediction Prediction { get; }
-
-        protected virtual string RadiusName { get; } = "radius";
-
-        protected virtual string SpeedName { get; } = "speed";
 
         public virtual PredictionInput GetPredictionInput(params Unit[] targets)
         {

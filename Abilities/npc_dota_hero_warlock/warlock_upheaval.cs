@@ -5,6 +5,7 @@
 namespace Ensage.SDK.Abilities.npc_dota_hero_warlock
 {
     using Ensage.SDK.Abilities.Components;
+    using Ensage.SDK.Extensions;
 
     public class warlock_upheaval : AreaOfEffectAbility, IChannable, IHasTargetModifier
     {
@@ -35,6 +36,14 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_warlock
             }
         }
 
+        public override float Radius
+        {
+            get
+            {
+                return this.Ability.GetAbilitySpecialData("aoe");
+            }
+        }
+
         public float RemainingDuration
         {
             get
@@ -49,7 +58,5 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_warlock
         }
 
         public string TargetModifierName { get; } = "modifier_warlock_upheaval";
-
-        protected override string RadiusName { get; } = "aoe";
     }
 }

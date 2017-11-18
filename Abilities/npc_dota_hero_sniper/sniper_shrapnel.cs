@@ -38,14 +38,7 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_sniper
         {
             get
             {
-                var damage = this.Ability.GetAbilitySpecialData("shrapnel_damage");
-                var talent = this.Owner.GetAbilityById(AbilityId.special_bonus_unique_sniper_1);
-                if (talent != null && talent.Level > 0)
-                {
-                    damage += talent.GetAbilitySpecialData("value");
-                }
-
-                return damage;
+                return this.Ability.GetAbilitySpecialDataWithTalent(this.Owner, "shrapnel_damage");
             }
         }
 

@@ -10,8 +10,6 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_skywrath_mage
     using Ensage.SDK.Extensions;
     using Ensage.SDK.Helpers;
 
-    using PlaySharp.Toolkit.Helper.Annotations;
-
     public class skywrath_mage_concussive_shot : ActiveAbility, IAreaOfEffectAbility, IHasTargetModifier
     {
         public skywrath_mage_concussive_shot(Ability ability)
@@ -80,7 +78,7 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_skywrath_mage
             return DamageHelpers.GetSpellDamage(damage, amplify, reduction);
         }
 
-        public override float GetDamage([NotNull] Unit target, float damageModifier, float targetHealth = float.MinValue)
+        public override float GetDamage(Unit target, float damageModifier, float targetHealth = float.MinValue)
         {
             var targetHit = this.TargetHit;
             if (targetHit != target)

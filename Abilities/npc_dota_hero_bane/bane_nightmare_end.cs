@@ -10,5 +10,13 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_bane
             : base(ability)
         {
         }
+
+        public override bool IsReady
+        {
+            get
+            {
+                return !this.Ability.IsHidden && base.IsReady;
+            }
+        }
     }
 }

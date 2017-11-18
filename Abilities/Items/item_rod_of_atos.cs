@@ -13,14 +13,7 @@ namespace Ensage.SDK.Abilities.Items
         {
         }
 
-        public override float Speed
-        {
-            get
-            {
-                // no speed value in special data ...
-                return 1500f;
-            }
-        }
+        public override float Speed { get; } = 1500f; // no speed value in special data
 
         public string TargetModifierName { get; } = "modifier_rod_of_atos_debuff";
     }

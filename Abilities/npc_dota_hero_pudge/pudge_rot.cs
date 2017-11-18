@@ -48,7 +48,7 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_pudge
         {
             get
             {
-                return this.Ability.GetAbilitySpecialData("rot_damage");
+                return this.Ability.GetAbilitySpecialDataWithTalent(this.Owner, "rot_damage");
             }
         }
 
@@ -76,12 +76,6 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_pudge
         {
             var damage = this.RawTickDamage;
             var amplify = this.Owner.GetSpellAmplification();
-
-            var talent = this.Owner.GetAbilityById(AbilityId.special_bonus_unique_pudge_2);
-            if (talent != null && talent.Level > 0)
-            {
-                damage += talent.GetAbilitySpecialData("value");
-            }
 
             var totalDamage = 0.0f;
             foreach (var target in targets)

@@ -21,8 +21,7 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_ancient_apparition
         {
             get
             {
-                var level = this.Ability.Level;
-                return level == 0 ? 0 : this.Ability.GetDuration(this.Ability.Level - 1);
+                return this.Duration;
             }
         }
 

@@ -13,12 +13,6 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_crystal_maiden
 
         public override string AuraModifierName { get; } = "modifier_crystal_maiden_brilliance_aura_effect";
 
-        public override float AuraRadius
-        {
-            get
-            {
-                return float.MaxValue;
-            }
-        }
+        public override float AuraRadius { get; } = float.MaxValue;
     }
 }

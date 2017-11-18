@@ -10,7 +10,7 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_venomancer
     using Ensage.SDK.Extensions;
     using Ensage.SDK.Helpers;
 
-    public class venomancer_poison_sting : OrbAbility, IHasDot, IHasModifier
+    public class venomancer_poison_sting : PassiveAbility, IHasDot, IHasModifier
     {
         public venomancer_poison_sting(Ability ability)
             : base(ability)
@@ -22,18 +22,6 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_venomancer
             get
             {
                 return this.Ability.GetAbilitySpecialData("duration");
-            }
-        }
-
-        public override bool Enabled
-        {
-            get
-            {
-                return this.Ability.Level > 0;
-            }
-
-            set
-            {
             }
         }
 
@@ -57,13 +45,13 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_venomancer
         {
             if (!targets.Any())
             {
-                return base.GetDamage() + this.RawDamage;
+                return this.RawDamage;
             }
 
             var reduction = this.Ability.GetDamageReduction(targets.First(), this.DamageType);
             var amplify = this.Ability.SpellAmplification();
 
-            return base.GetDamage(targets) + DamageHelpers.GetSpellDamage(this.RawTickDamage, amplify, reduction);
+            return this.Owner.GetAttackDamage(targets.First()) + DamageHelpers.GetSpellDamage(this.RawTickDamage, amplify, reduction);
         }
 
         public float GetTickDamage(params Unit[] targets)

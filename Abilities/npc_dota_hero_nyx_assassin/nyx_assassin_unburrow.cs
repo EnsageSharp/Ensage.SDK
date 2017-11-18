@@ -10,5 +10,13 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_nyx_assassin
             : base(ability)
         {
         }
+
+        public override bool IsReady
+        {
+            get
+            {
+                return !this.Ability.IsHidden && base.IsReady;
+            }
+        }
     }
 }

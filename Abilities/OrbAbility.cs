@@ -58,9 +58,9 @@ namespace Ensage.SDK.Abilities
             return owner.GetAttackDamage(targets.First());
         }
 
-        public override float GetDamage(Unit target, float physicalDamageModifier, float targetHealth = float.MinValue)
+        public override float GetDamage(Unit target, float damageModifier, float targetHealth = float.MinValue)
         {
-            return this.Owner.GetAttackDamage(target, false, physicalDamageModifier);
+            return this.Owner.GetAttackDamage(target, false, damageModifier);
         }
     }
 }

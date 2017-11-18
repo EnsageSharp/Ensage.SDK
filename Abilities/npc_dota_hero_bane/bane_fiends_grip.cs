@@ -21,15 +21,7 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_bane
         {
             get
             {
-                var duration = this.Ability.GetAbilitySpecialData("fiend_grip_duration");
-
-                var talent = this.Owner.GetAbilityById(AbilityId.special_bonus_unique_bane_3);
-                if (talent?.Level > 0)
-                {
-                    duration += talent.GetAbilitySpecialData("value");
-                }
-
-                return duration;
+                return this.Ability.GetAbilitySpecialDataWithTalent(this.Owner, "fiend_grip_duration");
             }
         }
 

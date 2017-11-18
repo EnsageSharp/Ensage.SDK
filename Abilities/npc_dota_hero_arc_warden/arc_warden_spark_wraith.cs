@@ -22,6 +22,14 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_arc_warden
             }
         }
 
+        public override float Duration
+        {
+            get
+            {
+                return this.Ability.GetAbilitySpecialData("duration");
+            }
+        }
+
         public string TargetModifierName { get; } = "modifier_arc_warden_spark_wraith_purge";
 
         public float WraithSpeed
@@ -36,15 +44,7 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_arc_warden
         {
             get
             {
-                var damage = this.Ability.GetAbilitySpecialData("spark_damage");
-
-                var talent = this.Owner.GetAbilityById(AbilityId.special_bonus_unique_arc_warden);
-                if (talent?.Level > 0)
-                {
-                    damage += talent.GetAbilitySpecialData("value");
-                }
-
-                return damage;
+                return this.Ability.GetAbilitySpecialDataWithTalent(this.Owner, "spark_damage");
             }
         }
     }

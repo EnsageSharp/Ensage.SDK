@@ -12,12 +12,20 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_nyx_assassin
         public nyx_assassin_burrow(Ability ability)
             : base(ability)
         {
-            var unAbility = this.Owner.GetAbilityById(AbilityId.nyx_assassin_unburrow);
-            this.UnAbility = new nyx_assassin_unburrow(unAbility);
+            var unburrowAbility = this.Owner.GetAbilityById(AbilityId.nyx_assassin_unburrow);
+            this.UnburrowAbility = new nyx_assassin_unburrow(unburrowAbility);
+        }
+
+        public override bool IsReady
+        {
+            get
+            {
+                return !this.Ability.IsHidden && base.IsReady;
+            }
         }
 
         public string ModifierName { get; } = "modifier_nyx_assassin_burrow";
 
-        public nyx_assassin_unburrow UnAbility { get; set; }
+        public nyx_assassin_unburrow UnburrowAbility { get; }
     }
 }

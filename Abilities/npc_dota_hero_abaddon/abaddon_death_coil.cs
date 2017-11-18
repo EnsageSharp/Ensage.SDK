@@ -18,15 +18,7 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_abaddon
         {
             get
             {
-                var cost = this.Ability.GetAbilitySpecialData("self_damage");
-
-                var talent = this.Owner.GetAbilityById(AbilityId.special_bonus_unique_abaddon_2);
-                if (talent?.Level > 0)
-                {
-                    cost += talent.GetAbilitySpecialData("value");
-                }
-
-                return cost;
+                return this.Ability.GetAbilitySpecialDataWithTalent(this.Owner, "self_damage");
             }
         }
 
@@ -42,7 +34,7 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_abaddon
         {
             get
             {
-                return this.Ability.GetAbilitySpecialData("target_damage");
+                return this.Ability.GetAbilitySpecialDataWithTalent(this.Owner, "target_damage");
             }
         }
     }

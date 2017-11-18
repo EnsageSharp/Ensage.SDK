@@ -10,8 +10,6 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_enchantress
     using Ensage.SDK.Extensions;
     using Ensage.SDK.Helpers;
 
-    using PlaySharp.Toolkit.Helper.Annotations;
-
     public class enchantress_impetus : OrbAbility
     {
         public enchantress_impetus(Ability ability)
@@ -31,22 +29,21 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_enchantress
                 distance += talent.GetAbilitySpecialData("value");
             }
 
-            var reduction = 0.0f;
             if (targets.Any())
             {
                 var target = targets.First();
-                var targetdistance = Math.Min(this.Owner.Distance2D(target) + (this.Owner.HullRadius + target.HullRadius), this.Owner.AttackRange(target)) / 100;
+                var targetDistance = Math.Min(this.Owner.Distance2D(target) + (this.Owner.HullRadius + target.HullRadius), this.Owner.AttackRange(target)) / 100;
 
-                reduction = this.Ability.GetDamageReduction(target, this.DamageType);
+                var reduction = this.Ability.GetDamageReduction(target, this.DamageType);
                 var distanceDamage = DamageHelpers.GetSpellDamage(distance, spellAmp, reduction);
 
-                damage += targetdistance * distanceDamage;
+                damage += targetDistance * distanceDamage;
             }
 
             return damage;
         }
 
-        public override float GetDamage([NotNull] Unit target, float damageModifier, float targetHealth = float.MinValue)
+        public override float GetDamage(Unit target, float damageModifier, float targetHealth = float.MinValue)
         {
             var damage = base.GetDamage(target);
             var spellAmp = this.Owner.GetSpellAmplification();
@@ -58,12 +55,12 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_enchantress
                 distance += talent.GetAbilitySpecialData("value");
             }
 
-            var targetdistance = Math.Min(this.Owner.Distance2D(target) + (this.Owner.HullRadius + target.HullRadius), this.Owner.AttackRange(target)) / 100;
+            var targetDistance = Math.Min(this.Owner.Distance2D(target) + (this.Owner.HullRadius + target.HullRadius), this.Owner.AttackRange(target)) / 100;
 
             var reduction = this.Ability.GetDamageReduction(target, this.DamageType);
             var distanceDamage = DamageHelpers.GetSpellDamage(distance, spellAmp, -reduction, damageModifier);
 
-            return damage += targetdistance * distanceDamage;
+            return damage += targetDistance * distanceDamage;
         }
     }
 }

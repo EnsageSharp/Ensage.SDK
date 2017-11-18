@@ -13,10 +13,8 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_pangolier
             : base(ability)
         {
             var stopAbility = this.Owner.GetAbilityById(AbilityId.pangolier_gyroshell_stop);
-            this.GyroshellStopAbility = new pangolier_gyroshell_stop(stopAbility);
+            this.StopAbility = new pangolier_gyroshell_stop(stopAbility);
         }
-
-        public pangolier_gyroshell_stop GyroshellStopAbility { get; }
 
         public string ModifierName { get; } = "modifier_pangolier_gyroshell";
 
@@ -35,6 +33,8 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_pangolier
                 return this.Ability.GetAbilitySpecialData("forward_move_speed");
             }
         }
+
+        public pangolier_gyroshell_stop StopAbility { get; }
 
         public string TargetModifierName { get; } = "modifier_pangolier_gyroshell_stunned";
     }

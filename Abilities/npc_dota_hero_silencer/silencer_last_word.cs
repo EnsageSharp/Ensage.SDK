@@ -22,7 +22,7 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_silencer
             }
         }
 
-        public float Duration
+        public override float Duration
         {
             get
             {

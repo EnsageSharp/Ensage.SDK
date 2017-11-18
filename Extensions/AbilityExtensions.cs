@@ -4,23 +4,10 @@
 
 namespace Ensage.SDK.Extensions
 {
-    using System.Collections.Generic;
     using System.Linq;
 
     public static class AbilityExtensions
     {
-        public static readonly List<AbilityId> UniqueAttackModifiers = new List<AbilityId>
-                                                                       {
-                                                                           AbilityId.drow_ranger_frost_arrows,
-                                                                           AbilityId.obsidian_destroyer_arcane_orb,
-                                                                           AbilityId.silencer_glaives_of_wisdom,
-                                                                           AbilityId.jakiro_liquid_fire,
-                                                                           AbilityId.viper_poison_attack,
-                                                                           AbilityId.enchantress_impetus,
-                                                                           AbilityId.clinkz_searing_arrows,
-                                                                           AbilityId.huskar_burning_spear
-                                                                       };
-
         public static float GetAbilitySpecialData(this Ability ability, string name, uint level = 0)
         {
             var data = ability.AbilitySpecialData.First(x => x.Name == name);
@@ -41,6 +28,35 @@ namespace Ensage.SDK.Extensions
             }
 
             return data.GetValue(level - 1);
+        }
+
+        public static float GetAbilitySpecialDataWithTalent(this Ability ability, Unit owner, string name, uint level = 0)
+        {
+            var data = ability.AbilitySpecialData.First(x => x.Name == name);
+
+            var talent = owner.GetAbilityById(data.SpecialBonusAbility);
+            var talentValue = 0f;
+            if (talent?.Level > 0)
+            {
+                talentValue = talent.AbilitySpecialData.First(x => x.Name == "value").Value;
+            }
+
+            if (data.Count == 1)
+            {
+                return data.Value + talentValue;
+            }
+
+            if (level == 0)
+            {
+                level = ability.Level;
+            }
+
+            if (level == 0)
+            {
+                return 0;
+            }
+
+            return data.GetValue(level - 1) + talentValue;
         }
 
         public static float GetCastPoint(this Ability ability)

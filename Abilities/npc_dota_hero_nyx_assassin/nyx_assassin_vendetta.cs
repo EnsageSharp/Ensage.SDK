@@ -4,6 +4,8 @@
 
 namespace Ensage.SDK.Abilities.npc_dota_hero_nyx_assassin
 {
+    using System.Linq;
+
     using Ensage.SDK.Abilities.Components;
     using Ensage.SDK.Extensions;
     using Ensage.SDK.Helpers;
@@ -27,18 +29,16 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_nyx_assassin
 
         public override float GetDamage(params Unit[] targets)
         {
-            var damage = this.RawDamage;
-            var amplify = this.Owner.GetSpellAmplification();
-
-            var totalDamage = 0.0f;
-            foreach (var target in targets)
+            if (!targets.Any())
             {
-                var reduction = target.DamageResist;
-                var attackDamage = this.Owner.GetAttackDamage(target);
-                totalDamage = attackDamage + DamageHelpers.GetSpellDamage(damage, amplify, reduction);
+                return 0;
             }
 
-            return totalDamage;
+            var damage = this.RawDamage;
+            var amplify = this.Owner.GetSpellAmplification();
+            var reduction = this.Ability.GetDamageReduction(targets.First(), this.DamageType);
+
+            return this.Owner.GetAttackDamage(targets.First()) + DamageHelpers.GetSpellDamage(damage, amplify, reduction);
         }
     }
 }

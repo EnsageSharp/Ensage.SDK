@@ -17,15 +17,7 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_bane
         {
             get
             {
-                var damage = this.Ability.GetAbilitySpecialData("brain_sap_damage");
-
-                var talent = this.Owner.GetAbilityById(AbilityId.special_bonus_unique_bane_2);
-                if (talent?.Level > 0)
-                {
-                    damage += talent.GetAbilitySpecialData("value");
-                }
-
-                return damage;
+                return this.Ability.GetAbilitySpecialDataWithTalent(this.Owner, "brain_sap_damage");
             }
         }
     }

@@ -29,15 +29,7 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_silencer
         {
             get
             {
-                var damage = this.Ability.GetAbilitySpecialData("damage");
-
-                var talent = this.Owner.GetAbilityById(AbilityId.special_bonus_unique_silencer);
-                if (talent?.Level > 0)
-                {
-                    damage += talent.GetAbilitySpecialData("value");
-                }
-
-                return damage;
+                return this.Ability.GetAbilitySpecialDataWithTalent(this.Owner, "damage");
             }
         }
 

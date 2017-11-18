@@ -21,19 +21,19 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_batrider
         {
             get
             {
-                var duration = this.Ability.GetAbilitySpecialData("damage_duration");
-
-                var talent = this.Owner.GetAbilityById(AbilityId.special_bonus_unique_batrider_3);
-                if (talent?.Level > 0)
-                {
-                    duration += talent.GetAbilitySpecialData("value");
-                }
-
-                return duration;
+                return this.Ability.GetAbilitySpecialDataWithTalent(this.Owner, "damage_duration");
             }
         }
 
         public bool HasInitialDamage { get; } = false;
+
+        public override float Radius
+        {
+            get
+            {
+                return this.Ability.GetAbilitySpecialData("explosion_radius");
+            }
+        }
 
         public float RawTickDamage
         {
@@ -46,8 +46,6 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_batrider
         public string TargetModifierName { get; } = "modifier_flamebreak_damage";
 
         public float TickRate { get; } = 1f;
-
-        protected override string RadiusName { get; } = "explosion_radius";
 
         public float GetTickDamage(params Unit[] targets)
         {

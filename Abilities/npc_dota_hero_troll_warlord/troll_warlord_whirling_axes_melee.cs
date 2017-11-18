@@ -17,11 +17,11 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_troll_warlord
         {
         }
 
-        public override bool CanBeCasted
+        public override bool IsReady
         {
             get
             {
-                return this.IsActivated && base.CanBeCasted;
+                return this.Ability.IsActivated && base.IsReady;
             }
         }
 
@@ -39,15 +39,7 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_troll_warlord
         {
             get
             {
-                var damage = this.Ability.GetAbilitySpecialData("damage");
-
-                var talent = this.Owner.GetAbilityById(AbilityId.special_bonus_unique_troll_warlord_3);
-                if (talent?.Level > 0)
-                {
-                    damage += talent.GetAbilitySpecialData("value");
-                }
-
-                return damage;
+                return this.Ability.GetAbilitySpecialDataWithTalent(this.Owner, "damage");
             }
         }
 

@@ -41,15 +41,15 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_ancient_apparition
         {
             get
             {
-                var threshold = this.Ability.GetAbilitySpecialData("kill_pct");
+                return this.Ability.GetAbilitySpecialDataWithTalent(this.Owner, "kill_pct") / 100f;
+            }
+        }
 
-                var talent = this.Owner.GetAbilityById(AbilityId.special_bonus_unique_ancient_apparition_5);
-                if (talent?.Level > 0)
-                {
-                    threshold += talent.GetAbilitySpecialData("value");
-                }
-
-                return threshold / 100f;
+        public override float Radius
+        {
+            get
+            {
+                return this.Ability.GetAbilitySpecialData("path_radius");
             }
         }
 
@@ -66,8 +66,6 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_ancient_apparition
         public string TargetModifierName { get; } = "modifier_ice_blast";
 
         public float TickRate { get; } = 1f;
-
-        protected override string RadiusName { get; } = "path_radius";
 
         public float FinalRadius(Vector3 endPosition)
         {
@@ -96,6 +94,11 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_ancient_apparition
         public float GetTotalDamage(params Unit[] targets)
         {
             return this.GetDamage(targets) + (this.GetTickDamage(targets) * (this.DamageDuration / this.TickRate));
+        }
+
+        public override bool UseAbility()
+        {
+            return this.ReleaseAbility.CanBeCasted && this.ReleaseAbility.UseAbility();
         }
     }
 }

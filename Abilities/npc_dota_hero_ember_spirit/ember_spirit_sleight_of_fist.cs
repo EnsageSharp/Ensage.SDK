@@ -10,7 +10,7 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_ember_spirit
     using Ensage.SDK.Extensions;
     using Ensage.SDK.Helpers;
 
-    public class ember_spirit_sleight_of_fist : AreaOfEffectAbility, IHasModifier
+    public class ember_spirit_sleight_of_fist : CircleAbility, IHasModifier, IHasTargetModifier
     {
         public ember_spirit_sleight_of_fist(Ability ability)
             : base(ability)
@@ -18,6 +18,8 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_ember_spirit
         }
 
         public string ModifierName { get; } = "modifier_ember_spirit_sleight_of_fist_caster";
+
+        public string TargetModifierName { get; } = "modifier_ember_spirit_sleight_of_fist_marker";
 
         protected override float RawDamage
         {

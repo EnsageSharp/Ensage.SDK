@@ -33,7 +33,7 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_dark_willow
             }
         }
 
-        public float Duration
+        public override float Duration
         {
             get
             {
@@ -42,6 +42,14 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_dark_willow
         }
 
         public bool HasInitialDamage { get; } = false;
+
+        public override float Radius
+        {
+            get
+            {
+                return this.Ability.GetAbilitySpecialData("placement_range");
+            }
+        }
 
         public float RawTickDamage
         {
@@ -54,8 +62,6 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_dark_willow
         public string TargetModifierName { get; } = "modifier_dark_willow_bramble_maze";
 
         public float TickRate { get; } = 0.5f;
-
-        protected override string RadiusName { get; } = "placement_range";
 
         public float GetTickDamage(params Unit[] targets)
         {

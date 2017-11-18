@@ -7,14 +7,14 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_obsidian_destroyer
     using Ensage.SDK.Abilities.Components;
     using Ensage.SDK.Extensions;
 
-    public class obsidian_destroyer_astral_imprisonment : RangedAbility, IHasTargetModifier, IAreaOfEffectAbility
+    public class obsidian_destroyer_astral_imprisonment : AreaOfEffectAbility, IHasTargetModifier
     {
         public obsidian_destroyer_astral_imprisonment(Ability ability)
             : base(ability)
         {
         }
 
-        public float Radius
+        public override float Radius
         {
             get
             {

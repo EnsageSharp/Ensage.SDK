@@ -21,15 +21,7 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_batrider
         {
             get
             {
-                var duration = this.Ability.GetAbilitySpecialData("duration");
-
-                var talent = this.Owner.GetAbilityById(AbilityId.special_bonus_unique_batrider_1);
-                if (talent?.Level > 0)
-                {
-                    duration += talent.GetAbilitySpecialData("value");
-                }
-
-                return duration;
+                return this.Ability.GetAbilitySpecialDataWithTalent(this.Owner, "duration");
             }
         }
 

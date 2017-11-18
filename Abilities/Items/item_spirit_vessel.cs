@@ -33,13 +33,7 @@ namespace Ensage.SDK.Abilities.Items
             }
         }
 
-        public override DamageType DamageType
-        {
-            get
-            {
-                return DamageType.Magical;
-            }
-        }
+        public override DamageType DamageType { get; } = DamageType.Magical;
 
         public bool HasInitialDamage { get; } = false;
 

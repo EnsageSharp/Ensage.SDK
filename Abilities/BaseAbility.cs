@@ -35,6 +35,20 @@ namespace Ensage.SDK.Abilities
             }
         }
 
+        public virtual float Duration
+        {
+            get
+            {
+                var level = this.Ability.Level;
+                if (level == 0)
+                {
+                    return 0.0f;
+                }
+
+                return this.Ability.GetDuration(level - 1);
+            }
+        }
+
         public virtual bool IsReady
         {
             get
@@ -80,7 +94,19 @@ namespace Ensage.SDK.Abilities
 
         protected virtual float BaseCastRange { get; } = 0;
 
-        protected virtual float RawDamage { get; } = 0;
+        protected virtual float RawDamage
+        {
+            get
+            {
+                var level = this.Ability.Level;
+                if (level == 0)
+                {
+                    return 0;
+                }
+
+                return this.Ability.GetDamage(level - 1);
+            }
+        }
 
         public static implicit operator Item(BaseAbility ability)
         {

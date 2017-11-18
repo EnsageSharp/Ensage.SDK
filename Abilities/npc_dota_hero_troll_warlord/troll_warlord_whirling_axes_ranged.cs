@@ -15,19 +15,27 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_troll_warlord
         {
         }
 
-        public override bool CanBeCasted
-        {
-            get
-            {
-                return this.IsActivated && base.CanBeCasted;
-            }
-        }
-
         public override float EndRadius
         {
             get
             {
                 return 206.17f; // no in special data
+            }
+        }
+
+        public override bool IsReady
+        {
+            get
+            {
+                return this.Ability.IsActivated && base.IsReady;
+            }
+        }
+
+        public override float Radius
+        {
+            get
+            {
+                return this.Ability.GetAbilitySpecialData("axe_width");
             }
         }
 
@@ -39,27 +47,23 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_troll_warlord
             }
         }
 
-        public string TargetModifierName { get; } = "modifier_troll_warlord_whirling_axes_slow";
+        public override float Speed
+        {
+            get
+            {
+                return this.Ability.GetAbilitySpecialData("axe_speed");
+            }
+        }
 
-        protected override string RadiusName { get; } = "axe_width";
+        public string TargetModifierName { get; } = "modifier_troll_warlord_whirling_axes_slow";
 
         protected override float RawDamage
         {
             get
             {
-                var damage = this.Ability.GetAbilitySpecialData("axe_damage");
-
-                var talent = this.Owner.GetAbilityById(AbilityId.special_bonus_unique_troll_warlord_3);
-                if (talent?.Level > 0)
-                {
-                    damage += talent.GetAbilitySpecialData("value");
-                }
-
-                return damage;
+                return this.Ability.GetAbilitySpecialDataWithTalent(this.Owner, "axe_damage");
             }
         }
-
-        protected override string SpeedName { get; } = "axe_speed";
 
         public override float GetDamage(params Unit[] targets)
         {

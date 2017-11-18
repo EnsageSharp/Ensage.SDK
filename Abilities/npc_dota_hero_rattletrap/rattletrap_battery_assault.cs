@@ -50,15 +50,7 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_rattletrap
         {
             get
             {
-                var interval = this.Ability.GetAbilitySpecialData("interval");
-
-                var talent = this.Owner.GetAbilityById(AbilityId.special_bonus_unique_clockwerk);
-                if (talent?.Level > 0)
-                {
-                    interval += talent.GetAbilitySpecialData("value");
-                }
-
-                return interval;
+                return this.Ability.GetAbilitySpecialDataWithTalent(this.Owner, "interval");
             }
         }
 

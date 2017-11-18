@@ -5,11 +5,10 @@
 namespace Ensage.SDK.Abilities.npc_dota_hero_nyx_assassin
 {
     using System;
+    using System.Linq;
 
     using Ensage.SDK.Extensions;
     using Ensage.SDK.Helpers;
-
-    using PlaySharp.Toolkit.Helper.Annotations;
 
     public class nyx_assassin_mana_burn : RangedAbility
     {
@@ -33,51 +32,60 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_nyx_assassin
             }
         }
 
-        public override float GetDamage(params Unit[] targets)
+        protected override float RawDamage
         {
-            var multiplier = this.Ability.GetAbilitySpecialData("float_multiplier");
-            var amplify = this.Owner.GetSpellAmplification();
-
-            var totalDamage = 0.0f;
-            foreach (var target in targets)
+            get
             {
-                var hero = target as Hero;
-                var manaBurnDamage = multiplier * hero.TotalIntelligence;
-
-                var damage = Math.Min(manaBurnDamage, target.Mana);
-                var reduction = target.MagicDamageResist;
-                totalDamage = DamageHelpers.GetSpellDamage(damage, amplify, reduction);
+                return this.Ability.GetAbilitySpecialData("float_multiplier");
             }
-
-            return totalDamage;
         }
 
-        public override float GetDamage([NotNull] Unit target, float damageModifier, float targetHealth = float.MinValue)
+        public override float GetDamage(params Unit[] targets)
         {
-            var multiplier = this.Ability.GetAbilitySpecialData("float_multiplier");
+            var target = targets.FirstOrDefault() as Hero;
+            if (target == null)
+            {
+                return 0;
+            }
+
+            var multiplier = this.RawDamage;
             var amplify = this.Owner.GetSpellAmplification();
-
-            var hero = target as Hero;
-            var manaBurnDamage = multiplier * hero.TotalIntelligence;
-
-            var damage = Math.Min(manaBurnDamage, target.Mana);
             var reduction = this.Ability.GetDamageReduction(target, this.DamageType);
+            var manaBurn = multiplier * target.TotalIntelligence;
+            var damage = Math.Min(manaBurn, target.Mana);
+
+            return DamageHelpers.GetSpellDamage(damage, amplify, reduction);
+        }
+
+        public override float GetDamage(Unit target, float damageModifier, float targetHealth = float.MinValue)
+        {
+            var hero = target as Hero;
+            if (hero == null)
+            {
+                return 0;
+            }
+
+            var multiplier = this.RawDamage;
+            var amplify = this.Owner.GetSpellAmplification();
+            var reduction = this.Ability.GetDamageReduction(hero, this.DamageType);
+            var manaBurn = multiplier * hero.TotalIntelligence;
+            var damage = Math.Min(manaBurn, hero.Mana);
 
             return DamageHelpers.GetSpellDamage(damage, amplify, -reduction, damageModifier);
         }
 
         public float ManaBurn(params Unit[] targets)
         {
-            var multiplier = this.Ability.GetAbilitySpecialData("float_multiplier");
-
-            var totalMana = 0.0f;
-            foreach (var target in targets)
+            var target = targets.FirstOrDefault() as Hero;
+            if (target == null)
             {
-                var hero = target as Hero;
-                totalMana = multiplier * hero.TotalIntelligence;
+                return 0;
             }
 
-            return totalMana;
+            var multiplier = this.RawDamage;
+            var manaBurn = multiplier * target.TotalIntelligence;
+
+            return Math.Min(manaBurn, target.Mana);
         }
     }
 }

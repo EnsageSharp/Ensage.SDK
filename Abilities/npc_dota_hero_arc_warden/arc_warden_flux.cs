@@ -21,19 +21,19 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_arc_warden
         {
             get
             {
-                var duration = this.Ability.GetAbilitySpecialData("duration");
-
-                var talent = this.Owner.GetAbilityById(AbilityId.special_bonus_unique_arc_warden_2);
-                if (talent?.Level > 0)
-                {
-                    duration += talent.GetAbilitySpecialData("value");
-                }
-
-                return duration;
+                return this.Ability.GetAbilitySpecialDataWithTalent(this.Owner, "duration");
             }
         }
 
         public bool HasInitialDamage { get; } = true;
+
+        public float Radius
+        {
+            get
+            {
+                return this.Ability.GetAbilitySpecialData("search_radius");
+            }
+        }
 
         public float RawTickDamage
         {

@@ -42,7 +42,7 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_rattletrap
             }
         }
 
-        public string TargetModifierName { get; }
+        public string TargetModifierName { get; } = string.Empty;
 
         public string[] TargetModifierTextureName { get; } = { "rattletrap_battery_assault" };
 

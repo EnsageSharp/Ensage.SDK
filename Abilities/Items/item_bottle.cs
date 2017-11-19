@@ -6,8 +6,9 @@ namespace Ensage.SDK.Abilities.Items
 {
     using Ensage.Items;
     using Ensage.SDK.Abilities.Components;
+    using Ensage.SDK.Extensions;
 
-    public class item_bottle : RangedAbility, IHasTargetModifier
+    public class item_bottle : RangedAbility, IHasTargetModifier, IHasHealthRestore, IHasManaRestore
     {
         public item_bottle(Item item)
             : base(item)
@@ -22,6 +23,14 @@ namespace Ensage.SDK.Abilities.Items
             }
         }
 
+        public override float Duration
+        {
+            get
+            {
+                return this.Ability.GetAbilitySpecialData("restore_time");
+            }
+        }
+
         public RuneType StoredRune
         {
             get
@@ -31,5 +40,21 @@ namespace Ensage.SDK.Abilities.Items
         }
 
         public string TargetModifierName { get; } = "modifier_bottle_regeneration";
+
+        public float TotalHealthRestore
+        {
+            get
+            {
+                return this.Ability.GetAbilitySpecialData("health_restore") * this.Duration;
+            }
+        }
+
+        public float TotalManaRestore
+        {
+            get
+            {
+                return this.Ability.GetAbilitySpecialData("mana_restore") * this.Duration;
+            }
+        }
     }
 }

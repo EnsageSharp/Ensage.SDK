@@ -7,7 +7,7 @@ namespace Ensage.SDK.Abilities.Items
     using Ensage.SDK.Abilities.Components;
     using Ensage.SDK.Extensions;
 
-    public class item_guardian_greaves : ActiveAbility, IAreaOfEffectAbility, IHasModifier, IAuraAbility
+    public class item_guardian_greaves : ActiveAbility, IAreaOfEffectAbility, IHasModifier, IAuraAbility, IHasHealthRestore, IHasManaRestore
     {
         public item_guardian_greaves(Item item)
             : base(item)
@@ -31,6 +31,22 @@ namespace Ensage.SDK.Abilities.Items
             get
             {
                 return this.Ability.GetAbilitySpecialData("replenish_radius");
+            }
+        }
+
+        public float TotalHealthRestore
+        {
+            get
+            {
+                return this.Ability.GetAbilitySpecialData("replenish_health");
+            }
+        }
+
+        public float TotalManaRestore
+        {
+            get
+            {
+                return this.Ability.GetAbilitySpecialData("replenish_mana");
             }
         }
     }

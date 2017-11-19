@@ -105,6 +105,8 @@
     <Compile Include="Abilities\BaseAbility.cs" />
     <Compile Include="Abilities\Components\IHasDamageAmplifier.cs" />
     <Compile Include="Abilities\Aggregation\Necronomicon.cs" />
+    <Compile Include="Abilities\Components\IHasHealthRestore.cs" />
+    <Compile Include="Abilities\Components\IHasManaRestore.cs" />
     <Compile Include="Abilities\IAreaOfEffectAbility.cs" />
     <Compile Include="Abilities\IAuraAbility.cs" />
     <Compile Include="Abilities\Aggregation\Dagon.cs" />

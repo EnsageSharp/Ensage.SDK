@@ -7,7 +7,7 @@ namespace Ensage.SDK.Abilities.Items
     using Ensage.SDK.Abilities.Components;
     using Ensage.SDK.Extensions;
 
-    public class item_urn_of_shadows : RangedAbility, IHasDot
+    public class item_urn_of_shadows : RangedAbility, IHasDot, IHasHealthRestore
     {
         public item_urn_of_shadows(Item item)
             : base(item)
@@ -26,7 +26,7 @@ namespace Ensage.SDK.Abilities.Items
         {
             get
             {
-                return this.Ability.GetAbilitySpecialData("soul_damage_duration");
+                return this.Duration;
             }
         }
 
@@ -35,6 +35,14 @@ namespace Ensage.SDK.Abilities.Items
             get
             {
                 return DamageType.Magical;
+            }
+        }
+
+        public override float Duration
+        {
+            get
+            {
+                return this.Ability.GetAbilitySpecialData("soul_damage_duration");
             }
         }
 
@@ -52,6 +60,14 @@ namespace Ensage.SDK.Abilities.Items
         public string TargetModifierName { get; } = "modifier_item_urn_damage";
 
         public float TickRate { get; } = 1.0f;
+
+        public float TotalHealthRestore
+        {
+            get
+            {
+                return this.Ability.GetAbilitySpecialData("soul_heal_amount") * this.Duration;
+            }
+        }
 
         public float GetTickDamage(params Unit[] targets)
         {

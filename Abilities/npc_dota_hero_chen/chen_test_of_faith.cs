@@ -4,13 +4,23 @@
 
 namespace Ensage.SDK.Abilities.npc_dota_hero_chen
 {
+    using Ensage.SDK.Abilities.Components;
     using Ensage.SDK.Extensions;
 
-    public class chen_test_of_faith : RangedAbility
+    public class chen_test_of_faith : RangedAbility, IHasHealthRestore
     {
         public chen_test_of_faith(Ability ability)
             : base(ability)
         {
+        }
+
+        public float TotalHealthRestore
+        {
+            get
+            {
+                // average
+                return (this.Ability.GetAbilitySpecialData("heal_min") + this.Ability.GetAbilitySpecialData("heal_max")) / 2;
+            }
         }
 
         protected override float RawDamage

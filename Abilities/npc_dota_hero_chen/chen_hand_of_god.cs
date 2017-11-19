@@ -4,7 +4,10 @@
 
 namespace Ensage.SDK.Abilities.npc_dota_hero_chen
 {
-    public class chen_hand_of_god : ActiveAbility, IAreaOfEffectAbility
+    using Ensage.SDK.Abilities.Components;
+    using Ensage.SDK.Extensions;
+
+    public class chen_hand_of_god : ActiveAbility, IAreaOfEffectAbility, IHasHealthRestore
     {
         public chen_hand_of_god(Ability ability)
             : base(ability)
@@ -12,5 +15,13 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_chen
         }
 
         public float Radius { get; } = float.MaxValue;
+
+        public float TotalHealthRestore
+        {
+            get
+            {
+                return this.Ability.GetAbilitySpecialDataWithTalent(this.Owner, "heal_amount");
+            }
+        }
     }
 }

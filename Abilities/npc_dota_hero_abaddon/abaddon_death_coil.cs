@@ -7,7 +7,7 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_abaddon
     using Ensage.SDK.Abilities.Components;
     using Ensage.SDK.Extensions;
 
-    public class abaddon_death_coil : RangedAbility, IHasHealthCost
+    public class abaddon_death_coil : RangedAbility, IHasHealthCost, IHasHealthRestore
     {
         public abaddon_death_coil(Ability ability)
             : base(ability)
@@ -27,6 +27,14 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_abaddon
             get
             {
                 return this.Ability.GetAbilitySpecialData("missile_speed");
+            }
+        }
+
+        public float TotalHealthRestore
+        {
+            get
+            {
+                return this.Ability.GetAbilitySpecialDataWithTalent(this.Owner, "heal_amount");
             }
         }
 

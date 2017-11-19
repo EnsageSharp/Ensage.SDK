@@ -8,7 +8,7 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_warlock
     using Ensage.SDK.Extensions;
     using Ensage.SDK.Helpers;
 
-    public class warlock_shadow_word : RangedAbility, IHasDot
+    public class warlock_shadow_word : RangedAbility, IHasDot, IHasHealthRestore
     {
         public warlock_shadow_word(Ability ability)
             : base(ability)
@@ -16,6 +16,14 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_warlock
         }
 
         public float DamageDuration
+        {
+            get
+            {
+                return this.Duration;
+            }
+        }
+
+        public override float Duration
         {
             get
             {
@@ -40,6 +48,14 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_warlock
             get
             {
                 return this.Ability.GetAbilitySpecialData("tick_interval");
+            }
+        }
+
+        public float TotalHealthRestore
+        {
+            get
+            {
+                return this.RawTickDamage * this.Duration;
             }
         }
 

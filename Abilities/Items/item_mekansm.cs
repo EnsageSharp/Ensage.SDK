@@ -7,7 +7,7 @@ namespace Ensage.SDK.Abilities.Items
     using Ensage.SDK.Abilities.Components;
     using Ensage.SDK.Extensions;
 
-    public class item_mekansm : ActiveAbility, IAreaOfEffectAbility, IAuraAbility, IHasModifier
+    public class item_mekansm : ActiveAbility, IAreaOfEffectAbility, IAuraAbility, IHasModifier, IHasHealthRestore
     {
         public item_mekansm(Item item)
             : base(item)
@@ -31,6 +31,14 @@ namespace Ensage.SDK.Abilities.Items
             get
             {
                 return this.Ability.GetAbilitySpecialData("heal_radius");
+            }
+        }
+
+        public float TotalHealthRestore
+        {
+            get
+            {
+                return this.Ability.GetAbilitySpecialData("heal_amount");
             }
         }
     }

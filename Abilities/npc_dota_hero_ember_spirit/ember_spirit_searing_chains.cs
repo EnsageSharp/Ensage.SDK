@@ -17,6 +17,8 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_ember_spirit
         {
         }
 
+        public override UnitState AppliesUnitState { get; } = UnitState.Rooted;
+
         public float DamageDuration
         {
             get

@@ -17,6 +17,8 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_enigma
         {
         }
 
+        public override UnitState AppliesUnitState { get; } = UnitState.Stunned;
+
         public float ChannelDuration
         {
             get

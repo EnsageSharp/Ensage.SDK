@@ -13,6 +13,8 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_night_stalker
         {
         }
 
+        public override UnitState AppliesUnitState { get; } = UnitState.Stunned;
+
         public string TargetModifierName { get; } = "modifier_night_stalker_void";
     }
 }

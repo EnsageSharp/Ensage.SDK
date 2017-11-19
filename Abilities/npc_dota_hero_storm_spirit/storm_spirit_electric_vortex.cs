@@ -14,6 +14,8 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_storm_spirit
         {
         }
 
+        public override UnitState AppliesUnitState { get; } = UnitState.Stunned;
+
         public override float CastRange
         {
             get

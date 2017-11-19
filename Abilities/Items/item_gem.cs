@@ -16,6 +16,8 @@ namespace Ensage.SDK.Abilities.Items
         {
         }
 
+        public override UnitState AppliesUnitState { get; } = UnitState.ProvidesVision;
+
         public string ModifierName { get; } = "modifier_item_gem_of_true_sight";
 
         public float Radius

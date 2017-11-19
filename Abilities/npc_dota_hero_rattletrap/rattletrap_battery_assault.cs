@@ -14,6 +14,8 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_rattletrap
         {
         }
 
+        public override UnitState AppliesUnitState { get; } = UnitState.Stunned;
+
         public float DamageDuration
         {
             get

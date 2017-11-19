@@ -16,6 +16,8 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_bounty_hunter
         {
         }
 
+        public override DamageType DamageType { get; } = DamageType.Physical;
+
         public string TargetModifierName { get; } = "modifier_bounty_hunter_jinada_slow";
 
         protected override float RawDamage

@@ -14,6 +14,8 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_obsidian_destroyer
         {
         }
 
+        public override UnitState AppliesUnitState { get; } = UnitState.Invulnerable;
+
         public override float Radius
         {
             get

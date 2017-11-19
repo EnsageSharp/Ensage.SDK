@@ -22,6 +22,8 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_bloodseeker
             }
         }
 
+        public override UnitState AppliesUnitState { get; } = UnitState.Silenced;
+
         public string[] TargetModifierTextureName { get; set; } = { "bloodseeker_blood_bath" };
 
         protected override float RawDamage

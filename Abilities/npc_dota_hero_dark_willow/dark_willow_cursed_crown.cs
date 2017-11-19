@@ -22,6 +22,8 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_dark_willow
             }
         }
 
+        public override UnitState AppliesUnitState { get; } = UnitState.Stunned;
+
         public override float Radius
         {
             get

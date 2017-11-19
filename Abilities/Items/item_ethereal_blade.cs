@@ -19,6 +19,8 @@ namespace Ensage.SDK.Abilities.Items
 
         public DamageType AmplifierType { get; } = DamageType.Magical;
 
+        public override UnitState AppliesUnitState { get; } = UnitState.Disarmed;
+
         public float DamageAmplification
         {
             get

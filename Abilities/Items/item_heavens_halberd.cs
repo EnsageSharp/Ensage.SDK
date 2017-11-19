@@ -13,6 +13,8 @@ namespace Ensage.SDK.Abilities.Items
         {
         }
 
+        public override UnitState AppliesUnitState { get; } = UnitState.Disarmed;
+
         public string TargetModifierName { get; } = "modifier_heavens_halberd_debuff";
     }
 }

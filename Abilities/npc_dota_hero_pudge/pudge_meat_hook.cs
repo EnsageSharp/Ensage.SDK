@@ -15,6 +15,8 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_pudge
         {
         }
 
+        public override UnitState AppliesUnitState { get; } = UnitState.Stunned;
+
         public override CollisionTypes CollisionTypes { get; } = CollisionTypes.AllUnits | CollisionTypes.Runes;
 
         public override float Radius

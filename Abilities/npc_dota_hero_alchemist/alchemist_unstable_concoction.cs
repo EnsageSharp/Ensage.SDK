@@ -19,6 +19,8 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_alchemist
             this.ThrowAbility = new alchemist_unstable_concoction_throw(throwAbility);
         }
 
+        public override UnitState AppliesUnitState { get; } = UnitState.Stunned;
+
         public override float Duration
         {
             get

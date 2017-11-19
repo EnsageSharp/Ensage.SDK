@@ -13,6 +13,8 @@ namespace Ensage.SDK.Abilities.Items
         {
         }
 
+        public override UnitState AppliesUnitState { get; } = UnitState.Invisible;
+
         public string[] ModifierTextureName { get; } = { "item_glimmer_cape" };
 
         // only lasts while target is fading (0.6sec) then modifier_invisible

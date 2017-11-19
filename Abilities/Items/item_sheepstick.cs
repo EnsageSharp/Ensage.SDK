@@ -13,6 +13,8 @@ namespace Ensage.SDK.Abilities.Items
         {
         }
 
+        public override UnitState AppliesUnitState { get; } = UnitState.Hexed;
+
         public string TargetModifierName { get; } = "modifier_sheepstick_debuff";
     }
 }

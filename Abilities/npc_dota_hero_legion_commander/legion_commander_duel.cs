@@ -13,6 +13,8 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_legion_commander
         {
         }
 
+        public override UnitState AppliesUnitState { get; } = UnitState.Stunned;
+
         public string ModifierName { get; } = "modifier_legion_commander_duel";
 
         public string TargetModifierName { get; } = "modifier_legion_commander_duel";

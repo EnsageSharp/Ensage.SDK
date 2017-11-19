@@ -16,6 +16,8 @@ namespace Ensage.SDK.Abilities.Items
 
         public DamageType AmplifierType { get; } = DamageType.Physical | DamageType.Magical | DamageType.Pure;
 
+        public override UnitState AppliesUnitState { get; } = UnitState.Silenced;
+
         public float DamageAmplification
         {
             get

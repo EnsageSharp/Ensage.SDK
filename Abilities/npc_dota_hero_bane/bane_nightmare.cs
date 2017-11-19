@@ -16,6 +16,8 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_bane
             this.EndAbility = new bane_nightmare_end(end);
         }
 
+        public override UnitState AppliesUnitState { get; } = UnitState.Stunned;
+
         public bane_nightmare_end EndAbility { get; }
 
         public override bool IsReady

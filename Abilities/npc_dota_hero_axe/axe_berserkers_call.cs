@@ -16,6 +16,8 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_axe
         {
         }
 
+        public override UnitState AppliesUnitState { get; } = UnitState.Stunned;
+
         public string ModifierName { get; } = "modifier_axe_berserkers_call_armor";
 
         public float Radius

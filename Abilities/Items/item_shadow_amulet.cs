@@ -13,6 +13,8 @@ namespace Ensage.SDK.Abilities.Items
         {
         }
 
+        public override UnitState AppliesUnitState { get; } = UnitState.Invisible;
+
         public string TargetModifierName { get; } = "modifier_item_shadow_amulet_fade";
     }
 }

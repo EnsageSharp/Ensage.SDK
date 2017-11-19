@@ -22,6 +22,8 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_zuus
             }
         }
 
+        public override UnitState AppliesUnitState { get; } = UnitState.Stunned | UnitState.ProvidesVision;
+
         public float Radius
         {
             get

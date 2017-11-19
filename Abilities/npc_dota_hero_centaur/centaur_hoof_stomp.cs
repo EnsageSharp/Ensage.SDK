@@ -14,6 +14,8 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_centaur
         {
         }
 
+        public override UnitState AppliesUnitState { get; } = UnitState.Stunned;
+
         public float Radius
         {
             get

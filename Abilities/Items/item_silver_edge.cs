@@ -13,6 +13,8 @@ namespace Ensage.SDK.Abilities.Items
         {
         }
 
+        public override UnitState AppliesUnitState { get; } = UnitState.Invisible;
+
         public override DamageType DamageType
         {
             get

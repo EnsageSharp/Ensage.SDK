@@ -17,6 +17,8 @@ namespace Ensage.SDK.Abilities
 
         public virtual float ActivationDelay { get; } = 0;
 
+        public virtual UnitState AppliesUnitState { get; } = 0;
+
         public abstract bool CanBeCasted { get; }
 
         public virtual float CastRange

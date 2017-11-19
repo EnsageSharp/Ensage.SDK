@@ -13,6 +13,8 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_batrider
         {
         }
 
+        public override UnitState AppliesUnitState { get; } = UnitState.Stunned;
+
         public string ModifierName { get; } = "modifier_batrider_flaming_lasso_self";
 
         public string TargetModifierName { get; } = "modifier_batrider_flaming_lasso";

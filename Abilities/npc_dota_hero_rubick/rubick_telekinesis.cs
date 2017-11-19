@@ -16,6 +16,8 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_rubick
             this.LandAbility = new rubick_telekinesis_land(landAbility);
         }
 
+        public override UnitState AppliesUnitState { get; } = UnitState.Stunned;
+
         public rubick_telekinesis_land LandAbility { get; }
 
         public string TargetModifierName { get; } = "modifier_rubick_telekinesis";

@@ -13,6 +13,8 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_vengefulspirit
         {
         }
 
+        public override UnitState AppliesUnitState { get; } = UnitState.Stunned;
+
         public override SpellPierceImmunityType PiercesSpellImmunity
         {
             get

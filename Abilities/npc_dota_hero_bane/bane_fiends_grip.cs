@@ -17,6 +17,8 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_bane
         {
         }
 
+        public override UnitState AppliesUnitState { get; } = UnitState.Stunned;
+
         public float DamageDuration
         {
             get

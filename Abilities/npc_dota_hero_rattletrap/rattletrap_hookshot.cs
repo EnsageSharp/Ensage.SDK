@@ -16,6 +16,8 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_rattletrap
         {
         }
 
+        public override UnitState AppliesUnitState { get; } = UnitState.Stunned;
+
         public override CollisionTypes CollisionTypes { get; } = CollisionTypes.AllUnits;
 
         public override float Radius

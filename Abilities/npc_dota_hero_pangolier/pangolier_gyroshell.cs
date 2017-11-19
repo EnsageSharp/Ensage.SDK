@@ -16,6 +16,8 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_pangolier
             this.StopAbility = new pangolier_gyroshell_stop(stopAbility);
         }
 
+        public override UnitState AppliesUnitState { get; } = UnitState.Stunned;
+
         public string ModifierName { get; } = "modifier_pangolier_gyroshell";
 
         public float Radius

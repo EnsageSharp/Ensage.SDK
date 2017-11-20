@@ -13,8 +13,6 @@ namespace Ensage.SDK.Abilities.Items
         {
         }
 
-        public override UnitState AppliesUnitState { get; } = UnitState.Disarmed;
-
         public string ModifierName { get; } = "modifier_ghost_state";
     }
 }

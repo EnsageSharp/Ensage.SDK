@@ -25,6 +25,8 @@ namespace Ensage.SDK.Abilities.Items
             }
         }
 
+        // public override UnitState AppliesUnitState { get; } = UnitState.Stunned;
+
         public float ChannelDuration
         {
             get

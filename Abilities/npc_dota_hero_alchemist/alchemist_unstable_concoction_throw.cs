@@ -19,6 +19,14 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_alchemist
 
         public override UnitState AppliesUnitState { get; } = UnitState.Stunned;
 
+        public override bool IsReady
+        {
+            get
+            {
+                return base.IsReady && !this.Ability.IsHidden;
+            }
+        }
+
         public override float Radius
         {
             get

@@ -32,7 +32,7 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_storm_spirit
         {
             get
             {
-                var mana = this.Owner.Mana - this.Ability.ManaCost;
+                var mana = this.Owner.Mana - this.ManaCost;
                 if (mana < 0)
                 {
                     return 0;
@@ -79,13 +79,13 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_storm_spirit
             return damage;
         }
 
-        public float ManaCost(Vector3 position)
+        public float GetManaCost(Vector3 position)
         {
             var travelCost = this.Ability.GetAbilitySpecialData("ball_lightning_travel_cost_base")
                              + (this.Owner.MaximumMana * (this.Ability.GetAbilitySpecialData("ball_lightning_travel_cost_percent") / 100));
             var distance = (int)Math.Floor(this.Owner.Distance2D(position) / 100);
 
-            return this.Ability.ManaCost + (distance * travelCost);
+            return this.ManaCost + (distance * travelCost);
         }
     }
 }

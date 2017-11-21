@@ -278,7 +278,7 @@ namespace Ensage.SDK.Extensions
                     return false;
                 }
 
-                myMana -= ability.Ability.ManaCost;
+                myMana -= ability.ManaCost;
                 if (myMana < 0)
                 {
                     return false;

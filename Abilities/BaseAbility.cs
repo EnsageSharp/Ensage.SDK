@@ -55,12 +55,12 @@ namespace Ensage.SDK.Abilities
         {
             get
             {
-                if (this.Ability.Level == 0 || this.Ability.IsHidden || this.Ability.Cooldown > 0)
+                if (this.Ability.Level == 0 || this.Ability.Cooldown > 0)
                 {
                     return false;
                 }
 
-                if (this.Owner.Mana < this.Ability.ManaCost)
+                if (this.Owner.Mana < this.ManaCost)
                 {
                     return false;
                 }
@@ -75,6 +75,14 @@ namespace Ensage.SDK.Abilities
             get
             {
                 return this.Ability as Item;
+            }
+        }
+
+        public float ManaCost
+        {
+            get
+            {
+                return this.Ability.ManaCost;
             }
         }
 

@@ -12,6 +12,8 @@ namespace Ensage.SDK.Service
     using Ensage.Common.Menu;
     using Ensage.SDK.Menu;
 
+    using FontStyle = System.Drawing.FontStyle;
+
     public class SDKConfig
     {
         public SDKConfig()

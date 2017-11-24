@@ -11,6 +11,7 @@ namespace Ensage.SDK.Service
     using Ensage.SDK.Helpers;
     using Ensage.SDK.Input;
     using Ensage.SDK.Inventory;
+    using Ensage.SDK.Menu;
     using Ensage.SDK.Orbwalker;
     using Ensage.SDK.Prediction;
     using Ensage.SDK.Renderer;
@@ -40,6 +41,8 @@ namespace Ensage.SDK.Service
         IParticleManager Particle { get; }
 
         IPredictionManager Prediction { get; }
+
+        MenuManager MenuManager { get; }
 
         IRendererManager Renderer { get; }
 

@@ -43,49 +43,49 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="clipper_library">
-      <HintPath>C:\Program Files (x86)\Ensage\References\clipper_library.dll</HintPath>
+      <HintPath>C:\EnsageSharp\References\clipper_library.dll</HintPath>
     </Reference>
     <Reference Include="Ensage">
-      <HintPath>C:\Program Files (x86)\Ensage\References\Ensage.dll</HintPath>
+      <HintPath>C:\EnsageSharp\References\Ensage.dll</HintPath>
     </Reference>
     <Reference Include="Ensage.Common">
-      <HintPath>C:\Program Files (x86)\Ensage\References\Ensage.Common.dll</HintPath>
+      <HintPath>C:\EnsageSharp\References\Ensage.Common.dll</HintPath>
     </Reference>
     <Reference Include="EnsageSharp.Sandbox">
-      <HintPath>C:\Program Files (x86)\Ensage\System\EnsageSharp.Sandbox.dll</HintPath>
+      <HintPath>C:\EnsageSharp\System\EnsageSharp.Sandbox.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Newtonsoft.Json">
-      <HintPath>C:\Program Files (x86)\Ensage\References\Newtonsoft.Json.dll</HintPath>
+      <HintPath>C:\EnsageSharp\References\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="PlaySharp.Service">
-      <HintPath>C:\Program Files (x86)\Ensage\References\PlaySharp.Service.dll</HintPath>
+      <HintPath>C:\EnsageSharp\References\PlaySharp.Service.dll</HintPath>
     </Reference>
     <Reference Include="PlaySharp.Toolkit">
-      <HintPath>C:\Program Files (x86)\Ensage\References\PlaySharp.Toolkit.dll</HintPath>
+      <HintPath>C:\EnsageSharp\References\PlaySharp.Toolkit.dll</HintPath>
     </Reference>
     <Reference Include="SharpDX">
-      <HintPath>C:\Program Files (x86)\Ensage\References\SharpDX.dll</HintPath>
+      <HintPath>C:\EnsageSharp\References\SharpDX.dll</HintPath>
     </Reference>
     <Reference Include="SharpDX.Direct2D1">
-      <HintPath>C:\Program Files (x86)\Ensage\References\SharpDX.Direct2D1.dll</HintPath>
+      <HintPath>C:\EnsageSharp\References\SharpDX.Direct2D1.dll</HintPath>
     </Reference>
     <Reference Include="SharpDX.Direct3D11">
-      <HintPath>C:\Program Files (x86)\Ensage\References\SharpDX.Direct3D11.dll</HintPath>
+      <HintPath>C:\EnsageSharp\References\SharpDX.Direct3D11.dll</HintPath>
     </Reference>
     <Reference Include="SharpDX.Direct3D9">
-      <HintPath>C:\Program Files (x86)\Ensage\References\SharpDX.Direct3D9.dll</HintPath>
+      <HintPath>C:\EnsageSharp\References\SharpDX.Direct3D9.dll</HintPath>
     </Reference>
     <Reference Include="SharpDX.DXGI">
-      <HintPath>C:\Program Files (x86)\Ensage\References\SharpDX.DXGI.dll</HintPath>
+      <HintPath>C:\EnsageSharp\References\SharpDX.DXGI.dll</HintPath>
     </Reference>
     <Reference Include="SharpDX.Mathematics">
-      <HintPath>C:\Program Files (x86)\Ensage\References\SharpDX.Mathematics.dll</HintPath>
+      <HintPath>C:\EnsageSharp\References\SharpDX.Mathematics.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Collections.Immutable, Version=1.1.37.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>C:\Program Files (x86)\Ensage\References\System.Collections.Immutable.dll</HintPath>
+      <HintPath>C:\EnsageSharp\References\System.Collections.Immutable.dll</HintPath>
     </Reference>
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Core" />
@@ -526,6 +526,27 @@
     <Compile Include="Input\MouseWheelEventArgs.cs" />
     <Compile Include="Inventory\ItemBindingHandler.cs" />
     <Compile Include="Inventory\Metadata\ItemBindingAttribute.cs" />
+    <Compile Include="Menu\Attributes\PermaShowAttribute.cs" />
+    <Compile Include="Menu\Config\MenuConfig.cs" />
+    <Compile Include="Menu\Views\BooleanView.cs" />
+    <Compile Include="Menu\Styles\BorderStyle.cs" />
+    <Compile Include="Menu\Views\ExportViewAttribute.cs" />
+    <Compile Include="Menu\Styles\FontStyle.cs" />
+    <Compile Include="Menu\Attributes\ItemAttribute.cs" />
+    <Compile Include="Menu\Views\IView.cs" />
+    <Compile Include="Menu\Views\IViewMetadata.cs" />
+    <Compile Include="Menu\Entries\MenuBase.cs" />
+    <Compile Include="Menu\Entries\MenuEntry.cs" />
+    <Compile Include="Menu\Entries\MenuItemEntry.cs" />
+    <Compile Include="Menu\MenuManager.cs" />
+    <Compile Include="Menu\Attributes\MenuAttribute.cs" />
+    <Compile Include="Menu\Views\MenuView.cs" />
+    <Compile Include="Menu\Items\Selection.cs" />
+    <Compile Include="Menu\Views\SelectionView.cs" />
+    <Compile Include="Menu\Views\StringView.cs" />
+    <Compile Include="Menu\Styles\StyleConfig.cs" />
+    <Compile Include="Menu\Attributes\TooltipAttribute.cs" />
+    <Compile Include="Menu\ViewRepository.cs" />
     <Compile Include="Orbwalker\Config\OrbwalkerSettings.cs" />
     <Compile Include="Orbwalker\IOrbwalkerManager.cs" />
     <Compile Include="Orbwalker\Metadata\ExportOrbwalkerManagerAttribute.cs" />

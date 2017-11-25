@@ -56,56 +56,19 @@ namespace Ensage.SDK.Abilities
         {
             get
             {
-                const float MinimumCastPoint = 0.05f;
-                if (this.Ability is Item)
-                {
-                    // 50 ms
-                    return MinimumCastPoint;
-                }
-
                 var level = this.Ability.Level;
                 if (level == 0)
                 {
                     return 0.0f;
                 }
 
-                var castpoint = this.Ability.GetCastPoint(level - 1);
-                return castpoint == 0.0f ? MinimumCastPoint : castpoint;
+                return this.Ability.GetCastPoint(level - 1);
             }
         }
 
-        public virtual bool IsActivated
-        {
-            get
-            {
-                return this.Ability.IsActivated;
-            }
-        }
-
-        public virtual float Speed
-        {
-            get
-            {
-                return float.MaxValue;
-            }
-        }
+        public virtual float Speed { get; } = float.MaxValue;
 
         protected float LastCastAttempt { get; set; }
-
-        protected override float RawDamage
-        {
-            get
-            {
-                var level = this.Ability.Level;
-                if (level == 0)
-                {
-                    return 0;
-                }
-
-                var damage = (float)this.Ability.GetDamage(level - 1);
-                return damage;
-            }
-        }
 
         public static implicit operator bool(ActiveAbility ability)
         {

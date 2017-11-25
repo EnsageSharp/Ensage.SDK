@@ -24,25 +24,31 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_magnataur
 
         public string ModifierName { get; } = "modifier_magnataur_skewer_movement";
 
+        public override float Radius
+        {
+            get
+            {
+                return this.Ability.GetAbilitySpecialData("skewer_radius");
+            }
+        }
+
+        public override float Speed
+        {
+            get
+            {
+                return this.Ability.GetAbilitySpecialData("skewer_speed");
+            }
+        }
+
         public string TargetModifierName { get; } = "modifier_magnataur_skewer_impact";
 
         protected override float BaseCastRange
         {
             get
             {
-                var castRange = this.Ability.GetAbilitySpecialData("range");
-
-                var talent = this.Owner.GetAbilityById(AbilityId.special_bonus_unique_magnus_3);
-                if (talent != null && talent.Level > 0)
-                {
-                    castRange += talent.GetAbilitySpecialData("value");
-                }
-
-                return castRange;
+                return this.Ability.GetAbilitySpecialDataWithTalent(this.Owner, "range");
             }
         }
-
-        protected override string RadiusName { get; } = "skewer_radius";
 
         protected override float RawDamage
         {
@@ -51,7 +57,5 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_magnataur
                 return this.Ability.GetAbilitySpecialData("skewer_damage");
             }
         }
-
-        protected override string SpeedName { get; } = "skewer_speed";
     }
 }

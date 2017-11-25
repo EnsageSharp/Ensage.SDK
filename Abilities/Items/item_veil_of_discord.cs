@@ -10,7 +10,7 @@ namespace Ensage.SDK.Abilities.Items
     using PlaySharp.Toolkit.Helper.Annotations;
 
     [PublicAPI]
-    public class item_veil_of_discord : AreaOfEffectAbility, IHasTargetModifier, IHasDamageAmplifier
+    public class item_veil_of_discord : CircleAbility, IHasTargetModifier, IHasDamageAmplifier
     {
         public item_veil_of_discord(Item item)
             : base(item)
@@ -27,8 +27,14 @@ namespace Ensage.SDK.Abilities.Items
             }
         }
 
-        public string TargetModifierName { get; } = "modifier_item_veil_of_discord_debuff";
+        public override float Radius
+        {
+            get
+            {
+                return this.Ability.GetAbilitySpecialData("debuff_radius");
+            }
+        }
 
-        protected override string RadiusName { get; } = "debuff_radius";
+        public string TargetModifierName { get; } = "modifier_item_veil_of_discord_debuff";
     }
 }

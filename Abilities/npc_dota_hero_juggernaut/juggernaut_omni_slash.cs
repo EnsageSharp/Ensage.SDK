@@ -17,14 +17,6 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_juggernaut
         {
         }
 
-        public override bool CanBeCasted
-        {
-            get
-            {
-                return this.IsActivated && base.CanBeCasted;
-            }
-        }
-
         public float DamageDuration
         {
             get
@@ -42,6 +34,14 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_juggernaut
         }
 
         public bool HasInitialDamage { get; } = true;
+
+        public override bool IsReady
+        {
+            get
+            {
+                return this.Ability.IsActivated && base.IsReady;
+            }
+        }
 
         public string ModifierName { get; } = "modifier_juggernaut_omnislash";
 

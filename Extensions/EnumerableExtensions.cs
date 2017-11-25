@@ -8,6 +8,7 @@ namespace Ensage.SDK.Extensions
     using System.Collections.Generic;
     using System.ComponentModel;
     using System.Linq;
+    using System.Runtime.Serialization;
 
     using SharpDX;
 
@@ -304,6 +305,14 @@ namespace Ensage.SDK.Extensions
         public static T To<T>(this IConvertible @object)
         {
             return (T)Convert.ChangeType(@object, typeof(T));
+        }
+
+        public static string ToEnumString<T>(this T type)
+        {
+            var enumType = typeof(T);
+            var name = Enum.GetName(enumType, type);
+            var enumMemberAttribute = ((EnumMemberAttribute[])enumType.GetField(name).GetCustomAttributes(typeof(EnumMemberAttribute), true)).Single();
+            return enumMemberAttribute.Value;
         }
     }
 }

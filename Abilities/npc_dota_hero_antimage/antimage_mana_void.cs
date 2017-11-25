@@ -9,14 +9,14 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_antimage
     using Ensage.SDK.Extensions;
     using Ensage.SDK.Helpers;
 
-    public class antimage_mana_void : RangedAbility, IAreaOfEffectAbility
+    public class antimage_mana_void : AreaOfEffectAbility
     {
         public antimage_mana_void(Ability ability)
             : base(ability)
         {
         }
 
-        public float Radius
+        public override float Radius
         {
             get
             {

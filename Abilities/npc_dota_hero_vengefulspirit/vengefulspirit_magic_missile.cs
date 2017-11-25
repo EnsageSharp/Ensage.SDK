@@ -6,14 +6,14 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_vengefulspirit
 {
     using Ensage.SDK.Extensions;
 
-    // ReSharper disable once InconsistentNaming
-    // ReSharper disable once StyleCop.SA1300
     public class vengefulspirit_magic_missile : RangedAbility
     {
         public vengefulspirit_magic_missile(Ability ability)
             : base(ability)
         {
         }
+
+        public override UnitState AppliesUnitState { get; } = UnitState.Stunned;
 
         public override SpellPierceImmunityType PiercesSpellImmunity
         {
@@ -41,15 +41,7 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_vengefulspirit
         {
             get
             {
-                var damage = this.Ability.GetAbilitySpecialData("magic_missile_damage");
-
-                var damageTalent = this.Owner.GetAbilityById(AbilityId.special_bonus_unique_vengeful_spirit_1);
-                if (damageTalent != null && damageTalent.Level > 0)
-                {
-                    damage += damageTalent.GetAbilitySpecialData("value");
-                }
-
-                return damage;
+                return this.Ability.GetAbilitySpecialDataWithTalent(this.Owner, "magic_missile_damage");
             }
         }
     }

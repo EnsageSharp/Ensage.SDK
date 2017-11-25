@@ -23,8 +23,7 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_abaddon
                     return false;
                 }
 
-                var owner = this.Owner;
-                if (owner.IsMuted() || owner.IsSilenced())
+                if (this.Owner.IsSilenced())
                 {
                     return false;
                 }

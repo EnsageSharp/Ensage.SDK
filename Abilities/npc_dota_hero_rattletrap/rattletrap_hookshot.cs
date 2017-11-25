@@ -16,11 +16,19 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_rattletrap
         {
         }
 
+        public override UnitState AppliesUnitState { get; } = UnitState.Stunned;
+
         public override CollisionTypes CollisionTypes { get; } = CollisionTypes.AllUnits;
 
-        public string[] TargetModifierTextureName { get; } = { "rattletrap_hookshot" };
+        public override float Radius
+        {
+            get
+            {
+                return this.Ability.GetAbilitySpecialDataWithTalent(this.Owner, "latch_radius");
+            }
+        }
 
-        protected override string RadiusName { get; } = "latch_radius";
+        public string[] TargetModifierTextureName { get; } = { "rattletrap_hookshot" };
 
         public override float GetDamage(params Unit[] targets)
         {

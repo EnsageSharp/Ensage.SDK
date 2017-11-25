@@ -5,6 +5,7 @@
 namespace Ensage.SDK.Abilities.npc_dota_hero_pudge
 {
     using Ensage.SDK.Abilities.Components;
+    using Ensage.SDK.Extensions;
     using Ensage.SDK.Prediction.Collision;
 
     public class pudge_meat_hook : LineAbility, IHasTargetModifier
@@ -14,12 +15,26 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_pudge
         {
         }
 
+        public override UnitState AppliesUnitState { get; } = UnitState.Stunned;
+
         public override CollisionTypes CollisionTypes { get; } = CollisionTypes.AllUnits | CollisionTypes.Runes;
 
+        public override float Radius
+        {
+            get
+            {
+                return this.Ability.GetAbilitySpecialData("hook_width");
+            }
+        }
+
+        public override float Speed
+        {
+            get
+            {
+                return this.Ability.GetAbilitySpecialData("hook_speed");
+            }
+        }
+
         public string TargetModifierName { get; } = "modifier_pudge_meat_hook";
-
-        protected override string RadiusName { get; } = "hook_width";
-
-        protected override string SpeedName { get; } = "hook_speed";
     }
 }

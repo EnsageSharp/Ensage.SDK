@@ -14,6 +14,22 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_queenofpain
         {
         }
 
+        public override float EndRadius
+        {
+            get
+            {
+                return this.Ability.GetAbilitySpecialData("final_aoe");
+            }
+        }
+
+        public override float Radius
+        {
+            get
+            {
+                return this.Ability.GetAbilitySpecialData("starting_aoe");
+            }
+        }
+
         public override float Range
         {
             get
@@ -21,10 +37,6 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_queenofpain
                 return this.Ability.GetAbilitySpecialData("distance");
             }
         }
-
-        protected override string EndRadiusName { get; } = "final_aoe";
-
-        protected override string RadiusName { get; } = "starting_aoe";
 
         protected override float RawDamage
         {

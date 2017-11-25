@@ -30,15 +30,7 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_zuus
         {
             get
             {
-                var damagePercent = this.Ability.GetAbilitySpecialData("damage_health_pct");
-
-                var talent = this.Owner.GetAbilityById(AbilityId.special_bonus_unique_zeus);
-                if (talent != null && talent.Level > 0)
-                {
-                    damagePercent += talent.GetAbilitySpecialData("value");
-                }
-
-                return damagePercent / 100;
+                return this.Ability.GetAbilitySpecialDataWithTalent(this.Owner, "damage_health_pct") / 100f;
             }
         }
 

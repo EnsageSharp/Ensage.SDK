@@ -278,7 +278,7 @@ namespace Ensage.SDK.Extensions
                     return false;
                 }
 
-                myMana -= ability.Ability.ManaCost;
+                myMana -= ability.ManaCost;
                 if (myMana < 0)
                 {
                     return false;
@@ -311,7 +311,7 @@ namespace Ensage.SDK.Extensions
 
             if (angle > Math.PI)
             {
-                angle = (Math.PI * 2) - angle;
+                angle = Math.Abs((Math.PI * 2) - angle);
             }
 
             return (float)angle;
@@ -678,7 +678,7 @@ namespace Ensage.SDK.Extensions
 
         public static bool IsRealUnit(this Unit unit)
         {
-            return unit.UnitType != 0 && (unit.UnitState & UnitState.FakeAlly) == UnitState.FakeAlly;
+            return unit.UnitType != 0 && (unit.UnitState & UnitState.FakeAlly) != UnitState.FakeAlly;
         }
 
         public static bool IsBlockingDamage(this Unit unit)
@@ -753,6 +753,11 @@ namespace Ensage.SDK.Extensions
         public static bool IsStunned(this Unit unit)
         {
             return (unit.UnitState & UnitState.Stunned) == UnitState.Stunned;
+        }
+
+        public static bool IsHexed(this Unit unit)
+        {
+            return (unit.UnitState & UnitState.Hexed) == UnitState.Hexed;
         }
 
         public static bool IsValidOrbwalkingTarget(this Unit attacker, Unit target, float bonusAttackRange = 0.0f)
@@ -855,12 +860,12 @@ namespace Ensage.SDK.Extensions
 
         public static float TurnTime(this Unit unit, float angle)
         {
-            if (unit.ClassId == ClassId.CDOTA_Unit_Hero_Wisp)
+            if ((unit as Hero)?.HeroId == HeroId.npc_dota_hero_wisp)
             {
                 return 0;
             }
 
-            if (angle <= 0.5f)
+            if (angle <= 0.2f)
             {
                 return 0;
             }

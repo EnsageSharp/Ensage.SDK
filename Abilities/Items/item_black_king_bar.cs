@@ -13,6 +13,8 @@ namespace Ensage.SDK.Abilities.Items
         {
         }
 
+        public override UnitState AppliesUnitState { get; } = UnitState.MagicImmune;
+
         public string ModifierName { get; } = "modifier_black_king_bar_immune";
     }
 }

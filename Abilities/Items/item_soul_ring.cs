@@ -7,7 +7,7 @@ namespace Ensage.SDK.Abilities.Items
     using Ensage.SDK.Abilities.Components;
     using Ensage.SDK.Extensions;
 
-    public class item_soul_ring : ActiveAbility, IHasModifier, IHasHealthCost
+    public class item_soul_ring : ActiveAbility, IHasModifier, IHasHealthCost, IHasManaRestore
     {
         public item_soul_ring(Item item)
             : base(item)
@@ -23,5 +23,13 @@ namespace Ensage.SDK.Abilities.Items
         }
 
         public string ModifierName { get; } = "modifier_item_soul_ring_buff";
+
+        public float TotalManaRestore
+        {
+            get
+            {
+                return this.Ability.GetAbilitySpecialData("mana_gain");
+            }
+        }
     }
 }

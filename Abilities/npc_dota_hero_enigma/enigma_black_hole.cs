@@ -10,14 +10,16 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_enigma
     using Ensage.SDK.Extensions;
     using Ensage.SDK.Helpers;
 
-    public class enigma_black_hole : CircleAbility, IHasDot
+    public class enigma_black_hole : CircleAbility, IHasDot, IChannable
     {
         public enigma_black_hole(Ability ability)
             : base(ability)
         {
         }
 
-        public float DamageDuration
+        public override UnitState AppliesUnitState { get; } = UnitState.Stunned;
+
+        public float ChannelDuration
         {
             get
             {
@@ -25,7 +27,23 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_enigma
             }
         }
 
+        public float DamageDuration
+        {
+            get
+            {
+                return this.ChannelDuration;
+            }
+        }
+
         public bool HasInitialDamage { get; } = false;
+
+        public bool IsChanneling
+        {
+            get
+            {
+                return this.Ability.IsChanneling;
+            }
+        }
 
         public override float Radius
         {
@@ -43,23 +61,22 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_enigma
             }
         }
 
-        public string TargetModifierName { get; } = "modifier_enigma_black_hole_pull";
-
-        public float TickRate
+        public float RemainingDuration
         {
             get
             {
-                return 1.0f;
+                if (!this.IsChanneling)
+                {
+                    return 0;
+                }
 
-                // wrong tick rate in special data
-                // return this.Ability.GetAbilitySpecialData("tick_rate");
+                return this.ChannelDuration - this.Ability.ChannelTime;
             }
         }
 
-        public override float GetDamage(params Unit[] target)
-        {
-            return this.GetTickDamage(target);
-        }
+        public string TargetModifierName { get; } = "modifier_enigma_black_hole_pull";
+
+        public float TickRate { get; } = 1.0f; // wrong tick rate in special data
 
         public float GetTickDamage(params Unit[] targets)
         {
@@ -80,9 +97,9 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_enigma
             return totalDamage;
         }
 
-        public float GetTotalDamage(params Unit[] target)
+        public float GetTotalDamage(params Unit[] targets)
         {
-            return this.GetTickDamage(target) * (this.DamageDuration / this.TickRate);
+            return this.GetTickDamage(targets) * (this.DamageDuration / this.TickRate);
         }
     }
 }

@@ -17,6 +17,8 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_pudge
         {
         }
 
+        public override UnitState AppliesUnitState { get; } = UnitState.Stunned;
+
         public float ChannelDuration
         {
             get
@@ -104,13 +106,7 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_pudge
 
         public string TargetModifierName { get; } = "modifier_pudge_dismember";
 
-        public float TickRate
-        {
-            get
-            {
-                return 1.0f;
-            }
-        }
+        public float TickRate { get; } = 1.0f;
 
         public override float GetDamage(params Unit[] targets)
         {

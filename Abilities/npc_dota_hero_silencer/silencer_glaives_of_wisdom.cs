@@ -4,7 +4,6 @@
 
 namespace Ensage.SDK.Abilities.npc_dota_hero_silencer
 {
-    using System;
     using System.Linq;
 
     using Ensage.SDK.Extensions;
@@ -38,7 +37,7 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_silencer
             var damagePercent = this.Ability.GetAbilitySpecialData("intellect_damage_pct") / 100.0f;
 
             var hero = this.Owner as Hero;
-            var bonusDamage = Math.Max(hero.TotalIntelligence, 0) * damagePercent;
+            var bonusDamage = (hero?.TotalIntelligence ?? 0) * damagePercent;
 
             var isSilenced = targets.First().IsSilenced();
             if (isSilenced && this.Owner.HasAghanimsScepter())

@@ -13,6 +13,8 @@ namespace Ensage.SDK.Abilities.Items
         {
         }
 
+        public override UnitState AppliesUnitState { get; } = UnitState.Stunned;
+
         public string[] TargetModifierTextureName { get; } = { "item_abyssal_blade" };
     }
 }

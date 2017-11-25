@@ -5,6 +5,7 @@
 namespace Ensage.SDK.Abilities.npc_dota_hero_drow_ranger
 {
     using Ensage.SDK.Abilities.Components;
+    using Ensage.SDK.Extensions;
 
     public class drow_ranger_wave_of_silence : LineAbility, IHasTargetModifier
     {
@@ -13,10 +14,24 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_drow_ranger
         {
         }
 
+        public override UnitState AppliesUnitState { get; } = UnitState.Silenced;
+
+        public override float Radius
+        {
+            get
+            {
+                return this.Ability.GetAbilitySpecialData("wave_width");
+            }
+        }
+
+        public override float Speed
+        {
+            get
+            {
+                return this.Ability.GetAbilitySpecialData("wave_speed");
+            }
+        }
+
         public string TargetModifierName { get; } = "modifier_drowranger_wave_of_silence_knockback";
-
-        protected override string RadiusName { get; } = "wave_width";
-
-        protected override string SpeedName { get; } = "wave_speed";
     }
 }

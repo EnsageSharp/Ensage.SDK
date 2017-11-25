@@ -14,6 +14,8 @@ namespace Ensage.SDK.Abilities.Items
         {
         }
 
+        public override UnitState AppliesUnitState { get; } = UnitState.Muted;
+
         public override float Speed
         {
             get

@@ -11,11 +11,11 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_puck
         {
         }
 
-        public override bool CanBeCasted
+        public override bool IsReady
         {
             get
             {
-                return this.IsActivated && base.CanBeCasted;
+                return this.Ability.IsActivated && base.IsReady;
             }
         }
     }

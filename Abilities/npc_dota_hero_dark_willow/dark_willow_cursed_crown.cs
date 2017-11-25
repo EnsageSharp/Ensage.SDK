@@ -7,7 +7,7 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_dark_willow
     using Ensage.SDK.Abilities.Components;
     using Ensage.SDK.Extensions;
 
-    public class dark_willow_cursed_crown : RangedAbility, IHasTargetModifier, IHasTargetModifierTexture, IAreaOfEffectAbility
+    public class dark_willow_cursed_crown : AreaOfEffectAbility, IHasTargetModifier, IHasTargetModifierTexture
     {
         public dark_willow_cursed_crown(Ability ability)
             : base(ability)
@@ -22,7 +22,9 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_dark_willow
             }
         }
 
-        public float Radius
+        public override UnitState AppliesUnitState { get; } = UnitState.Stunned;
+
+        public override float Radius
         {
             get
             {

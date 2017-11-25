@@ -43,55 +43,56 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="clipper_library">
-      <HintPath>..\..\..\..\..\Program Files (x86)\Ensage\References\clipper_library.dll</HintPath>
+      <HintPath>C:\Program Files (x86)\Ensage\References\clipper_library.dll</HintPath>
     </Reference>
     <Reference Include="Ensage">
-      <HintPath>..\..\..\..\..\Program Files (x86)\Ensage\References\Ensage.dll</HintPath>
+      <HintPath>C:\Program Files (x86)\Ensage\References\Ensage.dll</HintPath>
     </Reference>
     <Reference Include="Ensage.Common">
-      <HintPath>..\..\..\..\..\Program Files (x86)\Ensage\References\Ensage.Common.dll</HintPath>
+      <HintPath>C:\Program Files (x86)\Ensage\References\Ensage.Common.dll</HintPath>
     </Reference>
     <Reference Include="EnsageSharp.Sandbox">
-      <HintPath>..\..\..\..\..\Program Files (x86)\Ensage\System\EnsageSharp.Sandbox.dll</HintPath>
+      <HintPath>C:\Program Files (x86)\Ensage\System\EnsageSharp.Sandbox.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Newtonsoft.Json">
-      <HintPath>..\..\..\..\..\Program Files (x86)\Ensage\References\Newtonsoft.Json.dll</HintPath>
+      <HintPath>C:\Program Files (x86)\Ensage\References\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="PlaySharp.Service">
-      <HintPath>..\..\..\..\..\Program Files (x86)\Ensage\References\PlaySharp.Service.dll</HintPath>
+      <HintPath>C:\Program Files (x86)\Ensage\References\PlaySharp.Service.dll</HintPath>
     </Reference>
     <Reference Include="PlaySharp.Toolkit">
-      <HintPath>..\..\..\..\..\Program Files (x86)\Ensage\References\PlaySharp.Toolkit.dll</HintPath>
+      <HintPath>C:\Program Files (x86)\Ensage\References\PlaySharp.Toolkit.dll</HintPath>
     </Reference>
     <Reference Include="SharpDX">
-      <HintPath>..\..\..\..\..\Program Files (x86)\Ensage\References\SharpDX.dll</HintPath>
+      <HintPath>C:\Program Files (x86)\Ensage\References\SharpDX.dll</HintPath>
     </Reference>
     <Reference Include="SharpDX.Direct2D1">
-      <HintPath>..\..\..\..\..\Program Files (x86)\Ensage\References\SharpDX.Direct2D1.dll</HintPath>
+      <HintPath>C:\Program Files (x86)\Ensage\References\SharpDX.Direct2D1.dll</HintPath>
     </Reference>
     <Reference Include="SharpDX.Direct3D11">
-      <HintPath>..\..\..\..\..\Program Files (x86)\Ensage\References\SharpDX.Direct3D11.dll</HintPath>
+      <HintPath>C:\Program Files (x86)\Ensage\References\SharpDX.Direct3D11.dll</HintPath>
     </Reference>
     <Reference Include="SharpDX.Direct3D9">
-      <HintPath>..\..\..\..\..\Program Files (x86)\Ensage\References\SharpDX.Direct3D9.dll</HintPath>
+      <HintPath>C:\Program Files (x86)\Ensage\References\SharpDX.Direct3D9.dll</HintPath>
     </Reference>
     <Reference Include="SharpDX.DXGI">
-      <HintPath>..\..\..\..\..\Program Files (x86)\Ensage\References\SharpDX.DXGI.dll</HintPath>
+      <HintPath>C:\Program Files (x86)\Ensage\References\SharpDX.DXGI.dll</HintPath>
     </Reference>
     <Reference Include="SharpDX.Mathematics">
-      <HintPath>..\..\..\..\..\Program Files (x86)\Ensage\References\SharpDX.Mathematics.dll</HintPath>
+      <HintPath>C:\Program Files (x86)\Ensage\References\SharpDX.Mathematics.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Collections.Immutable, Version=1.1.37.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\Program Files (x86)\Ensage\References\System.Collections.Immutable.dll</HintPath>
+      <HintPath>C:\Program Files (x86)\Ensage\References\System.Collections.Immutable.dll</HintPath>
     </Reference>
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Runtime.Caching" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="WindowsBase" />
@@ -105,15 +106,130 @@
     <Compile Include="Abilities\BaseAbility.cs" />
     <Compile Include="Abilities\Components\IHasDamageAmplifier.cs" />
     <Compile Include="Abilities\Aggregation\Necronomicon.cs" />
+    <Compile Include="Abilities\Components\IHasHealthRestore.cs" />
+    <Compile Include="Abilities\Components\IHasManaRestore.cs" />
     <Compile Include="Abilities\IAreaOfEffectAbility.cs" />
     <Compile Include="Abilities\IAuraAbility.cs" />
     <Compile Include="Abilities\Aggregation\Dagon.cs" />
     <Compile Include="Abilities\Items\item_combo_breaker.cs" />
+    <Compile Include="Abilities\npc_dota_hero_ancient_apparition\ancient_apparition_chilling_touch.cs" />
+    <Compile Include="Abilities\npc_dota_hero_ancient_apparition\ancient_apparition_cold_feet.cs" />
+    <Compile Include="Abilities\npc_dota_hero_ancient_apparition\ancient_apparition_ice_blast.cs" />
+    <Compile Include="Abilities\npc_dota_hero_ancient_apparition\ancient_apparition_ice_blast_release.cs" />
+    <Compile Include="Abilities\npc_dota_hero_ancient_apparition\ancient_apparition_ice_vortex.cs" />
+    <Compile Include="Abilities\npc_dota_hero_arc_warden\arc_warden_flux.cs" />
+    <Compile Include="Abilities\npc_dota_hero_arc_warden\arc_warden_magnetic_field.cs" />
+    <Compile Include="Abilities\npc_dota_hero_arc_warden\arc_warden_spark_wraith.cs" />
+    <Compile Include="Abilities\npc_dota_hero_arc_warden\arc_warden_tempest_double.cs" />
+    <Compile Include="Abilities\npc_dota_hero_bane\bane_brain_sap.cs" />
+    <Compile Include="Abilities\npc_dota_hero_bane\bane_enfeeble.cs" />
+    <Compile Include="Abilities\npc_dota_hero_bane\bane_fiends_grip.cs" />
+    <Compile Include="Abilities\npc_dota_hero_bane\bane_nightmare.cs" />
+    <Compile Include="Abilities\npc_dota_hero_bane\bane_nightmare_end.cs" />
+    <Compile Include="Abilities\npc_dota_hero_batrider\batrider_firefly.cs" />
+    <Compile Include="Abilities\npc_dota_hero_batrider\batrider_flamebreak.cs" />
+    <Compile Include="Abilities\npc_dota_hero_batrider\batrider_flaming_lasso.cs" />
+    <Compile Include="Abilities\npc_dota_hero_batrider\batrider_sticky_napalm.cs" />
+    <Compile Include="Abilities\npc_dota_hero_beastmaster\beastmaster_call_of_the_wild.cs" />
+    <Compile Include="Abilities\npc_dota_hero_beastmaster\beastmaster_inner_beast.cs" />
+    <Compile Include="Abilities\npc_dota_hero_beastmaster\beastmaster_primal_roar.cs" />
+    <Compile Include="Abilities\npc_dota_hero_beastmaster\beastmaster_wild_axes.cs" />
+    <Compile Include="Abilities\npc_dota_hero_bloodseeker\bloodseeker_bloodrage.cs" />
+    <Compile Include="Abilities\npc_dota_hero_bloodseeker\bloodseeker_blood_bath.cs" />
+    <Compile Include="Abilities\npc_dota_hero_bloodseeker\bloodseeker_rupture.cs" />
+    <Compile Include="Abilities\npc_dota_hero_bloodseeker\bloodseeker_thirst.cs" />
+    <Compile Include="Abilities\npc_dota_hero_bounty_hunter\bounty_hunter_jinada.cs" />
+    <Compile Include="Abilities\npc_dota_hero_bounty_hunter\bounty_hunter_shuriken_toss.cs" />
+    <Compile Include="Abilities\npc_dota_hero_bounty_hunter\bounty_hunter_track.cs" />
+    <Compile Include="Abilities\npc_dota_hero_bounty_hunter\bounty_hunter_wind_walk.cs" />
+    <Compile Include="Abilities\npc_dota_hero_brewmaster\brewmaster_drunken_brawler.cs" />
+    <Compile Include="Abilities\npc_dota_hero_brewmaster\brewmaster_drunken_haze.cs" />
+    <Compile Include="Abilities\npc_dota_hero_brewmaster\brewmaster_primal_split.cs" />
+    <Compile Include="Abilities\npc_dota_hero_brewmaster\brewmaster_thunder_clap.cs" />
+    <Compile Include="Abilities\npc_dota_hero_bristleback\bristleback_bristleback.cs" />
+    <Compile Include="Abilities\npc_dota_hero_bristleback\bristleback_quill_spray.cs" />
+    <Compile Include="Abilities\npc_dota_hero_bristleback\bristleback_viscous_nasal_goo.cs" />
+    <Compile Include="Abilities\npc_dota_hero_bristleback\bristleback_warpath.cs" />
+    <Compile Include="Abilities\npc_dota_hero_centaur\centaur_double_edge.cs" />
+    <Compile Include="Abilities\npc_dota_hero_centaur\centaur_hoof_stomp.cs" />
+    <Compile Include="Abilities\npc_dota_hero_centaur\centaur_return.cs" />
+    <Compile Include="Abilities\npc_dota_hero_centaur\centaur_stampede.cs" />
+    <Compile Include="Abilities\npc_dota_hero_chaos_knight\chaos_knight_chaos_bolt.cs" />
+    <Compile Include="Abilities\npc_dota_hero_chaos_knight\chaos_knight_chaos_strike.cs" />
+    <Compile Include="Abilities\npc_dota_hero_chaos_knight\chaos_knight_phantasm.cs" />
+    <Compile Include="Abilities\npc_dota_hero_chaos_knight\chaos_knight_reality_rift.cs" />
+    <Compile Include="Abilities\npc_dota_hero_chen\chen_hand_of_god.cs" />
+    <Compile Include="Abilities\npc_dota_hero_chen\chen_holy_persuasion.cs" />
+    <Compile Include="Abilities\npc_dota_hero_chen\chen_penitence.cs" />
+    <Compile Include="Abilities\npc_dota_hero_chen\chen_test_of_faith.cs" />
+    <Compile Include="Abilities\npc_dota_hero_dark_seer\dark_seer_ion_shell.cs" />
+    <Compile Include="Abilities\npc_dota_hero_dark_seer\dark_seer_surge.cs" />
+    <Compile Include="Abilities\npc_dota_hero_dark_seer\dark_seer_vacuum.cs" />
+    <Compile Include="Abilities\npc_dota_hero_dark_seer\dark_seer_wall_of_replica.cs" />
     <Compile Include="Abilities\npc_dota_hero_dark_willow\dark_willow_bedlam.cs" />
     <Compile Include="Abilities\npc_dota_hero_dark_willow\dark_willow_bramble_maze.cs" />
     <Compile Include="Abilities\npc_dota_hero_dark_willow\dark_willow_cursed_crown.cs" />
     <Compile Include="Abilities\npc_dota_hero_dark_willow\dark_willow_shadow_realm.cs" />
     <Compile Include="Abilities\npc_dota_hero_dark_willow\dark_willow_terrorize.cs" />
+    <Compile Include="Abilities\npc_dota_hero_dazzle\dazzle_poison_touch.cs" />
+    <Compile Include="Abilities\npc_dota_hero_dazzle\dazzle_shadow_wave.cs" />
+    <Compile Include="Abilities\npc_dota_hero_dazzle\dazzle_shallow_grave.cs" />
+    <Compile Include="Abilities\npc_dota_hero_dazzle\dazzle_weave.cs" />
+    <Compile Include="Abilities\npc_dota_hero_death_prophet\death_prophet_carrion_swarm.cs" />
+    <Compile Include="Abilities\npc_dota_hero_death_prophet\death_prophet_exorcism.cs" />
+    <Compile Include="Abilities\npc_dota_hero_death_prophet\death_prophet_silence.cs" />
+    <Compile Include="Abilities\npc_dota_hero_death_prophet\death_prophet_spirit_siphon.cs" />
+    <Compile Include="Abilities\npc_dota_hero_disruptor\disruptor_glimpse.cs" />
+    <Compile Include="Abilities\npc_dota_hero_disruptor\disruptor_kinetic_field.cs" />
+    <Compile Include="Abilities\npc_dota_hero_disruptor\disruptor_static_storm.cs" />
+    <Compile Include="Abilities\npc_dota_hero_disruptor\disruptor_thunder_strike.cs" />
+    <Compile Include="Abilities\npc_dota_hero_doom_bringer\doom_bringer_devour.cs" />
+    <Compile Include="Abilities\npc_dota_hero_doom_bringer\doom_bringer_doom.cs" />
+    <Compile Include="Abilities\npc_dota_hero_doom_bringer\doom_bringer_infernal_blade.cs" />
+    <Compile Include="Abilities\npc_dota_hero_doom_bringer\doom_bringer_scorched_earth.cs" />
+    <Compile Include="Abilities\npc_dota_hero_earthshaker\earthshaker_aftershock.cs" />
+    <Compile Include="Abilities\npc_dota_hero_earthshaker\earthshaker_echo_slam.cs" />
+    <Compile Include="Abilities\npc_dota_hero_earthshaker\earthshaker_enchant_totem.cs" />
+    <Compile Include="Abilities\npc_dota_hero_earthshaker\earthshaker_fissure.cs" />
+    <Compile Include="Abilities\npc_dota_hero_earth_spirit\earth_spirit_boulder_smash.cs" />
+    <Compile Include="Abilities\npc_dota_hero_earth_spirit\earth_spirit_geomagnetic_grip.cs" />
+    <Compile Include="Abilities\npc_dota_hero_earth_spirit\earth_spirit_magnetize.cs" />
+    <Compile Include="Abilities\npc_dota_hero_earth_spirit\earth_spirit_petrify.cs" />
+    <Compile Include="Abilities\npc_dota_hero_earth_spirit\earth_spirit_rolling_boulder.cs" />
+    <Compile Include="Abilities\npc_dota_hero_earth_spirit\earth_spirit_stone_caller.cs" />
+    <Compile Include="Abilities\npc_dota_hero_elder_titan\elder_titan_ancestral_spirit.cs" />
+    <Compile Include="Abilities\npc_dota_hero_elder_titan\elder_titan_earth_splitter.cs" />
+    <Compile Include="Abilities\npc_dota_hero_elder_titan\elder_titan_echo_stomp.cs" />
+    <Compile Include="Abilities\npc_dota_hero_elder_titan\elder_titan_natural_order.cs" />
+    <Compile Include="Abilities\npc_dota_hero_elder_titan\elder_titan_return_spirit.cs" />
+    <Compile Include="Abilities\npc_dota_hero_faceless_void\faceless_void_chronosphere.cs" />
+    <Compile Include="Abilities\npc_dota_hero_faceless_void\faceless_void_time_dilation.cs" />
+    <Compile Include="Abilities\npc_dota_hero_faceless_void\faceless_void_time_lock.cs" />
+    <Compile Include="Abilities\npc_dota_hero_faceless_void\faceless_void_time_walk.cs" />
+    <Compile Include="Abilities\npc_dota_hero_gyrocopter\gyrocopter_call_down.cs" />
+    <Compile Include="Abilities\npc_dota_hero_gyrocopter\gyrocopter_flak_cannon.cs" />
+    <Compile Include="Abilities\npc_dota_hero_gyrocopter\gyrocopter_homing_missile.cs" />
+    <Compile Include="Abilities\npc_dota_hero_gyrocopter\gyrocopter_rocket_barrage.cs" />
+    <Compile Include="Abilities\npc_dota_hero_huskar\huskar_berserkers_blood.cs" />
+    <Compile Include="Abilities\npc_dota_hero_huskar\huskar_burning_spear.cs" />
+    <Compile Include="Abilities\npc_dota_hero_huskar\huskar_inner_vitality.cs" />
+    <Compile Include="Abilities\npc_dota_hero_huskar\huskar_life_break.cs" />
+    <Compile Include="Abilities\npc_dota_hero_invoker\IInvokableAbility.cs" />
+    <Compile Include="Abilities\npc_dota_hero_invoker\InvokeHelper.cs" />
+    <Compile Include="Abilities\npc_dota_hero_invoker\invoker_alacrity.cs" />
+    <Compile Include="Abilities\npc_dota_hero_invoker\invoker_chaos_meteor.cs" />
+    <Compile Include="Abilities\npc_dota_hero_invoker\invoker_cold_snap.cs" />
+    <Compile Include="Abilities\npc_dota_hero_invoker\invoker_deafening_blast.cs" />
+    <Compile Include="Abilities\npc_dota_hero_invoker\invoker_emp.cs" />
+    <Compile Include="Abilities\npc_dota_hero_invoker\invoker_exort.cs" />
+    <Compile Include="Abilities\npc_dota_hero_invoker\invoker_forge_spirit.cs" />
+    <Compile Include="Abilities\npc_dota_hero_invoker\invoker_ghost_walk.cs" />
+    <Compile Include="Abilities\npc_dota_hero_invoker\invoker_ice_wall.cs" />
+    <Compile Include="Abilities\npc_dota_hero_invoker\invoker_invoke.cs" />
+    <Compile Include="Abilities\npc_dota_hero_invoker\invoker_quas.cs" />
+    <Compile Include="Abilities\npc_dota_hero_invoker\invoker_sun_strike.cs" />
+    <Compile Include="Abilities\npc_dota_hero_invoker\invoker_tornado.cs" />
+    <Compile Include="Abilities\npc_dota_hero_invoker\invoker_wex.cs" />
     <Compile Include="Abilities\npc_dota_hero_pangolier\pangolier_gyroshell.cs" />
     <Compile Include="Abilities\npc_dota_hero_pangolier\pangolier_gyroshell_stop.cs" />
     <Compile Include="Abilities\npc_dota_hero_pangolier\pangolier_heartpiercer.cs" />
@@ -335,12 +451,7 @@
     <Compile Include="Abilities\npc_dota_hero_rattletrap\rattletrap_hookshot.cs" />
     <Compile Include="Abilities\npc_dota_hero_rattletrap\rattletrap_power_cogs.cs" />
     <Compile Include="Abilities\npc_dota_hero_rattletrap\rattletrap_rocket_flare.cs" />
-    <Compile Include="Abilities\npc_dota_hero_rubick\rubick_empty1.cs" />
-    <Compile Include="Abilities\npc_dota_hero_rubick\rubick_empty2.cs" />
     <Compile Include="Abilities\npc_dota_hero_rubick\rubick_fade_bolt.cs" />
-    <Compile Include="Abilities\npc_dota_hero_rubick\rubick_hidden1.cs" />
-    <Compile Include="Abilities\npc_dota_hero_rubick\rubick_hidden2.cs" />
-    <Compile Include="Abilities\npc_dota_hero_rubick\rubick_hidden3.cs" />
     <Compile Include="Abilities\npc_dota_hero_rubick\rubick_null_field.cs" />
     <Compile Include="Abilities\npc_dota_hero_rubick\rubick_spell_steal.cs" />
     <Compile Include="Abilities\npc_dota_hero_rubick\rubick_telekinesis.cs" />
@@ -365,6 +476,9 @@
     <Compile Include="Abilities\npc_dota_hero_venomancer\venomancer_poison_nova.cs" />
     <Compile Include="Abilities\npc_dota_hero_venomancer\venomancer_poison_sting.cs" />
     <Compile Include="Abilities\npc_dota_hero_venomancer\venomancer_venomous_gale.cs" />
+    <Compile Include="Abilities\npc_dota_hero_warlock\warlock_fatal_bonds.cs" />
+    <Compile Include="Abilities\npc_dota_hero_warlock\warlock_rain_of_chaos.cs" />
+    <Compile Include="Abilities\npc_dota_hero_warlock\warlock_shadow_word.cs" />
     <Compile Include="Abilities\npc_dota_hero_warlock\warlock_upheaval.cs" />
     <Compile Include="Abilities\npc_dota_hero_zuus\zuus_arc_lightning.cs" />
     <Compile Include="Abilities\npc_dota_hero_zuus\zuus_cloud.cs" />
@@ -399,6 +513,8 @@
     <Compile Include="Helpers\DebugTableConfig.cs" />
     <Compile Include="Helpers\DetectedAbility.cs" />
     <Compile Include="Helpers\IAbilityDetector.cs" />
+    <Compile Include="Localization\Loc.cs" />
+    <Compile Include="Localization\LocalizationHelper.cs" />
     <Compile Include="Helpers\Map.cs" />
     <Compile Include="Helpers\Messenger.cs" />
     <Compile Include="Handlers\IUpdateHandler.cs" />

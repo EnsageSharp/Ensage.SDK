@@ -10,7 +10,7 @@ namespace Ensage.SDK.Abilities.Items
     using Ensage.SDK.Extensions;
     using Ensage.SDK.Helpers;
 
-    public class item_spirit_vessel : RangedAbility, IHasDot
+    public class item_spirit_vessel : RangedAbility, IHasDot, IHasHealthRestore
     {
         public item_spirit_vessel(Item item)
             : base(item)
@@ -29,15 +29,17 @@ namespace Ensage.SDK.Abilities.Items
         {
             get
             {
-                return this.Ability.GetAbilitySpecialData("duration");
+                return this.Duration;
             }
         }
 
-        public override DamageType DamageType
+        public override DamageType DamageType { get; } = DamageType.Magical;
+
+        public override float Duration
         {
             get
             {
-                return DamageType.Magical;
+                return this.Ability.GetAbilitySpecialData("duration");
             }
         }
 
@@ -54,6 +56,16 @@ namespace Ensage.SDK.Abilities.Items
         public string TargetModifierName { get; } = "modifier_item_spirit_vessel_damage";
 
         public float TickRate { get; } = 1.0f;
+
+        public float TotalHealthRestore
+        {
+            get
+            {
+                var regen = this.Ability.GetAbilitySpecialData("soul_heal_amount");
+                var hpPercentage = this.Owner.Health * (this.Ability.GetAbilitySpecialData("ally_hp_gain") / 100f); // approx
+                return (regen + hpPercentage) * this.Duration;
+            }
+        }
 
         public float GetTickDamage(params Unit[] targets)
         {

@@ -14,6 +14,8 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_rattletrap
         {
         }
 
+        public override UnitState AppliesUnitState { get; } = UnitState.Stunned;
+
         public float DamageDuration
         {
             get
@@ -42,7 +44,7 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_rattletrap
             }
         }
 
-        public string TargetModifierName { get; }
+        public string TargetModifierName { get; } = string.Empty;
 
         public string[] TargetModifierTextureName { get; } = { "rattletrap_battery_assault" };
 
@@ -50,15 +52,7 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_rattletrap
         {
             get
             {
-                var interval = this.Ability.GetAbilitySpecialData("interval");
-
-                var talent = this.Owner.GetAbilityById(AbilityId.special_bonus_unique_clockwerk);
-                if (talent?.Level > 0)
-                {
-                    interval += talent.GetAbilitySpecialData("value");
-                }
-
-                return interval;
+                return this.Ability.GetAbilitySpecialDataWithTalent(this.Owner, "interval");
             }
         }
 

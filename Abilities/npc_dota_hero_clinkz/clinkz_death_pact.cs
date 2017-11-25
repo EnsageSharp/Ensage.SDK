@@ -6,7 +6,7 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_clinkz
 {
     using Ensage.SDK.Abilities.Components;
 
-    public class clinkz_death_pact : ActiveAbility, IHasModifier
+    public class clinkz_death_pact : RangedAbility, IHasModifier
     {
         public clinkz_death_pact(Ability ability)
             : base(ability)

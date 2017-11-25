@@ -21,7 +21,23 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_pangolier
         {
             get
             {
-                return !this.Owner.IsRooted() && base.CanBeCasted;
+                return base.CanBeCasted && !this.Owner.IsRooted();
+            }
+        }
+
+        public override float EndRadius
+        {
+            get
+            {
+                return this.Ability.GetAbilitySpecialData("end_radius");
+            }
+        }
+
+        public override float Radius
+        {
+            get
+            {
+                return this.Ability.GetAbilitySpecialData("start_radius");
             }
         }
 
@@ -33,6 +49,14 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_pangolier
             }
         }
 
+        public override float Speed
+        {
+            get
+            {
+                return this.Ability.GetAbilitySpecialData("dash_speed");
+            }
+        }
+
         protected override float BaseCastRange
         {
             get
@@ -41,28 +65,16 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_pangolier
             }
         }
 
-        protected override string EndRadiusName { get; } = "end_radius";
-
-        protected override string RadiusName { get; } = "start_radius";
-
         protected override float RawDamage
         {
             get
             {
-                var damage = this.Ability.GetAbilitySpecialData("damage");
+                var damage = this.Ability.GetAbilitySpecialDataWithTalent(this.Owner, "damage");
                 var strikes = this.Ability.GetAbilitySpecialData("strikes");
-
-                var talent = this.Owner.GetAbilityById(AbilityId.special_bonus_unique_pangolier_3);
-                if (talent?.Level > 0)
-                {
-                    damage += talent.GetAbilitySpecialData("value");
-                }
 
                 return damage * strikes;
             }
         }
-
-        protected override string SpeedName { get; } = "dash_speed";
 
         public bool UseAbility(Vector3 startPosition, Vector3 direction)
         {

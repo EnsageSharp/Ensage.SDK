@@ -19,9 +19,9 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_alchemist
             this.ThrowAbility = new alchemist_unstable_concoction_throw(throwAbility);
         }
 
-        public override float CastPoint { get; } = 0.05f;
+        public override UnitState AppliesUnitState { get; } = UnitState.Stunned;
 
-        public float Duration
+        public override float Duration
         {
             get
             {
@@ -37,13 +37,21 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_alchemist
             }
         }
 
+        public override bool IsReady
+        {
+            get
+            {
+                return base.IsReady && !this.Ability.IsHidden;
+            }
+        }
+
         public string ModifierName { get; } = "modifier_alchemist_unstable_concoction";
 
         public float Radius
         {
             get
             {
-                return this.Ability.GetAbilitySpecialData("midair_explosion_radius");
+                return this.ThrowAbility.Radius;
             }
         }
 
@@ -51,11 +59,17 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_alchemist
         {
             get
             {
-                return this.Ability.GetAbilitySpecialData("movement_speed");
+                return this.ThrowAbility.Speed;
             }
         }
 
-        public string[] TargetModifierTextureName { get; } = { "modifier_alchemist_unstable_concoction_throw" };
+        public string[] TargetModifierTextureName
+        {
+            get
+            {
+                return this.ThrowAbility.TargetModifierTextureName;
+            }
+        }
 
         public alchemist_unstable_concoction_throw ThrowAbility { get; }
 

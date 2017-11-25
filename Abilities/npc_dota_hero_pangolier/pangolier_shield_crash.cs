@@ -14,12 +14,19 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_pangolier
         {
         }
 
+        public override float ActivationDelay
+        {
+            get
+            {
+                return this.Ability.GetAbilitySpecialData("jump_duration");
+            }
+        }
+
         public string ModifierName { get; } = "modifier_pangolier_shield_crash_buff";
 
         public float Radius
         {
             get
-
             {
                 return this.Ability.GetAbilitySpecialData("radius");
             }

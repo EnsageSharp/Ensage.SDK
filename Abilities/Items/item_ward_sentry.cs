@@ -10,5 +10,7 @@ namespace Ensage.SDK.Abilities.Items
             : base(item)
         {
         }
+
+        public override UnitState AppliesUnitState { get; } = UnitState.ProvidesVision;
     }
 }

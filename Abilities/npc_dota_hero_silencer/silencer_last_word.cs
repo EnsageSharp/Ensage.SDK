@@ -14,7 +14,7 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_silencer
         {
         }
 
-        public float DebuffDuration
+        public override float ActivationDelay
         {
             get
             {
@@ -22,11 +22,11 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_silencer
             }
         }
 
-        public float Duration
+        public override float Duration
         {
             get
             {
-                return this.Ability.GetAbilitySpecialData("brew_time");
+                return this.Ability.GetAbilitySpecialData("duration");
             }
         }
 
@@ -36,7 +36,7 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_silencer
         {
             get
             {
-                return this.Ability.GetAbilitySpecialData("magic_missile_damage");
+                return this.Ability.GetAbilitySpecialData("damage");
             }
         }
     }

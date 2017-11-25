@@ -33,14 +33,7 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_axe
         {
             get
             {
-                var damage = this.Ability.GetAbilitySpecialData("damage_per_second");
-                var talent = this.Owner.GetAbilityById(AbilityId.special_bonus_unique_axe);
-                if (talent != null && talent.Level > 0)
-                {
-                    damage += talent.GetAbilitySpecialData("value");
-                }
-
-                return damage;
+                return this.Ability.GetAbilitySpecialDataWithTalent(this.Owner, "damage_per_second");
             }
         }
 

@@ -15,6 +15,8 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_puck
         {
         }
 
+        public override UnitState AppliesUnitState { get; } = UnitState.Stunned;
+
         public override float Radius
         {
             get
@@ -34,7 +36,7 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_puck
             }
         }
 
-        public override float GetDamage(params Unit[] targets)
+        public float GetBreakDamage(params Unit[] targets)
         {
             var totalDamage = 0.0f;
 
@@ -47,6 +49,11 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_puck
             }
 
             return totalDamage;
+        }
+
+        public override float GetDamage(params Unit[] targets)
+        {
+            return 0;
         }
     }
 }

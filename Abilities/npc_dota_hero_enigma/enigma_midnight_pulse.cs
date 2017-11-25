@@ -35,20 +35,20 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_enigma
         }
 
         // no modifier
-        public string TargetModifierName { get; }
+        public string TargetModifierName { get; } = string.Empty;
 
         public float TickRate { get; } = 1.0f;
 
-        public float GetTickDamage(params Unit[] target)
+        public float GetTickDamage(params Unit[] targets)
         {
             var damagePercent = this.RawTickDamage / 100.0f;
 
-            return target.Select(unit => (float)unit.MaximumHealth).Select(maxHealth => maxHealth * damagePercent).Sum();
+            return targets.Select(unit => (float)unit.MaximumHealth).Select(maxHealth => maxHealth * damagePercent).Sum();
         }
 
-        public float GetTotalDamage(params Unit[] target)
+        public float GetTotalDamage(params Unit[] targets)
         {
-            return this.GetTickDamage(target) * (this.DamageDuration / this.TickRate);
+            return this.GetTickDamage(targets) * (this.DamageDuration / this.TickRate);
         }
     }
 }

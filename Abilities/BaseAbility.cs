@@ -17,6 +17,8 @@ namespace Ensage.SDK.Abilities
 
         public virtual float ActivationDelay { get; } = 0;
 
+        public virtual UnitState AppliesUnitState { get; } = 0;
+
         public abstract bool CanBeCasted { get; }
 
         public virtual float CastRange
@@ -35,16 +37,30 @@ namespace Ensage.SDK.Abilities
             }
         }
 
+        public virtual float Duration
+        {
+            get
+            {
+                var level = this.Ability.Level;
+                if (level == 0)
+                {
+                    return 0.0f;
+                }
+
+                return this.Ability.GetDuration(level - 1);
+            }
+        }
+
         public virtual bool IsReady
         {
             get
             {
-                if (this.Ability.Level == 0 || this.Ability.IsHidden || this.Ability.Cooldown > 0)
+                if (this.Ability.Level == 0 || this.Ability.Cooldown > 0)
                 {
                     return false;
                 }
 
-                if (this.Owner.Mana < this.Ability.ManaCost)
+                if (this.Owner.Mana < this.ManaCost)
                 {
                     return false;
                 }
@@ -59,6 +75,14 @@ namespace Ensage.SDK.Abilities
             get
             {
                 return this.Ability as Item;
+            }
+        }
+
+        public float ManaCost
+        {
+            get
+            {
+                return this.Ability.ManaCost;
             }
         }
 
@@ -80,7 +104,19 @@ namespace Ensage.SDK.Abilities
 
         protected virtual float BaseCastRange { get; } = 0;
 
-        protected virtual float RawDamage { get; } = 0;
+        protected virtual float RawDamage
+        {
+            get
+            {
+                var level = this.Ability.Level;
+                if (level == 0)
+                {
+                    return 0;
+                }
+
+                return this.Ability.GetDamage(level - 1);
+            }
+        }
 
         public static implicit operator Item(BaseAbility ability)
         {

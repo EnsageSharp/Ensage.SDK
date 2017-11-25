@@ -18,6 +18,8 @@ namespace Ensage.SDK.Abilities
 
         public override PredictionSkillshotType PredictionSkillshotType { get; } = PredictionSkillshotType.SkillshotCircle;
 
+        public override float Speed { get; } = float.MaxValue;
+
         public override bool CanHit(params Unit[] targets)
         {
             return targets.All(x => x.Distance2D(this.Owner) < (this.CastRange + this.Radius));

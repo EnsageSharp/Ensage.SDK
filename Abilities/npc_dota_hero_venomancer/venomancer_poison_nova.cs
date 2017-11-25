@@ -8,7 +8,7 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_venomancer
     using Ensage.SDK.Extensions;
     using Ensage.SDK.Helpers;
 
-    public class venomancer_poison_nova : AreaOfEffectAbility, IHasDot
+    public class venomancer_poison_nova : ActiveAbility, IHasDot, IAreaOfEffectAbility
     {
         public venomancer_poison_nova(Ability ability)
             : base(ability)
@@ -19,33 +19,17 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_venomancer
         {
             get
             {
-                var duration = this.Ability.GetAbilitySpecialData("duration");
-
-                var talent = this.Owner.GetAbilityById(AbilityId.special_bonus_unique_venomancer_4);
-                if (talent?.Level > 0)
-                {
-                    duration += talent.GetAbilitySpecialData("value");
-                }
-
-                return duration;
+                return this.Ability.GetAbilitySpecialDataWithTalent(this.Owner, "duration");
             }
         }
 
         public bool HasInitialDamage { get; } = true;
 
-        public override float Radius
+        public float Radius
         {
             get
             {
-                var radius = base.Radius;
-
-                var talent = this.Owner.GetAbilityById(AbilityId.special_bonus_unique_venomancer_6);
-                if (talent?.Level > 0)
-                {
-                    radius += talent.GetAbilitySpecialData("value");
-                }
-
-                return radius;
+                return this.Ability.GetAbilitySpecialDataWithTalent(this.Owner, "radius");
             }
         }
 

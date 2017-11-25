@@ -17,29 +17,13 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_crystal_maiden
         {
         }
 
-        public override float Speed
-        {
-            get
-            {
-                return float.MaxValue;
-            }
-        }
-
         public string TargetModifierName { get; } = "modifier_crystal_maiden_crystal_nova";
 
         protected override float RawDamage
         {
             get
             {
-                var damage = this.Ability.GetAbilitySpecialData("nova_damage");
-
-                var talent = this.Owner.GetAbilityById(AbilityId.special_bonus_unique_crystal_maiden_2);
-                if (talent != null && talent.Level > 0)
-                {
-                    damage += talent.GetAbilitySpecialData("value");
-                }
-
-                return damage;
+                return this.Ability.GetAbilitySpecialDataWithTalent(this.Owner, "nova_damage");
             }
         }
 

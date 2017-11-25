@@ -22,10 +22,22 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_dark_willow
             }
         }
 
+        public override float Radius
+        {
+            get
+            {
+                return this.Ability.GetAbilitySpecialData("destination_radius");
+            }
+        }
+
+        public override float Speed
+        {
+            get
+            {
+                return this.Ability.GetAbilitySpecialData("destination_travel_speed");
+            }
+        }
+
         public string TargetModifierName { get; } = "modifier_dark_willow_debuff_fear";
-
-        protected override string RadiusName { get; } = "destination_radius";
-
-        protected override string SpeedName { get; } = "destination_travel_speed";
     }
 }

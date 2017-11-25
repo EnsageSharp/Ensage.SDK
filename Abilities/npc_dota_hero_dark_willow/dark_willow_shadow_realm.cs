@@ -17,6 +17,8 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_dark_willow
         {
         }
 
+        public override UnitState AppliesUnitState { get; } = UnitState.Invisible;
+
         public string ModifierName { get; } = "modifier_dark_willow_shadow_realm_buff";
 
         protected override float BaseCastRange

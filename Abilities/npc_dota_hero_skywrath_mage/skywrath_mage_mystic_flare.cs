@@ -10,7 +10,7 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_skywrath_mage
     using Ensage.SDK.Extensions;
     using Ensage.SDK.Helpers;
 
-    public class skywrath_mage_mystic_flare : AreaOfEffectAbility, IHasDot
+    public class skywrath_mage_mystic_flare : CircleAbility, IHasDot
     {
         public skywrath_mage_mystic_flare(Ability ability)
             : base(ability)

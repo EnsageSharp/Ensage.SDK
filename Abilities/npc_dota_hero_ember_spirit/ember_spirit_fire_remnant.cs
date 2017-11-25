@@ -7,20 +7,18 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_ember_spirit
     using Ensage.SDK.Abilities.Components;
     using Ensage.SDK.Extensions;
 
-    using SharpDX;
-
     public class ember_spirit_fire_remnant : CircleAbility, IHasModifier
     {
         public ember_spirit_fire_remnant(Ability ability)
             : base(ability)
         {
             var activeAbility = this.Owner.GetAbilityById(AbilityId.ember_spirit_activate_fire_remnant);
-            this.ActivateFireRemnant = new ember_spirit_activate_fire_remnant(activeAbility);
+            this.ActivateRemnantAbility = new ember_spirit_activate_fire_remnant(activeAbility);
         }
 
-        public ember_spirit_activate_fire_remnant ActivateFireRemnant { get; }
+        public ember_spirit_activate_fire_remnant ActivateRemnantAbility { get; }
 
-        public float Duration
+        public override float Duration
         {
             get
             {
@@ -36,16 +34,6 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_ember_spirit
             {
                 return (this.Ability.GetAbilitySpecialData("speed_multiplier") / 100) * this.Owner.MovementSpeed;
             }
-        }
-
-        public override bool UseAbility(Unit target)
-        {
-            return this.ActivateFireRemnant.CanBeCasted && this.ActivateFireRemnant.UseAbility(target.Position);
-        }
-
-        public override bool UseAbility(Vector3 position)
-        {
-            return this.ActivateFireRemnant.CanBeCasted && this.ActivateFireRemnant.UseAbility(position);
         }
     }
 }

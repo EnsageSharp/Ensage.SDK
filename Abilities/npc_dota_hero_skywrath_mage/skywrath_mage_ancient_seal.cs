@@ -16,6 +16,8 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_skywrath_mage
 
         public DamageType AmplifierType { get; } = DamageType.Magical;
 
+        public override UnitState AppliesUnitState { get; } = UnitState.Silenced;
+
         public float DamageAmplification
         {
             get

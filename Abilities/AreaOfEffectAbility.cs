@@ -19,11 +19,9 @@ namespace Ensage.SDK.Abilities
         {
             get
             {
-                return this.Ability.GetAbilitySpecialData(this.RadiusName);
+                return this.Ability.GetAbilitySpecialData("radius");
             }
         }
-
-        protected virtual string RadiusName { get; } = "radius";
 
         public override bool CanHit(params Unit[] targets)
         {

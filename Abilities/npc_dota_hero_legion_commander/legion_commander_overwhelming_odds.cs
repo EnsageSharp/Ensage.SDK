@@ -44,7 +44,7 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_legion_commander
                 var hero = target is Hero;
                 if (hero)
                 {
-                    damage += this.Ability.GetAbilitySpecialData("damage_per_hero");
+                    damage += this.Ability.GetAbilitySpecialDataWithTalent(this.Owner, "damage_per_hero");
                 }
 
                 var creep = target is Creep;

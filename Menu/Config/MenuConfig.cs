@@ -20,6 +20,7 @@ namespace Ensage.SDK.Menu.Config
             {
                 return Ensage.Config.AutoAccept;
             }
+
             set
             {
                 Ensage.Config.AutoAccept = value;
@@ -35,6 +36,7 @@ namespace Ensage.SDK.Menu.Config
             {
                 return Ensage.Config.ShowSpawnBoxes;
             }
+
             set
             {
                 Ensage.Config.ShowSpawnBoxes = value;
@@ -50,6 +52,7 @@ namespace Ensage.SDK.Menu.Config
             {
                 return Ensage.Config.ShowTowerRange;
             }
+
             set
             {
                 Ensage.Config.ShowTowerRange = value;
@@ -61,7 +64,8 @@ namespace Ensage.SDK.Menu.Config
     public class MenuConfig
     {
         [Menu("Hacks")]
-        [DefaultValue(default(HackConfig))]
-        public HackConfig HackConfig { get; set; }
+        public HackConfig HackConfig { get; set; } = new HackConfig();
+
+       // public Slider<Vector2> Position { get; set; }
     }
 }

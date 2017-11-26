@@ -6,6 +6,7 @@ namespace Ensage.SDK.Menu
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel;
     using System.ComponentModel.Composition;
     using System.IO;
     using System.Linq;
@@ -20,6 +21,10 @@ namespace Ensage.SDK.Menu
 
     using log4net;
 
+    using Newtonsoft.Json;
+    using Newtonsoft.Json.Linq;
+
+    using PlaySharp.Toolkit.Helper;
     using PlaySharp.Toolkit.Helper.Annotations;
     using PlaySharp.Toolkit.Logging;
 
@@ -32,6 +37,8 @@ namespace Ensage.SDK.Menu
     public class MenuManager : ControllableService
     {
         private static readonly ILog Log = AssemblyLogs.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
+        private readonly string configDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Config", "game");
 
         private readonly IInputManager input;
 
@@ -55,6 +62,15 @@ namespace Ensage.SDK.Menu
             this.viewRepository = viewRepository;
             this.renderer = renderer;
             this.input = input;
+
+            try
+            {
+                Directory.CreateDirectory(this.configDirectory);
+            }
+            catch (Exception e)
+            {
+                Log.Error(e);
+            }
         }
 
         public bool IsVisible { get; private set; } = true;
@@ -105,13 +121,18 @@ namespace Ensage.SDK.Menu
         /// </summary>
         public Vector2 Size { get; private set; }
 
-        public bool DeregisterMenu(object menu)
+        public bool DeregisterMenu(object menu, bool saveMenu = true)
         {
             var dataType = menu.GetType();
             var sdkAttribute = dataType.GetCustomAttribute<MenuAttribute>();
             if (sdkAttribute == null)
             {
                 throw new Exception($"Missing attribute {nameof(MenuAttribute)}");
+            }
+
+            if (saveMenu)
+            {
+                this.SaveMenu(menu);
             }
 
             return this.rootMenus.RemoveAll(x => x.DataContext == menu) != 0;
@@ -123,6 +144,32 @@ namespace Ensage.SDK.Menu
                    && this.Position.Y <= screenPosition.Y
                    && screenPosition.X <= (this.Position.X + this.Size.X)
                    && screenPosition.Y <= (this.Position.Y + this.Size.Y);
+        }
+
+        public bool LoadMenu(object menu)
+        {
+            try
+            {
+                var type = menu.GetType();
+                var assemblyName = type.Assembly.GetName().Name;
+                var savePath = Path.Combine(this.configDirectory, assemblyName);
+                var file = Path.Combine(savePath, $"{type.FullName}.json");
+                if (!File.Exists(file))
+                {
+                    return false;
+                }
+
+                var rootMenu = this.rootMenus.First(x => x.DataContext == menu);
+                var token = JToken.Parse(File.ReadAllText(file));
+
+                LoadLayer(rootMenu, token);
+                return true;
+            }
+            catch (Exception e)
+            {
+                Log.Error(e);
+                return false;
+            }
         }
 
         public void OnDraw(object sender, EventArgs e)
@@ -154,34 +201,7 @@ namespace Ensage.SDK.Menu
             }
         }
 
-        public bool SaveMenu(object menu)
-        {
-            var file = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Config", "Assemblies", "ensage.sdk.json");
-
-            return true;
-        }
-
-        public bool LoadMenu(object menu)
-        {
-            try
-            {
-                var file = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Config", "Assemblies", "ensage.sdk.json");
-                if (!File.Exists(file))
-                {
-                    return false;
-                }
-
-
-
-                return true;
-            }
-            catch (Exception e)
-            {
-                return false;
-            }
-        }
-
-        public void RegisterMenu(object menu)
+        public MenuEntry RegisterMenu(object menu)
         {
             var dataType = menu.GetType();
             var sdkAttribute = dataType.GetCustomAttribute<MenuAttribute>();
@@ -203,12 +223,47 @@ namespace Ensage.SDK.Menu
 
             var view = this.viewRepository.GetMenuView();
 
-            var menuEntry = new MenuEntry(menuName, view, this.renderer, menu);
+            var menuEntry = new MenuEntry(menuName, view, this.renderer, menu, null);
             this.VisitInstance(menuEntry, menu);
 
             this.rootMenus.Add(menuEntry);
+
+            this.LoadMenu(menu);
+
             this.positionDirty = true;
             this.sizeDirty = true;
+
+            return menuEntry;
+        }
+
+        public bool SaveMenu(object menu)
+        {
+            try
+            {
+                var type = menu.GetType();
+                var assemblyName = type.Assembly.GetName().Name;
+                var savePath = Path.Combine(this.configDirectory, assemblyName);
+                Directory.CreateDirectory(savePath);
+
+                var file = Path.Combine(savePath, $"{type.FullName}.json");
+
+                if (this.rootMenus.All(x => x.DataContext != menu))
+                {
+                    throw new Exception($"{menu} not registered as menu");
+                }
+
+                var settings = new JsonSerializerSettings
+                                   {
+                                       DefaultValueHandling = DefaultValueHandling.Include
+                                   };
+                JsonFactory.ToFile(file, menu, settings);
+                return true;
+            }
+            catch (Exception e)
+            {
+                Log.Error(e);
+                return false;
+            }
         }
 
         protected override void OnActivate()
@@ -220,8 +275,7 @@ namespace Ensage.SDK.Menu
             this.input.MouseMove += this.OnMouseMove;
             this.input.MouseClick += this.OnMouseClick;
 
-            // TODO: load config
-            this.Position = new Vector2(200, 50);
+            this.Position = new Vector2(200, 50); // TODO MenuConfig.Position
         }
 
         protected override void OnDeactivate()
@@ -230,10 +284,42 @@ namespace Ensage.SDK.Menu
             this.input.MouseMove -= this.OnMouseMove;
             this.input.MouseClick -= this.OnMouseClick;
 
-            this.DeregisterMenu(this.MenuConfig);
-            this.MenuConfig = null;
+            foreach (var menuEntry in this.rootMenus)
+            {
+                this.SaveMenu(menuEntry.DataContext);
+            }
 
-            // TODO: save to config
+            this.MenuConfig = null;
+        }
+
+        private static void LoadLayer(MenuEntry menu, JToken token)
+        {
+            foreach (var child in menu.Children.OfType<MenuItemEntry>())
+            {
+                var entry = token[child.PropertyInfo.Name];
+                if (entry != null)
+                {
+                    child.Value = entry.ToObject(child.PropertyInfo.PropertyType);
+                }
+                else
+                {
+                    // set default value by attribute
+                    var defaultValue = child.PropertyInfo.GetCustomAttribute<DefaultValueAttribute>();
+                    if (defaultValue != null)
+                    {
+                        child.Value = defaultValue.Value;
+                    }
+                }
+            }
+
+            foreach (var child in menu.Children.OfType<MenuEntry>())
+            {
+                var subToken = token[child.PropertyInfo.Name];
+                if (subToken != null)
+                {
+                    LoadLayer(child, subToken);
+                }
+            }
         }
 
         private void CalculateMenuRenderSize(IEnumerable<MenuBase> entries)
@@ -581,7 +667,7 @@ namespace Ensage.SDK.Menu
                     menuItemName = type.Name;
                 }
 
-                var menuItemEntry = new MenuEntry(menuItemName, this.viewRepository.GetMenuView(), this.renderer, propertyValue);
+                var menuItemEntry = new MenuEntry(menuItemName, this.viewRepository.GetMenuView(), this.renderer, propertyValue, propertyInfo);
                 this.VisitInstance(menuItemEntry, propertyValue);
 
                 parent.AddChild(menuItemEntry);

@@ -6,8 +6,11 @@ namespace Ensage.SDK.Menu
 {
     using System.Collections.Generic;
     using System.Linq;
+    using System.Reflection;
 
     using Ensage.SDK.Renderer;
+
+    using PlaySharp.Toolkit.Helper.Annotations;
 
     using SharpDX;
 
@@ -19,8 +22,8 @@ namespace Ensage.SDK.Menu
 
         private bool isVisible = true;
 
-        public MenuEntry(string name, IView view, IRenderer renderer, object instance)
-            : base(name, view, renderer, instance)
+        public MenuEntry(string name, IView view, IRenderer renderer, object instance, [CanBeNull] PropertyInfo propertyInfo)
+            : base(name, view, renderer, instance, propertyInfo)
         {
         }
 

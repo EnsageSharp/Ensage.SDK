@@ -4,27 +4,35 @@
 
 namespace Ensage.SDK.Menu
 {
+    using System.Reflection;
+
     using Ensage.SDK.Renderer;
+
+    using PlaySharp.Toolkit.Helper.Annotations;
 
     using SharpDX;
 
     public abstract class MenuBase
     {
-        protected MenuBase(string name, IView view, IRenderer renderer, object instance)
+        protected MenuBase(string name, IView view, IRenderer renderer, object instance, [CanBeNull] PropertyInfo propertyInfo)
         {
             this.Name = name;
             this.View = view;
             this.Renderer = renderer;
             this.DataContext = instance;
+            this.PropertyInfo = propertyInfo;
         }
 
-        public object DataContext { get; internal set; }
+        public object DataContext { get; }
 
         public bool IsHovered { get; internal set; }
 
         public string Name { get; }
 
         public Vector2 Position { get; set; }
+
+        [CanBeNull]
+        public PropertyInfo PropertyInfo { get; }
 
         public IRenderer Renderer { get; }
 

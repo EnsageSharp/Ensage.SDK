@@ -14,17 +14,14 @@ namespace Ensage.SDK.Menu
     public class MenuItemEntry : MenuBase
     {
         public MenuItemEntry(string name, IView view, IRenderer renderer, object instance, PropertyInfo propertyInfo)
-            : base(name, view, renderer, instance)
+            : base(name, view, renderer, instance, propertyInfo)
         {
-            this.PropertyInfo = propertyInfo;
             this.PropertyBinding = new PropertyBinding(propertyInfo, instance);
         }
 
-        public PropertyInfo PropertyInfo { get; }
+        public PropertyBinding PropertyBinding { get; }
 
         public string Tooltip { get; set; }
-
-        public PropertyBinding PropertyBinding { get; }
 
         public object Value
         {

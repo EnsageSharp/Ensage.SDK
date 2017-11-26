@@ -32,7 +32,7 @@ namespace Ensage.SDK.Abilities
         {
             get
             {
-                return this.Ability.AbilityBehavior.HasFlag(AbilityBehavior.AreaOfEffect);
+                return this.CollisionTypes == CollisionTypes.None;
             }
         }
 

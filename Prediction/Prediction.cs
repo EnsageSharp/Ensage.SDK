@@ -35,10 +35,10 @@ namespace Ensage.SDK.Prediction
             // Handle AreaOfEffect
             if (input.AreaOfEffect)
             {
-                result = this.GetAreaOfEffectPrediction(input, result);
+                this.GetAreaOfEffectPrediction(input, result);
             }
 
-            result = this.GetProperCastPosition(input, result);
+            this.GetProperCastPosition(input, result);
 
             // check range
             if (input.Range != float.MaxValue)
@@ -161,7 +161,7 @@ namespace Ensage.SDK.Prediction
             return testPoint;
         }
 
-        private PredictionOutput GetAreaOfEffectPrediction(PredictionInput input, PredictionOutput output)
+        private void GetAreaOfEffectPrediction(PredictionInput input, PredictionOutput output)
         {
             var targets = new List<PredictionOutput>();
 
@@ -215,28 +215,42 @@ namespace Ensage.SDK.Prediction
 
                 case PredictionSkillshotType.SkillshotLine:
                     break;
-
-                default:
-                    break;
             }
-
-            return output;
         }
 
-        private PredictionOutput GetProperCastPosition(PredictionInput input, PredictionOutput output)
+        private void GetProperCastPosition(PredictionInput input, PredictionOutput output)
         {
-            var castPosition = output.CastPosition;
-            var distance = input.Owner.Distance2D(castPosition);
-            var caster = input.Owner;
-            var range = input.Range;
             var radius = input.Radius;
 
-            if (radius > 0 && distance > range)
+            if (radius <= 0)
             {
-                output.CastPosition = castPosition.Extend(caster.NetworkPosition, Math.Min(caster.Distance2D(castPosition) - range, radius));
+                return;
             }
 
-            return output;
+            var caster = input.Owner;
+            var casterPosition = caster.NetworkPosition;
+            var castPosition = output.CastPosition;
+            var distance = casterPosition.Distance2D(castPosition);
+            var range = input.Range;
+
+            if (range >= distance)
+            {
+                return;
+            }
+
+            castPosition = castPosition.Extend(casterPosition, Math.Min(distance - range, radius));
+
+            if (output.AoeTargetsHit.Any())
+            {
+                var maxDistance = output.AoeTargetsHit.Max(x => x.UnitPosition.Distance2D(castPosition));
+                if (maxDistance > radius)
+                {
+                    distance = casterPosition.Distance2D(castPosition);
+                    castPosition = casterPosition.Extend(castPosition, distance + (maxDistance - radius));
+                }
+            }
+
+            output.CastPosition = castPosition;
         }
 
         private PredictionOutput GetSimplePrediction(PredictionInput input)

@@ -10,7 +10,7 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_invoker
 
     using SharpDX;
 
-    public class invoker_deafening_blast : LineAbility, IInvokableAbility
+    public class invoker_deafening_blast : ConeAbility, IInvokableAbility
     {
         private readonly InvokeHelper<invoker_deafening_blast> invokeHelper;
 

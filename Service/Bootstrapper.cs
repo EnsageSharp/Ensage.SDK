@@ -60,15 +60,6 @@ namespace Ensage.SDK.Service
 
         protected override void OnDeactivated()
         {
-            try
-            {
-                this.DeactivatePlugins();
-                this.Default?.Dispose();
-            }
-            catch (Exception e)
-            {
-                Log.Warn(e);
-            }
         }
 
         private void ActivatePlugins()
@@ -143,10 +134,6 @@ namespace Ensage.SDK.Service
 
                 this.Default = this.Context.Container;
                 this.Default.RegisterValue(this);
-
-                Log.Debug($">> Building Logger");
-                // TODO: setup new logging server
-                // this.CreateLogger();
 
                 Log.Debug($">> Initializing Services");
                 IoC.Initialize(this.BuildUp, this.GetInstance, this.GetAllInstances);

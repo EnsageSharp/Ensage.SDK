@@ -25,14 +25,6 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_pangolier
             }
         }
 
-        public override float EndRadius
-        {
-            get
-            {
-                return this.Ability.GetAbilitySpecialData("end_radius");
-            }
-        }
-
         public override float Radius
         {
             get

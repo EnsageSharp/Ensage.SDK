@@ -49,17 +49,11 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_invoker
             }
         }
 
-        public bool CataclysmCanBeCasted
+        public bool IsCataclysmActive
         {
             get
             {
-                var talent = this.Owner.GetAbilityById(AbilityId.special_bonus_unique_invoker_4);
-                if (talent?.Level > 0)
-                {
-                    return this.CanBeCasted;
-                }
-
-                return false;
+                return this.Owner.GetAbilityById(AbilityId.special_bonus_unique_invoker_4)?.Level > 0;
             }
         }
 

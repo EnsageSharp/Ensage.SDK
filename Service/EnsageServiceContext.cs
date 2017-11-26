@@ -149,6 +149,14 @@ namespace Ensage.SDK.Service
             }
         }
 
+        public ITextureManager TextureManager
+        {
+            get
+            {
+                return this.rendererManager.Value.TextureManager;
+            }
+        }
+
         public ITargetSelectorManager TargetSelector
         {
             get

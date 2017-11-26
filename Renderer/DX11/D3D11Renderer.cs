@@ -24,13 +24,18 @@ namespace Ensage.SDK.Renderer.DX11
 
         private readonly TextFormatCache textFormatCache;
 
+        private readonly D3D11TextureManager textureManager;
+
+        private bool disposed;
+
         [ImportingConstructor]
-        public D3D11Renderer([Import] ID3D11Context context, [Import] BrushCache brushCache, [Import] TextFormatCache textFormatCache)
+        public D3D11Renderer([Import] ID3D11Context context, [Import] BrushCache brushCache, [Import] TextFormatCache textFormatCache, [Import] D3D11TextureManager textureManager)
         {
             this.context = context;
 
             this.brushCache = brushCache;
             this.textFormatCache = textFormatCache;
+            this.textureManager = textureManager;
         }
 
         public event EventHandler Draw
@@ -44,6 +49,23 @@ namespace Ensage.SDK.Renderer.DX11
             {
                 this.context.Draw -= value;
             }
+        }
+
+        public void Dispose()
+        {
+            this.Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        public void DrawBitmap(string bitmapKey, RectangleF rect, float rotation = 0.0f, float opacity = 1.0f)
+        {
+            var bitmap = this.textureManager.GetBitmap(bitmapKey);
+            if (bitmap == null)
+            {
+                throw new BitmapNotFoundException(bitmapKey);
+            }
+
+            this.context.RenderTarget.DrawBitmap(bitmap, rect, opacity, BitmapInterpolationMode.Linear);
         }
 
         public void DrawCircle(Vector2 center, float radius, Color color, float width = 1.0f)
@@ -70,6 +92,21 @@ namespace Ensage.SDK.Renderer.DX11
             {
                 this.context.RenderTarget.DrawTextLayout(position, layout, brush);
             }
+        }
+
+        private void Dispose(bool disposing)
+        {
+            if (this.disposed)
+            {
+                return;
+            }
+
+            if (disposing)
+            {
+                this.context.Dispose();
+            }
+
+            this.disposed = true;
         }
     }
 }

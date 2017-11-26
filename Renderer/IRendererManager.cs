@@ -6,5 +6,6 @@ namespace Ensage.SDK.Renderer
 {
     public interface IRendererManager : IRenderer
     {
+        ITextureManager TextureManager { get; }
     }
 }

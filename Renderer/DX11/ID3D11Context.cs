@@ -8,7 +8,7 @@ namespace Ensage.SDK.Renderer.DX11
 
     using SharpDX.Direct2D1;
 
-    public interface ID3D11Context
+    public interface ID3D11Context : IDisposable
     {
         event EventHandler Draw;
 

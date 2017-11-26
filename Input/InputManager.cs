@@ -45,6 +45,12 @@ namespace Ensage.SDK.Input
 
         private const uint WM_RBUTTONUP = 0x0205;
 
+        private const uint WM_XBUTTONDOWN = 0x020B;
+
+        private const uint WM_XBUTTONUP = 0x020C;
+
+        private const uint WM_XBUTTONDBLCLK = 0x020D;
+
         private static readonly ILog Log = AssemblyLogs.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         private readonly List<Hotkey> hotkeys = new List<Hotkey>();
@@ -139,28 +145,50 @@ namespace Ensage.SDK.Input
 
             switch (args.Msg)
             {
+                case WM_LBUTTONDOWN:
+                    data.Buttons = MouseButtons.LeftDown;
+                    break;
+
+                case WM_RBUTTONDOWN:
+                    data.Buttons = MouseButtons.RightDown;
+                    break;
+
+                case WM_XBUTTONDOWN:
+                    data.Buttons = MouseButtons.XButtonDown;
+                    break;
+
                 case WM_LBUTTONUP:
-                    data.Buttons = MouseButtons.Left;
+                    data.Buttons = MouseButtons.LeftUp;
                     data.Clicks = 1;
                     break;
 
                 case WM_RBUTTONUP:
-                    data.Buttons = MouseButtons.Right;
+                    data.Buttons = MouseButtons.RightUp;
+                    data.Clicks = 1;
+                    break;
+
+                case WM_XBUTTONUP:
+                    data.Buttons = MouseButtons.XButtonUp;
                     data.Clicks = 1;
                     break;
 
                 case WM_LBUTTONDBLCLK:
-                    data.Buttons = MouseButtons.Left;
+                    data.Buttons = MouseButtons.LeftUp;
                     data.Clicks = 2;
                     break;
 
                 case WM_RBUTTONDBLCLK:
-                    data.Buttons = MouseButtons.Right;
+                    data.Buttons = MouseButtons.RightUp;
+                    data.Clicks = 2;
+                    break;
+
+                case WM_XBUTTONDBLCLK:
+                    data.Buttons = MouseButtons.XButtonUp;
                     data.Clicks = 2;
                     break;
             }
 
-            if (data.Clicks > 0)
+            if (data.Buttons != MouseButtons.None)
             {
                 this.MouseClick?.Invoke(this, data);
                 Messenger<MouseEventArgs>.Publish(data);
@@ -215,6 +243,9 @@ namespace Ensage.SDK.Input
                 case WM_RBUTTONUP:
                 case WM_RBUTTONDOWN:
                 case WM_RBUTTONDBLCLK:
+                case WM_XBUTTONDOWN:
+                case WM_XBUTTONUP:
+                case WM_XBUTTONDBLCLK:
                     this.UpdateMouseButtons(args);
                     this.FireMouseClick(args);
                     break;
@@ -247,6 +278,15 @@ namespace Ensage.SDK.Input
 
                 case WM_RBUTTONUP:
                     this.ActiveButtons &= ~MouseButtons.Right;
+                    break;
+                  
+
+                case WM_XBUTTONDOWN:
+                    this.ActiveButtons |= MouseButtons.XButton;
+                    break;
+
+                case WM_XBUTTONUP:
+                    this.ActiveButtons &= ~MouseButtons.XButton;
                     break;
             }
         }

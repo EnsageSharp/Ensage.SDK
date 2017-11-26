@@ -8,6 +8,7 @@ namespace Ensage.SDK.Renderer.DX9
     using System.Collections.Generic;
     using System.ComponentModel.Composition;
 
+    using Ensage.SDK.Renderer.DX11;
     using Ensage.SDK.Renderer.Metadata;
 
     using SharpDX;
@@ -27,14 +28,21 @@ namespace Ensage.SDK.Renderer.DX9
 
         private readonly Sprite sprite;
 
+        private readonly D3D9TextureManager textureManager;
+
+        private bool disposed;
+
         [ImportingConstructor]
-        public D3D9Renderer([Import] ID3D9Context context, [Import] FontCache fontCache)
+        public D3D9Renderer([Import] ID3D9Context context, [Import] FontCache fontCache, [Import] D3D9TextureManager textureManager)
         {
             this.context = context;
             this.fontCache = fontCache;
+            this.textureManager = textureManager;
 
-            this.line = new Line(this.context.Device);
-            this.line.Antialias = true;
+            this.line = new Line(this.context.Device)
+                            {
+                                Antialias = true
+                            };
             this.sprite = new Sprite(this.context.Device);
 
             context.PreReset += this.OnPreReset;
@@ -52,6 +60,31 @@ namespace Ensage.SDK.Renderer.DX9
             {
                 this.context.Draw -= value;
             }
+        }
+
+        public void Dispose()
+        {
+            this.Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        public void DrawBitmap(string bitmapKey, RectangleF rect, float rotation = 0, float opacity = 1)
+        {
+            var textureEntry = this.textureManager.GetTexture(bitmapKey);
+            if (textureEntry == null)
+            {
+                throw new BitmapNotFoundException(bitmapKey);
+            }
+
+            this.sprite.Begin(SpriteFlags.AlphaBlend);
+            var matrix = this.sprite.Transform;
+
+            var scaling = new Vector2((float)rect.Width / textureEntry.Bitmap.Width, (float)rect.Height / textureEntry.Bitmap.Height);
+            this.sprite.Transform = Matrix.Scaling(scaling.X, scaling.Y, 0) * Matrix.RotationZ(rotation) * Matrix.Translation(rect.X, rect.Y, 0);
+            this.sprite.Draw(textureEntry.Texture, SharpDX.Color.White);
+
+            this.sprite.Transform = matrix;
+            this.sprite.End();
         }
 
         public void DrawCircle(Vector2 center, float radius, Color color, float width = 1.0f)
@@ -110,35 +143,19 @@ namespace Ensage.SDK.Renderer.DX9
             try
             {
                 this.line.Draw(
-                    new[]
-                    {
-                        new RawVector2(rect.X + (width / 2f), (rect.Y + rect.Height) - (width / 2f)),
-                        new RawVector2(rect.X + (width / 2f), rect.Y - (width / 2f))
-                    },
+                    new[] { new RawVector2(rect.X + (width / 2f), (rect.Y + rect.Height) - (width / 2f)), new RawVector2(rect.X + (width / 2f), rect.Y - (width / 2f)) },
                     c);
+
+                this.line.Draw(new[] { new RawVector2(rect.X + rect.Width, rect.Y + rect.Height), new RawVector2(rect.X, rect.Y + rect.Height) }, c);
+
+                this.line.Draw(new[] { new RawVector2(rect.X, rect.Y), new RawVector2(rect.X + rect.Width, rect.Y) }, c);
 
                 this.line.Draw(
                     new[]
-                    {
-                        new RawVector2(rect.X + rect.Width, rect.Y + rect.Height),
-                        new RawVector2(rect.X, rect.Y + rect.Height)
-                    },
-                    c);
-
-                this.line.Draw(
-                    new[]
-                    {
-                        new RawVector2(rect.X, rect.Y),
-                        new RawVector2(rect.X + rect.Width, rect.Y)
-                    },
-                    c);
-
-                this.line.Draw(
-                    new[]
-                    {
-                        new RawVector2((rect.X + rect.Width) - (width / 2f), rect.Y - (width / 2f)),
-                        new RawVector2((rect.X + rect.Width) - (width / 2f), (rect.Y + rect.Height) - (width / 2f))
-                    },
+                        {
+                            new RawVector2((rect.X + rect.Width) - (width / 2f), rect.Y - (width / 2f)),
+                            new RawVector2((rect.X + rect.Width) - (width / 2f), (rect.Y + rect.Height) - (width / 2f))
+                        },
                     c);
             }
             finally
@@ -151,6 +168,21 @@ namespace Ensage.SDK.Renderer.DX9
         {
             var font = this.fontCache.GetOrCreate(fontFamily, fontSize);
             font.DrawText(null, text, (int)position.X, (int)position.Y, new ColorBGRA(color.R, color.G, color.B, color.A));
+        }
+
+        private void Dispose(bool disposing)
+        {
+            if (this.disposed)
+            {
+                return;
+            }
+
+            if (disposing)
+            {
+                this.context.Dispose();
+            }
+
+            this.disposed = true;
         }
 
         private void OnPostReset(object sender, EventArgs eventArgs)

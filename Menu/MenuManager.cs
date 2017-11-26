@@ -11,7 +11,6 @@ namespace Ensage.SDK.Menu
     using System.IO;
     using System.Linq;
     using System.Reflection;
-    using System.Windows.Forms;
 
     using Ensage.Common.Extensions;
     using Ensage.SDK.Input;
@@ -30,8 +29,6 @@ namespace Ensage.SDK.Menu
 
     using SharpDX;
 
-    using MouseEventArgs = Ensage.SDK.Input.MouseEventArgs;
-
     [Export]
     [PublicAPI]
     public class MenuManager : ControllableService
@@ -48,6 +45,8 @@ namespace Ensage.SDK.Menu
 
         private readonly ViewRepository viewRepository;
 
+        private bool blockedLeftClick;
+
         private MenuBase lastHoverEntry;
 
         private Vector2 position;
@@ -59,6 +58,7 @@ namespace Ensage.SDK.Menu
         [ImportingConstructor]
         public MenuManager([Import] ViewRepository viewRepository, [Import] IRendererManager renderer, [Import] IInputManager input)
         {
+            // TODO extract interface
             this.viewRepository = viewRepository;
             this.renderer = renderer;
             this.input = input;
@@ -203,6 +203,8 @@ namespace Ensage.SDK.Menu
 
         public MenuEntry RegisterMenu(object menu)
         {
+            Log.Debug($"Registering {menu}");
+
             var dataType = menu.GetType();
             var sdkAttribute = dataType.GetCustomAttribute<MenuAttribute>();
             if (sdkAttribute == null)
@@ -521,6 +523,23 @@ namespace Ensage.SDK.Menu
                 return;
             }
 
+            if ((e.Buttons & MouseButtons.LeftUp) == MouseButtons.LeftUp)
+            {
+                // handle drag and drop
+                if (this.dragMenuEntry != null)
+                {
+                    // TODO:
+                    this.dragMenuEntry = null;
+                }
+
+                if (this.blockedLeftClick)
+                {
+                    e.Process = false;
+                    this.blockedLeftClick = false;
+                }
+                return;
+            }
+
             if (!this.IsVisible || !this.IsInsideMenu(e.Position))
             {
                 return;
@@ -537,6 +556,9 @@ namespace Ensage.SDK.Menu
                         this.CollapseLayer(menuEntry, this.rootMenus);
                     }
                 }
+
+                e.Process = false;
+                this.blockedLeftClick = true;
             }
         }
 
@@ -553,7 +575,10 @@ namespace Ensage.SDK.Menu
                 return;
             }
 
-            // TODO: test for left button down to drag menu items
+            if (this.dragMenuEntry != null)
+            {
+                return;
+            }
 
             // check for mouse hover
             foreach (var menuEntry in this.rootMenus)
@@ -570,6 +595,13 @@ namespace Ensage.SDK.Menu
 
                         Log.Info($"MouseHover {hoverItem}");
                         this.LastHoverEntry = hoverItem;
+
+                        // check for drag and drop of menu entries (possible to swap positions)
+                        if ((e.Buttons & MouseButtons.Left) != 0 && this.LastHoverEntry is MenuEntry hoverEntry && this.LastHoverEntry.DataContext != this.MenuConfig)
+                        {
+                            this.dragStartPosition = e.Position;
+                            this.dragMenuEntry = hoverEntry;
+                        }
                     }
 
                     return;
@@ -582,6 +614,10 @@ namespace Ensage.SDK.Menu
                 this.LastHoverEntry = null;
             }
         }
+
+        private Vector2 dragStartPosition;
+
+        private MenuEntry dragMenuEntry;
 
         private Vector2 UpdateMenuEntryPosition(MenuEntry entry, Vector2 pos)
         {

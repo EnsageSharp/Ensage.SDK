@@ -20,10 +20,15 @@ namespace Ensage.SDK.Renderer
     {
         private readonly IRenderer active;
 
+        private bool disposed;
+
         [ImportingConstructor]
-        public RendererManager([ImportMany] IEnumerable<Lazy<IRenderer, IRendererMetadata>> renderers)
+        public RendererManager(
+            [ImportMany] IEnumerable<Lazy<IRenderer, IRendererMetadata>> renderers,
+            [ImportMany] IEnumerable<Lazy<ITextureManager, IRendererMetadata>> textureManagers)
         {
             this.active = renderers.First(e => e.Metadata.Mode == Drawing.RenderMode).Value;
+            this.TextureManager = textureManagers.First(e => e.Metadata.Mode == Drawing.RenderMode).Value;
         }
 
         public event EventHandler Draw
@@ -37,6 +42,19 @@ namespace Ensage.SDK.Renderer
             {
                 this.active.Draw -= value;
             }
+        }
+
+        public ITextureManager TextureManager { get; }
+
+        public void Dispose()
+        {
+            this.Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        public void DrawBitmap(string bitmapKey, RectangleF rect, float rotation = 0, float opacity = 1)
+        {
+            this.active.DrawBitmap(bitmapKey, rect, rotation, opacity);
         }
 
         public void DrawCircle(Vector2 center, float radius, Color color, float width = 1.0f)
@@ -57,6 +75,21 @@ namespace Ensage.SDK.Renderer
         public void DrawText(Vector2 position, string text, Color color, float fontSize = 13f, string fontFamily = "Calibri")
         {
             this.active.DrawText(position, text, color, fontSize, fontFamily);
+        }
+
+        private void Dispose(bool disposing)
+        {
+            if (this.disposed)
+            {
+                return;
+            }
+
+            if (disposing)
+            {
+                this.active.Dispose();
+            }
+
+            this.disposed = true;
         }
     }
 }

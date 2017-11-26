@@ -46,6 +46,8 @@ namespace Ensage.SDK.Service
 
         IRendererManager Renderer { get; }
 
+        ITextureManager TextureManager { get; }
+
         ITargetSelectorManager TargetSelector { get; }
 
         T Get<T>([CanBeNull] string contract = null);

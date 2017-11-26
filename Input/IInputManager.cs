@@ -5,7 +5,6 @@
 namespace Ensage.SDK.Input
 {
     using System;
-    using System.Windows.Forms;
     using System.Windows.Input;
 
     using PlaySharp.Toolkit.Helper;

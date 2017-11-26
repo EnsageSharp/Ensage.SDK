@@ -62,9 +62,9 @@ namespace Ensage.SDK.Service
         {
             try
             {
-                this.Context.MenuManager.Deactivate();
-                //this.DeactivatePlugins();
-                //this.Default?.Dispose();
+                this.Context.MenuManager.Dispose();
+                this.Context.Renderer.Dispose();
+                this.Context.TextureManager.Dispose();
             }
             catch (Exception e)
             {

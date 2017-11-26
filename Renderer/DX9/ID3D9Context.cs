@@ -8,7 +8,7 @@ namespace Ensage.SDK.Renderer.DX9
 
     using SharpDX.Direct3D9;
 
-    public interface ID3D9Context
+    public interface ID3D9Context : IDisposable
     {
         event EventHandler Draw;
 

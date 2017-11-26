@@ -10,7 +10,7 @@ namespace Ensage.SDK.Renderer
 
     using Color = System.Drawing.Color;
 
-    public interface IRenderer
+    public interface IRenderer : IDisposable
     {
         event EventHandler Draw;
 
@@ -21,5 +21,7 @@ namespace Ensage.SDK.Renderer
         void DrawRectangle(RectangleF rect, Color color, float width = 1.0f);
 
         void DrawText(Vector2 position, string text, Color color, float fontSize = 13f, string fontFamily = "Calibri");
+
+        void DrawBitmap(string bitmapKey, RectangleF rect, float rotation = 0.0f, float opacity = 1.0f);
     }
 }

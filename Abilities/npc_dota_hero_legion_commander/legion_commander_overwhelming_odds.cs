@@ -44,15 +44,6 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_legion_commander
                                                            && x.IsVisible
                                                            && x.IsSpawned
                                                            && !(x is Building)
-                                                           && x.ClassId != ClassId.CDOTA_Unit_Undying_Tombstone
-                                                           && x.ClassId != ClassId.CDOTA_BaseNPC_Venomancer_PlagueWard
-                                                           && x.ClassId != ClassId.CDOTA_BaseNPC_ShadowShaman_SerpentWard
-                                                           && x.ClassId != ClassId.CDOTA_BaseNPC_Tusk_Sigil
-                                                           && x.ClassId != ClassId.CDOTA_NPC_TechiesMines
-                                                           && x.ClassId != ClassId.CDOTA_Unit_Courier
-                                                           && x.ClassId != ClassId.CDOTA_Unit_ZeusCloud
-                                                           && x.ClassId != ClassId.CDOTA_BaseNPC_Additive
-                                                           && x.ClassId != ClassId.CDOTA_BaseNPC
                                                            && x.IsEnemy(this.Owner)
                                                            && !x.IsInvulnerable()
                                                            && x.Distance2D(castPosition) < this.Radius);

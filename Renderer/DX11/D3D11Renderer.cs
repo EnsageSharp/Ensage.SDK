@@ -57,15 +57,32 @@ namespace Ensage.SDK.Renderer.DX11
             GC.SuppressFinalize(this);
         }
 
-        public void DrawBitmap(string bitmapKey, RectangleF rect, float rotation = 0.0f, float opacity = 1.0f)
+        public void DrawTexture(string textureKey, RectangleF rect, float rotation = 0.0f, float opacity = 1.0f)
         {
-            var bitmap = this.textureManager.GetBitmap(bitmapKey);
-            if (bitmap == null)
+            var textureEntry = this.textureManager.GetTexture(textureKey);
+            if (textureEntry == null)
             {
-                throw new BitmapNotFoundException(bitmapKey);
+                throw new TextureNotFoundException(textureKey);
             }
 
-            this.context.RenderTarget.DrawBitmap(bitmap, rect, opacity, BitmapInterpolationMode.Linear);
+            if (rotation == 0.0f)
+            {
+                this.context.RenderTarget.DrawBitmap(textureEntry.Bitmap, rect, opacity, BitmapInterpolationMode.Linear);
+            }
+            else
+            {
+                var mtx = this.context.RenderTarget.Transform;
+
+                var scaling = new Vector2((float)rect.Width / textureEntry.Bitmap.Size.Width, (float)rect.Height / textureEntry.Bitmap.Size.Height);
+                this.context.RenderTarget.Transform = Matrix3x2.Translation(-textureEntry.Center)
+                                                      * Matrix3x2.Rotation(rotation)
+                                                      * Matrix3x2.Translation(textureEntry.Center)
+                                                      * Matrix3x2.Scaling(scaling)
+                                                      * Matrix3x2.Translation(rect.Location);
+                this.context.RenderTarget.DrawBitmap(textureEntry.Bitmap, opacity, BitmapInterpolationMode.Linear);
+
+                this.context.RenderTarget.Transform = mtx;
+            }
         }
 
         public void DrawCircle(Vector2 center, float radius, Color color, float width = 1.0f)

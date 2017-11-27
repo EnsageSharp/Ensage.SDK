@@ -11,7 +11,6 @@ namespace Ensage.SDK.Renderer.DX11
     using System.Linq;
     using System.Reflection;
 
-    using Ensage.Common.Extensions;
     using Ensage.SDK.Renderer.Metadata;
 
     using log4net;
@@ -26,7 +25,7 @@ namespace Ensage.SDK.Renderer.DX11
 
     [Export]
     [ExportTextureManager(RenderMode.Dx11)]
-    public class D3D11TextureManager : ITextureManager
+    public sealed class D3D11TextureManager : ITextureManager
     {
         private static readonly ILog Log = AssemblyLogs.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
@@ -53,22 +52,22 @@ namespace Ensage.SDK.Renderer.DX11
         }
 
         [CanBeNull]
-        public Bitmap GetBitmap(string bitmapKey)
+        public D3D11Texture GetTexture(string textureKey)
         {
             D3D11Texture result;
-            if (this.textureCache.TryGetValue(bitmapKey, out result))
+            if (this.textureCache.TryGetValue(textureKey, out result))
             {
-                return result.Bitmap;
+                return result;
             }
 
             return null;
         }
 
-        public bool LoadFromFile(string bitmapKey, string file)
+        public bool LoadFromFile(string textureKey, string file)
         {
             try
             {
-                if (this.textureCache.ContainsKey(bitmapKey))
+                if (this.textureCache.ContainsKey(textureKey))
                 {
                     return true;
                 }
@@ -76,16 +75,16 @@ namespace Ensage.SDK.Renderer.DX11
                 var texture = this.textureCache.Values.FirstOrDefault(x => x.File == file);
                 if (texture != null)
                 {
-                    this.textureCache[bitmapKey] = texture;
+                    this.textureCache[textureKey] = texture;
                     return true;
                 }
 
                 using (var fileStream = new NativeFileStream(file, NativeFileMode.Open, NativeFileAccess.Read))
                 {
-                    var result = this.LoadFromStream(bitmapKey, fileStream);
+                    var result = this.LoadFromStream(textureKey, fileStream);
                     if (result)
                     {
-                        this.textureCache[bitmapKey].File = file;
+                        this.textureCache[textureKey].File = file;
                     }
 
                     return result;
@@ -98,18 +97,18 @@ namespace Ensage.SDK.Renderer.DX11
             }
         }
 
-        public bool LoadFromMemory(string bitmapKey, byte[] data)
+        public bool LoadFromMemory(string textureKey, byte[] data)
         {
             try
             {
-                if (this.textureCache.ContainsKey(bitmapKey))
+                if (this.textureCache.ContainsKey(textureKey))
                 {
                     return true;
                 }
 
                 using (var memoryStream = new MemoryStream(data))
                 {
-                    return this.LoadFromStream(bitmapKey, memoryStream);
+                    return this.LoadFromStream(textureKey, memoryStream);
                 }
             }
             catch (Exception e)
@@ -119,11 +118,11 @@ namespace Ensage.SDK.Renderer.DX11
             }
         }
 
-        public bool LoadFromStream(string bitmapKey, Stream stream)
+        public bool LoadFromStream(string textureKey, Stream stream)
         {
             try
             {
-                if (this.textureCache.ContainsKey(bitmapKey))
+                if (this.textureCache.ContainsKey(textureKey))
                 {
                     return true;
                 }
@@ -135,7 +134,7 @@ namespace Ensage.SDK.Renderer.DX11
                     {
                         converter.Initialize(frame, PixelFormat.Format32bppPRGBA);
                         var bitmap = Bitmap.FromWicBitmap(this.renderContext.RenderTarget, converter);
-                        this.textureCache[bitmapKey] = new D3D11Texture(bitmap);
+                        this.textureCache[textureKey] = new D3D11Texture(bitmap);
                     }
                 }
 
@@ -148,7 +147,7 @@ namespace Ensage.SDK.Renderer.DX11
             }
         }
 
-        protected virtual void Dispose(bool disposing)
+        private void Dispose(bool disposing)
         {
             if (this.disposed)
             {

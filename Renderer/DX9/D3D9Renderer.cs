@@ -8,6 +8,7 @@ namespace Ensage.SDK.Renderer.DX9
     using System.Collections.Generic;
     using System.ComponentModel.Composition;
 
+    using Ensage.Common.Extensions;
     using Ensage.SDK.Renderer.DX11;
     using Ensage.SDK.Renderer.Metadata;
 
@@ -68,22 +69,32 @@ namespace Ensage.SDK.Renderer.DX9
             GC.SuppressFinalize(this);
         }
 
-        public void DrawBitmap(string bitmapKey, RectangleF rect, float rotation = 0, float opacity = 1)
+        public void DrawTexture(string textureKey, RectangleF rect, float rotation = 0, float opacity = 1)
         {
-            var textureEntry = this.textureManager.GetTexture(bitmapKey);
+            var textureEntry = this.textureManager.GetTexture(textureKey);
             if (textureEntry == null)
             {
-                throw new BitmapNotFoundException(bitmapKey);
+                throw new TextureNotFoundException(textureKey);
             }
 
             this.sprite.Begin(SpriteFlags.AlphaBlend);
-            var matrix = this.sprite.Transform;
+           
+            if (rotation == 0.0f)
+            {
+                this.sprite.Draw(textureEntry.Texture, SharpDX.Color.White);
+            }
+            else
+            {
+                var matrix = this.sprite.Transform;
 
-            var scaling = new Vector2((float)rect.Width / textureEntry.Bitmap.Width, (float)rect.Height / textureEntry.Bitmap.Height);
-            this.sprite.Transform = Matrix.Scaling(scaling.X, scaling.Y, 0) * Matrix.RotationZ(rotation) * Matrix.Translation(rect.X, rect.Y, 0);
-            this.sprite.Draw(textureEntry.Texture, SharpDX.Color.White);
+                var center = textureEntry.Center.ToVector3();
+                var scaling = new Vector2((float)rect.Width / textureEntry.Bitmap.Width, (float)rect.Height / textureEntry.Bitmap.Height);
+                this.sprite.Transform = Matrix.Translation(-center) * Matrix.RotationZ(rotation) * Matrix.Translation(center) * Matrix.Scaling(scaling.X, scaling.Y, 0) * Matrix.Translation(rect.X, rect.Y, 0);
+                this.sprite.Draw(textureEntry.Texture, SharpDX.Color.White);
 
-            this.sprite.Transform = matrix;
+                this.sprite.Transform = matrix;
+            }
+           
             this.sprite.End();
         }
 

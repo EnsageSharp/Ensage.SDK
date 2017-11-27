@@ -52,9 +52,9 @@ namespace Ensage.SDK.Renderer
             GC.SuppressFinalize(this);
         }
 
-        public void DrawBitmap(string bitmapKey, RectangleF rect, float rotation = 0, float opacity = 1)
+        public void DrawTexture(string textureKey, RectangleF rect, float rotation = 0, float opacity = 1)
         {
-            this.active.DrawBitmap(bitmapKey, rect, rotation, opacity);
+            this.active.DrawTexture(textureKey, rect, rotation, opacity);
         }
 
         public void DrawCircle(Vector2 center, float radius, Color color, float width = 1.0f)

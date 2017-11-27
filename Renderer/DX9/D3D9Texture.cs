@@ -9,9 +9,10 @@ namespace Ensage.SDK.Renderer
 
     using PlaySharp.Toolkit.Helper.Annotations;
 
+    using SharpDX;
     using SharpDX.Direct3D9;
 
-    public class D3D9Texture : IDisposable
+    public sealed class D3D9Texture : IDisposable
     {
         private bool disposed;
 
@@ -20,9 +21,12 @@ namespace Ensage.SDK.Renderer
             this.Bitmap = bitmap;
             this.File = file;
             this.Texture = texture;
+            this.Center = new Vector2((float)this.Bitmap.Width / 2.0f, (float)this.Bitmap.Height / 2.0f);
         }
 
         public Bitmap Bitmap { get; }
+
+        public Vector2 Center { get; }
 
         [CanBeNull]
         public string File { get; internal set; }
@@ -36,7 +40,7 @@ namespace Ensage.SDK.Renderer
             GC.SuppressFinalize(this);
         }
 
-        protected virtual void Dispose(bool disposing)
+        private void Dispose(bool disposing)
         {
             if (this.disposed)
             {

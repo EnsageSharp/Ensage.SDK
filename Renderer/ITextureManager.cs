@@ -9,10 +9,10 @@ namespace Ensage.SDK.Renderer
 
     public interface ITextureManager : IDisposable
     {
-        bool LoadFromFile(string bitmapKey, string file);
+        bool LoadFromFile(string textureKey, string file);
 
-        bool LoadFromMemory(string bitmapKey, byte[] data);
+        bool LoadFromMemory(string textureKey, byte[] data);
 
-        bool LoadFromStream(string bitmapKey, Stream stream);
+        bool LoadFromStream(string textureKey, Stream stream);
     }
 }

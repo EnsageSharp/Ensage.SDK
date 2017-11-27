@@ -23,7 +23,7 @@ namespace Ensage.SDK.Renderer.DX9
 
     [Export]
     [ExportTextureManager(RenderMode.Dx9)]
-    public class D3D9TextureManager : ITextureManager
+    public sealed class D3D9TextureManager : ITextureManager
     {
         private static readonly ILog Log = AssemblyLogs.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
@@ -58,11 +58,11 @@ namespace Ensage.SDK.Renderer.DX9
             return null;
         }
 
-        public bool LoadFromFile(string bitmapKey, string file)
+        public bool LoadFromFile(string textureKey, string file)
         {
             try
             {
-                if (this.textureCache.ContainsKey(bitmapKey))
+                if (this.textureCache.ContainsKey(textureKey))
                 {
                     return true;
                 }
@@ -70,7 +70,7 @@ namespace Ensage.SDK.Renderer.DX9
                 var cacheEntry = this.textureCache.Values.FirstOrDefault(x => x.File == file);
                 if (cacheEntry != null)
                 {
-                    this.textureCache[bitmapKey] = cacheEntry;
+                    this.textureCache[textureKey] = cacheEntry;
                     return true;
                 }
 
@@ -81,10 +81,10 @@ namespace Ensage.SDK.Renderer.DX9
 
                 using (var fileStream = File.OpenRead(file))
                 {
-                    var result = this.LoadFromStream(bitmapKey, fileStream);
+                    var result = this.LoadFromStream(textureKey, fileStream);
                     if (result)
                     {
-                        this.textureCache[bitmapKey].File = file;
+                        this.textureCache[textureKey].File = file;
                         return true;
                     }
                 }
@@ -97,18 +97,18 @@ namespace Ensage.SDK.Renderer.DX9
             return false;
         }
 
-        public bool LoadFromMemory(string bitmapKey, byte[] data)
+        public bool LoadFromMemory(string textureKey, byte[] data)
         {
             try
             {
-                if (this.textureCache.ContainsKey(bitmapKey))
+                if (this.textureCache.ContainsKey(textureKey))
                 {
                     return true;
                 }
 
                 using (var memoryStream = new MemoryStream(data))
                 {
-                    return this.LoadFromStream(bitmapKey, memoryStream);
+                    return this.LoadFromStream(textureKey, memoryStream);
                 }
             }
             catch (Exception e)
@@ -119,11 +119,11 @@ namespace Ensage.SDK.Renderer.DX9
             return false;
         }
 
-        public bool LoadFromStream(string bitmapKey, Stream stream)
+        public bool LoadFromStream(string textureKey, Stream stream)
         {
             try
             {
-                if (this.textureCache.ContainsKey(bitmapKey))
+                if (this.textureCache.ContainsKey(textureKey))
                 {
                     return true;
                 }
@@ -145,7 +145,7 @@ namespace Ensage.SDK.Renderer.DX9
 
                 if (texture != null)
                 {
-                    this.textureCache[bitmapKey] = new D3D9Texture(texture, bitmap);
+                    this.textureCache[textureKey] = new D3D9Texture(texture, bitmap);
                     return true;
                 }
             }
@@ -157,7 +157,7 @@ namespace Ensage.SDK.Renderer.DX9
             return false;
         }
 
-        protected virtual void Dispose(bool disposing)
+        private void Dispose(bool disposing)
         {
             if (this.disposed)
             {

@@ -22,6 +22,6 @@ namespace Ensage.SDK.Renderer
 
         void DrawText(Vector2 position, string text, Color color, float fontSize = 13f, string fontFamily = "Calibri");
 
-        void DrawBitmap(string bitmapKey, RectangleF rect, float rotation = 0.0f, float opacity = 1.0f);
+        void DrawTexture(string textureKey, RectangleF rect, float rotation = 0.0f, float opacity = 1.0f);
     }
 }

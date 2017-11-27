@@ -47,7 +47,8 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_legion_commander
 
             foreach (var otherTarget in otherTargets)
             {
-                if (otherTarget is Hero)
+                var hero = otherTarget as Hero;
+                if (hero != null && !hero.IsIllusion)
                 {
                     damage += this.Ability.GetAbilitySpecialDataWithTalent(this.Owner, "damage_per_hero");
                     continue;

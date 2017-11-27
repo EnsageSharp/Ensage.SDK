@@ -10,6 +10,8 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_legion_commander
     using Ensage.SDK.Extensions;
     using Ensage.SDK.Helpers;
 
+    using SharpDX;
+
     public class legion_commander_overwhelming_odds : CircleAbility, IHasModifier
     {
         public legion_commander_overwhelming_odds(Ability ability)
@@ -27,37 +29,49 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_legion_commander
             }
         }
 
-        public override float GetDamage(params Unit[] targets)
+        public float GetDamage(Vector3 castPosition, params Unit[] targets)
         {
             var damage = this.RawDamage;
-            var amplify = this.Ability.SpellAmplification();
 
             if (!targets.Any())
             {
                 return damage;
             }
 
+            var otherTargets = EntityManager<Unit>.Entities.Where(
+                                                      x => x.IsValid
+                                                           && x.IsAlive
+                                                           && x.IsSpawned
+                                                           && x.IsEnemy(this.Owner)
+                                                           && x.Distance2D(castPosition) < this.Radius);
+
+            foreach (var otherTarget in otherTargets)
+            {
+                var hero = otherTarget as Hero;
+                if (hero != null && !hero.IsIllusion)
+                {
+                    damage += this.Ability.GetAbilitySpecialDataWithTalent(this.Owner, "damage_per_hero");
+                    continue;
+                }
+
+                damage += this.Ability.GetAbilitySpecialData("damage_per_unit");
+            }
+
             var totalDamage = 0.0f;
+            var amplify = this.Owner.GetSpellAmplification();
 
             foreach (var target in targets)
             {
-                var hero = target is Hero;
-                if (hero)
-                {
-                    damage += this.Ability.GetAbilitySpecialDataWithTalent(this.Owner, "damage_per_hero");
-                }
-
-                var creep = target is Creep;
-                if (target.IsNeutral || creep)
-                {
-                    damage += this.Ability.GetAbilitySpecialData("damage_per_unit");
-                }
+                var reduction = this.Ability.GetDamageReduction(target, this.DamageType);
+                totalDamage += DamageHelpers.GetSpellDamage(damage, amplify, reduction);
             }
 
-            var reduction = this.Ability.GetDamageReduction(targets.First(), this.DamageType);
-            totalDamage += DamageHelpers.GetSpellDamage(damage, amplify, reduction);
-
             return totalDamage;
+        }
+
+        public override float GetDamage(params Unit[] targets)
+        {
+            return this.GetDamage(targets.First().Position, targets);
         }
     }
 }

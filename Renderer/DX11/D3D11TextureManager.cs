@@ -12,6 +12,7 @@ namespace Ensage.SDK.Renderer.DX11
     using System.Reflection;
 
     using Ensage.SDK.Renderer.Metadata;
+    using Ensage.SDK.VPK;
 
     using log4net;
 
@@ -33,14 +34,17 @@ namespace Ensage.SDK.Renderer.DX11
 
         private readonly ID3D11Context renderContext;
 
+        private readonly VpkBrowser vpkBrowser;
+
         private readonly Dictionary<string, D3D11Texture> textureCache = new Dictionary<string, D3D11Texture>();
 
         private bool disposed;
 
         [ImportingConstructor]
-        public D3D11TextureManager([Import] ID3D11Context renderContext)
+        public D3D11TextureManager([Import] ID3D11Context renderContext, [Import] VpkBrowser vpkBrowser)
         {
             this.renderContext = renderContext;
+            this.vpkBrowser = vpkBrowser;
 
             this.imagingFactory = new ImagingFactory();
         }
@@ -54,8 +58,7 @@ namespace Ensage.SDK.Renderer.DX11
         [CanBeNull]
         public D3D11Texture GetTexture(string textureKey)
         {
-            D3D11Texture result;
-            if (this.textureCache.TryGetValue(textureKey, out result))
+            if (this.textureCache.TryGetValue(textureKey, out var result))
             {
                 return result;
             }
@@ -145,6 +148,24 @@ namespace Ensage.SDK.Renderer.DX11
                 Log.Error(e);
                 return false;
             }
+        }
+
+        public bool LoadFromDota(string textureKey, string file)
+        {
+            try
+            {
+                var bitmapStream = this.vpkBrowser.FindImage(file);
+                if (bitmapStream != null)
+                {
+                    return this.LoadFromStream(textureKey, bitmapStream);
+                }
+            }
+            catch (Exception e)
+            {
+                Log.Error(e);
+            }
+
+            return false;
         }
 
         private void Dispose(bool disposing)

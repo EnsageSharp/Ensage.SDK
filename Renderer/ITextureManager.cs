@@ -14,5 +14,7 @@ namespace Ensage.SDK.Renderer
         bool LoadFromMemory(string textureKey, byte[] data);
 
         bool LoadFromStream(string textureKey, Stream stream);
+
+        bool LoadFromDota(string textureKey, string file);
     }
 }

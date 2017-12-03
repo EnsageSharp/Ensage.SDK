@@ -13,6 +13,7 @@ namespace Ensage.SDK.Renderer.DX9
     using System.Reflection;
 
     using Ensage.SDK.Renderer.Metadata;
+    using Ensage.SDK.VPK;
 
     using log4net;
 
@@ -27,18 +28,19 @@ namespace Ensage.SDK.Renderer.DX9
     {
         private static readonly ILog Log = AssemblyLogs.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        private readonly ImageConverter imageConverter = new ImageConverter();
-
         private readonly ID3D9Context renderContext;
 
         private readonly Dictionary<string, D3D9Texture> textureCache = new Dictionary<string, D3D9Texture>();
 
+        private readonly VpkBrowser vpkBrowser;
+
         private bool disposed;
 
         [ImportingConstructor]
-        public D3D9TextureManager([Import] ID3D9Context renderContext)
+        public D3D9TextureManager([Import] ID3D9Context renderContext, [Import] VpkBrowser vpkBrowser)
         {
             this.renderContext = renderContext;
+            this.vpkBrowser = vpkBrowser;
         }
 
         public void Dispose()
@@ -56,6 +58,25 @@ namespace Ensage.SDK.Renderer.DX9
             }
 
             return null;
+        }
+
+        public bool LoadFromDota(string textureKey, string file)
+        {
+            try
+            {
+                var bitmapStream = this.vpkBrowser.FindImage(file);
+                if (bitmapStream != null)
+                {
+                    return this.LoadFromStream(textureKey, bitmapStream);
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+
+            return false;
         }
 
         public bool LoadFromFile(string textureKey, string file)

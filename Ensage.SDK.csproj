@@ -95,6 +95,10 @@
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
+    <Reference Include="ValvePak, Version=0.4.0.11, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\EnsageSharp\References\ValvePak.dll</HintPath>
+    </Reference>
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
@@ -530,7 +534,10 @@
     <Compile Include="Input\MouseWheelEventArgs.cs" />
     <Compile Include="Inventory\ItemBindingHandler.cs" />
     <Compile Include="Inventory\Metadata\ItemBindingAttribute.cs" />
+    <Compile Include="Menu\AnimationManager.cs" />
     <Compile Include="Menu\Attributes\PermaShowAttribute.cs" />
+    <Compile Include="Menu\Config\GeneralConfig.cs" />
+    <Compile Include="Menu\Config\HackConfig.cs" />
     <Compile Include="Menu\Config\MenuConfig.cs" />
     <Compile Include="Menu\Views\BooleanView.cs" />
     <Compile Include="Menu\Styles\BorderStyle.cs" />
@@ -723,6 +730,11 @@
     <Compile Include="Extensions\UnitExtensions.cs" />
     <Compile Include="TargetSelector\TargetSelectorManager.cs" />
     <Compile Include="Utils\Utils.cs" />
+    <Compile Include="VPK\Content\ResourceEntry.cs" />
+    <Compile Include="VPK\Content\ResourceFile.cs" />
+    <Compile Include="VPK\VpkBrowser.cs" />
+    <Compile Include="VPK\Content\VTex.cs" />
+    <Compile Include="VPK\Content\VTexFormat.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Properties\key.snk" />
@@ -744,7 +756,9 @@
     <EmbeddedResource Include="Resources\RadiantMiddleRoute.json" />
     <EmbeddedResource Include="Resources\RadiantTopRoute.json" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Menu\Animations\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

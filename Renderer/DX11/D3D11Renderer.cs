@@ -87,8 +87,12 @@ namespace Ensage.SDK.Renderer.DX11
 
         public Vector2 MessureText(string text, float fontSize = 13, string fontFamily = "Calibri")
         {
-            //return TODO_IMPLEMENT_ME;
-            return Vector2.Zero;
+            var font = this.textFormatCache.GetOrCreate(fontFamily, fontSize);
+            using (var layout = new TextLayout(this.context.DirectWrite, text, font, float.MaxValue, float.MaxValue))
+            {
+                var size = layout.Metrics;
+                return new Vector2(size.Width, size.Height);
+            }
         }
 
         public void DrawCircle(Vector2 center, float radius, Color color, float width = 1.0f)

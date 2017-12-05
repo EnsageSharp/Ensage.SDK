@@ -100,8 +100,9 @@ namespace Ensage.SDK.Renderer.DX9
 
         public Vector2 MessureText(string text, float fontSize = 13, string fontFamily = "Calibri")
         {
-            //return TODO_IMPLEMENT_ME;
-            return Vector2.Zero;
+            var font = this.fontCache.GetOrCreate(fontFamily, fontSize);
+            var rect = font.MeasureText(null, text, FontDrawFlags.Left);
+            return new Vector2(rect.Right - rect.Left, rect.Bottom - rect.Top);
         }
 
         public void DrawCircle(Vector2 center, float radius, Color color, float width = 1.0f)

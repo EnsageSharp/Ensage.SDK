@@ -2,9 +2,12 @@
 //    Copyright (c) 2017 Ensage.
 // </copyright>
 
-namespace Ensage.SDK.Menu
+namespace Ensage.SDK.Menu.Views
 {
     using System;
+
+    using Ensage.SDK.Menu.Attributes;
+    using Ensage.SDK.Menu.Items;
 
     using SharpDX;
 
@@ -18,7 +21,7 @@ namespace Ensage.SDK.Menu
 
         public Vector2 GetSize(MenuBase context)
         {
-            throw new NotImplementedException();
+            return new Vector2(150, 20);
         }
 
         public void OnClick(MenuBase context, Vector2 clickPosition)

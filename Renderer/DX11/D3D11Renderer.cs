@@ -85,6 +85,12 @@ namespace Ensage.SDK.Renderer.DX11
             }
         }
 
+        public Vector2 MessureText(string text, float fontSize = 13, string fontFamily = "Calibri")
+        {
+            //return TODO_IMPLEMENT_ME;
+            return Vector2.Zero;
+        }
+
         public void DrawCircle(Vector2 center, float radius, Color color, float width = 1.0f)
         {
             this.context.RenderTarget.DrawEllipse(new Ellipse(center, radius, radius), this.brushCache.GetOrCreate(color), width);
@@ -120,6 +126,7 @@ namespace Ensage.SDK.Renderer.DX11
 
             if (disposing)
             {
+                this.textureManager.Dispose();
                 this.context.Dispose();
             }
 

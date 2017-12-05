@@ -15,12 +15,16 @@ namespace Ensage.SDK.Menu
     using Ensage.Common.Extensions;
     using Ensage.SDK.Input;
     using Ensage.SDK.Menu.Config;
+    using Ensage.SDK.Menu.Entries;
+    using Ensage.SDK.Menu.Items;
+    using Ensage.SDK.Menu.Styles;
     using Ensage.SDK.Renderer;
     using Ensage.SDK.Service;
 
     using log4net;
 
     using Newtonsoft.Json;
+    using Newtonsoft.Json.Converters;
     using Newtonsoft.Json.Linq;
 
     using PlaySharp.Toolkit.Helper;
@@ -41,6 +45,8 @@ namespace Ensage.SDK.Menu
 
         private readonly IRendererManager renderer;
 
+        private readonly StyleRepository styleRepository;
+
         private readonly List<MenuEntry> rootMenus = new List<MenuEntry>();
 
         private readonly ViewRepository viewRepository;
@@ -56,11 +62,12 @@ namespace Ensage.SDK.Menu
         private bool sizeDirty;
 
         [ImportingConstructor]
-        public MenuManager([Import] ViewRepository viewRepository, [Import] IRendererManager renderer, [Import] IInputManager input)
+        public MenuManager([Import] ViewRepository viewRepository, [Import] IRendererManager renderer, [Import] StyleRepository styleRepository, [Import] IInputManager input)
         {
             // TODO extract interface
             this.viewRepository = viewRepository;
             this.renderer = renderer;
+            this.styleRepository = styleRepository;
             this.input = input;
 
             try
@@ -225,7 +232,7 @@ namespace Ensage.SDK.Menu
 
             var view = this.viewRepository.GetMenuView();
 
-            var menuEntry = new MenuEntry(menuName, view, this.renderer, menu, null);
+            var menuEntry = new MenuEntry(menuName, view, this.renderer, styleRepository, menu, null);
             this.VisitInstance(menuEntry, menu);
 
             this.rootMenus.Add(menuEntry);
@@ -256,7 +263,8 @@ namespace Ensage.SDK.Menu
 
                 var settings = new JsonSerializerSettings
                                    {
-                                       DefaultValueHandling = DefaultValueHandling.Include
+                                       DefaultValueHandling = DefaultValueHandling.Include,
+                                       Converters = {new MenuStyleConverter(), new StringEnumConverter()}
                                    };
                 JsonFactory.ToFile(file, menu, settings);
                 return true;
@@ -271,6 +279,9 @@ namespace Ensage.SDK.Menu
         protected override void OnActivate()
         {
             this.MenuConfig = new MenuConfig();
+            MenuConfig.GeneralConfig.ActiveStyle = new Selection<IMenuStyle>(styleRepository.Styles.ToArray());
+            MenuConfig.GeneralConfig.ActiveStyle.Value = styleRepository.DefaultMenuStyle;
+
             this.RegisterMenu(this.MenuConfig);
 
             this.renderer.Draw += this.OnDraw;
@@ -360,16 +371,16 @@ namespace Ensage.SDK.Menu
 
             var firstSize = first.RenderSize;
             var totalSize = new Vector2(firstSize.X, entryList.Count * firstSize.Y);
-            foreach (var child in entryList)
+            for (var i = 0; i < entryList.Count; i++)
             {
-                var menuEntry = child as MenuEntry;
+                var menuEntry = entryList[i] as MenuEntry;
                 if (menuEntry != null)
                 {
                     var childSize = this.CalculateMenuTotalSize(menuEntry.Children);
-                    menuEntry.TotalSize = childSize + new Vector2(firstSize.X, 0);
+                    menuEntry.TotalSize = childSize + new Vector2(firstSize.X, firstSize.Y * i);
 
-                    totalSize.X = Math.Max(totalSize.X, firstSize.X + childSize.X);
-                    totalSize.Y = Math.Max(totalSize.Y, childSize.Y);
+                    totalSize.X = Math.Max(totalSize.X, menuEntry.TotalSize.X);
+                    totalSize.Y = Math.Max(totalSize.Y, menuEntry.TotalSize.Y);
                 }
             }
 
@@ -668,7 +679,7 @@ namespace Ensage.SDK.Menu
                 }
 
                 var view = this.viewRepository.GetView(propertyInfo.PropertyType);
-                var menuItemEntry = new MenuItemEntry(menuItemName, view, this.renderer, instance, propertyInfo);
+                var menuItemEntry = new MenuItemEntry(menuItemName, view, this.renderer, styleRepository, instance, propertyInfo);
 
                 var tooltip = propertyInfo.GetCustomAttribute<TooltipAttribute>();
                 if (tooltip != null)
@@ -703,7 +714,7 @@ namespace Ensage.SDK.Menu
                     menuItemName = type.Name;
                 }
 
-                var menuItemEntry = new MenuEntry(menuItemName, this.viewRepository.GetMenuView(), this.renderer, propertyValue, propertyInfo);
+                var menuItemEntry = new MenuEntry(menuItemName, this.viewRepository.GetMenuView(), this.renderer, styleRepository, propertyValue, propertyInfo);
                 this.VisitInstance(menuItemEntry, propertyValue);
 
                 parent.AddChild(menuItemEntry);

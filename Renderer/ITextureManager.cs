@@ -6,6 +6,7 @@ namespace Ensage.SDK.Renderer
 {
     using System;
     using System.IO;
+    using System.Reflection;
 
     public interface ITextureManager : IDisposable
     {
@@ -16,5 +17,7 @@ namespace Ensage.SDK.Renderer
         bool LoadFromStream(string textureKey, Stream stream);
 
         bool LoadFromDota(string textureKey, string file);
+
+        bool LoadFromResource(string textureKey, string file, Assembly assembly = null);
     }
 }

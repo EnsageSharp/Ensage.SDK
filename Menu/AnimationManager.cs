@@ -8,6 +8,8 @@ namespace Ensage.SDK.Menu
     using System.ComponentModel.Composition;
     using System.Timers;
 
+    using Ensage.SDK.Menu.Entries;
+
     [Export]
     public class AnimationManager
     {

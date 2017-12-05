@@ -9,6 +9,8 @@ namespace Ensage.SDK.Menu
     using System.ComponentModel.Composition;
     using System.Linq;
 
+    using Ensage.SDK.Menu.Views;
+
     [Export]
     public class ViewRepository
     {

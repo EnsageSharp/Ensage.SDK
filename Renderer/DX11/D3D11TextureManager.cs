@@ -168,6 +168,43 @@ namespace Ensage.SDK.Renderer.DX11
             return false;
         }
 
+        public bool LoadFromResource(string textureKey, string file, Assembly assembly = null)
+        {
+            if (this.textureCache.ContainsKey(textureKey))
+            {
+                return true;
+            }
+
+            if (file == null)
+            {
+                throw new ArgumentNullException(nameof(file));
+            }
+
+            if (assembly == null)
+            {
+                assembly = Assembly.GetCallingAssembly();
+            }
+
+            var resourceFile = assembly.GetManifestResourceNames().FirstOrDefault(f => f.EndsWith(file));
+            if (resourceFile == null)
+            {
+                Log.Warn($"Not found {assembly.GetName().Name} - {file}");
+
+                foreach (var resourceName in assembly.GetManifestResourceNames())
+                {
+                    Log.Debug($"candidate {resourceName}");
+                }
+
+                throw new ArgumentNullException(nameof(resourceFile));
+            }
+
+            using (var ms = new MemoryStream())
+            {
+                assembly.GetManifestResourceStream(resourceFile)?.CopyTo(ms);
+                return this.LoadFromStream(textureKey, ms);
+            }
+        }
+
         private void Dispose(bool disposing)
         {
             if (this.disposed)

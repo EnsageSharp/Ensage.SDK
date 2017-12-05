@@ -98,6 +98,12 @@ namespace Ensage.SDK.Renderer.DX9
             this.sprite.End();
         }
 
+        public Vector2 MessureText(string text, float fontSize = 13, string fontFamily = "Calibri")
+        {
+            //return TODO_IMPLEMENT_ME;
+            return Vector2.Zero;
+        }
+
         public void DrawCircle(Vector2 center, float radius, Color color, float width = 1.0f)
         {
             var quality = 120f;
@@ -190,6 +196,7 @@ namespace Ensage.SDK.Renderer.DX9
 
             if (disposing)
             {
+                this.textureManager.Dispose();
                 this.context.Dispose();
             }
 

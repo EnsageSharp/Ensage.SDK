@@ -2,12 +2,13 @@
 //    Copyright (c) 2017 Ensage.
 // </copyright>
 
-namespace Ensage.SDK.Menu
+namespace Ensage.SDK.Menu.Entries
 {
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
 
+    using Ensage.SDK.Menu.Views;
     using Ensage.SDK.Renderer;
 
     using PlaySharp.Toolkit.Helper.Annotations;
@@ -22,8 +23,8 @@ namespace Ensage.SDK.Menu
 
         private bool isVisible = true;
 
-        public MenuEntry(string name, IView view, IRenderer renderer, object instance, [CanBeNull] PropertyInfo propertyInfo)
-            : base(name, view, renderer, instance, propertyInfo)
+        public MenuEntry(string name, IView view, IRenderer renderer, StyleRepository styleRepository, object instance, [CanBeNull] PropertyInfo propertyInfo)
+            : base(name, view, renderer, styleRepository, instance, propertyInfo)
         {
         }
 

@@ -2,9 +2,10 @@
 //    Copyright (c) 2017 Ensage.
 // </copyright>
 
-namespace Ensage.SDK.Menu
+namespace Ensage.SDK.Menu.Views
 {
-    using System;
+    using Ensage.SDK.Menu.Attributes;
+    using Ensage.SDK.Menu.Entries;
 
     using SharpDX;
 
@@ -18,20 +19,31 @@ namespace Ensage.SDK.Menu
             var pos = context.Position;
             var size = context.Size;
 
-            System.Drawing.Color color;
+            var item = context as MenuItemEntry;
+
+            Color color;
             if (context.IsHovered)
             {
-                color = System.Drawing.Color.Yellow;
+                color = Color.Yellow;
             }
             else
             {
-                color = System.Drawing.Color.White;
+                color = Color.White;
             }
 
-            context.Renderer.DrawRectangle(new RectangleF(pos.X, pos.Y, size.X, size.Y), color);
+            var activeStyle = context.StyleRepository.ActiveStyle;
+            context.Renderer.DrawTexture(activeStyle.Item, new RectangleF(pos.X, pos.Y, size.X, size.Y));
 
-            var text = context.Name + ((bool)((MenuItemEntry)context).Value ? "On" : "Off");
-            context.Renderer.DrawText(pos, text, Color.YellowGreen);
+            context.Renderer.DrawText(pos, context.Name, Color.YellowGreen);
+            context.Renderer.DrawTexture(activeStyle.Slider, new RectangleF(pos.X + size.X - 30, pos.Y, 20, 5));
+            if (item.PropertyBinding.GetValue<bool>())
+            {
+                context.Renderer.DrawTexture(activeStyle.Checked, new RectangleF(pos.X + size.X - 20, pos.Y, 20, 5));
+            }
+            else
+            {
+                context.Renderer.DrawTexture(activeStyle.Unchecked, new RectangleF(pos.X + size.X - 10, pos.Y, 20, 5));
+            }
         }
 
         public Vector2 GetSize(MenuBase context)

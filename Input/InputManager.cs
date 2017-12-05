@@ -9,7 +9,6 @@ namespace Ensage.SDK.Input
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using System.Reflection;
-    using System.Windows.Forms;
     using System.Windows.Input;
 
     using Ensage.SDK.Helpers;

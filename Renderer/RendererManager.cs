@@ -57,6 +57,12 @@ namespace Ensage.SDK.Renderer
             this.active.DrawTexture(textureKey, rect, rotation, opacity);
         }
 
+        public Vector2 MessureText(string text, float fontSize = 13, string fontFamily = "Calibri")
+        {
+            return Vector2.Zero;
+           
+        }
+
         public void DrawCircle(Vector2 center, float radius, Color color, float width = 1.0f)
         {
             this.active.DrawCircle(center, radius, color, width);

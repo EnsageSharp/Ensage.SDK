@@ -2,9 +2,12 @@
 //    Copyright (c) 2017 Ensage.
 // </copyright>
 
-namespace Ensage.SDK.Menu
+namespace Ensage.SDK.Menu.Views
 {
     using System;
+
+    using Ensage.SDK.Menu.Attributes;
+    using Ensage.SDK.Menu.Entries;
 
     using SharpDX;
 

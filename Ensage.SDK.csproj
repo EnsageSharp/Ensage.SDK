@@ -51,15 +51,9 @@
     <Reference Include="Ensage.Common">
       <HintPath>C:\EnsageSharp\References\Ensage.Common.dll</HintPath>
     </Reference>
-    <Reference Include="EnsageSharp.Sandbox">
-      <HintPath>C:\EnsageSharp\System\EnsageSharp.Sandbox.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Newtonsoft.Json">
       <HintPath>C:\EnsageSharp\References\Newtonsoft.Json.dll</HintPath>
-    </Reference>
-    <Reference Include="PlaySharp.Service">
-      <HintPath>C:\EnsageSharp\References\PlaySharp.Service.dll</HintPath>
     </Reference>
     <Reference Include="PlaySharp.Toolkit">
       <HintPath>C:\EnsageSharp\References\PlaySharp.Toolkit.dll</HintPath>
@@ -89,16 +83,8 @@
     </Reference>
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
-    <Reference Include="System.Runtime.Caching" />
     <Reference Include="System.Runtime.Serialization" />
-    <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Xml" />
-    <Reference Include="ValvePak, Version=0.4.0.11, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\EnsageSharp\References\ValvePak.dll</HintPath>
-    </Reference>
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
@@ -539,9 +525,12 @@
     <Compile Include="Menu\Config\GeneralConfig.cs" />
     <Compile Include="Menu\Config\HackConfig.cs" />
     <Compile Include="Menu\Config\MenuConfig.cs" />
+    <Compile Include="Menu\StyleRepository.cs" />
+    <Compile Include="Menu\Styles\DefaultMenuStyle.cs" />
+    <Compile Include="Menu\Styles\IMenuStyle.cs" />
     <Compile Include="Menu\Views\BooleanView.cs" />
     <Compile Include="Menu\Styles\BorderStyle.cs" />
-    <Compile Include="Menu\Views\ExportViewAttribute.cs" />
+    <Compile Include="Menu\Attributes\ExportViewAttribute.cs" />
     <Compile Include="Menu\Styles\FontStyle.cs" />
     <Compile Include="Menu\Attributes\ItemAttribute.cs" />
     <Compile Include="Menu\Views\IView.cs" />
@@ -732,6 +721,12 @@
     <Compile Include="Utils\Utils.cs" />
     <Compile Include="VPK\Content\ResourceEntry.cs" />
     <Compile Include="VPK\Content\ResourceFile.cs" />
+    <Compile Include="VPK\ValvePak\ArchiveMD5SectionEntry.cs" />
+    <Compile Include="VPK\ValvePak\Package.cs" />
+    <Compile Include="VPK\ValvePak\PackageEntry.cs" />
+    <Compile Include="VPK\ValvePak\Utilities\AsnKeyParser.cs" />
+    <Compile Include="VPK\ValvePak\Utilities\Crc32.cs" />
+    <Compile Include="VPK\ValvePak\Utilities\StreamHelpers.cs" />
     <Compile Include="VPK\VpkBrowser.cs" />
     <Compile Include="VPK\Content\VTex.cs" />
     <Compile Include="VPK\Content\VTexFormat.cs" />
@@ -758,6 +753,17 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Menu\Animations\" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\MenuStyle\default_transparent\arrowleft.png" />
+    <EmbeddedResource Include="Resources\MenuStyle\default_transparent\arrowlefthover.png" />
+    <EmbeddedResource Include="Resources\MenuStyle\default_transparent\arrowright.png" />
+    <EmbeddedResource Include="Resources\MenuStyle\default_transparent\arrowrighthover.png" />
+    <EmbeddedResource Include="Resources\MenuStyle\default_transparent\circleshadow.png" />
+    <EmbeddedResource Include="Resources\MenuStyle\default_transparent\circleshadowgray.png" />
+    <EmbeddedResource Include="Resources\MenuStyle\default_transparent\itembg1.png" />
+    <EmbeddedResource Include="Resources\MenuStyle\default_transparent\menubg1.png" />
+    <EmbeddedResource Include="Resources\MenuStyle\default_transparent\sliderbgon.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

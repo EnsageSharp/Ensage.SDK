@@ -40,6 +40,8 @@ namespace Ensage.SDK.Helpers
 
         public static ulong Frame { get; private set; }
 
+        public static long Ticks { get; private set; }
+
         internal static List<IUpdateHandler> Handlers { get; } = new List<IUpdateHandler>();
 
         internal static List<IUpdateHandler> InvokeHandlers { get; } = new List<IUpdateHandler>();
@@ -123,6 +125,8 @@ namespace Ensage.SDK.Helpers
 
         private static void OnPreUpdate(EventArgs eventArgs)
         {
+            Ticks = DateTime.Now.Ticks;
+
             foreach (var handler in ServiceHandlers.ToArray())
             {
                 try

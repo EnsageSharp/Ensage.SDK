@@ -525,7 +525,10 @@
     <Compile Include="Menu\Config\GeneralConfig.cs" />
     <Compile Include="Menu\Config\HackConfig.cs" />
     <Compile Include="Menu\Config\MenuConfig.cs" />
+    <Compile Include="Menu\Items\ILoadable.cs" />
+    <Compile Include="Menu\MenuStyleConverter.cs" />
     <Compile Include="Menu\StyleRepository.cs" />
+    <Compile Include="Menu\Styles\RedStyle.cs" />
     <Compile Include="Menu\Styles\DefaultMenuStyle.cs" />
     <Compile Include="Menu\Styles\IMenuStyle.cs" />
     <Compile Include="Menu\Views\BooleanView.cs" />
@@ -764,6 +767,17 @@
     <EmbeddedResource Include="Resources\MenuStyle\default_transparent\itembg1.png" />
     <EmbeddedResource Include="Resources\MenuStyle\default_transparent\menubg1.png" />
     <EmbeddedResource Include="Resources\MenuStyle\default_transparent\sliderbgon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\MenuStyle\darkred\arrowleft.png" />
+    <EmbeddedResource Include="Resources\MenuStyle\darkred\arrowlefthover.png" />
+    <EmbeddedResource Include="Resources\MenuStyle\darkred\arrowright.png" />
+    <EmbeddedResource Include="Resources\MenuStyle\darkred\arrowrighthover.png" />
+    <EmbeddedResource Include="Resources\MenuStyle\darkred\circleshadow.png" />
+    <EmbeddedResource Include="Resources\MenuStyle\darkred\circleshadowgray.png" />
+    <EmbeddedResource Include="Resources\MenuStyle\darkred\itembg1.png" />
+    <EmbeddedResource Include="Resources\MenuStyle\darkred\menubg1.png" />
+    <EmbeddedResource Include="Resources\MenuStyle\darkred\sliderbgon.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

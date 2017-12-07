@@ -45,13 +45,17 @@ namespace Ensage.SDK.Menu
 
         private readonly IRendererManager renderer;
 
-        private readonly StyleRepository styleRepository;
-
         private readonly List<MenuEntry> rootMenus = new List<MenuEntry>();
+
+        private readonly StyleRepository styleRepository;
 
         private readonly ViewRepository viewRepository;
 
         private bool blockedLeftClick;
+
+        private MenuEntry dragMenuEntry;
+
+        private Vector2 dragStartPosition;
 
         private MenuBase lastHoverEntry;
 
@@ -72,7 +76,7 @@ namespace Ensage.SDK.Menu
 
             try
             {
-                Directory.CreateDirectory(this.configDirectory);
+                Directory.CreateDirectory(configDirectory);
             }
             catch (Exception e)
             {
@@ -86,20 +90,20 @@ namespace Ensage.SDK.Menu
         {
             get
             {
-                return this.lastHoverEntry;
+                return lastHoverEntry;
             }
 
             set
             {
-                if (this.lastHoverEntry != null)
+                if (lastHoverEntry != null)
                 {
-                    this.lastHoverEntry.IsHovered = false;
+                    lastHoverEntry.IsHovered = false;
                 }
 
-                this.lastHoverEntry = value;
-                if (this.lastHoverEntry != null)
+                lastHoverEntry = value;
+                if (lastHoverEntry != null)
                 {
-                    this.lastHoverEntry.IsHovered = true;
+                    lastHoverEntry.IsHovered = true;
                 }
             }
         }
@@ -113,13 +117,13 @@ namespace Ensage.SDK.Menu
         {
             get
             {
-                return this.position;
+                return position;
             }
 
             set
             {
-                this.position = value;
-                this.positionDirty = true;
+                position = value;
+                positionDirty = true;
             }
         }
 
@@ -139,18 +143,18 @@ namespace Ensage.SDK.Menu
 
             if (saveMenu)
             {
-                this.SaveMenu(menu);
+                SaveMenu(menu);
             }
 
-            return this.rootMenus.RemoveAll(x => x.DataContext == menu) != 0;
+            return rootMenus.RemoveAll(x => x.DataContext == menu) != 0;
         }
 
         public bool IsInsideMenu(Vector2 screenPosition)
         {
-            return this.Position.X <= screenPosition.X
-                   && this.Position.Y <= screenPosition.Y
-                   && screenPosition.X <= (this.Position.X + this.Size.X)
-                   && screenPosition.Y <= (this.Position.Y + this.Size.Y);
+            return Position.X <= screenPosition.X
+                && Position.Y <= screenPosition.Y
+                && screenPosition.X <= (Position.X + Size.X)
+                && screenPosition.Y <= (Position.Y + Size.Y);
         }
 
         public bool LoadMenu(object menu)
@@ -159,14 +163,14 @@ namespace Ensage.SDK.Menu
             {
                 var type = menu.GetType();
                 var assemblyName = type.Assembly.GetName().Name;
-                var savePath = Path.Combine(this.configDirectory, assemblyName);
+                var savePath = Path.Combine(configDirectory, assemblyName);
                 var file = Path.Combine(savePath, $"{type.FullName}.json");
                 if (!File.Exists(file))
                 {
                     return false;
                 }
 
-                var rootMenu = this.rootMenus.First(x => x.DataContext == menu);
+                var rootMenu = rootMenus.First(x => x.DataContext == menu);
                 var token = JToken.Parse(File.ReadAllText(file));
 
                 LoadLayer(rootMenu, token);
@@ -181,38 +185,38 @@ namespace Ensage.SDK.Menu
 
         public void OnDraw(object sender, EventArgs e)
         {
-            if (this.positionDirty)
+            if (positionDirty)
             {
                 // recalculate positions
-                var pos = this.Position;
-                foreach (var menuEntry in this.rootMenus)
+                var pos = Position;
+                foreach (var menuEntry in rootMenus)
                 {
-                    pos = this.UpdateMenuEntryPosition(menuEntry, pos);
+                    pos = UpdateMenuEntryPosition(menuEntry, pos);
                 }
 
-                this.positionDirty = false;
-                this.sizeDirty = true;
-            }
+                sizeDirty = true;
+                positionDirty = false;
+             }
 
-            if (this.sizeDirty)
+            if (sizeDirty)
             {
                 // recalculate size
-                this.CalculateMenuRenderSize(this.rootMenus);
-                this.Size = this.CalculateMenuTotalSize(this.rootMenus);
+                CalculateMenuRenderSize(rootMenus);
+                Size = CalculateMenuTotalSize(rootMenus);
 
                 // recalculate positions by rendersize
-                var pos = this.Position;
-                foreach (var menuEntry in this.rootMenus)
+                var pos = Position;
+                foreach (var menuEntry in rootMenus)
                 {
-                    pos = this.UpdateMenuEntryRenderPosition(menuEntry, pos);
+                    pos = UpdateMenuEntryRenderPosition(menuEntry, pos);
                 }
 
-                this.sizeDirty = false;
+                sizeDirty = false;
             }
 
-            foreach (var menuEntry in this.rootMenus)
+            foreach (var menuEntry in rootMenus)
             {
-                this.DrawMenuEntry(menuEntry);
+                DrawMenuEntry(menuEntry);
             }
         }
 
@@ -227,7 +231,7 @@ namespace Ensage.SDK.Menu
                 throw new Exception($"Missing attribute {nameof(MenuAttribute)}");
             }
 
-            if (this.rootMenus.Any(x => x.DataContext == menu))
+            if (rootMenus.Any(x => x.DataContext == menu))
             {
                 throw new ArgumentException($"{menu} is already registered");
             }
@@ -238,17 +242,17 @@ namespace Ensage.SDK.Menu
                 menuName = dataType.Name;
             }
 
-            var view = this.viewRepository.GetMenuView();
+            var view = viewRepository.GetMenuView();
 
-            var menuEntry = new MenuEntry(menuName, view, this.renderer, styleRepository, menu, null);
-            this.VisitInstance(menuEntry, menu);
+            var menuEntry = new MenuEntry(menuName, view, renderer, MenuConfig, menu, null);
+            VisitInstance(menuEntry, menu);
 
-            this.rootMenus.Add(menuEntry);
+            rootMenus.Add(menuEntry);
 
-            this.LoadMenu(menu);
+            LoadMenu(menu);
 
-            this.positionDirty = true;
-            this.sizeDirty = true;
+            positionDirty = true;
+            sizeDirty = true;
 
             return menuEntry;
         }
@@ -259,21 +263,28 @@ namespace Ensage.SDK.Menu
             {
                 var type = menu.GetType();
                 var assemblyName = type.Assembly.GetName().Name;
-                var savePath = Path.Combine(this.configDirectory, assemblyName);
+                var savePath = Path.Combine(configDirectory, assemblyName);
                 Directory.CreateDirectory(savePath);
 
                 var file = Path.Combine(savePath, $"{type.FullName}.json");
 
-                if (this.rootMenus.All(x => x.DataContext != menu))
+                if (rootMenus.All(x => x.DataContext != menu))
                 {
                     throw new Exception($"{menu} not registered as menu");
                 }
 
                 var settings = new JsonSerializerSettings
-                                   {
-                                       DefaultValueHandling = DefaultValueHandling.Include,
-                                       Converters = {new MenuStyleConverter(), new StringEnumConverter()}
-                                   };
+                {
+                    Formatting = Formatting.Indented,
+                    DefaultValueHandling = DefaultValueHandling.Include | DefaultValueHandling.Populate,
+                    Converters =
+                    {
+                        new MenuStyleConverter(styleRepository),
+                        new StringEnumConverter(),
+                    },
+                    NullValueHandling = NullValueHandling.Ignore,
+                    TypeNameHandling = TypeNameHandling.Auto,
+                };
                 JsonFactory.ToFile(file, menu, settings);
                 return true;
             }
@@ -286,31 +297,31 @@ namespace Ensage.SDK.Menu
 
         protected override void OnActivate()
         {
-            this.MenuConfig = new MenuConfig();
-            //MenuConfig.GeneralConfig.ActiveStyle = new Selection<IMenuStyle>(styleRepository.Styles.ToArray());
-            //MenuConfig.GeneralConfig.ActiveStyle.Value = styleRepository.DefaultMenuStyle;
+            MenuConfig = new MenuConfig();
+            MenuConfig.GeneralConfig.ActiveStyle = new Selection<IMenuStyle>(styleRepository.Styles.ToArray());
+            MenuConfig.GeneralConfig.ActiveStyle.Value = styleRepository.DefaultMenuStyle;
 
-            this.RegisterMenu(this.MenuConfig);
+            RegisterMenu(MenuConfig);
 
-            this.renderer.Draw += this.OnDraw;
-            this.input.MouseMove += this.OnMouseMove;
-            this.input.MouseClick += this.OnMouseClick;
+            renderer.Draw += OnDraw;
+            input.MouseMove += OnMouseMove;
+            input.MouseClick += OnMouseClick;
 
-            this.Position = new Vector2(200, 50); // TODO MenuConfig.Position
+            Position = new Vector2(200, 50); // TODO MenuConfig.Position
         }
 
         protected override void OnDeactivate()
         {
-            this.renderer.Draw -= this.OnDraw;
-            this.input.MouseMove -= this.OnMouseMove;
-            this.input.MouseClick -= this.OnMouseClick;
+            renderer.Draw -= OnDraw;
+            input.MouseMove -= OnMouseMove;
+            input.MouseClick -= OnMouseClick;
 
-            foreach (var menuEntry in this.rootMenus)
+            foreach (var menuEntry in rootMenus)
             {
-                this.SaveMenu(menuEntry.DataContext);
+                SaveMenu(menuEntry.DataContext);
             }
 
-            this.MenuConfig = null;
+            MenuConfig = null;
         }
 
         private static void LoadLayer(MenuEntry menu, JToken token)
@@ -353,7 +364,7 @@ namespace Ensage.SDK.Menu
                 var menuEntry = child as MenuEntry;
                 if (menuEntry != null)
                 {
-                    this.CalculateMenuRenderSize(menuEntry.Children);
+                    CalculateMenuRenderSize(menuEntry.Children);
                 }
 
                 var menuEntrySize = child.Size;
@@ -384,7 +395,7 @@ namespace Ensage.SDK.Menu
                 var menuEntry = entryList[i] as MenuEntry;
                 if (menuEntry != null)
                 {
-                    var childSize = this.CalculateMenuTotalSize(menuEntry.Children);
+                    var childSize = CalculateMenuTotalSize(menuEntry.Children);
                     menuEntry.TotalSize = childSize + new Vector2(firstSize.X, firstSize.Y * i);
 
                     totalSize.X = Math.Max(totalSize.X, menuEntry.TotalSize.X);
@@ -407,7 +418,7 @@ namespace Ensage.SDK.Menu
             // search next layers
             foreach (var entry in menuEntries)
             {
-                if (this.CollapseLayer(menuEntry, entry.Children.OfType<MenuEntry>().ToList()))
+                if (CollapseLayer(menuEntry, entry.Children.OfType<MenuEntry>().ToList()))
                 {
                     return true;
                 }
@@ -431,7 +442,7 @@ namespace Ensage.SDK.Menu
 
             foreach (var menu in entry.Children.OfType<MenuEntry>())
             {
-                this.DrawMenuEntry(menu);
+                DrawMenuEntry(menu);
             }
 
             foreach (var item in entry.Children.OfType<MenuItemEntry>())
@@ -462,7 +473,7 @@ namespace Ensage.SDK.Menu
             MenuEntry hoveredEntry = null;
             foreach (var menu in entry.Children.OfType<MenuEntry>())
             {
-                if (this.OnClickCheck(menu, mousePosition) != null)
+                if (OnClickCheck(menu, mousePosition) != null)
                 {
                     hoveredEntry = menu;
                     break;
@@ -514,7 +525,7 @@ namespace Ensage.SDK.Menu
 
             foreach (var menu in entry.Children.OfType<MenuEntry>())
             {
-                var hoveredEntry = this.OnInsideCheck(menu, mousePosition);
+                var hoveredEntry = OnInsideCheck(menu, mousePosition);
                 if (hoveredEntry != null)
                 {
                     return hoveredEntry;
@@ -545,81 +556,82 @@ namespace Ensage.SDK.Menu
             if ((e.Buttons & MouseButtons.LeftUp) == MouseButtons.LeftUp)
             {
                 // handle drag and drop
-                if (this.dragMenuEntry != null)
+                if (dragMenuEntry != null)
                 {
                     // TODO:
-                    this.dragMenuEntry = null;
+                    dragMenuEntry = null;
                 }
 
-                if (this.blockedLeftClick)
+                if (blockedLeftClick)
                 {
                     e.Process = false;
-                    this.blockedLeftClick = false;
+                    blockedLeftClick = false;
                 }
+
                 return;
             }
 
-            if (!this.IsVisible || !this.IsInsideMenu(e.Position))
+            if (!IsVisible || !IsInsideMenu(e.Position))
             {
                 return;
             }
 
             // check for click
-            if (this.LastHoverEntry != null)
+            if (LastHoverEntry != null)
             {
-                this.LastHoverEntry.OnClick(e.Position);
-                if (this.LastHoverEntry is MenuEntry menuEntry)
+                LastHoverEntry.OnClick(e.Position);
+                if (LastHoverEntry is MenuEntry menuEntry)
                 {
                     if (!menuEntry.IsCollapsed)
                     {
-                        this.CollapseLayer(menuEntry, this.rootMenus);
+                        CollapseLayer(menuEntry, rootMenus);
                     }
                 }
 
                 e.Process = false;
-                this.blockedLeftClick = true;
+                blockedLeftClick = true;
             }
         }
 
         private void OnMouseMove(object sender, MouseEventArgs e)
         {
-            if (!this.IsVisible || !this.IsInsideMenu(e.Position))
+            if (!IsVisible || !IsInsideMenu(e.Position))
             {
-                if (this.LastHoverEntry != null)
+                if (LastHoverEntry != null)
                 {
-                    Log.Info($"MouseLeave {this.LastHoverEntry}");
-                    this.LastHoverEntry = null;
+                    Log.Info($"MouseLeave {LastHoverEntry}");
+                    LastHoverEntry = null;
                 }
 
                 return;
             }
 
-            if (this.dragMenuEntry != null)
+            if (dragMenuEntry != null)
             {
                 return;
             }
 
             // check for mouse hover
-            foreach (var menuEntry in this.rootMenus)
+            foreach (var menuEntry in rootMenus)
             {
-                var hoverItem = this.OnInsideCheck(menuEntry, e.Position);
+                var hoverItem = OnInsideCheck(menuEntry, e.Position);
                 if (hoverItem != null)
                 {
-                    if (this.LastHoverEntry != hoverItem)
+                    if (LastHoverEntry != hoverItem)
                     {
-                        if (this.LastHoverEntry != null)
+                        if (LastHoverEntry != null)
                         {
-                            Log.Info($"MouseLeave {this.LastHoverEntry}");
+                            Log.Info($"MouseLeave {LastHoverEntry}");
                         }
 
                         Log.Info($"MouseHover {hoverItem}");
-                        this.LastHoverEntry = hoverItem;
+                        LastHoverEntry = hoverItem;
 
                         // check for drag and drop of menu entries (possible to swap positions)
-                        if ((e.Buttons & MouseButtons.Left) != 0 && this.LastHoverEntry is MenuEntry hoverEntry && this.LastHoverEntry.DataContext != this.MenuConfig)
+                        if ((e.Buttons & MouseButtons.Left) != 0 && LastHoverEntry is MenuEntry hoverEntry && LastHoverEntry.DataContext != MenuConfig)
                         {
-                            this.dragStartPosition = e.Position;
-                            this.dragMenuEntry = hoverEntry;
+                            dragStartPosition = e.Position;
+                            dragMenuEntry = hoverEntry;
                         }
                     }
 
@@ -627,16 +639,12 @@ namespace Ensage.SDK.Menu
                 }
             }
 
-            if (this.LastHoverEntry != null)
+            if (LastHoverEntry != null)
             {
-                Log.Info($"MouseLeave {this.LastHoverEntry}");
-                this.LastHoverEntry = null;
+                Log.Info($"MouseLeave {LastHoverEntry}");
+                LastHoverEntry = null;
             }
         }
-
-        private Vector2 dragStartPosition;
-
-        private MenuEntry dragMenuEntry;
 
         private Vector2 UpdateMenuEntryPosition(MenuEntry entry, Vector2 pos)
         {
@@ -645,7 +653,7 @@ namespace Ensage.SDK.Menu
             var currentPos = pos + new Vector2(entry.Size.X, 0);
             foreach (var menu in entry.Children.OfType<MenuEntry>())
             {
-                currentPos = this.UpdateMenuEntryPosition(menu, currentPos);
+                currentPos = UpdateMenuEntryPosition(menu, currentPos);
             }
 
             foreach (var item in entry.Children.OfType<MenuItemEntry>())
@@ -664,7 +672,7 @@ namespace Ensage.SDK.Menu
             var currentPos = pos + new Vector2(entry.RenderSize.X, 0);
             foreach (var menu in entry.Children.OfType<MenuEntry>())
             {
-                currentPos = this.UpdateMenuEntryRenderPosition(menu, currentPos);
+                currentPos = UpdateMenuEntryRenderPosition(menu, currentPos);
             }
 
             foreach (var item in entry.Children.OfType<MenuItemEntry>())
@@ -678,8 +686,8 @@ namespace Ensage.SDK.Menu
 
         private void VisitInstance(MenuEntry parent, object instance)
         {
-            this.VisitMenu(parent, instance);
-            this.VisitItem(parent, instance);
+            VisitMenu(parent, instance);
+            VisitItem(parent, instance);
         }
 
         private void VisitItem(MenuEntry parent, object instance)
@@ -705,8 +713,8 @@ namespace Ensage.SDK.Menu
                     menuItemName = propertyInfo.Name;
                 }
 
-                var view = this.viewRepository.GetView(propertyInfo.PropertyType);
-                var menuItemEntry = new MenuItemEntry(menuItemName, view, this.renderer, styleRepository, instance, propertyInfo);
+                var view = viewRepository.GetView(propertyInfo.PropertyType);
+                var menuItemEntry = new MenuItemEntry(menuItemName, view, renderer, MenuConfig, instance, propertyInfo);
 
                 var tooltip = propertyInfo.GetCustomAttribute<TooltipAttribute>();
                 if (tooltip != null)
@@ -741,8 +749,8 @@ namespace Ensage.SDK.Menu
                     menuItemName = type.Name;
                 }
 
-                var menuItemEntry = new MenuEntry(menuItemName, this.viewRepository.GetMenuView(), this.renderer, styleRepository, propertyValue, propertyInfo);
-                this.VisitInstance(menuItemEntry, propertyValue);
+                var menuItemEntry = new MenuEntry(menuItemName, viewRepository.GetMenuView(), renderer, MenuConfig, propertyValue, propertyInfo);
+                VisitInstance(menuItemEntry, propertyValue);
 
                 parent.AddChild(menuItemEntry);
             }

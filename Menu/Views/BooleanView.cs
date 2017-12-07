@@ -24,7 +24,7 @@ namespace Ensage.SDK.Menu.Views
             var pos = context.Position;
             var size = context.RenderSize;
 
-            var activeStyle = context.StyleRepository.ActiveStyle;
+            var activeStyle = context.MenuConfig.GeneralConfig.ActiveStyle.Value;
             var styleConfig = activeStyle.StyleConfig;
             var border = styleConfig.Border;
 
@@ -54,7 +54,7 @@ namespace Ensage.SDK.Menu.Views
         public Vector2 GetSize(MenuBase context)
         {
             var totalSize = Vector2.Zero;
-            var styleConfig = context.StyleRepository.ActiveStyle.StyleConfig;
+            var styleConfig = context.MenuConfig.GeneralConfig.ActiveStyle.Value.StyleConfig;
 
             var border = styleConfig.Border;
             totalSize.X += border.Thickness[0] + border.Thickness[2];
@@ -62,7 +62,7 @@ namespace Ensage.SDK.Menu.Views
 
             var font = styleConfig.Font;
             var fontSize = context.Renderer.MessureText(context.Name, font.Size, font.Family);
-            totalSize.X += styleConfig.LineWidth + fontSize.X + styleConfig.TextSpacing + styleConfig.ArrowSize.X * 2;
+            totalSize.X += styleConfig.LineWidth + fontSize.X + styleConfig.TextSpacing + (styleConfig.ArrowSize.X * 2);
             totalSize.Y += Math.Max(fontSize.Y, styleConfig.ArrowSize.Y);
             return totalSize;
         }

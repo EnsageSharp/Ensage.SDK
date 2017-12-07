@@ -6,6 +6,7 @@ namespace Ensage.SDK.Menu
 {
     using System.Reflection;
 
+    using Ensage.SDK.Menu.Config;
     using Ensage.SDK.Menu.Views;
     using Ensage.SDK.Renderer;
 
@@ -15,11 +16,11 @@ namespace Ensage.SDK.Menu
 
     public abstract class MenuBase
     {
-        public StyleRepository StyleRepository { get; }
+        public MenuConfig MenuConfig { get; }
 
-        protected MenuBase(string name, IView view, IRenderer renderer, StyleRepository styleRepository, object instance, [CanBeNull] PropertyInfo propertyInfo)
+        protected MenuBase(string name, IView view, IRenderer renderer, MenuConfig menuConfig, object instance, [CanBeNull] PropertyInfo propertyInfo)
         {
-            this.StyleRepository = styleRepository;
+            this.MenuConfig = menuConfig;
             this.Name = name;
             this.View = view;
             this.Renderer = renderer;

@@ -13,26 +13,6 @@ namespace Ensage.SDK.Menu
     [Export]
     public class StyleRepository
     {
-        private IMenuStyle activeStyle;
-
-        public IMenuStyle ActiveStyle
-        {
-            get
-            {
-                if (activeStyle == null)
-                {
-                    return DefaultMenuStyle;
-                }
-
-                return activeStyle;
-            }
-
-            set
-            {
-                activeStyle = value;
-            }
-        }
-
         [Import]
         public DefaultMenuStyle DefaultMenuStyle { get; set; }
 

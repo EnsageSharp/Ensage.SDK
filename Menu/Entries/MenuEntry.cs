@@ -8,6 +8,7 @@ namespace Ensage.SDK.Menu.Entries
     using System.Linq;
     using System.Reflection;
 
+    using Ensage.SDK.Menu.Config;
     using Ensage.SDK.Menu.Views;
     using Ensage.SDK.Renderer;
 
@@ -23,8 +24,8 @@ namespace Ensage.SDK.Menu.Entries
 
         private bool isVisible = true;
 
-        public MenuEntry(string name, IView view, IRenderer renderer, StyleRepository styleRepository, object instance, [CanBeNull] PropertyInfo propertyInfo)
-            : base(name, view, renderer, styleRepository, instance, propertyInfo)
+        public MenuEntry(string name, IView view, IRenderer renderer, MenuConfig menuConfig, object instance, [CanBeNull] PropertyInfo propertyInfo)
+            : base(name, view, renderer, menuConfig, instance, propertyInfo)
         {
         }
 

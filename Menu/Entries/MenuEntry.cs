@@ -37,7 +37,7 @@ namespace Ensage.SDK.Menu.Entries
         }
 
         /// <summary>
-        ///     Gets a value indicating whether the menu entry is collapsed and if its children are visible.
+        ///     Gets or sets a value indicating whether the menu entry is collapsed and if its children are visible.
         /// </summary>
         public bool IsCollapsed
         {
@@ -98,7 +98,7 @@ namespace Ensage.SDK.Menu.Entries
 
         public override void OnClick(Vector2 clickPosition)
         {
-            this.IsCollapsed = !this.IsCollapsed;
+            View.OnClick(this, clickPosition);
         }
 
         public void RemoveChild(MenuBase child)

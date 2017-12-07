@@ -59,8 +59,7 @@ namespace Ensage.SDK.Renderer
 
         public Vector2 MessureText(string text, float fontSize = 13, string fontFamily = "Calibri")
         {
-            return Vector2.Zero;
-           
+            return active.MessureText(text, fontSize, fontFamily);
         }
 
         public void DrawCircle(Vector2 center, float radius, Color color, float width = 1.0f)

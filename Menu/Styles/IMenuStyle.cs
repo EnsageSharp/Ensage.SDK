@@ -48,6 +48,8 @@ namespace Ensage.SDK.Menu.Styles
   
     public interface IMenuStyle
     {
+        StyleConfig StyleConfig { get; }
+
         string ArrowLeft { get; }
 
         string ArrowLeftHover { get; }

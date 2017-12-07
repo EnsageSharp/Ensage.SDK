@@ -7,8 +7,8 @@
 
     public class GeneralConfig
     {
-        [Item("Style")]
-        public Selection<IMenuStyle> ActiveStyle { get; set; }
+       // [Item("Style")]
+        //public Selection<IMenuStyle> ActiveStyle { get; set; }
 
         [Item("Use menu animations")]
         [Tooltip("Enable different animations to the menu")]

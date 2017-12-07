@@ -191,6 +191,7 @@ namespace Ensage.SDK.Menu
                 }
 
                 this.positionDirty = false;
+                this.sizeDirty = true;
             }
 
             if (this.sizeDirty)
@@ -198,6 +199,13 @@ namespace Ensage.SDK.Menu
                 // recalculate size
                 this.CalculateMenuRenderSize(this.rootMenus);
                 this.Size = this.CalculateMenuTotalSize(this.rootMenus);
+
+                // recalculate positions by rendersize
+                var pos = this.Position;
+                foreach (var menuEntry in this.rootMenus)
+                {
+                    pos = this.UpdateMenuEntryRenderPosition(menuEntry, pos);
+                }
 
                 this.sizeDirty = false;
             }
@@ -279,8 +287,8 @@ namespace Ensage.SDK.Menu
         protected override void OnActivate()
         {
             this.MenuConfig = new MenuConfig();
-            MenuConfig.GeneralConfig.ActiveStyle = new Selection<IMenuStyle>(styleRepository.Styles.ToArray());
-            MenuConfig.GeneralConfig.ActiveStyle.Value = styleRepository.DefaultMenuStyle;
+            //MenuConfig.GeneralConfig.ActiveStyle = new Selection<IMenuStyle>(styleRepository.Styles.ToArray());
+            //MenuConfig.GeneralConfig.ActiveStyle.Value = styleRepository.DefaultMenuStyle;
 
             this.RegisterMenu(this.MenuConfig);
 
@@ -647,6 +655,25 @@ namespace Ensage.SDK.Menu
             }
 
             return entry.Position + new Vector2(0, entry.Size.Y);
+        }
+
+        private Vector2 UpdateMenuEntryRenderPosition(MenuEntry entry, Vector2 pos)
+        {
+            entry.Position = pos;
+
+            var currentPos = pos + new Vector2(entry.RenderSize.X, 0);
+            foreach (var menu in entry.Children.OfType<MenuEntry>())
+            {
+                currentPos = this.UpdateMenuEntryRenderPosition(menu, currentPos);
+            }
+
+            foreach (var item in entry.Children.OfType<MenuItemEntry>())
+            {
+                item.Position = currentPos;
+                currentPos += new Vector2(0, item.RenderSize.Y);
+            }
+
+            return entry.Position + new Vector2(0, entry.RenderSize.Y);
         }
 
         private void VisitInstance(MenuEntry parent, object instance)

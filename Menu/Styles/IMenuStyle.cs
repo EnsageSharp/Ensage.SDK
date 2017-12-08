@@ -50,6 +50,8 @@ namespace Ensage.SDK.Menu.Styles
     {
         StyleConfig StyleConfig { get; }
 
+        string TitleBar { get; }
+
         string ArrowLeft { get; }
 
         string ArrowLeftHover { get; }

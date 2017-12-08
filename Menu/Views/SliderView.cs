@@ -7,6 +7,7 @@ namespace Ensage.SDK.Menu.Views
     using System;
     using System.Collections.Generic;
 
+    using Ensage.SDK.Input;
     using Ensage.SDK.Menu.Attributes;
     using Ensage.SDK.Menu.Entries;
     using Ensage.SDK.Menu.Items;
@@ -42,7 +43,7 @@ namespace Ensage.SDK.Menu.Views
 
             pos = context.Position;
             pos.X += ((float)(propValue.Value - propValue.MinValue) / (propValue.MaxValue - propValue.MinValue)) * size.X;
-            context.Renderer.DrawLine(pos, pos + new Vector2(0, size.Y), styleConfig.SliderStyle.LineColor, styleConfig.SliderStyle.LineWidth);
+            context.Renderer.DrawLine(pos, pos + new Vector2(0, size.Y), styleConfig.Slider.LineColor, styleConfig.Slider.LineWidth);
         }
 
         public Vector2 GetSize(MenuBase context)
@@ -65,21 +66,27 @@ namespace Ensage.SDK.Menu.Views
             return totalSize;
         }
 
-        public void OnClick(MenuBase context, Vector2 clickPosition)
+        public bool OnClick(MenuBase context, MouseButtons buttons, Vector2 clickPosition)
         {
-            var pos = context.Position;
-            var size = context.RenderSize;
-            
-            var styleConfig = context.MenuConfig.GeneralConfig.ActiveStyle.Value.StyleConfig;
-
-            var item = (MenuItemEntry)context;
-            var propValue = item.PropertyBinding.GetValue<Slider>();
-
-            float percentage = (clickPosition.X - pos.X) / size.X;
-            if (percentage >= 0 && percentage <= 1f)
+            if ((buttons & MouseButtons.Left) == MouseButtons.Left)
             {
-                propValue.Value = (int)Math.Round(percentage * (propValue.MaxValue - propValue.MinValue)) + propValue.MinValue;
+                var pos = context.Position;
+                var size = context.RenderSize;
+
+                var styleConfig = context.MenuConfig.GeneralConfig.ActiveStyle.Value.StyleConfig;
+
+                var item = (MenuItemEntry)context;
+                var propValue = item.PropertyBinding.GetValue<Slider>();
+
+                float percentage = (clickPosition.X - pos.X) / size.X;
+                if (percentage >= 0 && percentage <= 1f)
+                {
+                    propValue.Value = (int)Math.Round(percentage * (propValue.MaxValue - propValue.MinValue)) + propValue.MinValue;
+                    return true;
+                }
             }
+
+            return false;
         }
     }
 }

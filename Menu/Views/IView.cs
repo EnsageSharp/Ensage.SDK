@@ -4,6 +4,8 @@
 
 namespace Ensage.SDK.Menu.Views
 {
+    using Ensage.SDK.Input;
+
     using SharpDX;
 
     public interface IView
@@ -12,6 +14,6 @@ namespace Ensage.SDK.Menu.Views
 
         Vector2 GetSize(MenuBase context);
 
-        void OnClick(MenuBase context, Vector2 clickPosition);
+        bool OnClick(MenuBase context, MouseButtons buttons, Vector2 clickPosition);
     }
 }

@@ -8,6 +8,8 @@ namespace Ensage.SDK.Menu.Config
 
     using Ensage.SDK.Menu.Items;
 
+    using SharpDX;
+
     [Menu("SDKMenu")]
     public class MenuConfig
     {
@@ -19,6 +21,9 @@ namespace Ensage.SDK.Menu.Config
                 new KeyValuePair<string, bool>("menuStyle/default/leftHover", false), new KeyValuePair<string, bool>("menuStyle/default/rightHover", true)
             };
             Picker = new PicturePicker(args);
+
+
+            PriorityChanger = new PriorityChanger(args);
         }
 
         [Menu("General Settings")]
@@ -27,10 +32,16 @@ namespace Ensage.SDK.Menu.Config
         [Menu("Hacks")]
         public HackConfig HackConfig { get; set; } = new HackConfig();
 
+        public Vector2 MenuPosition { get; set; } = new Vector2(200, 50);
+
         [Item("Test Picker")]
         public PicturePicker Picker { get; set; }
 
         [Item]
         public string TestString { get; set; } = "hello world!";
+
+
+        [Item("Test PriorityChanger")]
+        public PriorityChanger PriorityChanger { get; set; }
     }
 }

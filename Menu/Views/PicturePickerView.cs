@@ -1,25 +1,24 @@
-﻿// <copyright file="StringView.cs" company="Ensage">
+﻿// <copyright file="PicturePickerView.cs" company="Ensage">
 //    Copyright (c) 2017 Ensage.
 // </copyright>
 
 namespace Ensage.SDK.Menu.Views
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq;
 
+    using Ensage.SDK.Input;
     using Ensage.SDK.Menu.Attributes;
     using Ensage.SDK.Menu.Entries;
+    using Ensage.SDK.Menu.Items;
 
     using SharpDX;
-
-    using Color = System.Drawing.Color;
-    using Ensage.SDK.Menu.Items;
 
     [ExportView(typeof(PicturePicker))]
     public class PicturePickerView : IView
     {
- 
-        public void Draw(MenuBase context)
+        public virtual void Draw(MenuBase context)
         {
             var item = (MenuItemEntry)context;
             var propValue = item.PropertyBinding.GetValue<PicturePicker>();
@@ -38,19 +37,19 @@ namespace Ensage.SDK.Menu.Views
             var font = styleConfig.Font;
             context.Renderer.DrawText(pos, context.Name, font.Color, font.Size, font.Family);
 
-            var picturePickerStyle = styleConfig.PicturePickerStyle;
-            pos.X = context.Position.X + size.X - border.Thickness[2] - picturePickerStyle.PictureSize.X - picturePickerStyle.LineWidth;
+            var picturePickerStyle = styleConfig.PicturePicker;
+            pos.X = (context.Position.X + size.X) - border.Thickness[2] - picturePickerStyle.PictureSize.X - picturePickerStyle.LineWidth;
             foreach (var state in propValue.PictureStates.Reverse())
             {
                 var rect = new RectangleF(pos.X, pos.Y, picturePickerStyle.PictureSize.X, picturePickerStyle.PictureSize.Y);
                 context.Renderer.DrawTexture(state.Key, rect);
                 context.Renderer.DrawRectangle(rect, state.Value ? picturePickerStyle.SelectedColor : picturePickerStyle.Color, picturePickerStyle.LineWidth);
-                
-                pos.X -= (picturePickerStyle.PictureSize.X + picturePickerStyle.LineWidth * 2);
+
+                pos.X -= picturePickerStyle.PictureSize.X + (picturePickerStyle.LineWidth * 2);
             }
         }
 
-        public Vector2 GetSize(MenuBase context)
+        public virtual Vector2 GetSize(MenuBase context)
         {
             var totalSize = Vector2.Zero;
             var styleConfig = context.MenuConfig.GeneralConfig.ActiveStyle.Value.StyleConfig;
@@ -62,16 +61,33 @@ namespace Ensage.SDK.Menu.Views
             var font = styleConfig.Font;
             var fontSize = context.Renderer.MessureText(context.Name, font.Size, font.Family);
             totalSize.X += styleConfig.LineWidth + fontSize.X + styleConfig.ArrowSize.X + (styleConfig.TextSpacing * 3);
-            totalSize.Y += Math.Max(Math.Max(fontSize.Y, styleConfig.ArrowSize.Y), styleConfig.PicturePickerStyle.PictureSize.Y);
+            totalSize.Y += Math.Max(Math.Max(fontSize.Y, styleConfig.ArrowSize.Y), styleConfig.PicturePicker.PictureSize.Y);
 
             var item = (MenuItemEntry)context;
             var propValue = item.PropertyBinding.GetValue<PicturePicker>();
-            totalSize.X += propValue.PictureStates.Count * styleConfig.PicturePickerStyle.PictureSize.X;
+            totalSize.X += propValue.PictureStates.Count * styleConfig.PicturePicker.PictureSize.X;
 
             return totalSize;
         }
 
-        public void OnClick(MenuBase context, Vector2 clickPosition)
+        public virtual bool OnClick(MenuBase context, MouseButtons buttons, Vector2 clickPosition)
+        {
+            if ((buttons & MouseButtons.LeftUp) == MouseButtons.LeftUp)
+            {
+                var state = GetItemUnderMouse(context, clickPosition);
+                if (state.HasValue)
+                {
+                    var item = (MenuItemEntry)context;
+                    var propValue = item.PropertyBinding.GetValue<PicturePicker>();
+                    propValue.PictureStates[state.Value.Key] = !state.Value.Value;
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        protected KeyValuePair<string, bool>? GetItemUnderMouse(MenuBase context, Vector2 mousePos)
         {
             var item = (MenuItemEntry)context;
             var propValue = item.PropertyBinding.GetValue<PicturePicker>();
@@ -82,21 +98,21 @@ namespace Ensage.SDK.Menu.Views
             var activeStyle = context.MenuConfig.GeneralConfig.ActiveStyle.Value;
             var styleConfig = activeStyle.StyleConfig;
             var border = styleConfig.Border;
-            var picturePickerStyle = styleConfig.PicturePickerStyle;
+            var picturePickerStyle = styleConfig.PicturePicker;
 
             pos.X += size.X - border.Thickness[2] - picturePickerStyle.PictureSize.X - picturePickerStyle.LineWidth;
             foreach (var state in propValue.PictureStates.Reverse())
             {
                 var testRect = new RectangleF(pos.X, pos.Y, picturePickerStyle.PictureSize.X + (picturePickerStyle.LineWidth * 2), size.Y);
-                if (testRect.Contains(clickPosition))
+                if (testRect.Contains(mousePos))
                 {
-                    propValue.PictureStates[state.Key] = !state.Value;
-                    return;
+                    return state;
                 }
 
-                pos.X -= (picturePickerStyle.PictureSize.X + picturePickerStyle.LineWidth * 2);
+                pos.X -= picturePickerStyle.PictureSize.X + (picturePickerStyle.LineWidth * 2);
             }
-           
+
+            return null;
         }
     }
 }

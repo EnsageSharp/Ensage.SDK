@@ -46,8 +46,20 @@ namespace Ensage.SDK.Menu.Styles
         public Color SelectedColor { get; set; } = Color.GreenYellow;
     }
 
+    public class TitleBarStyle
+    {
+        public BorderStyle Border = new BorderStyle();
+
+        public FontStyle Font = new FontStyle();
+    }
+
     public class StyleConfig
     {
+        /// <summary>
+        /// Gets or sets the style of the title bar.
+        /// </summary>
+        public TitleBarStyle TitleBar = new TitleBarStyle();
+
         /// <summary>
         ///     Gets or sets the arrow size of the menu entries.
         /// </summary>
@@ -74,9 +86,9 @@ namespace Ensage.SDK.Menu.Styles
         public float LineWidth { get; set; } = 3;
 
         /// <summary>
-        ///     Gets or sets the style of <see cref="PicturePicker" /> UI element.
+        ///     Gets or sets the style of <see cref="Items.PicturePicker" /> UI element.
         /// </summary>
-        public PicturePickerStyle PicturePickerStyle { get; set; } = new PicturePickerStyle();
+        public PicturePickerStyle PicturePicker { get; set; } = new PicturePickerStyle();
 
         /// <summary>
         ///     Gets or sets the color for selected menu items.
@@ -84,9 +96,9 @@ namespace Ensage.SDK.Menu.Styles
         public Color SelectedLineColor { get; set; } = Color.DarkOrange;
 
         /// <summary>
-        ///     Gets or sets the style of the <see cref="Slider" /> UI element.
+        ///     Gets or sets the style of the <see cref="Items.Slider" /> UI element.
         /// </summary>
-        public SliderStyle SliderStyle { get; set; } = new SliderStyle();
+        public SliderStyle Slider { get; set; } = new SliderStyle();
 
         /// <summary>
         ///     Gets or sets the size of the space between the menu text and the content following.

@@ -7,6 +7,7 @@ namespace Ensage.SDK.Menu.Views
     using System;
 
     using Ensage.SDK.Helpers;
+    using Ensage.SDK.Input;
     using Ensage.SDK.Menu.Attributes;
     using Ensage.SDK.Menu.Entries;
 
@@ -67,12 +68,15 @@ namespace Ensage.SDK.Menu.Views
             return totalSize;
         }
 
-        public void OnClick(MenuBase context, Vector2 clickPosition)
+        public bool OnClick(MenuBase context, MouseButtons buttons, Vector2 clickPosition)
         {
-            if (context is MenuItemEntry item)
+            if ((buttons & MouseButtons.LeftUp) == MouseButtons.LeftUp && context is MenuItemEntry item)
             {
                 item.Value = !item.PropertyBinding.GetValue<bool>();
+                return true;
             }
+
+            return false;
         }
     }
 }

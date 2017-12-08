@@ -22,6 +22,7 @@ namespace Ensage.SDK.Menu.Styles
         public DefaultMenuStyle([Import] IRendererManager renderer)
         {
             renderer.TextureManager.LoadFromResource(Menu, @"MenuStyle.default_transparent.menubg1.png");
+            renderer.TextureManager.LoadFromResource(TitleBar, @"MenuStyle.default_transparent.itembg1.png");
             renderer.TextureManager.LoadFromResource(Item, @"MenuStyle.default_transparent.itembg1.png");
             renderer.TextureManager.LoadFromResource(ArrowLeft, @"MenuStyle.default_transparent.arrowleft.png");
             renderer.TextureManager.LoadFromResource(ArrowLeftHover, @"MenuStyle.default_transparent.arrowlefthover.png");
@@ -30,9 +31,14 @@ namespace Ensage.SDK.Menu.Styles
             renderer.TextureManager.LoadFromResource(Checked, @"MenuStyle.default_transparent.circleshadow.png");
             renderer.TextureManager.LoadFromResource(Unchecked, @"MenuStyle.default_transparent.circleshadowgray.png");
             renderer.TextureManager.LoadFromResource(Slider, @"MenuStyle.default_transparent.sliderbgon.png");
+
+            StyleConfig.TitleBar.Font.Size = 13;
+            StyleConfig.TitleBar.Border.Thickness = new Vector4(30, 2, 30, 2);
         }
 
         public StyleConfig StyleConfig { get; } = new StyleConfig();
+
+        public string TitleBar { get; } = "menuStyle/default/titlebar";
 
         public string ArrowLeft { get; } = "menuStyle/default/left";
 

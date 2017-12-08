@@ -6,6 +6,7 @@ namespace Ensage.SDK.Menu.Views
 {
     using System;
 
+    using Ensage.SDK.Input;
     using Ensage.SDK.Menu.Attributes;
     using Ensage.SDK.Menu.Entries;
 
@@ -61,9 +62,9 @@ namespace Ensage.SDK.Menu.Views
             return totalSize;
         }
 
-        public void OnClick(MenuBase context, Vector2 clickPosition)
+        public bool OnClick(MenuBase context, MouseButtons buttons, Vector2 clickPosition)
         {
-            
+            return false;
         }
     }
 }

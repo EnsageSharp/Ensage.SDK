@@ -6,6 +6,7 @@ namespace Ensage.SDK.Menu.Entries
 {
     using System.Reflection;
 
+    using Ensage.SDK.Input;
     using Ensage.SDK.Menu.Config;
     using Ensage.SDK.Menu.Views;
     using Ensage.SDK.Persistence;
@@ -43,9 +44,9 @@ namespace Ensage.SDK.Menu.Entries
             this.View.Draw(this);
         }
 
-        public override void OnClick(Vector2 clickPosition)
+        public override void OnClick(MouseButtons buttons, Vector2 clickPosition)
         {
-            this.View.OnClick(this, clickPosition);
+            this.View.OnClick(this, buttons, clickPosition);
         }
     }
 }

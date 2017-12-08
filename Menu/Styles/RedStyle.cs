@@ -23,6 +23,7 @@ namespace Ensage.SDK.Menu.Styles
         {
             renderer.TextureManager.LoadFromResource(Menu, @"MenuStyle.darkred.menubg1.png");
             renderer.TextureManager.LoadFromResource(Item, @"MenuStyle.darkred.itembg1.png");
+            renderer.TextureManager.LoadFromResource(TitleBar, @"MenuStyle.darkred.itembg1.png");
             renderer.TextureManager.LoadFromResource(ArrowLeft, @"MenuStyle.darkred.arrowleft.png");
             renderer.TextureManager.LoadFromResource(ArrowLeftHover, @"MenuStyle.darkred.arrowlefthover.png");
             renderer.TextureManager.LoadFromResource(ArrowRight, @"MenuStyle.darkred.arrowright.png");
@@ -45,6 +46,8 @@ namespace Ensage.SDK.Menu.Styles
         public string ArrowRightHover { get; } = "menuStyle/darkred/rightHover";
 
         public string Checked { get; } = "menuStyle/darkred/checked";
+
+        public string TitleBar { get; } = "menuStyle/darkred/titlebar";
 
         public string Item { get; } = "menuStyle/darkred/item";
 

@@ -8,6 +8,7 @@ namespace Ensage.SDK.Menu.Entries
     using System.Linq;
     using System.Reflection;
 
+    using Ensage.SDK.Input;
     using Ensage.SDK.Menu.Config;
     using Ensage.SDK.Menu.Views;
     using Ensage.SDK.Renderer;
@@ -97,9 +98,9 @@ namespace Ensage.SDK.Menu.Entries
                    && position.Y <= (this.Position.Y + this.TotalSize.Y);
         }
 
-        public override void OnClick(Vector2 clickPosition)
+        public override void OnClick(MouseButtons buttons, Vector2 clickPosition)
         {
-            View.OnClick(this, clickPosition);
+            View.OnClick(this, buttons, clickPosition);
         }
 
         public void RemoveChild(MenuBase child)

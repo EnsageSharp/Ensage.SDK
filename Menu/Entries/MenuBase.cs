@@ -6,6 +6,7 @@ namespace Ensage.SDK.Menu
 {
     using System.Reflection;
 
+    using Ensage.SDK.Input;
     using Ensage.SDK.Menu.Config;
     using Ensage.SDK.Menu.Views;
     using Ensage.SDK.Renderer;
@@ -70,7 +71,7 @@ namespace Ensage.SDK.Menu
                    && screenPosition.Y <= (this.Position.Y + this.RenderSize.Y);
         }
 
-        public abstract void OnClick(Vector2 clickPosition);
+        public abstract void OnClick(MouseButtons buttons, Vector2 clickPosition);
 
         public override string ToString()
         {

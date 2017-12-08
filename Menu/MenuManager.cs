@@ -27,7 +27,6 @@ namespace Ensage.SDK.Menu
     using Newtonsoft.Json.Converters;
     using Newtonsoft.Json.Linq;
 
-    using PlaySharp.Toolkit.Helper;
     using PlaySharp.Toolkit.Helper.Annotations;
     using PlaySharp.Toolkit.Logging;
 
@@ -39,7 +38,7 @@ namespace Ensage.SDK.Menu
 
         public MenuSerializer(params JsonConverter[] converters)
         {
-            this.Settings = new JsonSerializerSettings
+            Settings = new JsonSerializerSettings
             {
                 Formatting = Formatting.Indented,
                 DefaultValueHandling = DefaultValueHandling.Include | DefaultValueHandling.Populate,
@@ -48,8 +47,8 @@ namespace Ensage.SDK.Menu
                 Converters = converters
             };
 
-            this.JsonSerializer = JsonSerializer.Create(this.Settings);
-            this.ConfigDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Config", "game");
+            JsonSerializer = JsonSerializer.Create(Settings);
+            ConfigDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Config", "game");
             try
             {
                 Directory.CreateDirectory(ConfigDirectory);
@@ -70,7 +69,7 @@ namespace Ensage.SDK.Menu
         {
             var type = dataContext.GetType();
             var assemblyName = type.Assembly.GetName().Name;
-            var dir = Path.Combine(this.ConfigDirectory, assemblyName);
+            var dir = Path.Combine(ConfigDirectory, assemblyName);
             var file = Path.Combine(dir, $"{type.FullName}.json");
 
             if (!File.Exists(file))
@@ -87,9 +86,9 @@ namespace Ensage.SDK.Menu
         {
             var type = dataContext.GetType();
             var assemblyName = type.Assembly.GetName().Name;
-            var dir = Path.Combine(this.ConfigDirectory, assemblyName);
+            var dir = Path.Combine(ConfigDirectory, assemblyName);
             var file = Path.Combine(dir, $"{type.FullName}.json");
-            var json = JsonConvert.SerializeObject(dataContext, this.Settings);
+            var json = JsonConvert.SerializeObject(dataContext, Settings);
 
             if (!Directory.Exists(dir))
             {
@@ -101,7 +100,7 @@ namespace Ensage.SDK.Menu
 
         public object ToObject(JToken token, Type type)
         {
-            return token.ToObject(type, this.JsonSerializer);
+            return token.ToObject(type, JsonSerializer);
         }
     }
 
@@ -110,9 +109,6 @@ namespace Ensage.SDK.Menu
     public class MenuManager : ControllableService
     {
         private static readonly ILog Log = AssemblyLogs.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-
-        private MenuSerializer menuSerializer;
-
 
         private readonly IInputManager input;
 
@@ -132,11 +128,19 @@ namespace Ensage.SDK.Menu
 
         private MenuBase lastHoverEntry;
 
+        private MenuSerializer menuSerializer;
+
         private Vector2 position;
 
         private bool positionDirty;
 
         private bool sizeDirty;
+
+        private bool titleBarHovered;
+
+        private bool titleBarDragged;
+
+        private Vector2 dragMouseDiff;
 
         [ImportingConstructor]
         public MenuManager([Import] ViewRepository viewRepository, [Import] IRendererManager renderer, [Import] StyleRepository styleRepository, [Import] IInputManager input)
@@ -174,6 +178,14 @@ namespace Ensage.SDK.Menu
 
         public MenuConfig MenuConfig { get; private set; }
 
+        public Vector2 MenuPosition
+        {
+            get
+            {
+                return position + new Vector2(0, TitleBarSize.Y);
+            }
+        }
+
         /// <summary>
         ///     Gets or sets the upper left corner position of the menu.
         /// </summary>
@@ -195,6 +207,8 @@ namespace Ensage.SDK.Menu
         ///     Gets the total size of the menu as a rectangle.
         /// </summary>
         public Vector2 Size { get; private set; }
+
+        public Vector2 TitleBarSize { get; private set; }
 
         public bool DeregisterMenu(object menu, bool saveMenu = true)
         {
@@ -227,7 +241,7 @@ namespace Ensage.SDK.Menu
             {
                 var token = menuSerializer.Deserialize(menu);
                 var rootMenu = rootMenus.First(x => x.DataContext == menu);
-           
+
                 LoadLayer(rootMenu, token);
                 return true;
             }
@@ -243,7 +257,7 @@ namespace Ensage.SDK.Menu
             if (positionDirty)
             {
                 // recalculate positions
-                var pos = Position;
+                var pos = MenuPosition;
                 foreach (var menuEntry in rootMenus)
                 {
                     pos = UpdateMenuEntryPosition(menuEntry, pos);
@@ -251,7 +265,7 @@ namespace Ensage.SDK.Menu
 
                 sizeDirty = true;
                 positionDirty = false;
-             }
+            }
 
             if (sizeDirty)
             {
@@ -260,7 +274,7 @@ namespace Ensage.SDK.Menu
                 Size = CalculateMenuTotalSize(rootMenus);
 
                 // recalculate positions by rendersize
-                var pos = Position;
+                var pos = MenuPosition;
                 foreach (var menuEntry in rootMenus)
                 {
                     pos = UpdateMenuEntryRenderPosition(menuEntry, pos);
@@ -268,6 +282,21 @@ namespace Ensage.SDK.Menu
 
                 sizeDirty = false;
             }
+
+            if (!IsVisible)
+            {
+                return;
+            }
+
+            var activeStyle = MenuConfig.GeneralConfig.ActiveStyle.Value;
+            var titleBar = activeStyle.StyleConfig.TitleBar;
+            renderer.DrawTexture(activeStyle.TitleBar, new RectangleF(Position.X, Position.Y, TitleBarSize.X, TitleBarSize.Y));
+            renderer.DrawText(
+                Position + new Vector2(titleBar.Border.Thickness[0], titleBar.Border.Thickness[1]),
+                "Menu",
+                titleBar.Font.Color,
+                titleBar.Font.Size,
+                titleBar.Font.Family);
 
             foreach (var menuEntry in rootMenus)
             {
@@ -334,17 +363,23 @@ namespace Ensage.SDK.Menu
             MenuConfig.GeneralConfig.ActiveStyle = new Selection<IMenuStyle>(styleRepository.Styles.ToArray());
             MenuConfig.GeneralConfig.ActiveStyle.Value = styleRepository.DefaultMenuStyle;
 
+            Position = MenuConfig.MenuPosition;
+
+            var titleBar = MenuConfig.GeneralConfig.ActiveStyle.Value.StyleConfig.TitleBar;
+            TitleBarSize = renderer.MessureText("Menu", titleBar.Font.Size, titleBar.Font.Family)
+                + new Vector2(titleBar.Border.Thickness[0] + titleBar.Border.Thickness[2], titleBar.Border.Thickness[1] + titleBar.Border.Thickness[3]);
+
             RegisterMenu(MenuConfig);
 
             renderer.Draw += OnDraw;
             input.MouseMove += OnMouseMove;
             input.MouseClick += OnMouseClick;
-
-            Position = new Vector2(200, 50); // TODO MenuConfig.Position
         }
 
         protected override void OnDeactivate()
         {
+            MenuConfig.MenuPosition = Position;
+
             renderer.Draw -= OnDraw;
             input.MouseMove -= OnMouseMove;
             input.MouseClick -= OnMouseClick;
@@ -355,44 +390,6 @@ namespace Ensage.SDK.Menu
             }
 
             MenuConfig = null;
-        }
-
-        private void LoadLayer(MenuEntry menu, JToken token)
-        {
-            foreach (var child in menu.Children.OfType<MenuItemEntry>())
-            {
-                var entry = token[child.PropertyInfo.Name];
-                if (entry != null)
-                {
-                    if (child.Value is ILoadable loadable)
-                    {
-                        var loaded = this.menuSerializer.ToObject(entry, child.PropertyInfo.PropertyType);
-                        loadable.Load(loaded);
-                    }
-                    else
-                    {
-                        child.Value = this.menuSerializer.ToObject(entry, child.PropertyInfo.PropertyType);
-                    }
-                }
-                else
-                {
-                    // set default value by attribute
-                    var defaultValue = child.PropertyInfo.GetCustomAttribute<DefaultValueAttribute>();
-                    if (defaultValue != null)
-                    {
-                        child.Value = defaultValue.Value;
-                    }
-                }
-            }
-
-            foreach (var child in menu.Children.OfType<MenuEntry>())
-            {
-                var subToken = token[child.PropertyInfo.Name];
-                if (subToken != null)
-                {
-                    LoadLayer(child, subToken);
-                }
-            }
         }
 
         private void CalculateMenuRenderSize(IEnumerable<MenuBase> entries)
@@ -492,8 +489,46 @@ namespace Ensage.SDK.Menu
             }
         }
 
+        private void LoadLayer(MenuEntry menu, JToken token)
+        {
+            foreach (var child in menu.Children.OfType<MenuItemEntry>())
+            {
+                var entry = token[child.PropertyInfo.Name];
+                if (entry != null)
+                {
+                    if (child.Value is ILoadable loadable)
+                    {
+                        var loaded = menuSerializer.ToObject(entry, child.PropertyInfo.PropertyType);
+                        loadable.Load(loaded);
+                    }
+                    else
+                    {
+                        child.Value = menuSerializer.ToObject(entry, child.PropertyInfo.PropertyType);
+                    }
+                }
+                else
+                {
+                    // set default value by attribute
+                    var defaultValue = child.PropertyInfo.GetCustomAttribute<DefaultValueAttribute>();
+                    if (defaultValue != null)
+                    {
+                        child.Value = defaultValue.Value;
+                    }
+                }
+            }
+
+            foreach (var child in menu.Children.OfType<MenuEntry>())
+            {
+                var subToken = token[child.PropertyInfo.Name];
+                if (subToken != null)
+                {
+                    LoadLayer(child, subToken);
+                }
+            }
+        }
+
         [CanBeNull]
-        private MenuBase OnClickCheck(MenuEntry entry, Vector2 mousePosition)
+        private MenuBase OnClickCheck(MenuEntry entry, MouseButtons buttons, Vector2 mousePosition)
         {
             if (!entry.IsVisible)
             {
@@ -507,14 +542,14 @@ namespace Ensage.SDK.Menu
 
             if (entry.IsInside(mousePosition))
             {
-                entry.OnClick(mousePosition);
+                entry.OnClick(buttons, mousePosition);
                 return entry;
             }
 
             MenuEntry hoveredEntry = null;
             foreach (var menu in entry.Children.OfType<MenuEntry>())
             {
-                if (OnClickCheck(menu, mousePosition) != null)
+                if (OnClickCheck(menu, buttons, mousePosition) != null)
                 {
                     hoveredEntry = menu;
                     break;
@@ -537,7 +572,7 @@ namespace Ensage.SDK.Menu
                 {
                     if (item.IsInside(mousePosition))
                     {
-                        item.OnClick(mousePosition);
+                        item.OnClick(buttons, mousePosition);
                         return item;
                     }
                 }
@@ -594,10 +629,17 @@ namespace Ensage.SDK.Menu
                 return;
             }
 
-            if ((e.Buttons & MouseButtons.LeftUp) == MouseButtons.LeftUp)
+           if ((e.Buttons & MouseButtons.LeftUp) == MouseButtons.LeftUp)
             {
+                if (titleBarDragged)
+                {
+                    Log.Debug($"Stop title bar dragging");
+                    titleBarDragged = false;
+                    return;
+                }
+
                 // handle drag and drop
-                if (dragMenuEntry != null)
+                    if (dragMenuEntry != null)
                 {
                     // TODO:
                     dragMenuEntry = null;
@@ -609,7 +651,7 @@ namespace Ensage.SDK.Menu
                     blockedLeftClick = false;
                 }
 
-                return;
+                // return;
             }
 
             if (!IsVisible || !IsInsideMenu(e.Position))
@@ -617,10 +659,18 @@ namespace Ensage.SDK.Menu
                 return;
             }
 
+            if (titleBarHovered && (e.Buttons & MouseButtons.LeftDown) == MouseButtons.LeftDown)
+            {
+                Log.Debug($"start title bar dragging");
+                dragMouseDiff = e.Position - Position;
+                titleBarDragged = true;
+                return;
+            }
+
             // check for click
             if (LastHoverEntry != null)
             {
-                LastHoverEntry.OnClick(e.Position);
+                LastHoverEntry.OnClick(e.Buttons, e.Position);
                 if (LastHoverEntry is MenuEntry menuEntry)
                 {
                     if (!menuEntry.IsCollapsed)
@@ -636,6 +686,12 @@ namespace Ensage.SDK.Menu
 
         private void OnMouseMove(object sender, MouseEventArgs e)
         {
+            if (titleBarDragged)
+            {
+                Position = e.Position - dragMouseDiff;
+                return;
+            }
+
             if (!IsVisible || !IsInsideMenu(e.Position))
             {
                 if (LastHoverEntry != null)
@@ -652,31 +708,42 @@ namespace Ensage.SDK.Menu
                 return;
             }
 
-            // check for mouse hover
-            foreach (var menuEntry in rootMenus)
+            // check for titlebar mouseover
+            var titleBar = new RectangleF(Position.X, Position.Y, TitleBarSize.X, TitleBarSize.Y);
+            if (titleBar.Contains(e.Position))
             {
-                var hoverItem = OnInsideCheck(menuEntry, e.Position);
-                if (hoverItem != null)
+                titleBarHovered = true;
+            }
+            else
+            {
+                titleBarHovered = false;
+
+                // check for mouse hover
+                foreach (var menuEntry in rootMenus)
                 {
-                    if (LastHoverEntry != hoverItem)
+                    var hoverItem = OnInsideCheck(menuEntry, e.Position);
+                    if (hoverItem != null)
                     {
-                        if (LastHoverEntry != null)
+                        if (LastHoverEntry != hoverItem)
                         {
-                            Log.Info($"MouseLeave {LastHoverEntry}");
+                            if (LastHoverEntry != null)
+                            {
+                                Log.Info($"MouseLeave {LastHoverEntry}");
+                            }
+
+                            Log.Info($"MouseHover {hoverItem}");
+                            LastHoverEntry = hoverItem;
+
+                            // check for drag and drop of menu entries (possible to swap positions)
+                            if ((e.Buttons & MouseButtons.Left) != 0 && LastHoverEntry is MenuEntry hoverEntry && LastHoverEntry.DataContext != MenuConfig)
+                            {
+                                dragStartPosition = e.Position;
+                                dragMenuEntry = hoverEntry;
+                            }
                         }
 
-                        Log.Info($"MouseHover {hoverItem}");
-                        LastHoverEntry = hoverItem;
-
-                        // check for drag and drop of menu entries (possible to swap positions)
-                        if ((e.Buttons & MouseButtons.Left) != 0 && LastHoverEntry is MenuEntry hoverEntry && LastHoverEntry.DataContext != MenuConfig)
-                        {
-                            dragStartPosition = e.Position;
-                            dragMenuEntry = hoverEntry;
-                        }
+                        return;
                     }
-
-                    return;
                 }
             }
 

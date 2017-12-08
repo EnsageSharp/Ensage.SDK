@@ -7,6 +7,7 @@ namespace Ensage.SDK.Menu.Views
     using System;
     using System.Collections.Generic;
 
+    using Ensage.SDK.Input;
     using Ensage.SDK.Menu.Attributes;
     using Ensage.SDK.Menu.Entries;
     using Ensage.SDK.Menu.Items;
@@ -81,33 +82,38 @@ namespace Ensage.SDK.Menu.Views
             return totalSize;
         }
 
-        public void OnClick(MenuBase context, Vector2 clickPosition)
+        public bool OnClick(MenuBase context, MouseButtons buttons, Vector2 clickPosition)
         {
-            var size = context.RenderSize;
-            
-            var styleConfig = context.MenuConfig.GeneralConfig.ActiveStyle.Value.StyleConfig;
-
-            var item = (MenuItemEntry)context;
-            var propValue = item.PropertyBinding.GetValue<ISelection<object>>();
-            var textSize = valueSizes[propValue.ToString()].X;
-
-            RectangleF rectPos = new RectangleF();
-            rectPos.X = context.Position.X + size.X - styleConfig.Border.Thickness[2] - (2 * styleConfig.ArrowSize.X) - (2 * styleConfig.TextSpacing) - textSize;
-            rectPos.Y = context.Position.Y;
-            rectPos.Width = styleConfig.ArrowSize.X + (textSize / 2);
-            rectPos.Height = size.Y;
-            if (rectPos.Contains(clickPosition))
+            if ((buttons & MouseButtons.LeftUp) == MouseButtons.LeftUp)
             {
-                propValue.DecrementSelectedIndex();
-                return;
+                var size = context.RenderSize;
+
+                var styleConfig = context.MenuConfig.GeneralConfig.ActiveStyle.Value.StyleConfig;
+
+                var item = (MenuItemEntry)context;
+                var propValue = item.PropertyBinding.GetValue<ISelection<object>>();
+                var textSize = valueSizes[propValue.ToString()].X;
+
+                RectangleF rectPos = new RectangleF();
+                rectPos.X = context.Position.X + size.X - styleConfig.Border.Thickness[2] - (2 * styleConfig.ArrowSize.X) - (2 * styleConfig.TextSpacing) - textSize;
+                rectPos.Y = context.Position.Y;
+                rectPos.Width = styleConfig.ArrowSize.X + (textSize / 2);
+                rectPos.Height = size.Y;
+                if (rectPos.Contains(clickPosition))
+                {
+                    propValue.DecrementSelectedIndex();
+                    return true;
+                }
+
+                rectPos.X = context.Position.X + size.X - styleConfig.Border.Thickness[2] - styleConfig.ArrowSize.X - styleConfig.TextSpacing - (textSize / 2);
+                if (rectPos.Contains(clickPosition))
+                {
+                    propValue.IncrementSelectedIndex();
+                    return true;
+                }
             }
 
-            rectPos.X = context.Position.X + size.X - styleConfig.Border.Thickness[2] - styleConfig.ArrowSize.X - styleConfig.TextSpacing - (textSize / 2);
-            if (rectPos.Contains(clickPosition))
-            {
-                propValue.IncrementSelectedIndex();
-                return;
-            }
+            return false;
         }
     }
 }

@@ -31,7 +31,7 @@ namespace Ensage.SDK.Menu.Views
             context.Renderer.DrawTexture(activeStyle.Item, new RectangleF(pos.X, pos.Y, size.X, size.Y));
 
             var font = styleConfig.Font;
-            context.Renderer.DrawText(pos + new Vector2(border.Thickness[0], border.Thickness[1]), context.Name, styleConfig.Font.Color, font.Size, font.Family);
+            context.Renderer.DrawText(pos + new Vector2(border.Thickness[0], border.Thickness[1]), context.Name, font.Color, font.Size, font.Family);
 
             var sliderPos = Vector2.Zero;
             sliderPos.X = pos.X + size.X - border.Thickness[2] - (styleConfig.ArrowSize.X * 2);

@@ -42,7 +42,7 @@ namespace Ensage.SDK.Menu.Views
 
             pos = context.Position;
             pos.X += ((float)(propValue.Value - propValue.MinValue) / (propValue.MaxValue - propValue.MinValue)) * size.X;
-            context.Renderer.DrawLine(pos, pos + new Vector2(0, size.Y), styleConfig.SelectedLineColor, styleConfig.LineWidth);
+            context.Renderer.DrawLine(pos, pos + new Vector2(0, size.Y), styleConfig.SliderStyle.LineColor, styleConfig.SliderStyle.LineWidth);
         }
 
         public Vector2 GetSize(MenuBase context)

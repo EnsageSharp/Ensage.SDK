@@ -526,6 +526,7 @@
     <Compile Include="Menu\Config\HackConfig.cs" />
     <Compile Include="Menu\Config\MenuConfig.cs" />
     <Compile Include="Menu\Items\ILoadable.cs" />
+    <Compile Include="Menu\Items\PicturePicker.cs" />
     <Compile Include="Menu\Items\Slider.cs" />
     <Compile Include="Menu\MenuStyleConverter.cs" />
     <Compile Include="Menu\StyleRepository.cs" />
@@ -548,6 +549,7 @@
     <Compile Include="Menu\Items\Selection.cs" />
     <Compile Include="Menu\Views\SliderView.cs" />
     <Compile Include="Menu\Views\SelectionView.cs" />
+    <Compile Include="Menu\Views\PicturePickerView.cs" />
     <Compile Include="Menu\Views\StringView.cs" />
     <Compile Include="Menu\Styles\StyleConfig.cs" />
     <Compile Include="Menu\Attributes\TooltipAttribute.cs" />

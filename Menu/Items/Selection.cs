@@ -104,17 +104,28 @@ namespace Ensage.SDK.Menu.Items
             return selection.SelectedIndex;
         }
 
+        public T this[int index]
+        {
+            get
+            {
+                return this.Values[index];
+            }
+            set
+            {
+                this.Values[index] = value;
+            }
+        }
+
         public bool Load(object data)
         {
             var selection = (Selection<T>)data;
 
-            if (!Values.SequenceEqual(selection.Values) || SelectedIndex != selection.SelectedIndex)
+            if (Values.SequenceEqual(selection.Values))
             {
                 Values = selection.Values;
                 Value = selection.Value;
                 return true;
             }
-
       
             return false;
         }

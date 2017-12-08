@@ -33,13 +33,86 @@ namespace Ensage.SDK.Menu
 
     using SharpDX;
 
+    public class MenuSerializer
+    {
+        private static readonly ILog Log = AssemblyLogs.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
+        public MenuSerializer(params JsonConverter[] converters)
+        {
+            this.Settings = new JsonSerializerSettings
+            {
+                Formatting = Formatting.Indented,
+                DefaultValueHandling = DefaultValueHandling.Include | DefaultValueHandling.Populate,
+                NullValueHandling = NullValueHandling.Ignore,
+                TypeNameHandling = TypeNameHandling.Auto,
+                Converters = converters
+            };
+
+            this.JsonSerializer = JsonSerializer.Create(this.Settings);
+            this.ConfigDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Config", "game");
+            try
+            {
+                Directory.CreateDirectory(ConfigDirectory);
+            }
+            catch (Exception e)
+            {
+                Log.Error(e);
+            }
+        }
+
+        public string ConfigDirectory { get; }
+
+        public JsonSerializer JsonSerializer { get; }
+
+        public JsonSerializerSettings Settings { get; }
+
+        public JToken Deserialize(object dataContext)
+        {
+            var type = dataContext.GetType();
+            var assemblyName = type.Assembly.GetName().Name;
+            var dir = Path.Combine(this.ConfigDirectory, assemblyName);
+            var file = Path.Combine(dir, $"{type.FullName}.json");
+
+            if (!File.Exists(file))
+            {
+                return null;
+            }
+
+            var json = File.ReadAllText(file);
+
+            return JToken.Parse(json);
+        }
+
+        public void Serialize(object dataContext)
+        {
+            var type = dataContext.GetType();
+            var assemblyName = type.Assembly.GetName().Name;
+            var dir = Path.Combine(this.ConfigDirectory, assemblyName);
+            var file = Path.Combine(dir, $"{type.FullName}.json");
+            var json = JsonConvert.SerializeObject(dataContext, this.Settings);
+
+            if (!Directory.Exists(dir))
+            {
+                Directory.CreateDirectory(dir);
+            }
+
+            File.WriteAllText(file, json);
+        }
+
+        public object ToObject(JToken token, Type type)
+        {
+            return token.ToObject(type, this.JsonSerializer);
+        }
+    }
+
     [Export]
     [PublicAPI]
     public class MenuManager : ControllableService
     {
         private static readonly ILog Log = AssemblyLogs.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        private readonly string configDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Config", "game");
+        private MenuSerializer menuSerializer;
+
 
         private readonly IInputManager input;
 
@@ -73,15 +146,6 @@ namespace Ensage.SDK.Menu
             this.renderer = renderer;
             this.styleRepository = styleRepository;
             this.input = input;
-
-            try
-            {
-                Directory.CreateDirectory(configDirectory);
-            }
-            catch (Exception e)
-            {
-                Log.Error(e);
-            }
         }
 
         public bool IsVisible { get; private set; } = true;
@@ -161,18 +225,9 @@ namespace Ensage.SDK.Menu
         {
             try
             {
-                var type = menu.GetType();
-                var assemblyName = type.Assembly.GetName().Name;
-                var savePath = Path.Combine(configDirectory, assemblyName);
-                var file = Path.Combine(savePath, $"{type.FullName}.json");
-                if (!File.Exists(file))
-                {
-                    return false;
-                }
-
+                var token = menuSerializer.Deserialize(menu);
                 var rootMenu = rootMenus.First(x => x.DataContext == menu);
-                var token = JToken.Parse(File.ReadAllText(file));
-
+           
                 LoadLayer(rootMenu, token);
                 return true;
             }
@@ -261,31 +316,7 @@ namespace Ensage.SDK.Menu
         {
             try
             {
-                var type = menu.GetType();
-                var assemblyName = type.Assembly.GetName().Name;
-                var savePath = Path.Combine(configDirectory, assemblyName);
-                Directory.CreateDirectory(savePath);
-
-                var file = Path.Combine(savePath, $"{type.FullName}.json");
-
-                if (rootMenus.All(x => x.DataContext != menu))
-                {
-                    throw new Exception($"{menu} not registered as menu");
-                }
-
-                var settings = new JsonSerializerSettings
-                {
-                    Formatting = Formatting.Indented,
-                    DefaultValueHandling = DefaultValueHandling.Include | DefaultValueHandling.Populate,
-                    Converters =
-                    {
-                        new MenuStyleConverter(styleRepository),
-                        new StringEnumConverter(),
-                    },
-                    NullValueHandling = NullValueHandling.Ignore,
-                    TypeNameHandling = TypeNameHandling.Auto,
-                };
-                JsonFactory.ToFile(file, menu, settings);
+                menuSerializer.Serialize(menu);
                 return true;
             }
             catch (Exception e)
@@ -297,6 +328,8 @@ namespace Ensage.SDK.Menu
 
         protected override void OnActivate()
         {
+            menuSerializer = new MenuSerializer(new StringEnumConverter(), new MenuStyleConverter(styleRepository));
+
             MenuConfig = new MenuConfig();
             MenuConfig.GeneralConfig.ActiveStyle = new Selection<IMenuStyle>(styleRepository.Styles.ToArray());
             MenuConfig.GeneralConfig.ActiveStyle.Value = styleRepository.DefaultMenuStyle;
@@ -324,14 +357,22 @@ namespace Ensage.SDK.Menu
             MenuConfig = null;
         }
 
-        private static void LoadLayer(MenuEntry menu, JToken token)
+        private void LoadLayer(MenuEntry menu, JToken token)
         {
             foreach (var child in menu.Children.OfType<MenuItemEntry>())
             {
                 var entry = token[child.PropertyInfo.Name];
                 if (entry != null)
                 {
-                    child.Value = entry.ToObject(child.PropertyInfo.PropertyType);
+                    if (child.Value is ILoadable loadable)
+                    {
+                        var loaded = this.menuSerializer.ToObject(entry, child.PropertyInfo.PropertyType);
+                        loadable.Load(loaded);
+                    }
+                    else
+                    {
+                        child.Value = this.menuSerializer.ToObject(entry, child.PropertyInfo.PropertyType);
+                    }
                 }
                 else
                 {

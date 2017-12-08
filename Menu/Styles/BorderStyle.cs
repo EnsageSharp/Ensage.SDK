@@ -13,11 +13,11 @@ namespace Ensage.SDK.Menu.Styles
         /// <summary>
         /// Gets or sets the color of the border.
         /// </summary>
-        public Color Color { get; set; }
+        public Color Color { get; set; } = Color.Transparent;
 
         /// <summary>
         /// Gets or sets the thickness of the border: left, top, right, bottom.
         /// </summary>
-        public Vector4 Thickness { get; set; }
+        public Vector4 Thickness { get; set; } = new Vector4(5, 7, 1, 7);
     }
 }

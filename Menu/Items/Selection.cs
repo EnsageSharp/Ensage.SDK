@@ -108,13 +108,14 @@ namespace Ensage.SDK.Menu.Items
         {
             var selection = (Selection<T>)data;
 
-            if (!Values.SequenceEqual(selection.Values))
+            if (!Values.SequenceEqual(selection.Values) || SelectedIndex != selection.SelectedIndex)
             {
                 Values = selection.Values;
                 Value = selection.Value;
                 return true;
             }
 
+      
             return false;
         }
 

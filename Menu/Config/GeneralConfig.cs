@@ -15,9 +15,9 @@
         [DefaultValue(true)]
         public bool UseAnimations { get; set; }
 
-        //[Item("Animation speed")]
-        //[Tooltip("How fast animations are played")]
-        //[DefaultValue(true)]
-        //public Slider<float> AnimationTime { get; set; }
+        [Item("Animation speed")]
+        [Tooltip("How fast animations are played")]
+        [DefaultValue(true)]
+        public Slider AnimationTime { get; set; } = new Slider(3, 0, 5);
     }
 }

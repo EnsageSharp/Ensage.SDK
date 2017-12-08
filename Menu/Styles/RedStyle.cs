@@ -30,17 +30,8 @@ namespace Ensage.SDK.Menu.Styles
             renderer.TextureManager.LoadFromResource(Checked, @"MenuStyle.darkred.circleshadow.png");
             renderer.TextureManager.LoadFromResource(Unchecked, @"MenuStyle.darkred.circleshadowgray.png");
             renderer.TextureManager.LoadFromResource(Slider, @"MenuStyle.darkred.sliderbgon.png");
-            
-            StyleConfig.ArrowSize = new Vector2(20, 20);
-            StyleConfig.TextSpacing = 5;
-            StyleConfig.LineWidth = 3;
-            StyleConfig.LineColor = Color.Black;
+    
             StyleConfig.SelectedLineColor = Color.DarkRed;
-            StyleConfig.Border.Color = Color.Transparent;
-            StyleConfig.Border.Thickness = new Vector4(5, 7, 1, 7);
-            StyleConfig.Font.Color = Color.White;
-            StyleConfig.Font.Family = "Calibri";
-            StyleConfig.Font.Size = 16;
         }
 
         public StyleConfig StyleConfig { get; } = new StyleConfig();

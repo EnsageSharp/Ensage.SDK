@@ -13,12 +13,12 @@ namespace Ensage.SDK.Menu.Styles
         /// <summary>
         ///     Gets or sets the arrow size of the menu entries.
         /// </summary>
-        public Vector2 ArrowSize { get; set; }
+        public Vector2 ArrowSize { get; set; } = new Vector2(20, 20);
 
         /// <summary>
         ///     Gets or sets the size of the space between the menu text and the content following.
         /// </summary>
-        public float TextSpacing { get; set; }
+        public float TextSpacing { get; set; } = 5;
 
         /// <summary>
         ///     Gets or sets information about the border.
@@ -33,16 +33,16 @@ namespace Ensage.SDK.Menu.Styles
         /// <summary>
         ///     Gets or sets the color for unselected menu items.
         /// </summary>
-        public Color LineColor { get; set; }
+        public Color LineColor { get; set; } = Color.Black;
 
         /// <summary>
         ///     Gets or sets the color for selected menu items.
         /// </summary>
-        public Color SelectedLineColor { get; set; }
+        public Color SelectedLineColor { get; set; } = Color.DarkOrange;
 
         /// <summary>
         ///     Gets or sets the line width of selected menu items.
         /// </summary>
-        public float LineWidth { get; set; }
+        public float LineWidth { get; set; } = 3;
     }
 }

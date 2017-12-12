@@ -17,8 +17,6 @@ namespace Ensage.SDK.Menu
 
     public abstract class MenuBase
     {
-        public MenuConfig MenuConfig { get; }
-
         protected MenuBase(string name, IView view, IRenderer renderer, MenuConfig menuConfig, object instance, [CanBeNull] PropertyInfo propertyInfo)
         {
             this.MenuConfig = menuConfig;
@@ -32,6 +30,8 @@ namespace Ensage.SDK.Menu
         public object DataContext { get; }
 
         public bool IsHovered { get; internal set; }
+
+        public MenuConfig MenuConfig { get; }
 
         public string Name { get; }
 

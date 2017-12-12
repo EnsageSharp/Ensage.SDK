@@ -4,9 +4,7 @@
 
 namespace Ensage.SDK.Menu
 {
-    using System.Collections.Generic;
     using System.ComponentModel.Composition;
-    using System.Timers;
 
     using Ensage.SDK.Menu.Entries;
 
@@ -16,7 +14,6 @@ namespace Ensage.SDK.Menu
         // private readonly Dictionary<MenuEntry>
         public void StartFadeIn(MenuEntry rootEntry)
         {
-            
         }
     }
 }

@@ -8,11 +8,7 @@ namespace Ensage.SDK.Menu.Styles
 
     using Ensage.SDK.Renderer;
 
-    using Newtonsoft.Json;
-
     using SharpDX;
-
-    using Color = System.Drawing.Color;
 
     [Export]
     [Export(typeof(IMenuStyle))]
@@ -21,24 +17,20 @@ namespace Ensage.SDK.Menu.Styles
         [ImportingConstructor]
         public DefaultMenuStyle([Import] IRendererManager renderer)
         {
-            renderer.TextureManager.LoadFromResource(Menu, @"MenuStyle.default_transparent.menubg1.png");
-            renderer.TextureManager.LoadFromResource(TitleBar, @"MenuStyle.default_transparent.itembg1.png");
-            renderer.TextureManager.LoadFromResource(Item, @"MenuStyle.default_transparent.itembg1.png");
-            renderer.TextureManager.LoadFromResource(ArrowLeft, @"MenuStyle.default_transparent.arrowleft.png");
-            renderer.TextureManager.LoadFromResource(ArrowLeftHover, @"MenuStyle.default_transparent.arrowlefthover.png");
-            renderer.TextureManager.LoadFromResource(ArrowRight, @"MenuStyle.default_transparent.arrowright.png");
-            renderer.TextureManager.LoadFromResource(ArrowRightHover, @"MenuStyle.default_transparent.arrowrighthover.png");
-            renderer.TextureManager.LoadFromResource(Checked, @"MenuStyle.default_transparent.circleshadow.png");
-            renderer.TextureManager.LoadFromResource(Unchecked, @"MenuStyle.default_transparent.circleshadowgray.png");
-            renderer.TextureManager.LoadFromResource(Slider, @"MenuStyle.default_transparent.sliderbgon.png");
+            renderer.TextureManager.LoadFromResource(this.Menu, @"MenuStyle.default_transparent.menubg1.png");
+            renderer.TextureManager.LoadFromResource(this.TitleBar, @"MenuStyle.default_transparent.itembg1.png");
+            renderer.TextureManager.LoadFromResource(this.Item, @"MenuStyle.default_transparent.itembg1.png");
+            renderer.TextureManager.LoadFromResource(this.ArrowLeft, @"MenuStyle.default_transparent.arrowleft.png");
+            renderer.TextureManager.LoadFromResource(this.ArrowLeftHover, @"MenuStyle.default_transparent.arrowlefthover.png");
+            renderer.TextureManager.LoadFromResource(this.ArrowRight, @"MenuStyle.default_transparent.arrowright.png");
+            renderer.TextureManager.LoadFromResource(this.ArrowRightHover, @"MenuStyle.default_transparent.arrowrighthover.png");
+            renderer.TextureManager.LoadFromResource(this.Checked, @"MenuStyle.default_transparent.circleshadow.png");
+            renderer.TextureManager.LoadFromResource(this.Unchecked, @"MenuStyle.default_transparent.circleshadowgray.png");
+            renderer.TextureManager.LoadFromResource(this.Slider, @"MenuStyle.default_transparent.sliderbgon.png");
 
-            StyleConfig.TitleBar.Font.Size = 13;
-            StyleConfig.TitleBar.Border.Thickness = new Vector4(30, 2, 30, 2);
+            this.StyleConfig.TitleBar.Font.Size = 13;
+            this.StyleConfig.TitleBar.Border.Thickness = new Vector4(30, 2, 30, 2);
         }
-
-        public StyleConfig StyleConfig { get; } = new StyleConfig();
-
-        public string TitleBar { get; } = "menuStyle/default/titlebar";
 
         public string ArrowLeft { get; } = "menuStyle/default/left";
 
@@ -58,11 +50,15 @@ namespace Ensage.SDK.Menu.Styles
 
         public string Slider { get; } = "menuStyle/default/slider";
 
+        public StyleConfig StyleConfig { get; } = new StyleConfig();
+
+        public string TitleBar { get; } = "menuStyle/default/titlebar";
+
         public string Unchecked { get; } = "menuStyle/default/unchecked";
 
         public override string ToString()
         {
-            return Name;
+            return this.Name;
         }
     }
 }

@@ -16,14 +16,15 @@ namespace Ensage.SDK.Menu.Config
         public MenuConfig()
         {
             var args = new[]
-            {
-                new KeyValuePair<string, bool>("menuStyle/default/left", true), new KeyValuePair<string, bool>("menuStyle/default/right", false),
-                new KeyValuePair<string, bool>("menuStyle/default/leftHover", false), new KeyValuePair<string, bool>("menuStyle/default/rightHover", true)
-            };
-            Picker = new PicturePicker(args);
+                           {
+                               new KeyValuePair<string, bool>("menuStyle/default/left", true),
+                               new KeyValuePair<string, bool>("menuStyle/default/right", false),
+                               new KeyValuePair<string, bool>("menuStyle/default/leftHover", false),
+                               new KeyValuePair<string, bool>("menuStyle/default/rightHover", true)
+                           };
+            this.Picker = new PicturePicker(args);
 
-
-            PriorityChanger = new PriorityChanger(args);
+            this.PriorityChanger = new PriorityChanger(args);
         }
 
         [Menu("General Settings")]
@@ -37,11 +38,10 @@ namespace Ensage.SDK.Menu.Config
         [Item("Test Picker")]
         public PicturePicker Picker { get; set; }
 
-        [Item]
-        public string TestString { get; set; } = "hello world!";
-
-
         [Item("Test PriorityChanger")]
         public PriorityChanger PriorityChanger { get; set; }
+
+        [Item]
+        public string TestString { get; set; } = "hello world!";
     }
 }

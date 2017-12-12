@@ -4,8 +4,6 @@
 
 namespace Ensage.SDK.Menu.Items
 {
-    using System;
-
     public class Slider : ILoadable
     {
         public Slider()
@@ -14,16 +12,16 @@ namespace Ensage.SDK.Menu.Items
 
         public Slider(int minValue, int maxValue)
         {
-            Value = minValue;
-            MinValue = minValue;
-            MaxValue = maxValue;
+            this.Value = minValue;
+            this.MinValue = minValue;
+            this.MaxValue = maxValue;
         }
 
         public Slider(int value, int minValue, int maxValue)
         {
-            Value = value;
-            MinValue = minValue;
-            MaxValue = maxValue;
+            this.Value = value;
+            this.MinValue = minValue;
+            this.MaxValue = maxValue;
         }
 
         public int MaxValue { get; set; }
@@ -36,11 +34,11 @@ namespace Ensage.SDK.Menu.Items
         {
             var slider = (Slider)data;
 
-            if (Value != slider.Value || MinValue != slider.MinValue || MaxValue != slider.MaxValue)
+            if (this.Value != slider.Value || this.MinValue != slider.MinValue || this.MaxValue != slider.MaxValue)
             {
-                Value = slider.Value;
-                MinValue = slider.MinValue;
-                MaxValue = slider.MaxValue;
+                this.Value = slider.Value;
+                this.MinValue = slider.MinValue;
+                this.MaxValue = slider.MaxValue;
                 return true;
             }
 
@@ -49,7 +47,7 @@ namespace Ensage.SDK.Menu.Items
 
         public override string ToString()
         {
-            return Value.ToString();
+            return this.Value.ToString();
         }
     }
 }

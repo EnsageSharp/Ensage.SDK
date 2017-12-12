@@ -6,14 +6,11 @@ namespace Ensage.SDK.Menu.Views
 {
     using System;
 
-    using Ensage.SDK.Helpers;
     using Ensage.SDK.Input;
     using Ensage.SDK.Menu.Attributes;
     using Ensage.SDK.Menu.Entries;
 
     using SharpDX;
-
-    using Color = System.Drawing.Color;
 
     [ExportView(typeof(bool))]
     public class BooleanView : IView
@@ -35,11 +32,9 @@ namespace Ensage.SDK.Menu.Views
             context.Renderer.DrawText(pos + new Vector2(border.Thickness[0], border.Thickness[1]), context.Name, font.Color, font.Size, font.Family);
 
             var sliderPos = Vector2.Zero;
-            sliderPos.X = pos.X + size.X - border.Thickness[2] - (styleConfig.ArrowSize.X * 2);
+            sliderPos.X = (pos.X + size.X) - border.Thickness[2] - (styleConfig.ArrowSize.X * 2);
             sliderPos.Y = pos.Y + border.Thickness[1];
-            context.Renderer.DrawTexture(
-                activeStyle.Slider,
-                new RectangleF(sliderPos.X, sliderPos.Y, styleConfig.ArrowSize.X * 2, styleConfig.ArrowSize.Y));
+            context.Renderer.DrawTexture(activeStyle.Slider, new RectangleF(sliderPos.X, sliderPos.Y, styleConfig.ArrowSize.X * 2, styleConfig.ArrowSize.Y));
 
             if (item.PropertyBinding.GetValue<bool>())
             {

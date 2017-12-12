@@ -1,18 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿// <copyright file="PicturePicker.cs" company="Ensage">
+//    Copyright (c) 2017 Ensage.
+// </copyright>
 
 namespace Ensage.SDK.Menu.Items
 {
+    using System.Collections.Generic;
+    using System.Linq;
+
     public class PicturePicker : ILoadable
     {
-        public Dictionary<string, bool> PictureStates { get; set; } = new Dictionary<string, bool>();
-
         public PicturePicker()
         {
-            
         }
 
         public PicturePicker(bool defaultValue = true, params string[] textureKeys)
@@ -25,11 +23,13 @@ namespace Ensage.SDK.Menu.Items
 
         public PicturePicker(params KeyValuePair<string, bool>[] values)
         {
-            foreach(var value in values)
+            foreach (var value in values)
             {
                 this.PictureStates.Add(value.Key, value.Value);
             }
         }
+
+        public Dictionary<string, bool> PictureStates { get; set; } = new Dictionary<string, bool>();
 
         public bool this[string key]
         {
@@ -37,20 +37,20 @@ namespace Ensage.SDK.Menu.Items
             {
                 return this.PictureStates[key];
             }
+
             set
             {
                 this.PictureStates[key] = value;
             }
         }
 
-
-        public bool Load(object data)
+        public virtual bool Load(object data)
         {
             var selection = (PicturePicker)data;
 
-            if (PictureStates.Keys.SequenceEqual(selection.PictureStates.Keys))
+            if (this.PictureStates.Keys.SequenceEqual(selection.PictureStates.Keys))
             {
-                PictureStates = selection.PictureStates;
+                this.PictureStates = selection.PictureStates;
                 return true;
             }
 

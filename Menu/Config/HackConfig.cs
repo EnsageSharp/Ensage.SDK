@@ -1,8 +1,14 @@
-﻿namespace Ensage.SDK.Menu.Config
+﻿// <copyright file="HackConfig.cs" company="Ensage">
+//    Copyright (c) 2017 Ensage.
+// </copyright>
+
+namespace Ensage.SDK.Menu.Config
 {
     using System.ComponentModel;
 
     using Ensage.SDK.Menu.Attributes;
+
+    using Config = Ensage.Config;
 
     public class HackConfig
     {
@@ -14,12 +20,12 @@
         {
             get
             {
-                return Ensage.Config.AutoAccept;
+                return Config.AutoAccept;
             }
 
             set
             {
-                Ensage.Config.AutoAccept = value;
+                Config.AutoAccept = value;
             }
         }
 
@@ -30,12 +36,12 @@
         {
             get
             {
-                return Ensage.Config.ShowSpawnBoxes;
+                return Config.ShowSpawnBoxes;
             }
 
             set
             {
-                Ensage.Config.ShowSpawnBoxes = value;
+                Config.ShowSpawnBoxes = value;
             }
         }
 
@@ -46,12 +52,12 @@
         {
             get
             {
-                return Ensage.Config.ShowTowerRange;
+                return Config.ShowTowerRange;
             }
 
             set
             {
-                Ensage.Config.ShowTowerRange = value;
+                Config.ShowTowerRange = value;
             }
         }
     }

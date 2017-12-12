@@ -10,19 +10,6 @@ namespace Ensage.SDK.Menu.Items
 
     using Newtonsoft.Json;
 
-    public interface ISelection<out T>
-    {
-        int SelectedIndex { get; }
-
-        T Value { get; }
-
-        T[] Values { get; }
-
-        int IncrementSelectedIndex();
-
-        int DecrementSelectedIndex();
-    }
-
     public class Selection<T> : ISelection<T>, ILoadable
     {
         public Selection()
@@ -31,8 +18,8 @@ namespace Ensage.SDK.Menu.Items
 
         public Selection(params T[] value)
         {
-            Values = value;
-            SelectedIndex = Array.IndexOf(Values, Values.First());
+            this.Values = value;
+            this.SelectedIndex = Array.IndexOf(this.Values, this.Values.First());
         }
 
         public Selection(IEnumerable<T> values)
@@ -42,8 +29,8 @@ namespace Ensage.SDK.Menu.Items
 
         public Selection(int selectedIndex, params T[] value)
         {
-            Values = value;
-            SelectedIndex = selectedIndex;
+            this.Values = value;
+            this.SelectedIndex = selectedIndex;
         }
 
         public int SelectedIndex { get; set; }
@@ -53,37 +40,28 @@ namespace Ensage.SDK.Menu.Items
         {
             get
             {
-                return Values[SelectedIndex];
+                return this.Values[this.SelectedIndex];
             }
 
             set
             {
-                SelectedIndex = Array.IndexOf(Values, value);
+                this.SelectedIndex = Array.IndexOf(this.Values, value);
             }
         }
 
         public T[] Values { get; set; }
 
-        public int IncrementSelectedIndex()
+        public T this[int index]
         {
-            SelectedIndex++;
-            if (SelectedIndex >= Values.Length)
+            get
             {
-                SelectedIndex = 0;
+                return this.Values[index];
             }
 
-            return SelectedIndex;
-        }
-
-        public int DecrementSelectedIndex()
-        {
-            SelectedIndex--;
-            if (SelectedIndex < 0)
+            set
             {
-                SelectedIndex = Values.Length - 1;
+                this.Values[index] = value;
             }
-
-            return SelectedIndex;
         }
 
         /// <summary>
@@ -104,36 +82,45 @@ namespace Ensage.SDK.Menu.Items
             return selection.SelectedIndex;
         }
 
-        public T this[int index]
+        public int DecrementSelectedIndex()
         {
-            get
+            this.SelectedIndex--;
+            if (this.SelectedIndex < 0)
             {
-                return this.Values[index];
+                this.SelectedIndex = this.Values.Length - 1;
             }
-            set
+
+            return this.SelectedIndex;
+        }
+
+        public int IncrementSelectedIndex()
+        {
+            this.SelectedIndex++;
+            if (this.SelectedIndex >= this.Values.Length)
             {
-                this.Values[index] = value;
+                this.SelectedIndex = 0;
             }
+
+            return this.SelectedIndex;
         }
 
         public bool Load(object data)
         {
             var selection = (Selection<T>)data;
 
-            if (Values.SequenceEqual(selection.Values))
+            if (this.Values.SequenceEqual(selection.Values))
             {
-                Values = selection.Values;
-                Value = selection.Value;
+                this.Values = selection.Values;
+                this.Value = selection.Value;
                 return true;
             }
-      
+
             return false;
         }
 
         public override string ToString()
         {
-            return Value.ToString();
+            return this.Value.ToString();
         }
-
-       }
+    }
 }

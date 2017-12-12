@@ -24,13 +24,13 @@ namespace Ensage.SDK.Menu
 
         public override bool CanConvert(Type objectType)
         {
-            return Type.IsAssignableFrom(objectType);
+            return this.Type.IsAssignableFrom(objectType);
         }
 
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
             var name = (string)reader.Value;
-            return repository.Styles.FirstOrDefault(x => x.Name == name);
+            return this.repository.Styles.FirstOrDefault(x => x.Name == name);
         }
 
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)

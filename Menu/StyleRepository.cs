@@ -21,7 +21,7 @@ namespace Ensage.SDK.Menu
 
         public IMenuStyle GetStyle(string name)
         {
-            return Styles.First(e => e.Name == name);
+            return this.Styles.First(e => e.Name == name);
         }
     }
 }

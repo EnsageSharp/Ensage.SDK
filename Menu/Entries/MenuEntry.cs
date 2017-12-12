@@ -100,7 +100,7 @@ namespace Ensage.SDK.Menu.Entries
 
         public override void OnClick(MouseButtons buttons, Vector2 clickPosition)
         {
-            View.OnClick(this, buttons, clickPosition);
+            this.View.OnClick(this, buttons, clickPosition);
         }
 
         public void RemoveChild(MenuBase child)

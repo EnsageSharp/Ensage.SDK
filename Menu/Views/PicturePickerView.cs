@@ -74,7 +74,7 @@ namespace Ensage.SDK.Menu.Views
         {
             if ((buttons & MouseButtons.LeftUp) == MouseButtons.LeftUp)
             {
-                var state = GetItemUnderMouse(context, clickPosition);
+                var state = this.GetItemUnderMouse(context, clickPosition);
                 if (state.HasValue)
                 {
                     var item = (MenuItemEntry)context;
@@ -87,7 +87,7 @@ namespace Ensage.SDK.Menu.Views
             return false;
         }
 
-        protected KeyValuePair<string, bool>? GetItemUnderMouse(MenuBase context, Vector2 mousePos)
+        protected virtual KeyValuePair<string, bool>? GetItemUnderMouse(MenuBase context, Vector2 mousePos)
         {
             var item = (MenuItemEntry)context;
             var propValue = item.PropertyBinding.GetValue<PicturePicker>();

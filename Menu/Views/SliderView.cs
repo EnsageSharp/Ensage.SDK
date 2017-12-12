@@ -1,11 +1,10 @@
-﻿// <copyright file="SelectionView.cs" company="Ensage">
+﻿// <copyright file="SliderView.cs" company="Ensage">
 //    Copyright (c) 2017 Ensage.
 // </copyright>
 
 namespace Ensage.SDK.Menu.Views
 {
     using System;
-    using System.Collections.Generic;
 
     using Ensage.SDK.Input;
     using Ensage.SDK.Menu.Attributes;
@@ -17,8 +16,6 @@ namespace Ensage.SDK.Menu.Views
     [ExportView(typeof(Slider))]
     public class SliderView : IView
     {
-        private Vector2 textSize = Vector2.Zero;
-
         public void Draw(MenuBase context)
         {
             var item = (MenuItemEntry)context;
@@ -37,6 +34,7 @@ namespace Ensage.SDK.Menu.Views
             context.Renderer.DrawText(pos, context.Name, styleConfig.Font.Color, font.Size, font.Family);
 
             var propValue = item.PropertyBinding.GetValue<Slider>();
+            var textSize = context.Renderer.MessureText(propValue.ToString(), font.Size, font.Family);
             pos.X = (context.Position.X + size.X) - border.Thickness[2] - textSize.X - styleConfig.TextSpacing;
 
             context.Renderer.DrawText(pos, propValue.ToString(), styleConfig.Font.Color, font.Size, font.Family);
@@ -59,7 +57,7 @@ namespace Ensage.SDK.Menu.Views
             var propValue = item.PropertyBinding.GetValue<Slider>();
 
             var font = styleConfig.Font;
-            textSize = context.Renderer.MessureText(propValue.ToString(), font.Size, font.Family);
+            var textSize = context.Renderer.MessureText(propValue.ToString(), font.Size, font.Family);
             totalSize.X += styleConfig.LineWidth + textSize.X;
             totalSize.Y += Math.Max(textSize.Y, styleConfig.ArrowSize.Y);
 
@@ -78,7 +76,7 @@ namespace Ensage.SDK.Menu.Views
                 var item = (MenuItemEntry)context;
                 var propValue = item.PropertyBinding.GetValue<Slider>();
 
-                float percentage = (clickPosition.X - pos.X) / size.X;
+                var percentage = (clickPosition.X - pos.X) / size.X;
                 if (percentage >= 0 && percentage <= 1f)
                 {
                     propValue.Value = (int)Math.Round(percentage * (propValue.MaxValue - propValue.MinValue)) + propValue.MinValue;

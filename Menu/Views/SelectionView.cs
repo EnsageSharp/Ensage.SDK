@@ -39,13 +39,13 @@ namespace Ensage.SDK.Menu.Views
             context.Renderer.DrawText(pos, context.Name, styleConfig.Font.Color, font.Size, font.Family);
 
             var propValue = item.PropertyBinding.GetValue<ISelection<object>>();
-            pos.X = (context.Position.X + size.X) - border.Thickness[2] - (2 * styleConfig.ArrowSize.X) - (2 * styleConfig.TextSpacing) - valueSizes[propValue.ToString()].X;
+            pos.X = (context.Position.X + size.X) - border.Thickness[2] - (2 * styleConfig.ArrowSize.X) - (2 * styleConfig.TextSpacing) - this.valueSizes[propValue.ToString()].X;
 
             context.Renderer.DrawTexture(activeStyle.ArrowLeft, new RectangleF(pos.X, pos.Y, styleConfig.ArrowSize.X, styleConfig.ArrowSize.Y));
             pos.X += styleConfig.ArrowSize.X + styleConfig.TextSpacing;
 
             context.Renderer.DrawText(pos, propValue.Value.ToString(), styleConfig.Font.Color, font.Size, font.Family);
-            pos.X += valueSizes[propValue.ToString()].X + styleConfig.TextSpacing;
+            pos.X += this.valueSizes[propValue.ToString()].X + styleConfig.TextSpacing;
             context.Renderer.DrawTexture(activeStyle.ArrowRight, new RectangleF(pos.X, pos.Y, styleConfig.ArrowSize.X, styleConfig.ArrowSize.Y));
         }
 
@@ -59,9 +59,9 @@ namespace Ensage.SDK.Menu.Views
             totalSize.Y += border.Thickness[1] + border.Thickness[3];
 
             var font = styleConfig.Font;
-            textSize = context.Renderer.MessureText(context.Name, font.Size, font.Family);
-            totalSize.X += styleConfig.LineWidth + textSize.X + styleConfig.TextSpacing + (styleConfig.ArrowSize.X * 2);
-            totalSize.Y += Math.Max(textSize.Y, styleConfig.ArrowSize.Y);
+            this.textSize = context.Renderer.MessureText(context.Name, font.Size, font.Family);
+            totalSize.X += styleConfig.LineWidth + this.textSize.X + styleConfig.TextSpacing + (styleConfig.ArrowSize.X * 2);
+            totalSize.Y += Math.Max(this.textSize.Y, styleConfig.ArrowSize.Y);
 
             var item = (MenuItemEntry)context;
             var propValue = item.PropertyBinding.GetValue<ISelection<object>>();
@@ -70,7 +70,7 @@ namespace Ensage.SDK.Menu.Views
             foreach (var value in propValue.Values)
             {
                 var tmp = context.Renderer.MessureText(value.ToString(), font.Size, font.Family);
-                valueSizes[value.ToString()] = tmp;
+                this.valueSizes[value.ToString()] = tmp;
                 if (tmp.LengthSquared() > maxSize.LengthSquared())
                 {
                     maxSize = tmp;
@@ -92,10 +92,10 @@ namespace Ensage.SDK.Menu.Views
 
                 var item = (MenuItemEntry)context;
                 var propValue = item.PropertyBinding.GetValue<ISelection<object>>();
-                var textSize = valueSizes[propValue.ToString()].X;
+                var textSize = this.valueSizes[propValue.ToString()].X;
 
-                RectangleF rectPos = new RectangleF();
-                rectPos.X = context.Position.X + size.X - styleConfig.Border.Thickness[2] - (2 * styleConfig.ArrowSize.X) - (2 * styleConfig.TextSpacing) - textSize;
+                var rectPos = new RectangleF();
+                rectPos.X = (context.Position.X + size.X) - styleConfig.Border.Thickness[2] - (2 * styleConfig.ArrowSize.X) - (2 * styleConfig.TextSpacing) - textSize;
                 rectPos.Y = context.Position.Y;
                 rectPos.Width = styleConfig.ArrowSize.X + (textSize / 2);
                 rectPos.Height = size.Y;
@@ -105,7 +105,7 @@ namespace Ensage.SDK.Menu.Views
                     return true;
                 }
 
-                rectPos.X = context.Position.X + size.X - styleConfig.Border.Thickness[2] - styleConfig.ArrowSize.X - styleConfig.TextSpacing - (textSize / 2);
+                rectPos.X = (context.Position.X + size.X) - styleConfig.Border.Thickness[2] - styleConfig.ArrowSize.X - styleConfig.TextSpacing - (textSize / 2);
                 if (rectPos.Contains(clickPosition))
                 {
                     propValue.IncrementSelectedIndex();

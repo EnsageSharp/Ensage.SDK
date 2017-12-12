@@ -9,18 +9,18 @@ namespace Ensage.SDK.Menu
     public class FontStyle
     {
         /// <summary>
-        /// Gets or sets the font family.
+        ///     Gets or sets the color of the text.
+        /// </summary>
+        public Color Color { get; set; } = Color.White;
+
+        /// <summary>
+        ///     Gets or sets the font family.
         /// </summary>
         public string Family { get; set; } = "Calibri";
 
         /// <summary>
-        /// Gets or sets the size of the font.
+        ///     Gets or sets the size of the font.
         /// </summary>
         public int Size { get; set; } = 16;
-
-        /// <summary>
-        /// Gets or sets the color of the text.
-        /// </summary>
-        public Color Color { get; set; } = Color.White;
     }
 }

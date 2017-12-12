@@ -12,8 +12,6 @@ namespace Ensage.SDK.Menu.Views
 
     using SharpDX;
 
-    using Color = System.Drawing.Color;
-
     [Export]
     public class MenuView : IView
     {
@@ -36,19 +34,22 @@ namespace Ensage.SDK.Menu.Views
             }
 
             var font = styleConfig.Font;
-            context.Renderer.DrawText(pos + new Vector2(border.Thickness[0] + styleConfig.LineWidth, border.Thickness[1]), context.Name, styleConfig.Font.Color, font.Size, font.Family);
+            context.Renderer.DrawText(
+                pos + new Vector2(border.Thickness[0] + styleConfig.LineWidth, border.Thickness[1]),
+                context.Name,
+                styleConfig.Font.Color,
+                font.Size,
+                font.Family);
 
-            Vector2 arrowPos = Vector2.Zero;
-            arrowPos.X = pos.X + size.X - border.Thickness[2] - (styleConfig.TextSpacing * 2) - styleConfig.ArrowSize.X;
+            var arrowPos = Vector2.Zero;
+            arrowPos.X = (pos.X + size.X) - border.Thickness[2] - (styleConfig.TextSpacing * 2) - styleConfig.ArrowSize.X;
             arrowPos.Y = pos.Y + border.Thickness[1];
             if (context.IsHovered || !menuEntry.IsCollapsed)
             {
                 arrowPos.X += styleConfig.TextSpacing;
             }
 
-            context.Renderer.DrawTexture(
-                activeStyle.ArrowRight,
-                    new RectangleF(arrowPos.X, arrowPos.Y, styleConfig.ArrowSize.X, styleConfig.ArrowSize.Y)); 
+            context.Renderer.DrawTexture(activeStyle.ArrowRight, new RectangleF(arrowPos.X, arrowPos.Y, styleConfig.ArrowSize.X, styleConfig.ArrowSize.Y));
         }
 
         public Vector2 GetSize(MenuBase context)

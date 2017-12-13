@@ -12,12 +12,19 @@ namespace Ensage.SDK.Menu.Entries
     using Ensage.SDK.Persistence;
     using Ensage.SDK.Renderer;
 
+    using PlaySharp.Toolkit.Helper.Annotations;
+
     using SharpDX;
 
     public class MenuItemEntry : MenuBase
     {
         public MenuItemEntry(string name, IView view, IRenderer renderer, MenuConfig menuConfig, object instance, PropertyInfo propertyInfo)
-            : base(name, view, renderer, menuConfig, instance, propertyInfo)
+            : this(name, null, view, renderer, menuConfig, instance, propertyInfo)
+        {
+        }
+
+        public MenuItemEntry(string name, [CanBeNull] string textureKey, IView view, IRenderer renderer, MenuConfig menuConfig, object instance, PropertyInfo propertyInfo)
+            : base(name, textureKey, view, renderer, menuConfig, instance, propertyInfo)
         {
             this.PropertyBinding = new PropertyBinding(propertyInfo, instance);
         }

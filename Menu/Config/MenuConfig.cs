@@ -10,7 +10,7 @@ namespace Ensage.SDK.Menu.Config
 
     using SharpDX;
 
-    [Menu("SDKMenu")]
+    [Menu("SDKMenu"), TexureAttribute("menuStyle/logo")]
     public class MenuConfig
     {
         public MenuConfig()

@@ -23,12 +23,9 @@ namespace Ensage.SDK.Renderer
         private bool disposed;
 
         [ImportingConstructor]
-        public RendererManager(
-            [ImportMany] IEnumerable<Lazy<IRenderer, IRendererMetadata>> renderers,
-            [ImportMany] IEnumerable<Lazy<ITextureManager, IRendererMetadata>> textureManagers)
+        public RendererManager([ImportMany] IEnumerable<Lazy<IRenderer, IRendererMetadata>> renderers)
         {
             this.active = renderers.First(e => e.Metadata.Mode == Drawing.RenderMode).Value;
-            this.TextureManager = textureManagers.First(e => e.Metadata.Mode == Drawing.RenderMode).Value;
         }
 
         public event EventHandler Draw
@@ -44,22 +41,18 @@ namespace Ensage.SDK.Renderer
             }
         }
 
-        public ITextureManager TextureManager { get; }
+        public ITextureManager TextureManager
+        {
+            get
+            {
+                return this.active.TextureManager;
+            }
+        }
 
         public void Dispose()
         {
             this.Dispose(true);
             GC.SuppressFinalize(this);
-        }
-
-        public void DrawTexture(string textureKey, RectangleF rect, float rotation = 0, float opacity = 1)
-        {
-            this.active.DrawTexture(textureKey, rect, rotation, opacity);
-        }
-
-        public Vector2 MessureText(string text, float fontSize = 13, string fontFamily = "Calibri")
-        {
-            return active.MessureText(text, fontSize, fontFamily);
         }
 
         public void DrawCircle(Vector2 center, float radius, Color color, float width = 1.0f)
@@ -80,6 +73,21 @@ namespace Ensage.SDK.Renderer
         public void DrawText(Vector2 position, string text, Color color, float fontSize = 13f, string fontFamily = "Calibri")
         {
             this.active.DrawText(position, text, color, fontSize, fontFamily);
+        }
+
+        public void DrawTexture(string textureKey, RectangleF rect, float rotation = 0, float opacity = 1)
+        {
+            this.active.DrawTexture(textureKey, rect, rotation, opacity);
+        }
+
+        public Vector2 GetTextureSize(string textureKey)
+        {
+            return this.active.TextureManager.GetTextureSize(textureKey);
+        }
+
+        public Vector2 MessureText(string text, float fontSize = 13, string fontFamily = "Calibri")
+        {
+            return this.active.MessureText(text, fontSize, fontFamily);
         }
 
         private void Dispose(bool disposing)

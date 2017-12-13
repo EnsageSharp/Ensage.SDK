@@ -30,6 +30,11 @@ namespace Ensage.SDK.Menu.Entries
         {
         }
 
+        public MenuEntry(string name, [CanBeNull] string textureKey, IView view, IRenderer renderer, MenuConfig menuConfig, object instance, [CanBeNull] PropertyInfo propertyInfo)
+            : base(name, textureKey, view, renderer, menuConfig, instance, propertyInfo)
+        {
+        }
+
         public IReadOnlyCollection<MenuBase> Children
         {
             get

@@ -18,9 +18,15 @@ namespace Ensage.SDK.Menu
     public abstract class MenuBase
     {
         protected MenuBase(string name, IView view, IRenderer renderer, MenuConfig menuConfig, object instance, [CanBeNull] PropertyInfo propertyInfo)
+            : this(name, null, view, renderer, menuConfig, instance, propertyInfo)
+        {
+        }
+
+        protected MenuBase(string name, [CanBeNull] string textureKey, IView view, IRenderer renderer, MenuConfig menuConfig, object instance, [CanBeNull] PropertyInfo propertyInfo)
         {
             this.MenuConfig = menuConfig;
             this.Name = name;
+            this.TextureKey = textureKey;
             this.View = view;
             this.Renderer = renderer;
             this.DataContext = instance;
@@ -34,6 +40,8 @@ namespace Ensage.SDK.Menu
         public MenuConfig MenuConfig { get; }
 
         public string Name { get; }
+
+        public string TextureKey { get; set; }
 
         public Vector2 Position { get; set; }
 

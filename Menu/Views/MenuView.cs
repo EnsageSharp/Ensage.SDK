@@ -33,23 +33,26 @@ namespace Ensage.SDK.Menu.Views
                 context.Renderer.DrawLine(pos, pos + new Vector2(0, size.Y), menuEntry.IsCollapsed ? styleConfig.LineColor : styleConfig.SelectedLineColor, styleConfig.LineWidth);
             }
 
-            var font = styleConfig.Font;
-            context.Renderer.DrawText(
-                pos + new Vector2(border.Thickness[0] + styleConfig.LineWidth, border.Thickness[1]),
-                context.Name,
-                styleConfig.Font.Color,
-                font.Size,
-                font.Family);
-
-            var arrowPos = Vector2.Zero;
-            arrowPos.X = (pos.X + size.X) - border.Thickness[2] - (styleConfig.TextSpacing * 2) - styleConfig.ArrowSize.X;
-            arrowPos.Y = pos.Y + border.Thickness[1];
-            if (context.IsHovered || !menuEntry.IsCollapsed)
+            pos += new Vector2(border.Thickness[0] + styleConfig.LineWidth, border.Thickness[1]);
+            if (!string.IsNullOrEmpty(context.TextureKey))
             {
-                arrowPos.X += styleConfig.TextSpacing;
+                var textureSize = context.Renderer.GetTextureSize(context.TextureKey);
+                var scale = (size.Y - border.Thickness[1] - border.Thickness[3]) / textureSize.Y;
+                textureSize *= scale;
+                context.Renderer.DrawTexture(context.TextureKey, new RectangleF(pos.X, pos.Y, textureSize.X, textureSize.Y));
+                pos.X += textureSize.X + styleConfig.TextSpacing;
             }
 
-            context.Renderer.DrawTexture(activeStyle.ArrowRight, new RectangleF(arrowPos.X, arrowPos.Y, styleConfig.ArrowSize.X, styleConfig.ArrowSize.Y));
+            var font = styleConfig.Font;
+            context.Renderer.DrawText(pos, context.Name, styleConfig.Font.Color, font.Size, font.Family);
+
+            pos.X = (context.Position.X + size.X) - border.Thickness[2] - (styleConfig.TextSpacing * 2) - styleConfig.ArrowSize.X;
+            if (context.IsHovered || !menuEntry.IsCollapsed)
+            {
+                pos.X += styleConfig.TextSpacing;
+            }
+
+            context.Renderer.DrawTexture(activeStyle.ArrowRight, new RectangleF(pos.X, pos.Y, styleConfig.ArrowSize.X, styleConfig.ArrowSize.Y));
         }
 
         public Vector2 GetSize(MenuBase context)
@@ -64,7 +67,16 @@ namespace Ensage.SDK.Menu.Views
             var font = styleConfig.Font;
             var fontSize = context.Renderer.MessureText(context.Name, font.Size, font.Family);
             totalSize.X += styleConfig.LineWidth + fontSize.X + styleConfig.ArrowSize.X + (styleConfig.TextSpacing * 3);
-            totalSize.Y += Math.Max(fontSize.Y, styleConfig.ArrowSize.Y);
+
+            var height = Math.Max(fontSize.Y, styleConfig.ArrowSize.Y);
+            totalSize.Y += height;
+
+            if (!string.IsNullOrEmpty(context.TextureKey))
+            {
+                var textureSize = context.Renderer.GetTextureSize(context.TextureKey);
+                var scale = height / textureSize.Y;
+                totalSize.X += (textureSize.X * scale) + styleConfig.TextSpacing;
+            }
 
             return totalSize;
         }

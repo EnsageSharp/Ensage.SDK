@@ -20,6 +20,7 @@ namespace Ensage.SDK.Renderer.DX9
     using PlaySharp.Toolkit.Helper.Annotations;
     using PlaySharp.Toolkit.Logging;
 
+    using SharpDX;
     using SharpDX.Direct3D9;
 
     [Export]
@@ -60,6 +61,16 @@ namespace Ensage.SDK.Renderer.DX9
             return null;
         }
 
+        public Vector2 GetTextureSize(string textureKey)
+        {
+            if (!this.textureCache.TryGetValue(textureKey, out var texture))
+            {
+                return Vector2.Zero;
+            }
+
+            return new Vector2(texture.Bitmap.Size.Width, texture.Bitmap.Size.Height);
+        }
+
         public bool LoadFromDota(string textureKey, string file)
         {
             try
@@ -77,43 +88,6 @@ namespace Ensage.SDK.Renderer.DX9
             }
 
             return false;
-        }
-
-        public bool LoadFromResource(string textureKey, string file, Assembly assembly = null)
-        {
-            if (this.textureCache.ContainsKey(textureKey))
-            {
-                return true;
-            }
-
-            if (file == null)
-            {
-                throw new ArgumentNullException(nameof(file));
-            }
-
-            if (assembly == null)
-            {
-                assembly = Assembly.GetCallingAssembly();
-            }
-
-            var resourceFile = assembly.GetManifestResourceNames().FirstOrDefault(f => f.EndsWith(file));
-            if (resourceFile == null)
-            {
-                Log.Warn($"Not found {assembly.GetName().Name} - {file}");
-
-                foreach (var resourceName in assembly.GetManifestResourceNames())
-                {
-                    Log.Debug($"candidate {resourceName}");
-                }
-
-                throw new ArgumentNullException(nameof(resourceFile));
-            }
-
-            using (var ms = new MemoryStream())
-            {
-                assembly.GetManifestResourceStream(resourceFile)?.CopyTo(ms);
-                return this.LoadFromStream(textureKey, ms);
-            }
         }
 
         public bool LoadFromFile(string textureKey, string file)
@@ -175,6 +149,43 @@ namespace Ensage.SDK.Renderer.DX9
             }
 
             return false;
+        }
+
+        public bool LoadFromResource(string textureKey, string file, Assembly assembly = null)
+        {
+            if (this.textureCache.ContainsKey(textureKey))
+            {
+                return true;
+            }
+
+            if (file == null)
+            {
+                throw new ArgumentNullException(nameof(file));
+            }
+
+            if (assembly == null)
+            {
+                assembly = Assembly.GetCallingAssembly();
+            }
+
+            var resourceFile = assembly.GetManifestResourceNames().FirstOrDefault(f => f.EndsWith(file));
+            if (resourceFile == null)
+            {
+                Log.Warn($"Not found {assembly.GetName().Name} - {file}");
+
+                foreach (var resourceName in assembly.GetManifestResourceNames())
+                {
+                    Log.Debug($"candidate {resourceName}");
+                }
+
+                throw new ArgumentNullException(nameof(resourceFile));
+            }
+
+            using (var ms = new MemoryStream())
+            {
+                assembly.GetManifestResourceStream(resourceFile)?.CopyTo(ms);
+                return this.LoadFromStream(textureKey, ms);
+            }
         }
 
         public bool LoadFromStream(string textureKey, Stream stream)

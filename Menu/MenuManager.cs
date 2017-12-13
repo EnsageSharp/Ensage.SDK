@@ -254,7 +254,8 @@ namespace Ensage.SDK.Menu
 
             var view = this.viewRepository.GetMenuView();
 
-            var menuEntry = new MenuEntry(menuName, view, this.renderer, this.MenuConfig, menu, null);
+            var textureAttribute = dataType.GetCustomAttribute<TexureAttribute>();
+            var menuEntry = new MenuEntry(menuName, textureAttribute?.TextureKey, view, this.renderer, this.MenuConfig, menu, null);
             this.VisitInstance(menuEntry, menu);
 
             this.rootMenus.Add(menuEntry);
@@ -294,7 +295,8 @@ namespace Ensage.SDK.Menu
             var titleBar = this.MenuConfig.GeneralConfig.ActiveStyle.Value.StyleConfig.TitleBar;
             this.TitleBarSize = this.renderer.MessureText("Menu", titleBar.Font.Size, titleBar.Font.Family)
                                 + new Vector2(titleBar.Border.Thickness[0] + titleBar.Border.Thickness[2], titleBar.Border.Thickness[1] + titleBar.Border.Thickness[3]);
-
+            this.renderer.TextureManager.LoadFromResource("menuStyle/logo", @"MenuStyle.logo.png");
+            
             this.RegisterMenu(this.MenuConfig);
 
             this.renderer.Draw += this.OnDraw;
@@ -747,8 +749,10 @@ namespace Ensage.SDK.Menu
                     menuItemName = propertyInfo.Name;
                 }
 
+                var textureAttribute = propertyInfo.GetCustomAttribute<TexureAttribute>();
+
                 var view = this.viewRepository.GetView(propertyInfo.PropertyType);
-                var menuItemEntry = new MenuItemEntry(menuItemName, view, this.renderer, this.MenuConfig, instance, propertyInfo);
+                var menuItemEntry = new MenuItemEntry(menuItemName, textureAttribute?.TextureKey, view, this.renderer, this.MenuConfig, instance, propertyInfo);
 
                 var tooltip = propertyInfo.GetCustomAttribute<TooltipAttribute>();
                 if (tooltip != null)
@@ -783,7 +787,8 @@ namespace Ensage.SDK.Menu
                     menuItemName = type.Name;
                 }
 
-                var menuItemEntry = new MenuEntry(menuItemName, this.viewRepository.GetMenuView(), this.renderer, this.MenuConfig, propertyValue, propertyInfo);
+                var textureAttribute = propertyInfo.GetCustomAttribute<TexureAttribute>();
+                var menuItemEntry = new MenuEntry(menuItemName, textureAttribute?.TextureKey, this.viewRepository.GetMenuView(), this.renderer, this.MenuConfig, propertyValue, propertyInfo);
                 this.VisitInstance(menuItemEntry, propertyValue);
 
                 parent.AddChild(menuItemEntry);

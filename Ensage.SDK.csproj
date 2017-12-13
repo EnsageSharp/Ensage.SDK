@@ -522,6 +522,7 @@
     <Compile Include="Inventory\Metadata\ItemBindingAttribute.cs" />
     <Compile Include="Menu\AnimationManager.cs" />
     <Compile Include="Menu\Attributes\PermaShowAttribute.cs" />
+    <Compile Include="Menu\Attributes\TextureAttribute.cs" />
     <Compile Include="Menu\Config\GeneralConfig.cs" />
     <Compile Include="Menu\Config\HackConfig.cs" />
     <Compile Include="Menu\Config\MenuConfig.cs" />
@@ -790,6 +791,9 @@
     <EmbeddedResource Include="Resources\MenuStyle\darkred\itembg1.png" />
     <EmbeddedResource Include="Resources\MenuStyle\darkred\menubg1.png" />
     <EmbeddedResource Include="Resources\MenuStyle\darkred\sliderbgon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\MenuStyle\logo.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -61,6 +61,14 @@ namespace Ensage.SDK.Renderer.DX9
             }
         }
 
+        public ITextureManager TextureManager
+        {
+            get
+            {
+                return this.textureManager;
+            }
+        }
+
         public void Dispose()
         {
             this.Dispose(true);
@@ -180,6 +188,11 @@ namespace Ensage.SDK.Renderer.DX9
 
             this.sprite.Transform = matrix;
             this.sprite.End();
+        }
+
+        public Vector2 GetTextureSize(string textureKey)
+        {
+            return this.textureManager.GetTextureSize(textureKey);
         }
 
         public Vector2 MessureText(string text, float fontSize = 13, string fontFamily = "Calibri")

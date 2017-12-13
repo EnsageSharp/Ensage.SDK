@@ -19,6 +19,7 @@ namespace Ensage.SDK.Renderer.DX11
     using PlaySharp.Toolkit.Helper.Annotations;
     using PlaySharp.Toolkit.Logging;
 
+    using SharpDX;
     using SharpDX.IO;
     using SharpDX.WIC;
 
@@ -34,9 +35,9 @@ namespace Ensage.SDK.Renderer.DX11
 
         private readonly ID3D11Context renderContext;
 
-        private readonly VpkBrowser vpkBrowser;
-
         private readonly Dictionary<string, D3D11Texture> textureCache = new Dictionary<string, D3D11Texture>();
+
+        private readonly VpkBrowser vpkBrowser;
 
         private bool disposed;
 
@@ -64,6 +65,34 @@ namespace Ensage.SDK.Renderer.DX11
             }
 
             return null;
+        }
+
+        public Vector2 GetTextureSize(string textureKey)
+        {
+            if (!this.textureCache.TryGetValue(textureKey, out var texture))
+            {
+                return Vector2.Zero;
+            }
+
+            return new Vector2(texture.Bitmap.Size.Width, texture.Bitmap.Size.Height);
+        }
+
+        public bool LoadFromDota(string textureKey, string file)
+        {
+            try
+            {
+                var bitmapStream = this.vpkBrowser.FindImage(file);
+                if (bitmapStream != null)
+                {
+                    return this.LoadFromStream(textureKey, bitmapStream);
+                }
+            }
+            catch (Exception e)
+            {
+                Log.Error(e);
+            }
+
+            return false;
         }
 
         public bool LoadFromFile(string textureKey, string file)
@@ -121,53 +150,6 @@ namespace Ensage.SDK.Renderer.DX11
             }
         }
 
-        public bool LoadFromStream(string textureKey, Stream stream)
-        {
-            try
-            {
-                if (this.textureCache.ContainsKey(textureKey))
-                {
-                    return true;
-                }
-
-                using (var bitmapDecoder = new BitmapDecoder(this.imagingFactory, stream, DecodeOptions.CacheOnDemand))
-                {
-                    var frame = bitmapDecoder.GetFrame(0);
-                    using (var converter = new FormatConverter(this.imagingFactory))
-                    {
-                        converter.Initialize(frame, PixelFormat.Format32bppPRGBA);
-                        var bitmap = Bitmap.FromWicBitmap(this.renderContext.RenderTarget, converter);
-                        this.textureCache[textureKey] = new D3D11Texture(bitmap);
-                    }
-                }
-
-                return true;
-            }
-            catch (Exception e)
-            {
-                Log.Error(e);
-                return false;
-            }
-        }
-
-        public bool LoadFromDota(string textureKey, string file)
-        {
-            try
-            {
-                var bitmapStream = this.vpkBrowser.FindImage(file);
-                if (bitmapStream != null)
-                {
-                    return this.LoadFromStream(textureKey, bitmapStream);
-                }
-            }
-            catch (Exception e)
-            {
-                Log.Error(e);
-            }
-
-            return false;
-        }
-
         public bool LoadFromResource(string textureKey, string file, Assembly assembly = null)
         {
             if (this.textureCache.ContainsKey(textureKey))
@@ -202,6 +184,35 @@ namespace Ensage.SDK.Renderer.DX11
             {
                 assembly.GetManifestResourceStream(resourceFile)?.CopyTo(ms);
                 return this.LoadFromStream(textureKey, ms);
+            }
+        }
+
+        public bool LoadFromStream(string textureKey, Stream stream)
+        {
+            try
+            {
+                if (this.textureCache.ContainsKey(textureKey))
+                {
+                    return true;
+                }
+
+                using (var bitmapDecoder = new BitmapDecoder(this.imagingFactory, stream, DecodeOptions.CacheOnDemand))
+                {
+                    var frame = bitmapDecoder.GetFrame(0);
+                    using (var converter = new FormatConverter(this.imagingFactory))
+                    {
+                        converter.Initialize(frame, PixelFormat.Format32bppPRGBA); // Format32bppPRGBA
+                        var bitmap = Bitmap.FromWicBitmap(this.renderContext.RenderTarget, converter);
+                        this.textureCache[textureKey] = new D3D11Texture(bitmap);
+                    }
+                }
+
+                return true;
+            }
+            catch (Exception e)
+            {
+                Log.Error(e);
+                return false;
             }
         }
 

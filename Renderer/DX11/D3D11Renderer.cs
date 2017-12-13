@@ -51,10 +51,44 @@ namespace Ensage.SDK.Renderer.DX11
             }
         }
 
+        public ITextureManager TextureManager
+        {
+            get
+            {
+                return this.textureManager;
+            }
+        }
+
         public void Dispose()
         {
             this.Dispose(true);
             GC.SuppressFinalize(this);
+        }
+
+        public void DrawCircle(Vector2 center, float radius, Color color, float width = 1.0f)
+        {
+            this.context.RenderTarget.DrawEllipse(new Ellipse(center, radius, radius), this.brushCache.GetOrCreate(color), width);
+        }
+
+        public void DrawLine(Vector2 start, Vector2 end, Color color, float width = 1.0f)
+        {
+            this.context.RenderTarget.DrawLine(start, end, this.brushCache.GetOrCreate(color), width);
+        }
+
+        public void DrawRectangle(RectangleF rect, Color color, float width = 1.0f)
+        {
+            this.context.RenderTarget.DrawRectangle(rect, this.brushCache.GetOrCreate(color), width);
+        }
+
+        public void DrawText(Vector2 position, string text, Color color, float fontSize = 13f, string fontFamily = "Calibri")
+        {
+            var font = this.textFormatCache.GetOrCreate(fontFamily, fontSize);
+            var brush = this.brushCache.GetOrCreate(color);
+
+            using (var layout = new TextLayout(this.context.DirectWrite, text, font, float.MaxValue, float.MaxValue))
+            {
+                this.context.RenderTarget.DrawTextLayout(position, layout, brush);
+            }
         }
 
         public void DrawTexture(string textureKey, RectangleF rect, float rotation = 0.0f, float opacity = 1.0f)
@@ -95,30 +129,9 @@ namespace Ensage.SDK.Renderer.DX11
             }
         }
 
-        public void DrawCircle(Vector2 center, float radius, Color color, float width = 1.0f)
+        public Vector2 GetTextureSize(string textureKey)
         {
-            this.context.RenderTarget.DrawEllipse(new Ellipse(center, radius, radius), this.brushCache.GetOrCreate(color), width);
-        }
-
-        public void DrawLine(Vector2 start, Vector2 end, Color color, float width = 1.0f)
-        {
-            this.context.RenderTarget.DrawLine(start, end, this.brushCache.GetOrCreate(color), width);
-        }
-
-        public void DrawRectangle(RectangleF rect, Color color, float width = 1.0f)
-        {
-            this.context.RenderTarget.DrawRectangle(rect, this.brushCache.GetOrCreate(color), width);
-        }
-
-        public void DrawText(Vector2 position, string text, Color color, float fontSize = 13f, string fontFamily = "Calibri")
-        {
-            var font = this.textFormatCache.GetOrCreate(fontFamily, fontSize);
-            var brush = this.brushCache.GetOrCreate(color);
-
-            using (var layout = new TextLayout(this.context.DirectWrite, text, font, float.MaxValue, float.MaxValue))
-            {
-                this.context.RenderTarget.DrawTextLayout(position, layout, brush);
-            }
+            return this.textureManager.GetTextureSize(textureKey);
         }
 
         private void Dispose(bool disposing)

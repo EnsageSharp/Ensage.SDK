@@ -14,6 +14,8 @@ namespace Ensage.SDK.Renderer
     {
         event EventHandler Draw;
 
+        ITextureManager TextureManager { get; }
+
         void DrawCircle(Vector2 center, float radius, Color color, float width = 1.0f);
 
         void DrawLine(Vector2 start, Vector2 end, Color color, float width = 1.0f);
@@ -25,5 +27,7 @@ namespace Ensage.SDK.Renderer
         void DrawTexture(string textureKey, RectangleF rect, float rotation = 0.0f, float opacity = 1.0f);
 
         Vector2 MessureText(string text, float fontSize = 13f, string fontFamily = "Calibri");
+
+        Vector2 GetTextureSize(string textureKey);
     }
 }

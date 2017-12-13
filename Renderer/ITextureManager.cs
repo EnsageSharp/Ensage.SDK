@@ -8,6 +8,8 @@ namespace Ensage.SDK.Renderer
     using System.IO;
     using System.Reflection;
 
+    using SharpDX;
+
     public interface ITextureManager : IDisposable
     {
         bool LoadFromFile(string textureKey, string file);
@@ -19,5 +21,7 @@ namespace Ensage.SDK.Renderer
         bool LoadFromDota(string textureKey, string file);
 
         bool LoadFromResource(string textureKey, string file, Assembly assembly = null);
+
+        Vector2 GetTextureSize(string textureKey);
     }
 }

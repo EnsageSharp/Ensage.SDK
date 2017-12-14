@@ -1,4 +1,4 @@
-﻿// <copyright file="item_combo_breaker.cs" company="Ensage">
+﻿// <copyright file="item_aeon_disk.cs" company="Ensage">
 //    Copyright (c) 2017 Ensage.
 // </copyright>
 

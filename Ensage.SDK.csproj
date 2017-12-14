@@ -111,7 +111,7 @@
     <Compile Include="Abilities\IAreaOfEffectAbility.cs" />
     <Compile Include="Abilities\IAuraAbility.cs" />
     <Compile Include="Abilities\Aggregation\Dagon.cs" />
-    <Compile Include="Abilities\Items\item_combo_breaker.cs" />
+    <Compile Include="Abilities\Items\item_aeon_disk.cs" />
     <Compile Include="Abilities\npc_dota_hero_ancient_apparition\ancient_apparition_chilling_touch.cs" />
     <Compile Include="Abilities\npc_dota_hero_ancient_apparition\ancient_apparition_cold_feet.cs" />
     <Compile Include="Abilities\npc_dota_hero_ancient_apparition\ancient_apparition_ice_blast.cs" />

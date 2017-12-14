@@ -6,14 +6,13 @@ namespace Ensage.SDK.Abilities.Items
 {
     using Ensage.SDK.Abilities.Components;
 
-    // C-C-C-COMBO BREAKER
-    public class item_combo_breaker : PassiveAbility, IHasModifier
+    public class item_aeon_disk : PassiveAbility, IHasModifier
     {
-        public item_combo_breaker(Item item)
+        public item_aeon_disk(Item item)
             : base(item)
         {
         }
 
-        public string ModifierName { get; } = "modifier_item_combo_breaker_buff";
+        public string ModifierName { get; } = "modifier_item_aeon_disk_buff";
     }
 }

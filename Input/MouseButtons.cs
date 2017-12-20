@@ -23,10 +23,16 @@ namespace Ensage.SDK.Input
 
         RightDown = (1 << 5) | Right,
 
-        XButton = 1 << 6,
+        XButton1 = 1 << 6,
 
-        XButtonUp = (1 << 7) | XButton,
+        XButton1Up = (1 << 7) | XButton1,
 
-        XButtonDown = (1 << 8) | XButton,
+        XButton1Down = (1 << 8) | XButton1,
+
+        XButton2 = 1 << 9,
+
+        XButton2Up = (1 << 10) | XButton2,
+
+        XButton2Down = (1 << 11) | XButton2,
     }
 }

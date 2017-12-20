@@ -36,13 +36,11 @@ namespace Ensage.SDK.Menu
     {
         private static readonly ILog Log = AssemblyLogs.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        private readonly IInputManager input;
-
-        private readonly IRendererManager renderer;
-
         private readonly List<MenuEntry> rootMenus = new List<MenuEntry>();
 
         private readonly StyleRepository styleRepository;
+
+        private readonly IServiceContext context;
 
         private readonly ViewRepository viewRepository;
 
@@ -69,13 +67,12 @@ namespace Ensage.SDK.Menu
         private bool titleBarHovered;
 
         [ImportingConstructor]
-        public MenuManager([Import] ViewRepository viewRepository, [Import] IRendererManager renderer, [Import] StyleRepository styleRepository, [Import] IInputManager input)
+        public MenuManager([Import] IServiceContext context, [Import] ViewRepository viewRepository, [Import] StyleRepository styleRepository)
         {
             // TODO extract interface
+            this.context = context;
             this.viewRepository = viewRepository;
-            this.renderer = renderer;
             this.styleRepository = styleRepository;
-            this.input = input;
         }
 
         public bool IsVisible { get; private set; } = true;
@@ -216,8 +213,8 @@ namespace Ensage.SDK.Menu
 
             var activeStyle = this.MenuConfig.GeneralConfig.ActiveStyle.Value;
             var titleBar = activeStyle.StyleConfig.TitleBar;
-            this.renderer.DrawTexture(activeStyle.TitleBar, new RectangleF(this.Position.X, this.Position.Y, this.TitleBarSize.X, this.TitleBarSize.Y));
-            this.renderer.DrawText(
+            this.context.Renderer.DrawTexture(activeStyle.TitleBar, new RectangleF(this.Position.X, this.Position.Y, this.TitleBarSize.X, this.TitleBarSize.Y));
+            this.context.Renderer.DrawText(
                 this.Position + new Vector2(titleBar.Border.Thickness[0], titleBar.Border.Thickness[1]),
                 "Menu",
                 titleBar.Font.Color,
@@ -233,7 +230,6 @@ namespace Ensage.SDK.Menu
         public MenuEntry RegisterMenu(object menu)
         {
             Log.Debug($"Registering {menu}");
-
             var dataType = menu.GetType();
             var sdkAttribute = dataType.GetCustomAttribute<MenuAttribute>();
             if (sdkAttribute == null)
@@ -246,6 +242,8 @@ namespace Ensage.SDK.Menu
                 throw new ArgumentException($"{menu} is already registered");
             }
 
+            this.context.Container.BuildUpWithImportCheck(menu);
+
             var menuName = sdkAttribute.Name;
             if (string.IsNullOrEmpty(menuName))
             {
@@ -253,9 +251,8 @@ namespace Ensage.SDK.Menu
             }
 
             var view = this.viewRepository.GetMenuView();
-
             var textureAttribute = dataType.GetCustomAttribute<TexureAttribute>();
-            var menuEntry = new MenuEntry(menuName, textureAttribute?.TextureKey, view, this.renderer, this.MenuConfig, menu, null);
+            var menuEntry = new MenuEntry(menuName, textureAttribute?.TextureKey, view, this.context.Renderer, this.MenuConfig, menu, null);
             this.VisitInstance(menuEntry, menu);
 
             this.rootMenus.Add(menuEntry);
@@ -293,24 +290,24 @@ namespace Ensage.SDK.Menu
             this.Position = this.MenuConfig.MenuPosition;
 
             var titleBar = this.MenuConfig.GeneralConfig.ActiveStyle.Value.StyleConfig.TitleBar;
-            this.TitleBarSize = this.renderer.MessureText("Menu", titleBar.Font.Size, titleBar.Font.Family)
+            this.TitleBarSize = this.context.Renderer.MessureText("Menu", titleBar.Font.Size, titleBar.Font.Family)
                                 + new Vector2(titleBar.Border.Thickness[0] + titleBar.Border.Thickness[2], titleBar.Border.Thickness[1] + titleBar.Border.Thickness[3]);
-            this.renderer.TextureManager.LoadFromResource("menuStyle/logo", @"MenuStyle.logo.png");
+            this.context.Renderer.TextureManager.LoadFromResource("menuStyle/logo", @"MenuStyle.logo.png");
             
             this.RegisterMenu(this.MenuConfig);
 
-            this.renderer.Draw += this.OnDraw;
-            this.input.MouseMove += this.OnMouseMove;
-            this.input.MouseClick += this.OnMouseClick;
+            this.context.Renderer.Draw += this.OnDraw;
+            this.context.Input.MouseMove += this.OnMouseMove;
+            this.context.Input.MouseClick += this.OnMouseClick;
         }
 
         protected override void OnDeactivate()
         {
             this.MenuConfig.MenuPosition = this.Position;
 
-            this.renderer.Draw -= this.OnDraw;
-            this.input.MouseMove -= this.OnMouseMove;
-            this.input.MouseClick -= this.OnMouseClick;
+            this.context.Renderer.Draw -= this.OnDraw;
+            this.context.Input.MouseMove -= this.OnMouseMove;
+            this.context.Input.MouseClick -= this.OnMouseClick;
 
             foreach (var menuEntry in this.rootMenus)
             {
@@ -749,10 +746,12 @@ namespace Ensage.SDK.Menu
                     menuItemName = propertyInfo.Name;
                 }
 
+                this.context.Container.BuildUpWithImportCheck(propertyValue);
+
                 var textureAttribute = propertyInfo.GetCustomAttribute<TexureAttribute>();
 
                 var view = this.viewRepository.GetView(propertyInfo.PropertyType);
-                var menuItemEntry = new MenuItemEntry(menuItemName, textureAttribute?.TextureKey, view, this.renderer, this.MenuConfig, instance, propertyInfo);
+                var menuItemEntry = new MenuItemEntry(menuItemName, textureAttribute?.TextureKey, view, this.context.Renderer, this.MenuConfig, instance, propertyInfo);
 
                 var tooltip = propertyInfo.GetCustomAttribute<TooltipAttribute>();
                 if (tooltip != null)
@@ -787,8 +786,10 @@ namespace Ensage.SDK.Menu
                     menuItemName = type.Name;
                 }
 
+                this.context.Container.BuildUpWithImportCheck(propertyValue);
+
                 var textureAttribute = propertyInfo.GetCustomAttribute<TexureAttribute>();
-                var menuItemEntry = new MenuEntry(menuItemName, textureAttribute?.TextureKey, this.viewRepository.GetMenuView(), this.renderer, this.MenuConfig, propertyValue, propertyInfo);
+                var menuItemEntry = new MenuEntry(menuItemName, textureAttribute?.TextureKey, this.viewRepository.GetMenuView(), this.context.Renderer, this.MenuConfig, propertyValue, propertyInfo);
                 this.VisitInstance(menuItemEntry, propertyValue);
 
                 parent.AddChild(menuItemEntry);

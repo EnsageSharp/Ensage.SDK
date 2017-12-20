@@ -44,11 +44,11 @@ namespace Ensage.SDK.Input
 
         private const uint WM_RBUTTONUP = 0x0205;
 
+        private const uint WM_XBUTTONDBLCLK = 0x020D;
+
         private const uint WM_XBUTTONDOWN = 0x020B;
 
         private const uint WM_XBUTTONUP = 0x020C;
-
-        private const uint WM_XBUTTONDBLCLK = 0x020D;
 
         private static readonly ILog Log = AssemblyLogs.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
@@ -153,7 +153,7 @@ namespace Ensage.SDK.Input
                     break;
 
                 case WM_XBUTTONDOWN:
-                    data.Buttons = MouseButtons.XButtonDown;
+                    data.Buttons = args.WParam >> 16 == 1 ? MouseButtons.XButton1Down : MouseButtons.XButton2Down;
                     break;
 
                 case WM_LBUTTONUP:
@@ -167,7 +167,7 @@ namespace Ensage.SDK.Input
                     break;
 
                 case WM_XBUTTONUP:
-                    data.Buttons = MouseButtons.XButtonUp;
+                    data.Buttons = args.WParam >> 16 == 1 ? MouseButtons.XButton1Up : MouseButtons.XButton2Up;
                     data.Clicks = 1;
                     break;
 
@@ -182,7 +182,7 @@ namespace Ensage.SDK.Input
                     break;
 
                 case WM_XBUTTONDBLCLK:
-                    data.Buttons = MouseButtons.XButtonUp;
+                    data.Buttons = args.WParam >> 16 == 1 ? MouseButtons.XButton1Up : MouseButtons.XButton2Up;
                     data.Clicks = 2;
                     break;
             }
@@ -278,14 +278,29 @@ namespace Ensage.SDK.Input
                 case WM_RBUTTONUP:
                     this.ActiveButtons &= ~MouseButtons.Right;
                     break;
-                  
 
                 case WM_XBUTTONDOWN:
-                    this.ActiveButtons |= MouseButtons.XButton;
+                    if (args.WParam >> 16 == 1)
+                    {
+                        this.ActiveButtons |= MouseButtons.XButton1;
+                    }
+                    else
+                    {
+                        this.ActiveButtons |= MouseButtons.XButton2;
+                    }
+
                     break;
 
                 case WM_XBUTTONUP:
-                    this.ActiveButtons &= ~MouseButtons.XButton;
+                    if (args.WParam >> 16 == 1)
+                    {
+                        this.ActiveButtons &= ~MouseButtons.XButton1;
+                    }
+                    else
+                    {
+                        this.ActiveButtons &= ~MouseButtons.XButton2;
+                    }
+
                     break;
             }
         }

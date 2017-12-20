@@ -530,7 +530,9 @@
     <Compile Include="Menu\Items\ISelection.cs" />
     <Compile Include="Menu\Items\PriorityChanger.cs" />
     <Compile Include="Menu\Items\PicturePicker.cs" />
+    <Compile Include="Menu\Items\HotkeyPressSelector.cs" />
     <Compile Include="Menu\Items\Slider.cs" />
+    <Compile Include="Menu\MenuInputManager.cs" />
     <Compile Include="Menu\MenuSerializer.cs" />
     <Compile Include="Menu\MenuStyleConverter.cs" />
     <Compile Include="Menu\StyleRepository.cs" />
@@ -556,6 +558,7 @@
     <Compile Include="Menu\Views\MenuView.cs" />
     <Compile Include="Menu\Items\Selection.cs" />
     <Compile Include="Menu\Views\PriorityChangerView.cs" />
+    <Compile Include="Menu\Views\HotkeyPressSelectorView.cs" />
     <Compile Include="Menu\Views\SliderView.cs" />
     <Compile Include="Menu\Views\SelectionView.cs" />
     <Compile Include="Menu\Views\PicturePickerView.cs" />

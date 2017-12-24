@@ -43,44 +43,44 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="clipper_library">
-      <HintPath>C:\Program Files (x86)\Ensage\References\clipper_library.dll</HintPath>
+      <HintPath>..\..\..\..\EnsageSharpNew\References\clipper_library.dll</HintPath>
     </Reference>
     <Reference Include="Ensage">
-      <HintPath>C:\Program Files (x86)\Ensage\References\Ensage.dll</HintPath>
+      <HintPath>..\..\..\..\EnsageSharpNew\References\Ensage.dll</HintPath>
     </Reference>
     <Reference Include="Ensage.Common">
-      <HintPath>C:\Program Files (x86)\Ensage\References\Ensage.Common.dll</HintPath>
+      <HintPath>..\..\..\..\EnsageSharpNew\References\Ensage.Common.dll</HintPath>
     </Reference>
     <Reference Include="EnsageSharp.Sandbox">
-      <HintPath>C:\Program Files (x86)\Ensage\System\EnsageSharp.Sandbox.dll</HintPath>
+      <HintPath>..\..\..\..\EnsageSharpNew\System\EnsageSharp.Sandbox.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Newtonsoft.Json">
-      <HintPath>C:\Program Files (x86)\Ensage\References\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\..\..\..\EnsageSharpNew\References\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="PlaySharp.Service">
-      <HintPath>C:\Program Files (x86)\Ensage\References\PlaySharp.Service.dll</HintPath>
+      <HintPath>..\..\..\..\EnsageSharpNew\References\PlaySharp.Service.dll</HintPath>
     </Reference>
     <Reference Include="PlaySharp.Toolkit">
-      <HintPath>C:\Program Files (x86)\Ensage\References\PlaySharp.Toolkit.dll</HintPath>
+      <HintPath>..\..\..\..\EnsageSharpNew\References\PlaySharp.Toolkit.dll</HintPath>
     </Reference>
     <Reference Include="SharpDX">
-      <HintPath>C:\Program Files (x86)\Ensage\References\SharpDX.dll</HintPath>
+      <HintPath>..\..\..\..\EnsageSharpNew\References\SharpDX.dll</HintPath>
     </Reference>
     <Reference Include="SharpDX.Direct2D1">
-      <HintPath>C:\Program Files (x86)\Ensage\References\SharpDX.Direct2D1.dll</HintPath>
+      <HintPath>..\..\..\..\EnsageSharpNew\References\SharpDX.Direct2D1.dll</HintPath>
     </Reference>
     <Reference Include="SharpDX.Direct3D11">
-      <HintPath>C:\Program Files (x86)\Ensage\References\SharpDX.Direct3D11.dll</HintPath>
+      <HintPath>..\..\..\..\EnsageSharpNew\References\SharpDX.Direct3D11.dll</HintPath>
     </Reference>
     <Reference Include="SharpDX.Direct3D9">
-      <HintPath>C:\Program Files (x86)\Ensage\References\SharpDX.Direct3D9.dll</HintPath>
+      <HintPath>..\..\..\..\EnsageSharpNew\References\SharpDX.Direct3D9.dll</HintPath>
     </Reference>
     <Reference Include="SharpDX.DXGI">
-      <HintPath>C:\Program Files (x86)\Ensage\References\SharpDX.DXGI.dll</HintPath>
+      <HintPath>..\..\..\..\EnsageSharpNew\References\SharpDX.DXGI.dll</HintPath>
     </Reference>
     <Reference Include="SharpDX.Mathematics">
-      <HintPath>C:\Program Files (x86)\Ensage\References\SharpDX.Mathematics.dll</HintPath>
+      <HintPath>..\..\..\..\EnsageSharpNew\References\SharpDX.Mathematics.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Collections.Immutable, Version=1.1.37.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
@@ -595,20 +595,27 @@
     <Compile Include="Prediction\PredictionManager.cs" />
     <Compile Include="Prediction\PredictionOutput.cs" />
     <Compile Include="Prediction\PredictionSkillshotType.cs" />
+    <Compile Include="Renderer\TextureNotFoundException.cs" />
     <Compile Include="Renderer\DX11\BrushCache.cs" />
     <Compile Include="Renderer\DX11\D3D11Context.cs" />
     <Compile Include="Renderer\DX11\D3D11Renderer.cs" />
+    <Compile Include="Renderer\DX9\D3D9Texture.cs" />
+    <Compile Include="Renderer\DX11\D3D11Texture.cs" />
+    <Compile Include="Renderer\DX9\D3D9TextureManager.cs" />
     <Compile Include="Renderer\DX11\ID3D11Context.cs" />
+    <Compile Include="Renderer\ITextureManager.cs" />
     <Compile Include="Renderer\DX11\TextFormatCache.cs" />
     <Compile Include="Renderer\DX9\D3D9Context.cs" />
     <Compile Include="Renderer\DX9\D3D9Renderer.cs" />
     <Compile Include="Renderer\DX9\FontCache.cs" />
     <Compile Include="Renderer\IRendererManager.cs" />
+    <Compile Include="Renderer\Metadata\ExportTextureManagerAttribute.cs" />
     <Compile Include="Renderer\Metadata\ExportRendererAttribute.cs" />
     <Compile Include="Renderer\DX9\ID3D9Context.cs" />
     <Compile Include="Renderer\Metadata\IRendererMetadata.cs" />
     <Compile Include="Renderer\IRenderer.cs" />
     <Compile Include="Renderer\RendererManager.cs" />
+    <Compile Include="Renderer\DX11\D3D11TextureManager.cs" />
     <Compile Include="Service\ControllableExtensions.cs" />
     <Compile Include="Service\ControllableService.cs" />
     <Compile Include="Inventory\InventoryItem.cs" />
@@ -722,6 +729,17 @@
     <Compile Include="Extensions\UnitExtensions.cs" />
     <Compile Include="TargetSelector\TargetSelectorManager.cs" />
     <Compile Include="Utils\Utils.cs" />
+    <Compile Include="VPK\Content\ResourceEntry.cs" />
+    <Compile Include="VPK\Content\ResourceFile.cs" />
+    <Compile Include="VPK\ValvePak\ArchiveMD5SectionEntry.cs" />
+    <Compile Include="VPK\ValvePak\Package.cs" />
+    <Compile Include="VPK\ValvePak\PackageEntry.cs" />
+    <Compile Include="VPK\ValvePak\Utilities\AsnKeyParser.cs" />
+    <Compile Include="VPK\ValvePak\Utilities\Crc32.cs" />
+    <Compile Include="VPK\ValvePak\Utilities\StreamHelpers.cs" />
+    <Compile Include="VPK\VpkBrowser.cs" />
+    <Compile Include="VPK\Content\VTex.cs" />
+    <Compile Include="VPK\Content\VTexFormat.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Properties\key.snk" />

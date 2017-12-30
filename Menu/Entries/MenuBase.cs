@@ -67,6 +67,8 @@ namespace Ensage.SDK.Menu
             }
         }
 
+        public abstract void Reset();
+
         public IView View { get; }
 
         public abstract void Draw();

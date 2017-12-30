@@ -12,21 +12,29 @@ namespace Ensage.SDK.Menu.Entries
     using Ensage.SDK.Persistence;
     using Ensage.SDK.Renderer;
 
+    using log4net;
+
     using PlaySharp.Toolkit.Helper.Annotations;
+    using PlaySharp.Toolkit.Logging;
 
     using SharpDX;
 
     public class MenuItemEntry : MenuBase
     {
+        private static readonly ILog Log = AssemblyLogs.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
         public MenuItemEntry(string name, IView view, IRenderer renderer, MenuConfig menuConfig, object instance, PropertyInfo propertyInfo)
             : this(name, null, view, renderer, menuConfig, instance, propertyInfo)
         {
+            this.PropertyBinding = new PropertyBinding(propertyInfo, instance);
+            this.DefaultValue = this.Value;
         }
 
         public MenuItemEntry(string name, [CanBeNull] string textureKey, IView view, IRenderer renderer, MenuConfig menuConfig, object instance, PropertyInfo propertyInfo)
             : base(name, textureKey, view, renderer, menuConfig, instance, propertyInfo)
         {
             this.PropertyBinding = new PropertyBinding(propertyInfo, instance);
+            this.DefaultValue = this.Value;
         }
 
         public PropertyBinding PropertyBinding { get; }
@@ -44,6 +52,14 @@ namespace Ensage.SDK.Menu.Entries
             {
                 this.PropertyBinding.SetValue(value);
             }
+        }
+
+        public object DefaultValue { get; set; }
+
+        public override void Reset()
+        {
+            Log.Debug($"Resetting {this.Value} to {this.DefaultValue}");
+            this.Value = this.DefaultValue;
         }
 
         public override void Draw()

@@ -10,6 +10,7 @@ namespace Ensage.SDK.Menu
     using System.ComponentModel.Composition;
     using System.Linq;
     using System.Reflection;
+    using System.Windows.Input;
 
     using Ensage.Common.Extensions;
     using Ensage.SDK.Input;
@@ -430,6 +431,8 @@ namespace Ensage.SDK.Menu
                     {
                         child.Value = this.menuSerializer.ToObject(entry, child.PropertyInfo.PropertyType);
                     }
+
+                    child.DefaultValue = child.Value;
                 }
                 else
                 {
@@ -438,6 +441,7 @@ namespace Ensage.SDK.Menu
                     if (defaultValue != null)
                     {
                         child.Value = defaultValue.Value;
+                        child.DefaultValue = child.Value;
                     }
                 }
             }
@@ -595,12 +599,19 @@ namespace Ensage.SDK.Menu
             // check for click
             if (this.LastHoverEntry != null)
             {
-                this.LastHoverEntry.OnClick(e.Buttons, e.Position);
-                if (this.LastHoverEntry is MenuEntry menuEntry)
+                if (this.context.Input.IsKeyDown(Key.Escape))
                 {
-                    if (!menuEntry.IsCollapsed)
+                    this.LastHoverEntry.Reset();
+                }
+                else
+                {
+                    this.LastHoverEntry.OnClick(e.Buttons, e.Position);
+                    if (this.LastHoverEntry is MenuEntry menuEntry)
                     {
-                        this.CollapseLayer(menuEntry, this.rootMenus);
+                        if (!menuEntry.IsCollapsed)
+                        {
+                            this.CollapseLayer(menuEntry, this.rootMenus);
+                        }
                     }
                 }
 

@@ -146,16 +146,16 @@ namespace Ensage.SDK.Menu
     {
         private static readonly ILog Log = AssemblyLogs.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        private readonly List<MenuHotkey> hotkeys = new List<MenuHotkey>();
+        public readonly IInputManager InputManager;
 
-        private readonly IInputManager inputManager;
+        private readonly List<MenuHotkey> hotkeys = new List<MenuHotkey>();
 
         private readonly Dictionary<Key, bool> keyDownStates = new Dictionary<Key, bool>();
 
         [ImportingConstructor]
         public MenuInputManager([Import] IInputManager inputManager)
         {
-            this.inputManager = inputManager;
+            this.InputManager = inputManager;
         }
 
         public MenuHotkey RegisterHotkey(Key key, Action<MenuInputEventArgs> action, HotkeyFlags flags = HotkeyFlags.Press)
@@ -186,16 +186,16 @@ namespace Ensage.SDK.Menu
 
         protected override void OnActivate()
         {
-            this.inputManager.KeyDown += this.KeyDown;
-            this.inputManager.KeyUp += this.KeyUp;
-            this.inputManager.MouseClick += this.MouseClick;
+            this.InputManager.KeyDown += this.KeyDown;
+            this.InputManager.KeyUp += this.KeyUp;
+            this.InputManager.MouseClick += this.MouseClick;
         }
 
         protected override void OnDeactivate()
         {
-            this.inputManager.KeyDown -= this.KeyDown;
-            this.inputManager.KeyUp -= this.KeyUp;
-            this.inputManager.MouseClick -= this.MouseClick;
+            this.InputManager.KeyDown -= this.KeyDown;
+            this.InputManager.KeyUp -= this.KeyUp;
+            this.InputManager.MouseClick -= this.MouseClick;
         }
 
         private void KeyDown(object sender, KeyEventArgs e)

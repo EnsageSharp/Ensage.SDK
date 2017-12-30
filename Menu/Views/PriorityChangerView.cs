@@ -29,12 +29,6 @@ namespace Ensage.SDK.Menu.Views
 
         public override void Draw(MenuBase context)
         {
-            //if (!this.dragObject.HasValue || (Environment.TickCount - this.dragStartTime) <= MinDragTime)
-            //{
-            //    base.Draw(context);
-            //    return;
-            //}
-
             var item = (MenuItemEntry)context;
             var propValue = item.PropertyBinding.GetValue<PriorityChanger>();
 
@@ -123,7 +117,7 @@ namespace Ensage.SDK.Menu.Views
         {
             var item = (MenuItemEntry)context;
             var propValue = item.PropertyBinding.GetValue<PriorityChanger>();
-            if ((buttons & MouseButtons.LeftDown) == MouseButtons.LeftDown)
+            if (!this.dragObject.HasValue && (buttons & MouseButtons.LeftDown) == MouseButtons.LeftDown)
             {
                 var state = this.GetItemUnderMouse(context, clickPosition);
                 if (state.HasValue)

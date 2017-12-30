@@ -13,8 +13,8 @@ namespace Ensage.SDK.Menu.Views
 
     using SharpDX;
 
-    [ExportView(typeof(HotkeyPressSelector))]
-    public class HotkeyPressSelectorView : IView
+    [ExportView(typeof(HotkeySelector))]
+    public class HotkeySelectorView : IView
     {
         public void Draw(MenuBase context)
         {
@@ -33,15 +33,11 @@ namespace Ensage.SDK.Menu.Views
             var font = styleConfig.Font;
             context.Renderer.DrawText(pos, context.Name, styleConfig.Font.Color, font.Size, font.Family);
 
-            var propValue = item.PropertyBinding.GetValue<HotkeyPressSelector>();
+            var propValue = item.PropertyBinding.GetValue<HotkeySelector>();
             var textSize = context.Renderer.MessureText(propValue.ToString(), font.Size, font.Family);
-            pos.X = (context.Position.X + size.X) - border.Thickness[2] - textSize.X - styleConfig.TextSpacing;
-
+            pos.X = (context.Position.X + size.X) - border.Thickness[2] - textSize.X - styleConfig.TextSpacing - 10;
+            context.Renderer.DrawTexture(activeStyle.Menu, new RectangleF(pos.X - 10, pos.Y, textSize.X + 20, textSize.Y));
             context.Renderer.DrawText(pos, propValue.ToString(), styleConfig.Font.Color, font.Size, font.Family);
-
-            pos = context.Position;
-            //pos.X += ((float)(propValue.Value - propValue.MinValue) / (propValue.MaxValue - propValue.MinValue)) * size.X;
-            //context.Renderer.DrawLine(pos, pos + new Vector2(0, size.Y), styleConfig.Slider.LineColor, styleConfig.Slider.LineWidth);
         }
 
         public Vector2 GetSize(MenuBase context)
@@ -54,11 +50,11 @@ namespace Ensage.SDK.Menu.Views
             totalSize.Y += border.Thickness[1] + border.Thickness[3];
 
             var item = (MenuItemEntry)context;
-            var propValue = item.PropertyBinding.GetValue<HotkeyPressSelector>();
+            var propValue = item.PropertyBinding.GetValue<HotkeySelector>();
 
             var font = styleConfig.Font;
             var textSize = context.Renderer.MessureText(propValue.ToString(), font.Size, font.Family);
-            totalSize.X += styleConfig.LineWidth + textSize.X;
+            totalSize.X += styleConfig.LineWidth + textSize.X + 20;
             totalSize.Y += Math.Max(textSize.Y, styleConfig.ArrowSize.Y);
 
             return totalSize;
@@ -66,16 +62,29 @@ namespace Ensage.SDK.Menu.Views
 
         public bool OnClick(MenuBase context, MouseButtons buttons, Vector2 clickPosition)
         {
-            if ((buttons & MouseButtons.Left) == MouseButtons.Left)
+            if ((buttons & MouseButtons.LeftDown) == MouseButtons.LeftDown)
             {
                 var pos = context.Position;
                 var size = context.RenderSize;
 
                 var styleConfig = context.MenuConfig.GeneralConfig.ActiveStyle.Value.StyleConfig;
+                var font = styleConfig.Font;
+                var border = styleConfig.Border;
 
                 var item = (MenuItemEntry)context;
-                var propValue = item.PropertyBinding.GetValue<HotkeyPressSelector>();
+                var propValue = item.PropertyBinding.GetValue<HotkeySelector>();
+                var textSize = context.Renderer.MessureText(propValue.ToString(), font.Size, font.Family);
 
+                var rectPos = new RectangleF();
+                rectPos.Left = (context.Position.X + size.X) - border.Thickness[2] - textSize.X - styleConfig.TextSpacing - 20;
+                rectPos.Top = pos.Y + border.Thickness[1];
+                rectPos.Width = textSize.X + 20;
+                rectPos.Height = textSize.Y;
+                if (rectPos.Contains(clickPosition))
+                {
+                    propValue.AssignNewHotkey();
+                    return true;
+                }
             }
 
             return false;

@@ -4,6 +4,7 @@
 
 namespace Ensage.SDK.Menu.Entries
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
@@ -88,6 +89,14 @@ namespace Ensage.SDK.Menu.Entries
         public void AddChild(MenuBase child)
         {
             this.children.Add(child);
+        }
+
+        public override void Reset()
+        {
+            foreach (var child in this.children)
+            {
+               child.Reset();
+            }
         }
 
         public override void Draw()

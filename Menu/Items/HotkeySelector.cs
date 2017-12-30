@@ -1,4 +1,4 @@
-﻿// <copyright file="HotkeyPressSelector.cs" company="Ensage">
+﻿// <copyright file="HotkeySelector.cs" company="Ensage">
 //    Copyright (c) 2017 Ensage.
 // </copyright>
 
@@ -13,7 +13,7 @@ namespace Ensage.SDK.Menu.Items
 
     using Newtonsoft.Json;
 
-    public class HotkeyPressSelector : ControllableService, ILoadable
+    public class HotkeySelector : ControllableService, ILoadable
     {
         [JsonIgnore]
         private HotkeyFlags flags;
@@ -27,18 +27,18 @@ namespace Ensage.SDK.Menu.Items
         [JsonIgnore]
         private MouseButtons mouseButton = MouseButtons.None;
 
-        public HotkeyPressSelector()
+        public HotkeySelector()
         {
         }
 
-        public HotkeyPressSelector(MouseButtons mouseButton, Action<MenuInputEventArgs> action, HotkeyFlags flags = HotkeyFlags.Press)
+        public HotkeySelector(MouseButtons mouseButton, Action<MenuInputEventArgs> action, HotkeyFlags flags = HotkeyFlags.Press)
         {
             this.mouseButton = mouseButton;
             this.Action = action;
             this.flags = flags;
         }
 
-        public HotkeyPressSelector(Key key, Action<MenuInputEventArgs> action, HotkeyFlags flags = HotkeyFlags.Press)
+        public HotkeySelector(Key key, Action<MenuInputEventArgs> action, HotkeyFlags flags = HotkeyFlags.Press)
         {
             this.key = key;
             this.Action = action;
@@ -70,10 +70,18 @@ namespace Ensage.SDK.Menu.Items
         [JsonIgnore]
         public MenuInputManager InputManager { get; set; }
 
+        [JsonIgnore]
+        public bool IsAssigningNewHotkey { get; private set; }
+
         public Key Key
         {
             get
             {
+                if (this.hotkey != null)
+                {
+                    return this.hotkey.Key;
+                }
+
                 return this.key;
             }
 
@@ -91,25 +99,43 @@ namespace Ensage.SDK.Menu.Items
         {
             get
             {
+                if (this.hotkey != null)
+                {
+                    return this.hotkey.MouseButton;
+                }
+
                 return this.mouseButton;
             }
 
             set
             {
-                this.mouseButton = value;
+                this.mouseButton = value & MouseButtons.HighestNoUpDownFlag;
                 if (this.hotkey != null)
                 {
-                    this.hotkey.MouseButton = value;
+                    this.hotkey.MouseButton = this.mouseButton;
                 }
             }
         }
 
+        public void AssignNewHotkey()
+        {
+            if (this.IsAssigningNewHotkey)
+            {
+                return;
+            }
+
+            this.IsAssigningNewHotkey = true;
+            this.InputManager.InputManager.KeyDown += this.NextKeyDown;
+            this.InputManager.InputManager.MouseClick += this.NextMouseClick;
+        }
+
         public bool Load(object data)
         {
-            var other = (HotkeyPressSelector)data;
-            if (this.Key != other.Key)
+            var other = (HotkeySelector)data;
+            if (this.Key != other.Key || this.MouseButton != other.MouseButton)
             {
                 this.Key = other.Key;
+                this.MouseButton = other.MouseButton;
             }
 
             return false;
@@ -117,7 +143,12 @@ namespace Ensage.SDK.Menu.Items
 
         public override string ToString()
         {
-            return this.MouseButton != MouseButtons.None ? this.MouseButton.ToString() : this.key.ToString();
+            if (this.IsAssigningNewHotkey)
+            {
+                return "<?>";
+            }
+
+            return this.MouseButton != MouseButtons.None ? $"Mouse {this.MouseButton.ToString()}" : this.key.ToString();
         }
 
         protected override void OnActivate()
@@ -143,6 +174,30 @@ namespace Ensage.SDK.Menu.Items
         private void ExecuteAction(MenuInputEventArgs args)
         {
             this.Action?.Invoke(args);
+        }
+
+        private void NextKeyDown(object sender, KeyEventArgs e)
+        {
+            this.InputManager.InputManager.KeyDown -= this.NextKeyDown;
+            this.InputManager.InputManager.MouseClick -= this.NextMouseClick;
+            this.IsAssigningNewHotkey = false;
+
+            if (e.Key != Key.Escape)
+            {
+                this.Key = e.Key;
+            }
+        }
+
+        private void NextMouseClick(object sender, MouseEventArgs e)
+        {
+            if (e.Buttons == MouseButtons.LeftDown || e.Buttons == MouseButtons.RightDown || e.Buttons == MouseButtons.XButton1Down || e.Buttons == MouseButtons.XButton2Down)
+            {
+                this.InputManager.InputManager.KeyDown -= this.NextKeyDown;
+                this.InputManager.InputManager.MouseClick -= this.NextMouseClick;
+                this.IsAssigningNewHotkey = false;
+
+                this.MouseButton = e.Buttons;
+            }
         }
     }
 }

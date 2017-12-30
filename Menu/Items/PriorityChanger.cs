@@ -5,6 +5,9 @@
 namespace Ensage.SDK.Menu.Items
 {
     using System.Collections.Generic;
+    using System.Linq;
+
+    using Newtonsoft.Json;
 
     public class PriorityChanger : PicturePicker
     {
@@ -34,6 +37,18 @@ namespace Ensage.SDK.Menu.Items
         }
 
         public Dictionary<string, int> Priorities { get; set; } = new Dictionary<string, int>();
+
+        /// <summary>
+        /// Gets the currently active priority.
+        /// </summary>
+        [JsonIgnore]
+        public IEnumerable<string> Priority
+        {
+            get
+            {
+                return this.Priorities.OrderBy(x => x.Value).Select(x => x.Key);
+            }
+        }
 
         /// <summary>
         ///     Gets or sets a value indicating whether the items can be selected and unselected.

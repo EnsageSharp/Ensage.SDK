@@ -48,20 +48,20 @@ namespace Ensage.SDK.Menu.Config
         public string TestString { get; set; } = "hello world!";
 
         [Item]
-        public HotkeyPressSelector HotkeyPress1 { get; set; } = new HotkeyPressSelector(Key.B, TestPress, HotkeyFlags.Press);
+        public HotkeySelector HotkeyPress1 { get; set; } = new HotkeySelector(Key.B, TestPress, HotkeyFlags.Press);
 
         [Item]
-        public HotkeyPressSelector HotkeyPress2 { get; set; } = new HotkeyPressSelector(Key.V, TestPress, HotkeyFlags.Down);
+        public HotkeySelector HotkeyPress2 { get; set; } = new HotkeySelector(Key.V, TestPress, HotkeyFlags.Down);
 
         [Item]
-        public HotkeyPressSelector HotkeyPress3 { get; set; } = new HotkeyPressSelector(Key.C, TestPress, HotkeyFlags.Up);
+        public HotkeySelector HotkeyPress3 { get; set; } = new HotkeySelector(Key.C, TestPress, HotkeyFlags.Up);
 
 
         [Item]
-        public HotkeyPressSelector HotkeyPress5 { get; set; } = new HotkeyPressSelector(MouseButtons.Left, TestPress, HotkeyFlags.Down);
+        public HotkeySelector HotkeyPress5 { get; set; } = new HotkeySelector(MouseButtons.Left, TestPress, HotkeyFlags.Down);
 
         [Item]
-        public HotkeyPressSelector HotkeyPress6 { get; set; } = new HotkeyPressSelector(MouseButtons.Left, TestPress, HotkeyFlags.Up);
+        public HotkeySelector HotkeyPress6 { get; set; } = new HotkeySelector(MouseButtons.Left, TestPress, HotkeyFlags.Up);
 
 
         private static void TestPress(MenuInputEventArgs args)

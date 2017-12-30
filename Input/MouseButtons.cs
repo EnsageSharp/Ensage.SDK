@@ -13,23 +13,25 @@ namespace Ensage.SDK.Input
 
         Left = 1 << 0,
 
-        LeftUp = (1 << 1) | Left,
+        Right = 1 << 1,
 
-        LeftDown = (1 << 2) | Left,
+        XButton1 = 1 << 2,
 
-        Right = 1 << 3,
+        XButton2 = 1 << 3,
 
-        RightUp = (1 << 4) | Right,
+        HighestNoUpDownFlag = Left | Right | XButton1 | XButton2,
 
-        RightDown = (1 << 5) | Right,
+        LeftUp = (1 << 4) | Left,
 
-        XButton1 = 1 << 6,
+        LeftDown = (1 << 5) | Left,
 
-        XButton1Up = (1 << 7) | XButton1,
+        RightUp = (1 << 6) | Right,
 
-        XButton1Down = (1 << 8) | XButton1,
+        RightDown = (1 << 7) | Right,
 
-        XButton2 = 1 << 9,
+        XButton1Up = (1 << 8) | XButton1,
+
+        XButton1Down = (1 << 9) | XButton1,
 
         XButton2Up = (1 << 10) | XButton2,
 

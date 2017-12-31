@@ -39,7 +39,7 @@ namespace Ensage.SDK.Menu.Items
         public Dictionary<string, int> Priorities { get; set; } = new Dictionary<string, int>();
 
         /// <summary>
-        /// Gets the currently active priority.
+        ///     Gets the currently active priority.
         /// </summary>
         [JsonIgnore]
         public IEnumerable<string> Priority
@@ -54,6 +54,13 @@ namespace Ensage.SDK.Menu.Items
         ///     Gets or sets a value indicating whether the items can be selected and unselected.
         /// </summary>
         public bool Selectable { get; set; }
+
+        public override object Clone()
+        {
+            var result = (PriorityChanger)base.Clone();
+            result.Priorities = new Dictionary<string, int>(this.Priorities);
+            return result;
+        }
 
         public override bool Load(object data)
         {

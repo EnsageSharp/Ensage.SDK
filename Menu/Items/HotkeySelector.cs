@@ -13,7 +13,7 @@ namespace Ensage.SDK.Menu.Items
 
     using Newtonsoft.Json;
 
-    public class HotkeySelector : ControllableService, ILoadable
+    public class HotkeySelector : ControllableService, ILoadable, ICloneable
     {
         [JsonIgnore]
         private HotkeyFlags flags;
@@ -151,6 +151,11 @@ namespace Ensage.SDK.Menu.Items
             return this.MouseButton != MouseButtons.None ? $"Mouse {this.MouseButton.ToString()}" : this.key.ToString();
         }
 
+        public object Clone()
+        {
+            return this.MemberwiseClone();
+        }
+
         protected override void OnActivate()
         {
             if (this.MouseButton != MouseButtons.None)
@@ -173,7 +178,10 @@ namespace Ensage.SDK.Menu.Items
 
         private void ExecuteAction(MenuInputEventArgs args)
         {
-            this.Action?.Invoke(args);
+            if (!this.IsAssigningNewHotkey)
+            {
+                this.Action?.Invoke(args);
+            }
         }
 
         private void NextKeyDown(object sender, KeyEventArgs e)

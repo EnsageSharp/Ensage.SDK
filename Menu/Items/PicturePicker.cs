@@ -4,10 +4,11 @@
 
 namespace Ensage.SDK.Menu.Items
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
 
-    public class PicturePicker : ILoadable
+    public class PicturePicker : ILoadable, ICloneable
     {
         public PicturePicker()
         {
@@ -55,6 +56,13 @@ namespace Ensage.SDK.Menu.Items
             }
 
             return false;
+        }
+
+        public virtual object Clone()
+        {
+            var result = (PicturePicker)this.MemberwiseClone();
+            result.PictureStates = new Dictionary<string, bool>(this.PictureStates);
+            return result;
         }
     }
 }

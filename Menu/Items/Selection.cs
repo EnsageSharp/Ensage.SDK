@@ -10,7 +10,7 @@ namespace Ensage.SDK.Menu.Items
 
     using Newtonsoft.Json;
 
-    public class Selection<T> : ISelection<T>, ILoadable
+    public class Selection<T> : ISelection<T>, ILoadable, ICloneable
     {
         public Selection()
         {
@@ -121,6 +121,11 @@ namespace Ensage.SDK.Menu.Items
         public override string ToString()
         {
             return this.Value.ToString();
+        }
+
+        public object Clone()
+        {
+            return this.MemberwiseClone();
         }
     }
 }

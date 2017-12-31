@@ -40,7 +40,7 @@ namespace Ensage.SDK.Renderer.DX9
             this.textureManager = textureManager;
             this.line = new Line(this.context.Device)
                             {
-                                Antialias = true
+                                //Antialias = true
                             };
             this.sprite = new Sprite(this.context.Device);
 
@@ -130,21 +130,46 @@ namespace Ensage.SDK.Renderer.DX9
 
             try
             {
-                this.line.Draw(
-                    new[] { new RawVector2(rect.X + (width / 2f), (rect.Y + rect.Height) - (width / 2f)), new RawVector2(rect.X + (width / 2f), rect.Y - (width / 2f)) },
-                    c);
-
-                this.line.Draw(new[] { new RawVector2(rect.X + rect.Width, rect.Y + rect.Height), new RawVector2(rect.X, rect.Y + rect.Height) }, c);
-
-                this.line.Draw(new[] { new RawVector2(rect.X, rect.Y), new RawVector2(rect.X + rect.Width, rect.Y) }, c);
-
+                float w = width / 2.0f;
                 this.line.Draw(
                     new[]
                         {
-                            new RawVector2((rect.X + rect.Width) - (width / 2f), rect.Y - (width / 2f)),
-                            new RawVector2((rect.X + rect.Width) - (width / 2f), (rect.Y + rect.Height) - (width / 2f))
+                            // top left
+                            new RawVector2(rect.X, rect.Y),
+
+                            // to top right
+                            new RawVector2(rect.X + rect.Width - w, rect.Y),
+
+                            // to bottom right
+                            new RawVector2(rect.X + rect.Width - w, rect.Y + rect.Height - w),
+
+                            // to bottom left
+                            new RawVector2(rect.X, rect.Y + rect.Height - w),
+
+                            // to top left
+                            new RawVector2(rect.X, rect.Y)
                         },
                     c);
+
+                //// bottom | left to right
+                // this.line.Draw(
+                // new[] { new RawVector2(rect.X + (width / 2f), (rect.Y + rect.Height) - (width / 2f)), new RawVector2(rect.X + (width / 2f), rect.Y - (width / 2f)) },
+                // c);
+
+                //// right | top to bottom
+                // this.line.Draw(new[] { new RawVector2(rect.X + rect.Width, rect.Y + rect.Height), new RawVector2(rect.X, rect.Y + rect.Height) }, c);
+
+                //// bottom | left to right
+                // this.line.Draw(new[] { new RawVector2(rect.X, rect.Y), new RawVector2(rect.X + rect.Width, rect.Y) }, c);
+
+                //// left | top to bottom
+                // this.line.Draw(
+                // new[]
+                // {
+                // new RawVector2((rect.X + rect.Width) - (width / 2f), rect.Y - (width / 2f)),
+                // new RawVector2((rect.X + rect.Width) - (width / 2f), (rect.Y + rect.Height) - (width / 2f))
+                // },
+                // c);
             }
             finally
             {

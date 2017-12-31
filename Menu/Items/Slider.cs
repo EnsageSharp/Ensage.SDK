@@ -4,7 +4,8 @@
 
 namespace Ensage.SDK.Menu.Items
 {
-    public class Slider : ILoadable
+    using System;
+    public class Slider : ILoadable, ICloneable
     {
         public Slider()
         {
@@ -48,6 +49,11 @@ namespace Ensage.SDK.Menu.Items
         public override string ToString()
         {
             return this.Value.ToString();
+        }
+
+        public object Clone()
+        {
+            return this.MemberwiseClone();
         }
     }
 }

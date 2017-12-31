@@ -526,6 +526,7 @@
     <Compile Include="Menu\Config\GeneralConfig.cs" />
     <Compile Include="Menu\Config\HackConfig.cs" />
     <Compile Include="Menu\Config\MenuConfig.cs" />
+    <Compile Include="Menu\Entries\DynamicMenu.cs" />
     <Compile Include="Menu\Items\ILoadable.cs" />
     <Compile Include="Menu\Items\ISelection.cs" />
     <Compile Include="Menu\Items\PriorityChanger.cs" />

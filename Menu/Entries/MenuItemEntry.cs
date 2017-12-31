@@ -4,6 +4,7 @@
 
 namespace Ensage.SDK.Menu.Entries
 {
+    using System;
     using System.Reflection;
 
     using Ensage.SDK.Input;
@@ -27,14 +28,30 @@ namespace Ensage.SDK.Menu.Entries
             : this(name, null, view, renderer, menuConfig, instance, propertyInfo)
         {
             this.PropertyBinding = new PropertyBinding(propertyInfo, instance);
-            this.DefaultValue = this.Value;
+            this.AssignDefaultValue();
+        }
+
+        public void AssignDefaultValue()
+        {
+            if (this.Value is ICloneable clone)
+            {
+                this.DefaultValue = clone.Clone();
+            }
+            else if (this.Value.GetType().IsClass)
+            {
+                throw new Exception($"{this.Value.GetType().Name} doesn't implement {nameof(ICloneable)}");
+            }
+            else
+            {
+                this.DefaultValue = this.Value;
+            }
         }
 
         public MenuItemEntry(string name, [CanBeNull] string textureKey, IView view, IRenderer renderer, MenuConfig menuConfig, object instance, PropertyInfo propertyInfo)
             : base(name, textureKey, view, renderer, menuConfig, instance, propertyInfo)
         {
             this.PropertyBinding = new PropertyBinding(propertyInfo, instance);
-            this.DefaultValue = this.Value;
+            this.AssignDefaultValue();
         }
 
         public PropertyBinding PropertyBinding { get; }
@@ -59,7 +76,14 @@ namespace Ensage.SDK.Menu.Entries
         public override void Reset()
         {
             Log.Debug($"Resetting {this.Value} to {this.DefaultValue}");
-            this.Value = this.DefaultValue;
+            if (this.DefaultValue is ICloneable clone)
+            {
+                this.Value = clone.Clone();
+            }
+            else
+            {
+                this.Value = this.DefaultValue;
+            }
         }
 
         public override void Draw()

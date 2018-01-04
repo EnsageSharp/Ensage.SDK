@@ -76,7 +76,7 @@ namespace Ensage.SDK.Service
         {
             foreach (var plugin in this.PluginContainer.OrderBy(e => e.Metadata.Priority))
             {
-                if (plugin.Menu)
+                if (plugin.Menu && !plugin.IsActive)
                 {
                     UpdateManager.BeginInvoke(plugin.Activate, plugin.Metadata.Priority);
                 }

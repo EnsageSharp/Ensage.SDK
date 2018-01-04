@@ -60,31 +60,11 @@ namespace Ensage.SDK.Service
                 throw new ArgumentNullException(nameof(instance));
             }
 
-            Log.Debug($"Satisfy {instance}");
-            this.Container.SatisfyImportsOnce(instance);
-        }
-        public void BuildUpWithImportCheck([NotNull] object instance)
-        {
-            if (instance == null)
-            {
-                throw new ArgumentNullException(nameof(instance));
-            }
-
-            var hasImport = false;
-            foreach (var property in instance.GetType().GetProperties(BindingFlags.Instance | BindingFlags.Public))
-            {
-                if(property.CustomAttributes.Any( x => x.AttributeType == typeof(ImportAttribute) || x.AttributeType == typeof(ImportManyAttribute) ))
-                {
-                    hasImport = true;
-                    break;
-                }
-            }
-
-            if (!hasImport)
+            if (!instance.GetType().IsClass)
             {
                 return;
             }
-           
+
             Log.Debug($"Satisfy {instance}");
             this.Container.SatisfyImportsOnce(instance);
         }

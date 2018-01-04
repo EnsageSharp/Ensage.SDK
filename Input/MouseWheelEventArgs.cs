@@ -8,11 +8,14 @@ namespace Ensage.SDK.Input
 
     public class MouseWheelEventArgs : EventArgs
     {
-        public MouseWheelEventArgs(float delta)
+        public MouseWheelEventArgs(float delta, bool process = true)
         {
             this.Delta = delta;
+            this.Process = process;
         }
 
         public float Delta { get; }
+
+        public bool Process { get; set; }
     }
 }

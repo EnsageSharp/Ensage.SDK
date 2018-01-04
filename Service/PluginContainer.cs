@@ -47,7 +47,7 @@ namespace Ensage.SDK.Service
         {
             try
             {
-                if (this.Part.Value.IsActive)
+                if (this.IsActive)
                 {
                     return;
                 }

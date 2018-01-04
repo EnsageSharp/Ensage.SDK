@@ -31,14 +31,16 @@ namespace Ensage.SDK.Menu.Items
         {
         }
 
-        public HotkeySelector(MouseButtons mouseButton)
+        public HotkeySelector(MouseButtons mouseButton, HotkeyFlags flags = HotkeyFlags.Press)
         {
             this.mouseButton = mouseButton;
+            this.flags = flags;
         }
 
-        public HotkeySelector(Key key)
+        public HotkeySelector(Key key, HotkeyFlags flags = HotkeyFlags.Press)
         {
             this.key = key;
+            this.flags = flags;
         }
 
         public HotkeySelector(MouseButtons mouseButton, Action<MenuInputEventArgs> action, HotkeyFlags flags = HotkeyFlags.Press)

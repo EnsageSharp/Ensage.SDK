@@ -233,7 +233,9 @@ namespace Ensage.SDK.Input
 
                 case WM_MOUSEWHEEL:
                     var delta = (short)((args.WParam >> 16) & 0xFFFF);
-                    this.MouseWheel?.Invoke(this, new MouseWheelEventArgs(delta));
+                    var mouseWheelEventArgs = new MouseWheelEventArgs(delta);   
+                    this.MouseWheel?.Invoke(this, mouseWheelEventArgs);
+                    args.Process = mouseWheelEventArgs.Process;
                     break;
 
                 case WM_LBUTTONUP:

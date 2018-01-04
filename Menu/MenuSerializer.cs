@@ -9,6 +9,7 @@
     using Newtonsoft.Json;
     using Newtonsoft.Json.Linq;
 
+    using PlaySharp.Toolkit.Helper.Annotations;
     using PlaySharp.Toolkit.Logging;
 
     public class MenuSerializer
@@ -44,6 +45,7 @@
 
         public JsonSerializerSettings Settings { get; }
 
+        [CanBeNull]
         public JToken Deserialize(object dataContext)
         {
             var type = dataContext.GetType();
@@ -56,9 +58,16 @@
                 return null;
             }
 
-            var json = File.ReadAllText(file);
-
-            return JToken.Parse(json);
+            try
+            {
+                var json = File.ReadAllText(file);
+                return JToken.Parse(json);
+            }
+            catch (Exception e)
+            {
+                Log.Error(e);
+                return null;
+            }
         }
 
         public void Serialize(object dataContext)

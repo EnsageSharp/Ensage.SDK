@@ -179,6 +179,7 @@ namespace Ensage.SDK.Menu
             return null;
         }
 
+
         [CanBeNull]
         public MenuEntry FindParentMenu(MenuEntry menu, MenuBase findEntry)
         {
@@ -234,11 +235,13 @@ namespace Ensage.SDK.Menu
 
         public void OnDraw(object sender, EventArgs e)
         {
+            var drawList = this.rootMenus.ToArray();
+
             if (this.positionDirty)
             {
                 // recalculate positions
                 var pos = this.MenuPosition;
-                foreach (var menuEntry in this.rootMenus)
+                foreach (var menuEntry in drawList)
                 {
                     pos = this.UpdateMenuEntryPosition(menuEntry, pos);
                 }
@@ -255,7 +258,7 @@ namespace Ensage.SDK.Menu
 
                 // recalculate positions by rendersize
                 var pos = this.MenuPosition;
-                foreach (var menuEntry in this.rootMenus)
+                foreach (var menuEntry in drawList)
                 {
                     pos = this.UpdateMenuEntryRenderPosition(menuEntry, pos);
                 }
@@ -278,7 +281,7 @@ namespace Ensage.SDK.Menu
                 titleBar.Font.Size,
                 titleBar.Font.Family);
 
-            foreach (var menuEntry in this.rootMenus)
+            foreach (var menuEntry in drawList)
             {
                 this.DrawMenuEntry(menuEntry);
             }
@@ -299,7 +302,7 @@ namespace Ensage.SDK.Menu
                 throw new ArgumentException($"{menu} is already registered");
             }
 
-            this.context.Container.BuildUpWithImportCheck(menu);
+            this.context.Container.BuildUp(menu);
 
             var menuName = sdkAttribute.Name;
             if (string.IsNullOrEmpty(menuName))
@@ -339,8 +342,7 @@ namespace Ensage.SDK.Menu
         protected override void OnActivate()
         {
             Messenger<AddDynamicMenuMessage>.Subscribe(this.AddDynamicMenu);
-            Messenger<DynamicMenuAddedMessage>.Subscribe(this.DynamicMenuAddedMessage);
-            Messenger<DynamicMenuRemovedMessage>.Subscribe(this.DynamicMenuRemovedMessage);
+            Messenger<DynamicMenuRemoveMessage>.Subscribe(this.DynamicMenuRemovedMessage);
 
             this.menuSerializer = new MenuSerializer(new StringEnumConverter(), new MenuStyleConverter(this.styleRepository));
 
@@ -365,8 +367,7 @@ namespace Ensage.SDK.Menu
         protected override void OnDeactivate()
         {
             Messenger<AddDynamicMenuMessage>.Unsubscribe(this.AddDynamicMenu);
-            Messenger<DynamicMenuAddedMessage>.Unsubscribe(this.DynamicMenuAddedMessage);
-            Messenger<DynamicMenuRemovedMessage>.Unsubscribe(this.DynamicMenuRemovedMessage);
+            Messenger<DynamicMenuRemoveMessage>.Unsubscribe(this.DynamicMenuRemovedMessage);
 
             this.MenuConfig.MenuPosition = this.Position;
 
@@ -395,20 +396,23 @@ namespace Ensage.SDK.Menu
                 var valueDictionaryBinding = new ValueDictionaryBinding(args.Key, args.DynamicMenu.ValueStorage);
                 var type = valueDictionaryBinding.ValueType;
                 var view = this.viewRepository.GetView(type);
-               
                 var menuItemEntry = new MenuItemEntry(args.Name, args.TextureKey, view, this.context.Renderer, this.MenuConfig, valueDictionaryBinding);
-                args.DynamicMenu.AddMenuItem(menuItemEntry);
+
+                parent.AddChild(menuItemEntry);
+                this.positionDirty = this.sizeDirty = true;
             }
             else
             {
-                var menuItemEntry = new MenuEntry(
+                var menuEntry = new MenuEntry(
                     args.Name,
                     args.TextureKey,
                     this.viewRepository.MenuView.Value,
                     this.context.Renderer,
                     this.MenuConfig,
                     args.Instance);
-                args.DynamicMenu.AddMenu(menuItemEntry);
+
+                parent.AddChild(menuEntry);
+                this.positionDirty = this.sizeDirty = true;
             }
         }
 
@@ -498,34 +502,21 @@ namespace Ensage.SDK.Menu
                 return;
             }
 
-            foreach (var menu in entry.Children.OfType<MenuEntry>())
+            var children = entry.Children.ToArray();
+            foreach (var menu in children.OfType<MenuEntry>())
             {
                 this.DrawMenuEntry(menu);
             }
 
-            foreach (var item in entry.Children.OfType<MenuItemEntry>())
+            foreach (var item in children.OfType<MenuItemEntry>())
             {
                 item.Draw();
             }
         }
 
-        private void DynamicMenuAddedMessage(DynamicMenuAddedMessage obj)
+        private void DynamicMenuRemovedMessage(DynamicMenuRemoveMessage obj)
         {
-            this.positionDirty = this.sizeDirty = true;
-        }
-
-        private void DynamicMenuRemovedMessage(DynamicMenuRemovedMessage obj)
-        {
-            foreach (var menuEntry in this.rootMenus)
-            {
-                var found = this.FindParentMenu(menuEntry, obj.MenuBase);
-                if (found != null)
-                {
-                    found.RemoveChild(obj.MenuBase);
-                    this.positionDirty = this.sizeDirty = true;
-                    return;
-                }
-            }
+           // TODO:
         }
 
         private void LoadLayer(MenuEntry menu, JToken token)
@@ -851,7 +842,7 @@ namespace Ensage.SDK.Menu
         {
             var type = instance.GetType();
             var props = type.GetProperties();
-            foreach (var propertyInfo in type.GetProperties(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic))
+            foreach (var propertyInfo in type.GetProperties(BindingFlags.Instance | BindingFlags.Public))
             {
                 var menuItemAttribute = propertyInfo.GetCustomAttribute<ItemAttribute>();
                 if (menuItemAttribute == null)
@@ -871,7 +862,7 @@ namespace Ensage.SDK.Menu
                     menuItemName = propertyInfo.Name;
                 }
 
-                this.context.Container.BuildUpWithImportCheck(propertyValue);
+                this.context.Container.BuildUp(propertyValue);
 
                 var textureAttribute = propertyInfo.GetCustomAttribute<TexureAttribute>();
 
@@ -891,7 +882,7 @@ namespace Ensage.SDK.Menu
         private void VisitMenu(MenuEntry parent, object instance)
         {
             var type = instance.GetType();
-            foreach (var propertyInfo in type.GetProperties(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic))
+            foreach (var propertyInfo in type.GetProperties(BindingFlags.Instance | BindingFlags.Public))
             {
                 var menuAttribute = propertyInfo.GetCustomAttribute<MenuAttribute>();
                 if (menuAttribute == null)
@@ -911,7 +902,7 @@ namespace Ensage.SDK.Menu
                     menuItemName = type.Name;
                 }
 
-                this.context.Container.BuildUpWithImportCheck(propertyValue);
+                this.context.Container.BuildUp(propertyValue);
 
                 var textureAttribute = propertyInfo.GetCustomAttribute<TexureAttribute>();
                 var menuItemEntry = new MenuEntry(

@@ -1,12 +1,17 @@
 ﻿// <copyright file="Slider.cs" company="Ensage">
-//    Copyright (c) 2017 Ensage.
+//    Copyright (c) 2018 Ensage.
 // </copyright>
 
 namespace Ensage.SDK.Menu.Items
 {
     using System;
+
+    using Ensage.SDK.Menu.ValueBinding;
+
     public class Slider : ILoadable, ICloneable
     {
+        private int value;
+
         public Slider()
         {
         }
@@ -25,11 +30,37 @@ namespace Ensage.SDK.Menu.Items
             this.MaxValue = maxValue;
         }
 
+        public event EventHandler<ValueChangedEventArgs<int>> ValueChanging;
+
         public int MaxValue { get; set; }
 
         public int MinValue { get; set; }
 
-        public int Value { get; set; }
+        public int Value
+        {
+            get
+            {
+                return this.value;
+            }
+
+            set
+            {
+                if (this.value == value)
+                {
+                    return;
+                }
+
+                if (this.OnValueChanged(value))
+                {
+                    this.value = value;
+                }
+            }
+        }
+
+        public object Clone()
+        {
+            return this.MemberwiseClone();
+        }
 
         public bool Load(object data)
         {
@@ -51,9 +82,11 @@ namespace Ensage.SDK.Menu.Items
             return this.Value.ToString();
         }
 
-        public object Clone()
+        protected virtual bool OnValueChanged(int newValue)
         {
-            return this.MemberwiseClone();
+            var args = new ValueChangedEventArgs<int>(newValue, this.value);
+            this.ValueChanging?.Invoke(this, args);
+            return args.Process;
         }
     }
 }

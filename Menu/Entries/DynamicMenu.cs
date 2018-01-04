@@ -9,6 +9,7 @@ namespace Ensage.SDK.Menu.Entries
 
     using Ensage.SDK.Helpers;
 
+    using Newtonsoft.Json;
     using Newtonsoft.Json.Linq;
 
     using PlaySharp.Toolkit.Helper.Annotations;
@@ -39,27 +40,25 @@ namespace Ensage.SDK.Menu.Entries
         public string TextureKey { get; }
     }
 
-    public class DynamicMenuAddedMessage
+    public class DynamicMenuRemoveMessage
     {
-    }
-
-    public class DynamicMenuRemovedMessage
-    {
-        public DynamicMenuRemovedMessage(MenuBase menuBase)
+        public DynamicMenuRemoveMessage(DynamicMenu dynamicMenu, string key)
         {
-            this.MenuBase = menuBase;
+            this.DynamicMenu = dynamicMenu;
+            this.Key = key;
         }
 
-        public MenuBase MenuBase { get; }
+        public DynamicMenu DynamicMenu { get; }
+
+        public string Key { get; }
     }
 
     [PublicAPI]
     public class DynamicMenu
     {
-        private readonly List<MenuBase> children = new List<MenuBase>();
-
         public readonly Dictionary<string, object> ValueStorage = new Dictionary<string, object>();
 
+        [JsonIgnore]
         public JToken LoadToken { get; set; }
 
         public void AddMenu(string key, string name, [CanBeNull] string textureKey, object instance)
@@ -84,42 +83,15 @@ namespace Ensage.SDK.Menu.Entries
             Messenger<AddDynamicMenuMessage>.Publish(new AddDynamicMenuMessage(this, key, name, textureKey, instance, true));
         }
 
-        public void AddMenu(MenuEntry menu)
-        {
-            if (this.children.Contains(menu))
-            {
-                return;
-            }
 
-            this.children.Add(menu);
-            Messenger<DynamicMenuAddedMessage>.Publish(new DynamicMenuAddedMessage());
+        public void RemoveMenu(string key)
+        {
+             Messenger<DynamicMenuRemoveMessage>.Publish(new DynamicMenuRemoveMessage(this, key));
         }
 
-        public void AddMenuItem(MenuItemEntry item)
+        public void RemoveMenuItem(string key)
         {
-            if (this.children.Contains(item))
-            {
-                return;
-            }
-
-            this.children.Add(item);
-            Messenger<DynamicMenuAddedMessage>.Publish(new DynamicMenuAddedMessage());
-        }
-
-        public void RemoveMenu(MenuEntry menu)
-        {
-            if (this.children.Remove(menu))
-            {
-                Messenger<DynamicMenuRemovedMessage>.Publish(new DynamicMenuRemovedMessage(menu));
-            }
-        }
-
-        public void RemoveMenu(MenuItemEntry item)
-        {
-            if (this.children.Remove(item))
-            {
-                Messenger<DynamicMenuRemovedMessage>.Publish(new DynamicMenuRemovedMessage(item));
-            }
+            Messenger<DynamicMenuRemoveMessage>.Publish(new DynamicMenuRemoveMessage(this, key));
         }
     }
 }

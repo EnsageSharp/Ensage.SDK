@@ -5,14 +5,12 @@
 namespace Ensage.SDK.Menu.Entries
 {
     using System;
-    using System.Collections.Generic;
     using System.ComponentModel;
     using System.Reflection;
 
     using Ensage.SDK.Input;
     using Ensage.SDK.Menu.Config;
     using Ensage.SDK.Menu.Views;
-    using Ensage.SDK.Persistence;
     using Ensage.SDK.Renderer;
 
     using log4net;
@@ -21,138 +19,6 @@ namespace Ensage.SDK.Menu.Entries
     using PlaySharp.Toolkit.Logging;
 
     using SharpDX;
-
-    public abstract class ValueBinding
-    {
-        public abstract string Name { get; }
-
-        public abstract object Value { get; set; }
-
-        public abstract Type ValueType { get; }
-
-        public abstract T GetValue<T>();
-
-        public abstract void SetValue<T>(T value);
-
-        [CanBeNull]
-        public virtual T GetCustomAttribute<T>()
-            where T : Attribute
-        {
-            return default(T);
-        }
-    }
-
-    public class ValuePropertyBinding : ValueBinding
-    {
-        private readonly string name;
-
-        private readonly Type valueType;
-
-        public ValuePropertyBinding(object instance, PropertyInfo propertyInfo)
-        {
-            if (instance == null)
-            {
-                throw new ArgumentNullException(nameof(instance));
-            }
-
-            this.PropertyBinding = new PropertyBinding(propertyInfo, instance);
-            this.valueType = this.PropertyBinding.PropertyInfo.PropertyType;
-            this.name = propertyInfo.Name;
-        }
-
-        public override string Name
-        {
-            get
-            {
-                return this.name;
-            }
-        }
-
-        public override T GetCustomAttribute<T>() 
-        {
-            return this.PropertyBinding.PropertyInfo.GetCustomAttribute<T>();
-        }
-
-        public PropertyBinding PropertyBinding { get; }
-
-        public override object Value
-        {
-            get
-            {
-                return this.PropertyBinding.GetValue();
-            }
-
-            set
-            {
-                this.PropertyBinding.SetValue(value);
-            }
-        }
-
-        public override Type ValueType
-        {
-            get
-            {
-                return this.valueType;
-            }
-        }
-
-        public override T GetValue<T>()
-        {
-            return (T)this.PropertyBinding.GetValue();
-        }
-
-        public override void SetValue<T>(T value)
-        {
-            this.PropertyBinding.SetValue(value);
-        }
-    }
-
-    public class ValueDictionaryBinding : ValueBinding
-    {
-        private readonly Type valueType;
-
-        public ValueDictionaryBinding(string key, Dictionary<string, object> dictionary)
-        {
-            this.Name = key;
-            this.Dictionary = dictionary;
-            this.valueType = this.Dictionary[this.Name].GetType();
-        }
-
-        public Dictionary<string, object> Dictionary { get; }
-
-        public override string Name { get; }
-
-        public override object Value
-        {
-            get
-            {
-                return this.Dictionary[this.Name];
-            }
-
-            set
-            {
-                this.Dictionary[this.Name] = value;
-            }
-        }
-
-        public override Type ValueType
-        {
-            get
-            {
-                return this.valueType;
-            }
-        }
-
-        public override T GetValue<T>()
-        {
-            return (T)this.Dictionary[this.Name];
-        }
-
-        public override void SetValue<T>(T value)
-        {
-            this.Dictionary[this.Name] = value;
-        }
-    }
 
     public class MenuItemEntry : MenuBase
     {

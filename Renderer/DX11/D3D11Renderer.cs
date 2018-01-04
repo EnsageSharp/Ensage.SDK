@@ -12,6 +12,7 @@ namespace Ensage.SDK.Renderer.DX11
     using SharpDX;
     using SharpDX.Direct2D1;
     using SharpDX.DirectWrite;
+    using SharpDX.Mathematics.Interop;
 
     using Color = System.Drawing.Color;
 

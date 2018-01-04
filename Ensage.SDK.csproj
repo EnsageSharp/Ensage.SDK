@@ -527,6 +527,10 @@
     <Compile Include="Menu\Config\HackConfig.cs" />
     <Compile Include="Menu\Config\MenuConfig.cs" />
     <Compile Include="Menu\Entries\DynamicMenu.cs" />
+    <Compile Include="Menu\ValueBinding\ValueChangedEventArgs.cs" />
+    <Compile Include="Menu\ValueBinding\ValueBinding.cs" />
+    <Compile Include="Menu\ValueBinding\ValueDictionaryBinding.cs" />
+    <Compile Include="Menu\ValueBinding\ValuePropertyBinding.cs" />
     <Compile Include="Menu\Items\ILoadable.cs" />
     <Compile Include="Menu\Items\ISelection.cs" />
     <Compile Include="Menu\Items\PriorityChanger.cs" />

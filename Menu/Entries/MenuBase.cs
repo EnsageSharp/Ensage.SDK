@@ -8,6 +8,7 @@ namespace Ensage.SDK.Menu
 
     using Ensage.SDK.Input;
     using Ensage.SDK.Menu.Config;
+    using Ensage.SDK.Menu.Entries;
     using Ensage.SDK.Menu.Views;
     using Ensage.SDK.Renderer;
 
@@ -17,12 +18,12 @@ namespace Ensage.SDK.Menu
 
     public abstract class MenuBase
     {
-        protected MenuBase(string name, IView view, IRenderer renderer, MenuConfig menuConfig, object instance, [CanBeNull] PropertyInfo propertyInfo)
-            : this(name, null, view, renderer, menuConfig, instance, propertyInfo)
+        protected MenuBase(string name, IView view, IRenderer renderer, MenuConfig menuConfig, object instance)
+            : this(name, null, view, renderer, menuConfig, instance)
         {
         }
 
-        protected MenuBase(string name, [CanBeNull] string textureKey, IView view, IRenderer renderer, MenuConfig menuConfig, object instance, [CanBeNull] PropertyInfo propertyInfo)
+        protected MenuBase(string name, [CanBeNull] string textureKey, IView view, IRenderer renderer, MenuConfig menuConfig, object instance)
         {
             this.MenuConfig = menuConfig;
             this.Name = name;
@@ -30,7 +31,6 @@ namespace Ensage.SDK.Menu
             this.View = view;
             this.Renderer = renderer;
             this.DataContext = instance;
-            this.PropertyInfo = propertyInfo;
         }
 
         public object DataContext { get; }
@@ -44,9 +44,6 @@ namespace Ensage.SDK.Menu
         public string TextureKey { get; set; }
 
         public Vector2 Position { get; set; }
-
-        [CanBeNull]
-        public PropertyInfo PropertyInfo { get; }
 
         public IRenderer Renderer { get; }
 

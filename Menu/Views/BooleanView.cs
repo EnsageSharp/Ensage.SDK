@@ -36,7 +36,7 @@ namespace Ensage.SDK.Menu.Views
             sliderPos.Y = pos.Y + border.Thickness[1];
             context.Renderer.DrawTexture(activeStyle.Slider, new RectangleF(sliderPos.X, sliderPos.Y, styleConfig.ArrowSize.X * 2, styleConfig.ArrowSize.Y));
 
-            if (item.PropertyBinding.GetValue<bool>())
+            if (item.ValueBinding.GetValue<bool>())
             {
                 sliderPos.X += styleConfig.ArrowSize.X;
                 context.Renderer.DrawTexture(activeStyle.Checked, new RectangleF(sliderPos.X, sliderPos.Y, styleConfig.ArrowSize.X, styleConfig.ArrowSize.Y));
@@ -67,7 +67,7 @@ namespace Ensage.SDK.Menu.Views
         {
             if ((buttons & MouseButtons.LeftUp) == MouseButtons.LeftUp && context is MenuItemEntry item)
             {
-                item.Value = !item.PropertyBinding.GetValue<bool>();
+                item.Value = !item.ValueBinding.GetValue<bool>();
                 return true;
             }
 

@@ -30,7 +30,7 @@ namespace Ensage.SDK.Menu.Views
         public override void Draw(MenuBase context)
         {
             var item = (MenuItemEntry)context;
-            var propValue = item.PropertyBinding.GetValue<PriorityChanger>();
+            var propValue = item.ValueBinding.GetValue<PriorityChanger>();
 
             var pos = context.Position;
             var size = context.RenderSize;
@@ -87,7 +87,7 @@ namespace Ensage.SDK.Menu.Views
             var picturePickerStyle = styleConfig.PicturePicker;
 
             var item = (MenuItemEntry)context;
-            var propValue = item.PropertyBinding.GetValue<PriorityChanger>();
+            var propValue = item.ValueBinding.GetValue<PriorityChanger>();
 
             var result = 0;
 
@@ -116,7 +116,7 @@ namespace Ensage.SDK.Menu.Views
         public override bool OnClick(MenuBase context, MouseButtons buttons, Vector2 clickPosition)
         {
             var item = (MenuItemEntry)context;
-            var propValue = item.PropertyBinding.GetValue<PriorityChanger>();
+            var propValue = item.ValueBinding.GetValue<PriorityChanger>();
             if (!this.dragObject.HasValue && (buttons & MouseButtons.LeftDown) == MouseButtons.LeftDown)
             {
                 var state = this.GetItemUnderMouse(context, clickPosition);
@@ -175,7 +175,7 @@ namespace Ensage.SDK.Menu.Views
         protected override KeyValuePair<string, bool>? GetItemUnderMouse(MenuBase context, Vector2 mousePos) 
         {
             var item = (MenuItemEntry)context;
-            var propValue = item.PropertyBinding.GetValue<PriorityChanger>();
+            var propValue = item.ValueBinding.GetValue<PriorityChanger>();
 
             var pos = context.Position;
             var size = context.RenderSize;

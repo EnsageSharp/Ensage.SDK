@@ -21,7 +21,7 @@ namespace Ensage.SDK.Menu.Views
         public virtual void Draw(MenuBase context)
         {
             var item = (MenuItemEntry)context;
-            var propValue = item.PropertyBinding.GetValue<PicturePicker>();
+            var propValue = item.ValueBinding.GetValue<PicturePicker>();
 
             var pos = context.Position;
             var size = context.RenderSize;
@@ -64,7 +64,7 @@ namespace Ensage.SDK.Menu.Views
             totalSize.Y += Math.Max(Math.Max(fontSize.Y, styleConfig.ArrowSize.Y), styleConfig.PicturePicker.PictureSize.Y);
 
             var item = (MenuItemEntry)context;
-            var propValue = item.PropertyBinding.GetValue<PicturePicker>();
+            var propValue = item.ValueBinding.GetValue<PicturePicker>();
             totalSize.X += propValue.PictureStates.Count * styleConfig.PicturePicker.PictureSize.X;
 
             return totalSize;
@@ -78,7 +78,7 @@ namespace Ensage.SDK.Menu.Views
                 if (state.HasValue)
                 {
                     var item = (MenuItemEntry)context;
-                    var propValue = item.PropertyBinding.GetValue<PicturePicker>();
+                    var propValue = item.ValueBinding.GetValue<PicturePicker>();
                     propValue.PictureStates[state.Value.Key] = !state.Value.Value;
                     return true;
                 }
@@ -90,7 +90,7 @@ namespace Ensage.SDK.Menu.Views
         protected virtual KeyValuePair<string, bool>? GetItemUnderMouse(MenuBase context, Vector2 mousePos)
         {
             var item = (MenuItemEntry)context;
-            var propValue = item.PropertyBinding.GetValue<PicturePicker>();
+            var propValue = item.ValueBinding.GetValue<PicturePicker>();
 
             var pos = context.Position;
             var size = context.RenderSize;

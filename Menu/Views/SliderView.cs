@@ -33,7 +33,7 @@ namespace Ensage.SDK.Menu.Views
             var font = styleConfig.Font;
             context.Renderer.DrawText(pos, context.Name, styleConfig.Font.Color, font.Size, font.Family);
 
-            var propValue = item.PropertyBinding.GetValue<Slider>();
+            var propValue = item.ValueBinding.GetValue<Slider>();
             var textSize = context.Renderer.MessureText(propValue.ToString(), font.Size, font.Family);
             pos.X = (context.Position.X + size.X) - border.Thickness[2] - textSize.X - styleConfig.TextSpacing;
 
@@ -54,12 +54,15 @@ namespace Ensage.SDK.Menu.Views
             totalSize.Y += border.Thickness[1] + border.Thickness[3];
 
             var item = (MenuItemEntry)context;
-            var propValue = item.PropertyBinding.GetValue<Slider>();
+            var propValue = item.ValueBinding.GetValue<Slider>();
 
             var font = styleConfig.Font;
-            var textSize = context.Renderer.MessureText(propValue.ToString(), font.Size, font.Family);
-            totalSize.X += styleConfig.LineWidth + textSize.X;
+            var textSize = context.Renderer.MessureText(context.Name, font.Size, font.Family);
+            totalSize.X += styleConfig.LineWidth + styleConfig.TextSpacing + textSize.X;
             totalSize.Y += Math.Max(textSize.Y, styleConfig.ArrowSize.Y);
+
+            textSize = context.Renderer.MessureText(propValue.ToString(), font.Size, font.Family);
+            totalSize.X += styleConfig.TextSpacing + textSize.X;
 
             return totalSize;
         }
@@ -74,7 +77,7 @@ namespace Ensage.SDK.Menu.Views
                 var styleConfig = context.MenuConfig.GeneralConfig.ActiveStyle.Value.StyleConfig;
 
                 var item = (MenuItemEntry)context;
-                var propValue = item.PropertyBinding.GetValue<Slider>();
+                var propValue = item.ValueBinding.GetValue<Slider>();
 
                 var percentage = (clickPosition.X - pos.X) / size.X;
                 if (percentage >= 0 && percentage <= 1f)

@@ -26,13 +26,13 @@ namespace Ensage.SDK.Menu.Entries
 
         private bool isVisible = true;
 
-        public MenuEntry(string name, IView view, IRenderer renderer, MenuConfig menuConfig, object instance, [CanBeNull] PropertyInfo propertyInfo)
-            : base(name, view, renderer, menuConfig, instance, propertyInfo)
+        public MenuEntry(string name, IView view, IRenderer renderer, MenuConfig menuConfig, object instance)
+            : base(name, view, renderer, menuConfig, instance)
         {
         }
 
-        public MenuEntry(string name, [CanBeNull] string textureKey, IView view, IRenderer renderer, MenuConfig menuConfig, object instance, [CanBeNull] PropertyInfo propertyInfo)
-            : base(name, textureKey, view, renderer, menuConfig, instance, propertyInfo)
+        public MenuEntry(string name, [CanBeNull] string textureKey, IView view, IRenderer renderer, MenuConfig menuConfig, object instance)
+            : base(name, textureKey, view, renderer, menuConfig, instance)
         {
         }
 

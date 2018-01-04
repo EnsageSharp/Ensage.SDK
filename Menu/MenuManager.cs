@@ -309,7 +309,7 @@ namespace Ensage.SDK.Menu
 
             var view = this.viewRepository.GetMenuView();
             var textureAttribute = dataType.GetCustomAttribute<TexureAttribute>();
-            var menuEntry = new MenuEntry(menuName, textureAttribute?.TextureKey, view, this.context.Renderer, this.MenuConfig, menu, null);
+            var menuEntry = new MenuEntry(menuName, textureAttribute?.TextureKey, view, this.context.Renderer, this.MenuConfig, menu);
             this.VisitInstance(menuEntry, menu);
 
             this.rootMenus.Add(menuEntry);
@@ -392,24 +392,22 @@ namespace Ensage.SDK.Menu
 
             if (args.IsItem)
             {
-                var type = args.Instance.GetType();
-                var propertyInfo = type.GetProperties(BindingFlags.Instance | BindingFlags.Public).First(); // todo need to get actual property info -> so can't add items directly only classes?
-                var view = this.viewRepository.GetView(propertyInfo.PropertyType);
-                var menuItemEntry = new MenuItemEntry(args.Name, args.TextureKey, view, this.context.Renderer, this.MenuConfig, args.Instance, propertyInfo);
+                var valueDictionaryBinding = new ValueDictionaryBinding(args.Key, args.DynamicMenu.ValueStorage);
+                var type = valueDictionaryBinding.ValueType;
+                var view = this.viewRepository.GetView(type);
+               
+                var menuItemEntry = new MenuItemEntry(args.Name, args.TextureKey, view, this.context.Renderer, this.MenuConfig, valueDictionaryBinding);
                 args.DynamicMenu.AddMenuItem(menuItemEntry);
             }
             else
             {
-                var type = args.Instance.GetType();
-                var propertyInfo = type.GetProperties(BindingFlags.Instance | BindingFlags.Public).First();
                 var menuItemEntry = new MenuEntry(
                     args.Name,
                     args.TextureKey,
                     this.viewRepository.MenuView.Value,
                     this.context.Renderer,
                     this.MenuConfig,
-                    args.Instance,
-                    propertyInfo);
+                    args.Instance);
                 args.DynamicMenu.AddMenu(menuItemEntry);
             }
         }
@@ -534,17 +532,17 @@ namespace Ensage.SDK.Menu
         {
             foreach (var child in menu.Children.OfType<MenuItemEntry>())
             {
-                var entry = token[child.PropertyInfo.Name];
+                var entry = token[child.ValueBinding.Name];
                 if (entry != null)
                 {
                     if (child.Value is ILoadable loadable)
                     {
-                        var loaded = this.menuSerializer.ToObject(entry, child.PropertyInfo.PropertyType);
+                        var loaded = this.menuSerializer.ToObject(entry, child.ValueBinding.ValueType);
                         loadable.Load(loaded);
                     }
                     else
                     {
-                        child.Value = this.menuSerializer.ToObject(entry, child.PropertyInfo.PropertyType);
+                        child.Value = this.menuSerializer.ToObject(entry, child.ValueBinding.ValueType);
                     }
 
                     child.AssignDefaultValue();
@@ -552,7 +550,7 @@ namespace Ensage.SDK.Menu
                 else
                 {
                     // set default value by attribute
-                    var defaultValue = child.PropertyInfo.GetCustomAttribute<DefaultValueAttribute>();
+                    var defaultValue = child.ValueBinding.GetCustomAttribute<DefaultValueAttribute>();
                     if (defaultValue != null)
                     {
                         child.Value = defaultValue.Value;
@@ -563,7 +561,7 @@ namespace Ensage.SDK.Menu
 
             foreach (var child in menu.Children.OfType<MenuEntry>())
             {
-                var subToken = token[child.PropertyInfo.Name];
+                var subToken = token[child.DataContext.GetType().Name];
                 if (subToken != null)
                 {
                     this.LoadLayer(child, subToken);
@@ -852,7 +850,8 @@ namespace Ensage.SDK.Menu
         private void VisitItem(MenuEntry parent, object instance)
         {
             var type = instance.GetType();
-            foreach (var propertyInfo in type.GetProperties(BindingFlags.Instance | BindingFlags.Public))
+            var props = type.GetProperties();
+            foreach (var propertyInfo in type.GetProperties(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic))
             {
                 var menuItemAttribute = propertyInfo.GetCustomAttribute<ItemAttribute>();
                 if (menuItemAttribute == null)
@@ -877,7 +876,7 @@ namespace Ensage.SDK.Menu
                 var textureAttribute = propertyInfo.GetCustomAttribute<TexureAttribute>();
 
                 var view = this.viewRepository.GetView(propertyInfo.PropertyType);
-                var menuItemEntry = new MenuItemEntry(menuItemName, textureAttribute?.TextureKey, view, this.context.Renderer, this.MenuConfig, instance, propertyInfo);
+                var menuItemEntry = new MenuItemEntry(menuItemName, textureAttribute?.TextureKey, view, this.context.Renderer, this.MenuConfig, new ValuePropertyBinding(instance, propertyInfo));
 
                 var tooltip = propertyInfo.GetCustomAttribute<TooltipAttribute>();
                 if (tooltip != null)
@@ -892,7 +891,7 @@ namespace Ensage.SDK.Menu
         private void VisitMenu(MenuEntry parent, object instance)
         {
             var type = instance.GetType();
-            foreach (var propertyInfo in type.GetProperties(BindingFlags.Instance | BindingFlags.Public))
+            foreach (var propertyInfo in type.GetProperties(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic))
             {
                 var menuAttribute = propertyInfo.GetCustomAttribute<MenuAttribute>();
                 if (menuAttribute == null)
@@ -921,8 +920,7 @@ namespace Ensage.SDK.Menu
                     this.viewRepository.GetMenuView(),
                     this.context.Renderer,
                     this.MenuConfig,
-                    propertyValue,
-                    propertyInfo);
+                    propertyValue);
                 this.VisitInstance(menuItemEntry, propertyValue);
 
                 parent.AddChild(menuItemEntry);

@@ -38,7 +38,7 @@ namespace Ensage.SDK.Menu.Views
             var font = styleConfig.Font;
             context.Renderer.DrawText(pos, context.Name, styleConfig.Font.Color, font.Size, font.Family);
 
-            var propValue = item.PropertyBinding.GetValue<ISelection<object>>();
+            var propValue = item.ValueBinding.GetValue<ISelection<object>>();
             pos.X = (context.Position.X + size.X) - border.Thickness[2] - (2 * styleConfig.ArrowSize.X) - (2 * styleConfig.TextSpacing) - this.valueSizes[propValue.ToString()].X;
 
             context.Renderer.DrawTexture(activeStyle.ArrowLeft, new RectangleF(pos.X, pos.Y, styleConfig.ArrowSize.X, styleConfig.ArrowSize.Y));
@@ -64,7 +64,7 @@ namespace Ensage.SDK.Menu.Views
             totalSize.Y += Math.Max(this.textSize.Y, styleConfig.ArrowSize.Y);
 
             var item = (MenuItemEntry)context;
-            var propValue = item.PropertyBinding.GetValue<ISelection<object>>();
+            var propValue = item.ValueBinding.GetValue<ISelection<object>>();
 
             var maxSize = Vector2.Zero;
             foreach (var value in propValue.Values)
@@ -91,7 +91,7 @@ namespace Ensage.SDK.Menu.Views
                 var styleConfig = context.MenuConfig.GeneralConfig.ActiveStyle.Value.StyleConfig;
 
                 var item = (MenuItemEntry)context;
-                var propValue = item.PropertyBinding.GetValue<ISelection<object>>();
+                var propValue = item.ValueBinding.GetValue<ISelection<object>>();
                 var textSize = this.valueSizes[propValue.ToString()].X;
 
                 var rectPos = new RectangleF();

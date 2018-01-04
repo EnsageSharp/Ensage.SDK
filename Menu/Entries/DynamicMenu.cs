@@ -4,6 +4,7 @@
 
 namespace Ensage.SDK.Menu.Entries
 {
+    using System;
     using System.Collections.Generic;
 
     using Ensage.SDK.Helpers;
@@ -14,9 +15,10 @@ namespace Ensage.SDK.Menu.Entries
 
     public class AddDynamicMenuMessage
     {
-        public AddDynamicMenuMessage(DynamicMenu dynamicMenu, string name, [CanBeNull] string textureKey, object instance, bool isItem = false)
+        public AddDynamicMenuMessage(DynamicMenu dynamicMenu, string key, string name, [CanBeNull] string textureKey, object instance, bool isItem = false)
         {
             this.DynamicMenu = dynamicMenu;
+            this.Key = key;
             this.Name = name;
             this.TextureKey = textureKey;
             this.Instance = instance;
@@ -24,6 +26,8 @@ namespace Ensage.SDK.Menu.Entries
         }
 
         public DynamicMenu DynamicMenu { get; }
+
+        public string Key { get; }
 
         public object Instance { get; }
 
@@ -54,16 +58,30 @@ namespace Ensage.SDK.Menu.Entries
     {
         private readonly List<MenuBase> children = new List<MenuBase>();
 
+        public readonly Dictionary<string, object> ValueStorage = new Dictionary<string, object>();
+
         public JToken LoadToken { get; set; }
 
-        public void AddMenu(string name, [CanBeNull] string textureKey, object instance)
+        public void AddMenu(string key, string name, [CanBeNull] string textureKey, object instance)
         {
-            Messenger<AddDynamicMenuMessage>.Publish(new AddDynamicMenuMessage(this, name, textureKey, instance));
+            if (this.ValueStorage.ContainsKey(key))
+            {
+                throw new Exception($"{key} already in value storage of {this.GetType().Name}");
+            }
+
+            this.ValueStorage[key] = instance;
+            Messenger<AddDynamicMenuMessage>.Publish(new AddDynamicMenuMessage(this, key, name, textureKey, instance));
         }
 
-        public void AddMenuItem(string name, [CanBeNull] string textureKey, object instance)
+        public void AddMenuItem(string key, string name, [CanBeNull] string textureKey, object instance)
         {
-            Messenger<AddDynamicMenuMessage>.Publish(new AddDynamicMenuMessage(this, name, textureKey, instance, true));
+            if (this.ValueStorage.ContainsKey(key))
+            {
+                throw new Exception($"{key} already in value storage of {this.GetType().Name}");
+            }
+
+            this.ValueStorage[key] = instance;
+            Messenger<AddDynamicMenuMessage>.Publish(new AddDynamicMenuMessage(this, key, name, textureKey, instance, true));
         }
 
         public void AddMenu(MenuEntry menu)

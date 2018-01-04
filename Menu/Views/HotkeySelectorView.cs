@@ -33,7 +33,7 @@ namespace Ensage.SDK.Menu.Views
             var font = styleConfig.Font;
             context.Renderer.DrawText(pos, context.Name, styleConfig.Font.Color, font.Size, font.Family);
 
-            var propValue = item.PropertyBinding.GetValue<HotkeySelector>();
+            var propValue = item.ValueBinding.GetValue<HotkeySelector>();
             var textSize = context.Renderer.MessureText(propValue.ToString(), font.Size, font.Family);
             pos.X = (context.Position.X + size.X) - border.Thickness[2] - textSize.X - styleConfig.TextSpacing - 10;
             context.Renderer.DrawTexture(activeStyle.Menu, new RectangleF(pos.X - 10, pos.Y, textSize.X + 20, textSize.Y));
@@ -50,12 +50,15 @@ namespace Ensage.SDK.Menu.Views
             totalSize.Y += border.Thickness[1] + border.Thickness[3];
 
             var item = (MenuItemEntry)context;
-            var propValue = item.PropertyBinding.GetValue<HotkeySelector>();
+            var propValue = item.ValueBinding.GetValue<HotkeySelector>();
 
             var font = styleConfig.Font;
-            var textSize = context.Renderer.MessureText(propValue.ToString(), font.Size, font.Family);
-            totalSize.X += styleConfig.LineWidth + textSize.X + 20;
+            var textSize = context.Renderer.MessureText(context.Name, font.Size, font.Family);
+            totalSize.X += styleConfig.TextSpacing + textSize.X;
             totalSize.Y += Math.Max(textSize.Y, styleConfig.ArrowSize.Y);
+
+            textSize = context.Renderer.MessureText(propValue.ToString(), font.Size, font.Family);
+            totalSize.X += styleConfig.TextSpacing + textSize.X + 20;
 
             return totalSize;
         }
@@ -72,7 +75,7 @@ namespace Ensage.SDK.Menu.Views
                 var border = styleConfig.Border;
 
                 var item = (MenuItemEntry)context;
-                var propValue = item.PropertyBinding.GetValue<HotkeySelector>();
+                var propValue = item.ValueBinding.GetValue<HotkeySelector>();
                 var textSize = context.Renderer.MessureText(propValue.ToString(), font.Size, font.Family);
 
                 var rectPos = new RectangleF();

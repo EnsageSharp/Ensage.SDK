@@ -6,13 +6,13 @@ namespace Ensage.SDK.Abilities
 {
     using System.Reflection;
 
-    using log4net;
+    
 
-    using PlaySharp.Toolkit.Logging;
+    using NLog;
 
     public abstract class ToggleAbility : ActiveAbility
     {
-        private static readonly ILog Log = AssemblyLogs.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly Logger Log = LogManager.GetCurrentClassLogger();
 
         protected ToggleAbility(Ability ability)
             : base(ability)

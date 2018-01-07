@@ -13,14 +13,14 @@ namespace Ensage.SDK.Helpers
 
     using Ensage.SDK.Handlers;
 
-    using log4net;
+    
 
     using PlaySharp.Toolkit.Helper.Annotations;
-    using PlaySharp.Toolkit.Logging;
+    using NLog;
 
     public static class UpdateManager
     {
-        private static readonly ILog Log = AssemblyLogs.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly Logger Log = LogManager.GetCurrentClassLogger();
 
         static UpdateManager()
         {

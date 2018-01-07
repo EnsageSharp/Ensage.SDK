@@ -17,17 +17,17 @@ namespace Ensage.SDK.TargetSelector
     using Ensage.SDK.Service;
     using Ensage.SDK.TargetSelector.Metadata;
 
-    using log4net;
+    
 
     using PlaySharp.Toolkit.Helper.Annotations;
-    using PlaySharp.Toolkit.Logging;
+    using NLog;
 
     using SharpDX;
 
     [ExportTargetSelectorManager]
     public sealed class TargetSelectorManager : ServiceManager<ITargetSelector, ITargetSelectorMetadata>, ITargetSelectorManager, IPartImportsSatisfiedNotification
     {
-        private static readonly ILog Log = AssemblyLogs.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly Logger Log = LogManager.GetCurrentClassLogger();
 
         private IUpdateHandler updateHandler;
 

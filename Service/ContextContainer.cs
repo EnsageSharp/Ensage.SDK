@@ -1,5 +1,5 @@
 // <copyright file="ContextContainer.cs" company="Ensage">
-//    Copyright (c) 2017 Ensage.
+//    Copyright (c) 2018 Ensage.
 // </copyright>
 
 namespace Ensage.SDK.Service
@@ -9,17 +9,15 @@ namespace Ensage.SDK.Service
     using System.ComponentModel.Composition;
     using System.ComponentModel.Composition.Hosting;
     using System.Linq;
-    using System.Reflection;
 
-    using log4net;
+    using NLog;
 
     using PlaySharp.Toolkit.Helper.Annotations;
-    using PlaySharp.Toolkit.Logging;
 
     public class ContextContainer<TContext> : IDisposable, IEquatable<ContextContainer<TContext>>
         where TContext : class, IServiceContext
     {
-        private static readonly ILog Log = AssemblyLogs.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly Logger Log = LogManager.GetCurrentClassLogger();
 
         private bool disposed;
 

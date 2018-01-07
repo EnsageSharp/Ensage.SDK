@@ -14,10 +14,10 @@ namespace Ensage.SDK.Renderer.DX11
     using Ensage.SDK.Renderer.Metadata;
     using Ensage.SDK.VPK;
 
-    using log4net;
+    
 
     using PlaySharp.Toolkit.Helper.Annotations;
-    using PlaySharp.Toolkit.Logging;
+    using NLog;
 
     using SharpDX;
     using SharpDX.IO;
@@ -29,7 +29,7 @@ namespace Ensage.SDK.Renderer.DX11
     [ExportTextureManager(RenderMode.Dx11)]
     public sealed class D3D11TextureManager : ITextureManager
     {
-        private static readonly ILog Log = AssemblyLogs.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly Logger Log = LogManager.GetCurrentClassLogger();
 
         private readonly ImagingFactory imagingFactory;
 

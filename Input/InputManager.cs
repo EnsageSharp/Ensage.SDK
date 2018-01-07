@@ -15,9 +15,9 @@ namespace Ensage.SDK.Input
     using Ensage.SDK.Input.Metadata;
     using Ensage.SDK.Service;
 
-    using log4net;
+    
 
-    using PlaySharp.Toolkit.Logging;
+    using NLog;
 
     [ExportInputManager]
     [SuppressMessage("ReSharper", "InconsistentNaming")]
@@ -50,7 +50,7 @@ namespace Ensage.SDK.Input
 
         private const uint WM_XBUTTONUP = 0x020C;
 
-        private static readonly ILog Log = AssemblyLogs.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly Logger Log = LogManager.GetCurrentClassLogger();
 
         private readonly List<Hotkey> hotkeys = new List<Hotkey>();
 

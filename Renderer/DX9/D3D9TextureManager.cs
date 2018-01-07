@@ -15,10 +15,10 @@ namespace Ensage.SDK.Renderer.DX9
     using Ensage.SDK.Renderer.Metadata;
     using Ensage.SDK.VPK;
 
-    using log4net;
+    
 
     using PlaySharp.Toolkit.Helper.Annotations;
-    using PlaySharp.Toolkit.Logging;
+    using NLog;
 
     using SharpDX;
     using SharpDX.Direct3D9;
@@ -27,7 +27,7 @@ namespace Ensage.SDK.Renderer.DX9
     [ExportTextureManager(RenderMode.Dx9)]
     public sealed class D3D9TextureManager : ITextureManager
     {
-        private static readonly ILog Log = AssemblyLogs.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly Logger Log = LogManager.GetCurrentClassLogger();
 
         private readonly ID3D9Context renderContext;
 

@@ -15,10 +15,10 @@ namespace Ensage.SDK.Menu
     using Ensage.SDK.Menu.Items;
     using Ensage.SDK.Service;
 
-    using log4net;
+    
 
     using PlaySharp.Toolkit.Helper.Annotations;
-    using PlaySharp.Toolkit.Logging;
+    using NLog;
 
     [Flags]
     public enum HotkeyFlags
@@ -69,7 +69,7 @@ namespace Ensage.SDK.Menu
 
     public sealed class MenuHotkey
     {
-        private static readonly ILog Log = AssemblyLogs.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly Logger Log = LogManager.GetCurrentClassLogger();
 
         private readonly Action<MenuInputEventArgs> action;
 
@@ -97,7 +97,7 @@ namespace Ensage.SDK.Menu
     [Export]
     public sealed class MenuInputManager : ControllableService
     {
-        private static readonly ILog Log = AssemblyLogs.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly Logger Log = LogManager.GetCurrentClassLogger();
 
         public readonly IInputManager InputManager;
 

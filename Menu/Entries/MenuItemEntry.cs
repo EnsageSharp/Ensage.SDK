@@ -13,16 +13,16 @@ namespace Ensage.SDK.Menu.Entries
     using Ensage.SDK.Menu.Views;
     using Ensage.SDK.Renderer;
 
-    using log4net;
+    
 
     using PlaySharp.Toolkit.Helper.Annotations;
-    using PlaySharp.Toolkit.Logging;
+    using NLog;
 
     using SharpDX;
 
     public class MenuItemEntry : MenuBase
     {
-        private static readonly ILog Log = AssemblyLogs.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly Logger Log = LogManager.GetCurrentClassLogger();
 
         public MenuItemEntry(string name, IView view, IRenderer renderer, MenuConfig menuConfig, ValueBinding valueBinding)
             : this(name, null, view, renderer, menuConfig, valueBinding)

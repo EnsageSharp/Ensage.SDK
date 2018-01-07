@@ -10,9 +10,9 @@ namespace Ensage.SDK.Renderer.DX11
     using System.Drawing;
     using System.Reflection;
 
-    using log4net;
+    
 
-    using PlaySharp.Toolkit.Logging;
+    using NLog;
 
     using SharpDX.Direct2D1;
     using SharpDX.Mathematics.Interop;
@@ -20,7 +20,7 @@ namespace Ensage.SDK.Renderer.DX11
     [Export(typeof(BrushCache))]
     public sealed class BrushCache : Dictionary<Color, SolidColorBrush>, IDisposable
     {
-        private static readonly ILog Log = AssemblyLogs.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly Logger Log = LogManager.GetCurrentClassLogger();
 
         private bool disposed;
 

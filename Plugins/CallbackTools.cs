@@ -12,14 +12,14 @@ namespace Ensage.SDK.Plugins
     using Ensage.SDK.Service;
     using Ensage.SDK.Service.Metadata;
 
-    using log4net;
+    
 
-    using PlaySharp.Toolkit.Logging;
+    using NLog;
 
     [ExportPlugin("Callback Tools", StartupMode.Manual, priority: 1000, description: "Display UpdateManager callback times in CPU Ticks")]
     public class CallbackTools : Plugin
     {
-        private static readonly ILog Log = AssemblyLogs.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly Logger Log = LogManager.GetCurrentClassLogger();
 
         protected override void OnActivate()
         {

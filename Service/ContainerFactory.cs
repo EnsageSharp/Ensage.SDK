@@ -12,13 +12,13 @@ namespace Ensage.SDK.Service
 
     using Ensage.SDK.Extensions;
 
-    using log4net;
+    
 
-    using PlaySharp.Toolkit.Logging;
+    using NLog;
 
     public static class ContainerFactory
     {
-        private static readonly ILog Log = AssemblyLogs.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly Logger Log = LogManager.GetCurrentClassLogger();
 
         private static CatalogLoader loader;
 

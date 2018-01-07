@@ -10,13 +10,11 @@ namespace Ensage.SDK.Service
     using System.Linq;
     using System.Reflection;
 
-    using log4net;
-
-    using PlaySharp.Toolkit.Logging;
+    using NLog;
 
     public class CatalogLoader : IDisposable
     {
-        private static readonly ILog Log = AssemblyLogs.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly Logger Log = LogManager.GetCurrentClassLogger();
 
         private readonly string[] blacklist =
         {

@@ -4,16 +4,16 @@
     using System.Linq;
     using System.Reflection;
 
-    using log4net;
+    
 
     using Newtonsoft.Json;
 
     using PlaySharp.Toolkit.Helper;
-    using PlaySharp.Toolkit.Logging;
+    using NLog;
 
     public class MenuStyleConverter : JsonConverter
     {
-        private static readonly ILog Log = AssemblyLogs.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly Logger Log = LogManager.GetCurrentClassLogger();
 
         public override bool CanConvert(Type objectType)
         {

@@ -8,15 +8,15 @@ namespace Ensage.SDK.Service
     using System.Collections.Generic;
     using System.Reflection;
 
-    using log4net;
+    
 
     using PlaySharp.Toolkit.Helper.Annotations;
-    using PlaySharp.Toolkit.Logging;
+    using NLog;
 
     public abstract class ServiceManager<TService> : ControllableService, IServiceManager<TService>
         where TService : class
     {
-        private static readonly ILog Log = AssemblyLogs.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly Logger Log = LogManager.GetCurrentClassLogger();
 
         private TService active;
 
@@ -90,7 +90,7 @@ namespace Ensage.SDK.Service
     public abstract class ServiceManager<TService, TServiceMetadata> : ControllableService, IServiceManager<TService, TServiceMetadata>
         where TService : class
     {
-        private static readonly ILog Log = AssemblyLogs.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly Logger Log = LogManager.GetCurrentClassLogger();
 
         private TService active;
 

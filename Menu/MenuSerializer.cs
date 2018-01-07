@@ -4,17 +4,17 @@
     using System.IO;
     using System.Reflection;
 
-    using log4net;
+    
 
     using Newtonsoft.Json;
     using Newtonsoft.Json.Linq;
 
     using PlaySharp.Toolkit.Helper.Annotations;
-    using PlaySharp.Toolkit.Logging;
+    using NLog;
 
     public class MenuSerializer
     {
-        private static readonly ILog Log = AssemblyLogs.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly Logger Log = LogManager.GetCurrentClassLogger();
 
         public MenuSerializer(params JsonConverter[] converters)
         {

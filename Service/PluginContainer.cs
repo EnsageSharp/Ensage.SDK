@@ -11,14 +11,14 @@ namespace Ensage.SDK.Service
     using Ensage.SDK.Menu;
     using Ensage.SDK.Service.Metadata;
 
-    using log4net;
+    
 
     using PlaySharp.Toolkit.Helper;
-    using PlaySharp.Toolkit.Logging;
+    using NLog;
 
     public class PluginContainer : IActivatable, IDeactivatable
     {
-        private static readonly ILog Log = AssemblyLogs.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly Logger Log = LogManager.GetCurrentClassLogger();
 
         public PluginContainer(MenuFactory factory, Lazy<IPluginLoader, IPluginLoaderMetadata> part)
         {

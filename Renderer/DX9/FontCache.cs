@@ -9,16 +9,16 @@ namespace Ensage.SDK.Renderer.DX9
     using System.ComponentModel.Composition;
     using System.Reflection;
 
-    using log4net;
+    
 
-    using PlaySharp.Toolkit.Logging;
+    using NLog;
 
     using SharpDX.Direct3D9;
 
     [Export(typeof(FontCache))]
     public sealed class FontCache : Dictionary<string, Font>
     {
-        private static readonly ILog Log = AssemblyLogs.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly Logger Log = LogManager.GetCurrentClassLogger();
 
         [ImportingConstructor]
         public FontCache([Import] ID3D9Context context)

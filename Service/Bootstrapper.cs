@@ -15,15 +15,15 @@ namespace Ensage.SDK.Service
     using Ensage.SDK.Logger;
     using Ensage.SDK.Service.Metadata;
 
-    using log4net;
+    
 
     using PlaySharp.Toolkit.AppDomain.Loader;
     using PlaySharp.Toolkit.Helper;
-    using PlaySharp.Toolkit.Logging;
+    using NLog;
 
     public class Bootstrapper : AssemblyEntryPoint
     {
-        private static readonly ILog Log = AssemblyLogs.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly Logger Log = LogManager.GetCurrentClassLogger();
 
         public Bootstrapper()
         {

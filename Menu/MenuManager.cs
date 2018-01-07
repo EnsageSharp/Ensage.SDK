@@ -21,13 +21,13 @@ namespace Ensage.SDK.Menu
     using Ensage.SDK.Menu.Styles;
     using Ensage.SDK.Service;
 
-    using log4net;
+    
 
     using Newtonsoft.Json.Converters;
     using Newtonsoft.Json.Linq;
 
     using PlaySharp.Toolkit.Helper.Annotations;
-    using PlaySharp.Toolkit.Logging;
+    using NLog;
 
     using SharpDX;
 
@@ -35,7 +35,7 @@ namespace Ensage.SDK.Menu
     [PublicAPI]
     public class MenuManager : ControllableService
     {
-        private static readonly ILog Log = AssemblyLogs.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly Logger Log = LogManager.GetCurrentClassLogger();
 
         private readonly IServiceContext context;
 

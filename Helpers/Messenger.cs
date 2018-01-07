@@ -11,13 +11,13 @@ namespace Ensage.SDK.Helpers
 
     using Ensage.SDK.Handlers;
 
-    using log4net;
+    
 
-    using PlaySharp.Toolkit.Logging;
+    using NLog;
 
     public static class Messenger<TMessage>
     {
-        private static readonly ILog Log = AssemblyLogs.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly Logger Log = LogManager.GetCurrentClassLogger();
 
         private static List<UpdateHandler<TMessage>> Handlers { get; } = new List<UpdateHandler<TMessage>>();
 

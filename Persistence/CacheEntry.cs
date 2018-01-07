@@ -10,13 +10,13 @@ namespace Ensage.SDK.Persistence
     using System.Linq;
     using System.Reflection;
 
-    using log4net;
+    
 
-    using PlaySharp.Toolkit.Logging;
+    using NLog;
 
     public class CacheEntry
     {
-        private static readonly ILog Log = AssemblyLogs.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly Logger Log = LogManager.GetCurrentClassLogger();
 
         private readonly List<PropertyBinding> bindings = new List<PropertyBinding>();
 

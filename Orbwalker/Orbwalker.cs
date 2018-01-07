@@ -19,17 +19,17 @@ namespace Ensage.SDK.Orbwalker
     using Ensage.SDK.Orbwalker.Metadata;
     using Ensage.SDK.Service;
 
-    using log4net;
+    
 
     using PlaySharp.Toolkit.Helper.Annotations;
-    using PlaySharp.Toolkit.Logging;
+    using NLog;
 
     using SharpDX;
 
     [ExportOrbwalker("SDK")]
     public sealed class Orbwalker : IOrbwalker
     {
-        private static readonly ILog Log = AssemblyLogs.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly Logger Log = LogManager.GetCurrentClassLogger();
 
         private readonly HashSet<NetworkActivity> attackActivities = new HashSet<NetworkActivity>
         {

@@ -1,5 +1,5 @@
 ﻿// <copyright file="MenuInputManager.cs" company="Ensage">
-//    Copyright (c) 2017 Ensage.
+//    Copyright (c) 2018 Ensage.
 // </copyright>
 
 namespace Ensage.SDK.Menu
@@ -12,6 +12,7 @@ namespace Ensage.SDK.Menu
     using System.Windows.Input;
 
     using Ensage.SDK.Input;
+    using Ensage.SDK.Menu.Items;
     using Ensage.SDK.Service;
 
     using log4net;
@@ -72,65 +73,17 @@ namespace Ensage.SDK.Menu
 
         private readonly Action<MenuInputEventArgs> action;
 
-        private Key key;
-
-        private MouseButtons mouseButton;
-
-        public MenuHotkey(Key key, [NotNull] Action<MenuInputEventArgs> action, HotkeyFlags flags)
+        public MenuHotkey(KeyOrMouseButton key, [NotNull] Action<MenuInputEventArgs> action, HotkeyFlags flags)
         {
             this.Flags = flags;
             this.action = action ?? throw new ArgumentNullException(nameof(action));
-            this.key = key;
-            this.mouseButton = MouseButtons.None;
-            this.Name = Guid.NewGuid().ToString();
-        }
-
-        public MenuHotkey(MouseButtons mouseButton, [NotNull] Action<MenuInputEventArgs> action, HotkeyFlags flags)
-        {
-            this.Flags = flags;
-            this.action = action ?? throw new ArgumentNullException(nameof(action));
-            this.key = Key.None;
-            this.mouseButton = mouseButton;
+            this.Hotkey = key;
             this.Name = Guid.NewGuid().ToString();
         }
 
         public HotkeyFlags Flags { get; set; }
 
-        public Key Key
-        {
-            get
-            {
-                return this.key;
-            }
-
-            set
-            {
-                if (value != Key.None)
-                {
-                    this.mouseButton = MouseButtons.None;
-                }
-
-                this.key = value;
-            }
-        }
-
-        public MouseButtons MouseButton
-        {
-            get
-            {
-                return this.mouseButton;
-            }
-
-            set
-            {
-                if (value != MouseButtons.None)
-                {
-                    this.key = Key.None;
-                }
-
-                this.mouseButton = value;
-            }
-        }
+        public KeyOrMouseButton Hotkey { get; set; }
 
         public string Name { get; }
 
@@ -158,17 +111,9 @@ namespace Ensage.SDK.Menu
             this.InputManager = inputManager;
         }
 
-        public MenuHotkey RegisterHotkey(Key key, Action<MenuInputEventArgs> action, HotkeyFlags flags = HotkeyFlags.Press)
+        public MenuHotkey RegisterHotkey(KeyOrMouseButton key, Action<MenuInputEventArgs> action, HotkeyFlags flags = HotkeyFlags.Press)
         {
             var hotkey = new MenuHotkey(key, action, flags);
-            this.hotkeys.Add(hotkey);
-
-            return hotkey;
-        }
-
-        public MenuHotkey RegisterHotkey(MouseButtons mouseButton, Action<MenuInputEventArgs> action, HotkeyFlags flags = HotkeyFlags.Press)
-        {
-            var hotkey = new MenuHotkey(mouseButton, action, flags);
             this.hotkeys.Add(hotkey);
 
             return hotkey;
@@ -200,7 +145,7 @@ namespace Ensage.SDK.Menu
 
         private void KeyDown(object sender, KeyEventArgs e)
         {
-            var menuHotkeys = this.hotkeys.Where(x => x.Key == e.Key).ToList();
+            var menuHotkeys = this.hotkeys.Where(x => x.Hotkey.Key == e.Key).ToList();
             if (menuHotkeys.Any())
             {
                 if (!this.keyDownStates.TryGetValue(e.Key, out var state) || state == false)
@@ -235,7 +180,7 @@ namespace Ensage.SDK.Menu
             this.keyDownStates[e.Key] = false;
 
             var pressArgs = new MenuInputEventArgs(e.Key, HotkeyFlags.Up);
-            foreach (var menuHotkey in this.hotkeys.Where(x => x.Key == e.Key && (x.Flags & HotkeyFlags.Up) == HotkeyFlags.Up))
+            foreach (var menuHotkey in this.hotkeys.Where(x => x.Hotkey.Key == e.Key && (x.Flags & HotkeyFlags.Up) == HotkeyFlags.Up))
             {
                 menuHotkey.Execute(pressArgs);
                 if (pressArgs.Handled)
@@ -296,7 +241,7 @@ namespace Ensage.SDK.Menu
                 return;
             }
 
-            var menuHotkeys = this.hotkeys.Where(x => x.MouseButton == button).ToList();
+            var menuHotkeys = this.hotkeys.Where(x => x.Hotkey.MouseButton == button).ToList();
             if (menuHotkeys.Any())
             {
                 var flag = downEvent ? HotkeyFlags.Down : HotkeyFlags.Up;

@@ -519,11 +519,11 @@ namespace Ensage.SDK.Menu
            // TODO:
         }
 
-        private void LoadLayer(MenuEntry menu, JToken token)
+        private void LoadLayer(MenuEntry menu, [CanBeNull] JToken token)
         {
             foreach (var child in menu.Children.OfType<MenuItemEntry>())
             {
-                var entry = token[child.ValueBinding.Name];
+                var entry = token?[child.ValueBinding.Name];
                 if (entry != null)
                 {
                     if (child.Value is ILoadable loadable)

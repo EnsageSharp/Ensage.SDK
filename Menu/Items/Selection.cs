@@ -1,5 +1,5 @@
 ﻿// <copyright file="Selection.cs" company="Ensage">
-//    Copyright (c) 2017 Ensage.
+//    Copyright (c) 2018 Ensage.
 // </copyright>
 
 namespace Ensage.SDK.Menu.Items
@@ -7,6 +7,8 @@ namespace Ensage.SDK.Menu.Items
     using System;
     using System.Collections.Generic;
     using System.Linq;
+
+    using Ensage.SDK.Menu.ValueBinding;
 
     using Newtonsoft.Json;
 
@@ -32,6 +34,8 @@ namespace Ensage.SDK.Menu.Items
             this.Values = value;
             this.SelectedIndex = selectedIndex;
         }
+
+        public event EventHandler<ValueChangedEventArgs<T>> ValueChanging;
 
         public int SelectedIndex { get; set; }
 
@@ -82,12 +86,22 @@ namespace Ensage.SDK.Menu.Items
             return selection.SelectedIndex;
         }
 
+        public object Clone()
+        {
+            return this.MemberwiseClone();
+        }
+
         public int DecrementSelectedIndex()
         {
-            this.SelectedIndex--;
-            if (this.SelectedIndex < 0)
+            var newIndex = this.SelectedIndex - 1;
+            if (newIndex < 0)
             {
-                this.SelectedIndex = this.Values.Length - 1;
+                newIndex = this.Values.Length - 1;
+            }
+
+            if (this.OnValueChanged(this.Values[newIndex]))
+            {
+                this.SelectedIndex = newIndex;
             }
 
             return this.SelectedIndex;
@@ -95,10 +109,15 @@ namespace Ensage.SDK.Menu.Items
 
         public int IncrementSelectedIndex()
         {
-            this.SelectedIndex++;
-            if (this.SelectedIndex >= this.Values.Length)
+            var newIndex = this.SelectedIndex + 1;
+            if (newIndex >= this.Values.Length)
             {
-                this.SelectedIndex = 0;
+                newIndex = 0;
+            }
+
+            if (this.OnValueChanged(this.Values[newIndex]))
+            {
+                this.SelectedIndex = newIndex;
             }
 
             return this.SelectedIndex;
@@ -123,9 +142,11 @@ namespace Ensage.SDK.Menu.Items
             return this.Value.ToString();
         }
 
-        public object Clone()
+        protected virtual bool OnValueChanged(T newValue)
         {
-            return this.MemberwiseClone();
+            var args = new ValueChangedEventArgs<T>(newValue, this.Value);
+            this.ValueChanging?.Invoke(this, args);
+            return args.Process;
         }
     }
 }

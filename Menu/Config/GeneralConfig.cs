@@ -16,7 +16,6 @@ namespace Ensage.SDK.Menu.Config
 
         [Item("Animation speed")]
         [Tooltip("How fast animations are played")]
-        [DefaultValue(true)]
         public Slider AnimationTime { get; set; } = new Slider(3, 0, 5);
 
         [Item("Use menu animations")]

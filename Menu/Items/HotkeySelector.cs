@@ -1,5 +1,5 @@
 ﻿// <copyright file="HotkeySelector.cs" company="Ensage">
-//    Copyright (c) 2017 Ensage.
+//    Copyright (c) 2018 Ensage.
 // </copyright>
 
 namespace Ensage.SDK.Menu.Items
@@ -9,9 +9,121 @@ namespace Ensage.SDK.Menu.Items
     using System.Windows.Input;
 
     using Ensage.SDK.Input;
+    using Ensage.SDK.Menu.ValueBinding;
     using Ensage.SDK.Service;
 
     using Newtonsoft.Json;
+
+    public class KeyOrMouseButton
+    {
+        [JsonIgnore]
+        private Key key = Key.None;
+
+        [JsonIgnore]
+        private MouseButtons mouseButton = MouseButtons.None;
+
+        public KeyOrMouseButton()
+        {
+
+        }
+
+        public KeyOrMouseButton(Key key)
+        {
+            this.key = key;
+        }
+
+        public KeyOrMouseButton(MouseButtons mouseButton)
+        {
+            this.mouseButton = mouseButton;
+        }
+
+        public event EventHandler<ValueChangedEventArgs<KeyOrMouseButton>> ValueChanging;
+
+        public Key Key
+        {
+            get
+            {
+                return this.key;
+            }
+
+            set
+            {
+                if (value == this.key)
+                {
+                    return;
+                }
+
+                if (this.OnValueChanged(new KeyOrMouseButton(value)))
+                {
+                    if (value != Key.None)
+                    {
+                        this.mouseButton = MouseButtons.None;
+                    }
+
+                    this.key = value;
+                }
+            }
+        }
+
+        public MouseButtons MouseButton
+        {
+            get
+            {
+                return this.mouseButton;
+            }
+
+            set
+            {
+                if (value == this.mouseButton)
+                {
+                    return;
+                }
+
+                var newButton = value & MouseButtons.HighestNoUpDownFlag;
+                if (this.OnValueChanged(new KeyOrMouseButton(newButton)))
+                {
+                    if (value != MouseButtons.None)
+                    {
+                        this.key = Key.None;
+                    }
+
+                    this.mouseButton = newButton;
+                }
+            }
+        }
+
+        public static bool operator ==(KeyOrMouseButton o1, KeyOrMouseButton o2)
+        {
+            return o1.Key == o2.Key && o1.MouseButton == o2.MouseButton;
+        }
+
+        public static bool operator !=(KeyOrMouseButton o1, KeyOrMouseButton o2)
+        {
+            return !(o1 == o2);
+        }
+
+        public override bool Equals(object obj)
+        {
+            return obj is KeyOrMouseButton button && this == button;
+        }
+
+        public override int GetHashCode()
+        {
+            return this.Key.GetHashCode() ^ this.MouseButton.GetHashCode();
+        }
+
+        public override string ToString()
+        {
+            return this.MouseButton != MouseButtons.None ? $"Mouse {this.MouseButton.ToString()}" : this.Key.ToString();
+        }
+
+        protected virtual bool OnValueChanged(KeyOrMouseButton newValue)
+        {
+            var args = new ValueChangedEventArgs<KeyOrMouseButton>(newValue, this);
+            this.ValueChanging?.Invoke(this, args);
+            return args.Process;
+        }
+    }
 
     public class HotkeySelector : ControllableService, ILoadable, ICloneable
     {
@@ -21,38 +133,32 @@ namespace Ensage.SDK.Menu.Items
         [JsonIgnore]
         private MenuHotkey hotkey;
 
-        [JsonIgnore]
-        private Key key = Key.None;
-
-        [JsonIgnore]
-        private MouseButtons mouseButton = MouseButtons.None;
-
         public HotkeySelector()
         {
         }
 
         public HotkeySelector(MouseButtons mouseButton, HotkeyFlags flags = HotkeyFlags.Press)
         {
-            this.mouseButton = mouseButton;
+            this.Hotkey = new KeyOrMouseButton(mouseButton);
             this.flags = flags;
         }
 
         public HotkeySelector(Key key, HotkeyFlags flags = HotkeyFlags.Press)
         {
-            this.key = key;
+            this.Hotkey = new KeyOrMouseButton(key);
             this.flags = flags;
         }
 
         public HotkeySelector(MouseButtons mouseButton, Action<MenuInputEventArgs> action, HotkeyFlags flags = HotkeyFlags.Press)
         {
-            this.mouseButton = mouseButton;
+            this.Hotkey = new KeyOrMouseButton(mouseButton);
             this.Action = action;
             this.flags = flags;
         }
 
         public HotkeySelector(Key key, Action<MenuInputEventArgs> action, HotkeyFlags flags = HotkeyFlags.Press)
         {
-            this.key = key;
+            this.Hotkey = new KeyOrMouseButton(key);
             this.Action = action;
             this.flags = flags;
         }
@@ -78,56 +184,14 @@ namespace Ensage.SDK.Menu.Items
             }
         }
 
+        public KeyOrMouseButton Hotkey { get; set; }
+
         [Import]
         [JsonIgnore]
         public MenuInputManager InputManager { get; set; }
 
         [JsonIgnore]
         public bool IsAssigningNewHotkey { get; private set; }
-
-        public Key Key
-        {
-            get
-            {
-                if (this.hotkey != null)
-                {
-                    return this.hotkey.Key;
-                }
-
-                return this.key;
-            }
-
-            set
-            {
-                this.key = value;
-                if (this.hotkey != null)
-                {
-                    this.hotkey.Key = value;
-                }
-            }
-        }
-
-        public MouseButtons MouseButton
-        {
-            get
-            {
-                if (this.hotkey != null)
-                {
-                    return this.hotkey.MouseButton;
-                }
-
-                return this.mouseButton;
-            }
-
-            set
-            {
-                this.mouseButton = value & MouseButtons.HighestNoUpDownFlag;
-                if (this.hotkey != null)
-                {
-                    this.hotkey.MouseButton = this.mouseButton;
-                }
-            }
-        }
 
         public void AssignNewHotkey()
         {
@@ -141,13 +205,17 @@ namespace Ensage.SDK.Menu.Items
             this.InputManager.InputManager.MouseClick += this.NextMouseClick;
         }
 
+        public object Clone()
+        {
+            return this.MemberwiseClone();
+        }
+
         public bool Load(object data)
         {
             var other = (HotkeySelector)data;
-            if (this.Key != other.Key || this.MouseButton != other.MouseButton)
+            if (this.Hotkey != other.Hotkey)
             {
-                this.Key = other.Key;
-                this.MouseButton = other.MouseButton;
+                this.Hotkey = other.Hotkey;
             }
 
             return false;
@@ -155,29 +223,12 @@ namespace Ensage.SDK.Menu.Items
 
         public override string ToString()
         {
-            if (this.IsAssigningNewHotkey)
-            {
-                return "<?>";
-            }
-
-            return this.MouseButton != MouseButtons.None ? $"Mouse {this.MouseButton.ToString()}" : this.key.ToString();
-        }
-
-        public object Clone()
-        {
-            return this.MemberwiseClone();
+            return this.IsAssigningNewHotkey ? "<?>" : this.Hotkey.ToString();
         }
 
         protected override void OnActivate()
         {
-            if (this.MouseButton != MouseButtons.None)
-            {
-                this.hotkey = this.InputManager?.RegisterHotkey(this.MouseButton, this.ExecuteAction, this.Flags);
-            }
-            else
-            {
-                this.hotkey = this.InputManager?.RegisterHotkey(this.Key, this.ExecuteAction, this.Flags);
-            }
+            this.hotkey = this.InputManager?.RegisterHotkey(this.Hotkey, this.ExecuteAction, this.Flags);
         }
 
         protected override void OnDeactivate()
@@ -204,7 +255,7 @@ namespace Ensage.SDK.Menu.Items
 
             if (e.Key != Key.Escape)
             {
-                this.Key = e.Key;
+                this.Hotkey.Key = e.Key;
             }
         }
 
@@ -216,7 +267,7 @@ namespace Ensage.SDK.Menu.Items
                 this.InputManager.InputManager.MouseClick -= this.NextMouseClick;
                 this.IsAssigningNewHotkey = false;
 
-                this.MouseButton = e.Buttons;
+                this.Hotkey.MouseButton = e.Buttons;
             }
         }
     }

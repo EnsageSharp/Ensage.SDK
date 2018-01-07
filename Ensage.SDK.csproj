@@ -55,6 +55,12 @@
     <Reference Include="Newtonsoft.Json">
       <HintPath>C:\EnsageSharp\References\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="NLog">
+      <HintPath>C:\Program Files (x86)\Ensage\References\NLog.dll</HintPath>
+    </Reference>
+    <Reference Include="PlaySharp.Sentry">
+      <HintPath>C:\Program Files (x86)\Ensage\References\PlaySharp.Sentry.dll</HintPath>
+    </Reference>
     <Reference Include="PlaySharp.Toolkit">
       <HintPath>C:\EnsageSharp\References\PlaySharp.Toolkit.dll</HintPath>
     </Reference>
@@ -77,10 +83,6 @@
       <HintPath>C:\EnsageSharp\References\SharpDX.Mathematics.dll</HintPath>
     </Reference>
     <Reference Include="System" />
-    <Reference Include="System.Collections.Immutable, Version=1.1.37.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>C:\EnsageSharp\References\System.Collections.Immutable.dll</HintPath>
-    </Reference>
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
@@ -520,6 +522,10 @@
     <Compile Include="Input\MouseWheelEventArgs.cs" />
     <Compile Include="Inventory\ItemBindingHandler.cs" />
     <Compile Include="Inventory\Metadata\ItemBindingAttribute.cs" />
+    <Compile Include="Logger\AssemblyMetadata.cs" />
+    <Compile Include="Logger\Logging.cs" />
+    <Compile Include="Logger\MetadataExtensions.cs" />
+    <Compile Include="Logger\SentryTarget.cs" />
     <Compile Include="Menu\AnimationManager.cs" />
     <Compile Include="Menu\Attributes\PermaShowAttribute.cs" />
     <Compile Include="Menu\Attributes\TextureAttribute.cs" />

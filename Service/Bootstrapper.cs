@@ -1,5 +1,5 @@
 // <copyright file="Bootstrapper.cs" company="Ensage">
-//    Copyright (c) 2017 Ensage.
+//    Copyright (c) 2018 Ensage.
 // </copyright>
 
 namespace Ensage.SDK.Service
@@ -12,6 +12,7 @@ namespace Ensage.SDK.Service
 
     using Ensage.SDK.Extensions;
     using Ensage.SDK.Helpers;
+    using Ensage.SDK.Logger;
     using Ensage.SDK.Service.Metadata;
 
     using log4net;
@@ -23,6 +24,11 @@ namespace Ensage.SDK.Service
     public class Bootstrapper : AssemblyEntryPoint
     {
         private static readonly ILog Log = AssemblyLogs.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
+        public Bootstrapper()
+        {
+            Logging.Init();
+        }
 
         public ContextContainer<IServiceContext> Default { get; private set; }
 
@@ -144,10 +150,6 @@ namespace Ensage.SDK.Service
 
                 this.Default = this.Context.Container;
                 this.Default.RegisterValue(this);
-
-                Log.Debug($">> Building Logger");
-                // TODO: setup new logging server
-                // this.CreateLogger();
 
                 Log.Debug($">> Initializing Services");
                 IoC.Initialize(this.BuildUp, this.GetInstance, this.GetAllInstances);

@@ -28,19 +28,11 @@ namespace Ensage.SDK.Abilities
 
         public virtual CollisionTypes CollisionTypes { get; } = CollisionTypes.None;
 
-        public virtual float EndRadius
-        {
-            get
-            {
-                return this.Radius;
-            }
-        }
-
         public virtual bool HasAreaOfEffect
         {
             get
             {
-                return this.Ability.AbilityBehavior.HasFlag(AbilityBehavior.AreaOfEffect);
+                return this.CollisionTypes == CollisionTypes.None;
             }
         }
 

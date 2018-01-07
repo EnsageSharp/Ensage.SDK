@@ -32,6 +32,7 @@ namespace Ensage.SDK.Service
             "Ensage",
             "EnsageSharp.Sandbox",
             "Ensage.Common",
+            "Ability.Core",
             "Anonymously Hosted DynamicMethods Assembly"
         };
 

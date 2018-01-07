@@ -533,14 +533,14 @@
     <Compile Include="Menu\Config\HackConfig.cs" />
     <Compile Include="Menu\Config\MenuConfig.cs" />
     <Compile Include="Menu\Entries\DynamicMenu.cs" />
-    <Compile Include="Menu\ValueBinding\ValueChangedEventArgs.cs" />
+    <Compile Include="Menu\ValueBinding\ValueChangingEventArgs.cs" />
     <Compile Include="Menu\ValueBinding\ValueBinding.cs" />
     <Compile Include="Menu\ValueBinding\ValueDictionaryBinding.cs" />
     <Compile Include="Menu\ValueBinding\ValuePropertyBinding.cs" />
     <Compile Include="Menu\Items\ILoadable.cs" />
     <Compile Include="Menu\Items\ISelection.cs" />
     <Compile Include="Menu\Items\PriorityChanger.cs" />
-    <Compile Include="Menu\Items\PicturePicker.cs" />
+    <Compile Include="Menu\Items\ImageToggler.cs" />
     <Compile Include="Menu\Items\HotkeySelector.cs" />
     <Compile Include="Menu\Items\Slider.cs" />
     <Compile Include="Menu\MenuInputManager.cs" />
@@ -572,7 +572,7 @@
     <Compile Include="Menu\Views\HotkeySelectorView.cs" />
     <Compile Include="Menu\Views\SliderView.cs" />
     <Compile Include="Menu\Views\SelectionView.cs" />
-    <Compile Include="Menu\Views\PicturePickerView.cs" />
+    <Compile Include="Menu\Views\ImageTogglerView.cs" />
     <Compile Include="Menu\Views\StringView.cs" />
     <Compile Include="Menu\Styles\StyleConfig.cs" />
     <Compile Include="Menu\Attributes\TooltipAttribute.cs" />

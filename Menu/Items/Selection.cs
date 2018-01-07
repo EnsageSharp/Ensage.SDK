@@ -35,7 +35,7 @@ namespace Ensage.SDK.Menu.Items
             this.SelectedIndex = selectedIndex;
         }
 
-        public event EventHandler<ValueChangedEventArgs<T>> ValueChanging;
+        public event EventHandler<ValueChangingEventArgs<T>> ValueChanging;
 
         public int SelectedIndex { get; set; }
 
@@ -50,6 +50,14 @@ namespace Ensage.SDK.Menu.Items
             set
             {
                 this.SelectedIndex = Array.IndexOf(this.Values, value);
+            }
+        }
+
+        object[] ISelection.Values
+        {
+            get
+            {
+                return this.Values.OfType<object>().ToArray();
             }
         }
 
@@ -142,11 +150,21 @@ namespace Ensage.SDK.Menu.Items
             return this.Value.ToString();
         }
 
+     
+
         protected virtual bool OnValueChanged(T newValue)
         {
-            var args = new ValueChangedEventArgs<T>(newValue, this.Value);
+            var args = new ValueChangingEventArgs<T>(newValue, this.Value);
             this.ValueChanging?.Invoke(this, args);
             return args.Process;
+        }
+
+        object ISelection.Value
+        {
+            get
+            {
+                return this.Value;
+            }
         }
     }
 }

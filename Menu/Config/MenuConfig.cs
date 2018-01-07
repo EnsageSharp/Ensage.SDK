@@ -18,16 +18,6 @@ namespace Ensage.SDK.Menu.Config
     {
         public MenuConfig()
         {
-            var args = new[]
-                           {
-                               new KeyValuePair<string, bool>("menuStyle/default/left", true),
-                               new KeyValuePair<string, bool>("menuStyle/default/right", false),
-                               new KeyValuePair<string, bool>("menuStyle/default/leftHover", false),
-                               new KeyValuePair<string, bool>("menuStyle/default/rightHover", true)
-                           };
-            this.Picker = new PicturePicker(args);
-
-            this.PriorityChanger = new PriorityChanger(args);
         }
 
         [Menu("General Settings")]
@@ -37,36 +27,5 @@ namespace Ensage.SDK.Menu.Config
         public HackConfig HackConfig { get; set; } = new HackConfig();
 
         public Vector2 MenuPosition { get; set; } = new Vector2(200, 50);
-
-        [Item("Test Picker")]
-        public PicturePicker Picker { get; set; }
-
-        [Item("Test PriorityChanger")]
-        public PriorityChanger PriorityChanger { get; set; }
-
-        [Item]
-        public string TestString { get; set; } = "hello world!";
-
-        [Item]
-        public HotkeySelector HotkeyPress1 { get; set; } = new HotkeySelector(Key.B, TestPress, HotkeyFlags.Press);
-
-        [Item]
-        public HotkeySelector HotkeyPress2 { get; set; } = new HotkeySelector(Key.V, TestPress, HotkeyFlags.Down);
-
-        [Item]
-        public HotkeySelector HotkeyPress3 { get; set; } = new HotkeySelector(Key.C, TestPress, HotkeyFlags.Up);
-
-
-        [Item]
-        public HotkeySelector HotkeyPress5 { get; set; } = new HotkeySelector(MouseButtons.Left, TestPress, HotkeyFlags.Down);
-
-        [Item]
-        public HotkeySelector HotkeyPress6 { get; set; } = new HotkeySelector(MouseButtons.Left, TestPress, HotkeyFlags.Up);
-
-
-        private static void TestPress(MenuInputEventArgs args)
-        {
-            Console.WriteLine($"im pressed lul: {args.Key} | {args.MouseButton} > {args.Flag}");
-        }
     }
 }

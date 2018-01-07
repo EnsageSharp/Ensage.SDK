@@ -4,6 +4,8 @@
 
 namespace Ensage.SDK.Menu.Styles
 {
+    using Ensage.SDK.Menu.Items;
+
     using SharpDX;
 
     using Color = System.Drawing.Color;
@@ -41,7 +43,7 @@ namespace Ensage.SDK.Menu.Styles
         public float LineWidth { get; set; } = 3;
 
         /// <summary>
-        ///     Gets or sets the style of <see cref="Items.PicturePicker" /> UI element.
+        ///     Gets or sets the style of <see cref="ImageToggler" /> UI element.
         /// </summary>
         public PicturePickerStyle PicturePicker { get; set; } = new PicturePickerStyle();
 

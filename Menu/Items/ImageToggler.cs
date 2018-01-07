@@ -8,13 +8,13 @@ namespace Ensage.SDK.Menu.Items
     using System.Collections.Generic;
     using System.Linq;
 
-    public class PicturePicker : ILoadable, ICloneable
+    public class ImageToggler : ILoadable, ICloneable
     {
-        public PicturePicker()
+        public ImageToggler()
         {
         }
 
-        public PicturePicker(bool defaultValue = true, params string[] textureKeys)
+        public ImageToggler(bool defaultValue = true, params string[] textureKeys)
         {
             foreach (var textureKey in textureKeys)
             {
@@ -22,7 +22,7 @@ namespace Ensage.SDK.Menu.Items
             }
         }
 
-        public PicturePicker(params KeyValuePair<string, bool>[] values)
+        public ImageToggler(params KeyValuePair<string, bool>[] values)
         {
             foreach (var value in values)
             {
@@ -47,7 +47,7 @@ namespace Ensage.SDK.Menu.Items
 
         public virtual bool Load(object data)
         {
-            var selection = (PicturePicker)data;
+            var selection = (ImageToggler)data;
 
             if (this.PictureStates.Keys.SequenceEqual(selection.PictureStates.Keys))
             {
@@ -60,7 +60,7 @@ namespace Ensage.SDK.Menu.Items
 
         public virtual object Clone()
         {
-            var result = (PicturePicker)this.MemberwiseClone();
+            var result = (ImageToggler)this.MemberwiseClone();
             result.PictureStates = new Dictionary<string, bool>(this.PictureStates);
             return result;
         }

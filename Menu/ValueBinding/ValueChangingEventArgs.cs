@@ -6,9 +6,9 @@ namespace Ensage.SDK.Menu.ValueBinding
 {
     using System;
 
-    public class ValueChangedEventArgs<T> : EventArgs
+    public class ValueChangingEventArgs<T> : EventArgs
     {
-        public ValueChangedEventArgs(T value, T oldValue)
+        public ValueChangingEventArgs(T value, T oldValue)
         {
             this.Value = value;
             this.OldValue = oldValue;

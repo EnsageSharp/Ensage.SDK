@@ -37,7 +37,7 @@ namespace Ensage.SDK.Menu.Items
             this.mouseButton = mouseButton;
         }
 
-        public event EventHandler<ValueChangedEventArgs<KeyOrMouseButton>> ValueChanging;
+        public event EventHandler<ValueChangingEventArgs<KeyOrMouseButton>> ValueChanging;
 
         public Key Key
         {
@@ -119,7 +119,7 @@ namespace Ensage.SDK.Menu.Items
 
         protected virtual bool OnValueChanged(KeyOrMouseButton newValue)
         {
-            var args = new ValueChangedEventArgs<KeyOrMouseButton>(newValue, this);
+            var args = new ValueChangingEventArgs<KeyOrMouseButton>(newValue, this);
             this.ValueChanging?.Invoke(this, args);
             return args.Process;
         }

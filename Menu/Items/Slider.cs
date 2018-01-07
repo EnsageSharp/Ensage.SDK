@@ -30,7 +30,7 @@ namespace Ensage.SDK.Menu.Items
             this.MaxValue = maxValue;
         }
 
-        public event EventHandler<ValueChangedEventArgs<int>> ValueChanging;
+        public event EventHandler<ValueChangingEventArgs<int>> ValueChanging;
 
         public int MaxValue { get; set; }
 
@@ -84,7 +84,7 @@ namespace Ensage.SDK.Menu.Items
 
         protected virtual bool OnValueChanged(int newValue)
         {
-            var args = new ValueChangedEventArgs<int>(newValue, this.value);
+            var args = new ValueChangingEventArgs<int>(newValue, this.value);
             this.ValueChanging?.Invoke(this, args);
             return args.Process;
         }

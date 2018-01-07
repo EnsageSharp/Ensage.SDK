@@ -442,16 +442,17 @@ namespace Ensage.SDK.Menu
 
         private Vector2 CalculateMenuTotalSize(IEnumerable<MenuBase> entries)
         {
-            var entryList = entries.ToList();
+            Vector2 totalSize = this.TitleBarSize;
 
+            var entryList = entries.ToList();
             var first = entryList.FirstOrDefault();
             if (first == null)
             {
-                return Vector2.Zero;
+                return totalSize;
             }
 
             var firstSize = first.RenderSize;
-            var totalSize = new Vector2(firstSize.X, entryList.Count * firstSize.Y);
+            totalSize += new Vector2(firstSize.X, entryList.Count * firstSize.Y);
             for (var i = 0; i < entryList.Count; i++)
             {
                 var menuEntry = entryList[i] as MenuEntry;

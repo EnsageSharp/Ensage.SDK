@@ -9,7 +9,7 @@ namespace Ensage.SDK.Menu.Items
 
     using Newtonsoft.Json;
 
-    public class PriorityChanger : PicturePicker
+    public class PriorityChanger : ImageToggler
     {
         public PriorityChanger()
         {

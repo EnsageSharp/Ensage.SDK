@@ -17,7 +17,7 @@ namespace Ensage.SDK.Menu.Views
     using SharpDX;
 
     [ExportView(typeof(PriorityChanger))]
-    public class PriorityChangerView : PicturePickerView
+    public class PriorityChangerView : ImageTogglerView
     {
         private const int MinDragTime = 150;
         

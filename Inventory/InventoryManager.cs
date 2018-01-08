@@ -184,30 +184,27 @@ namespace Ensage.SDK.Inventory
 
         private void OnInventoryUpdate()
         {
-            if (this.Bindings.Count > 0 || this.CollectionChanged != null)
+            // inventory diff
+            var added = this.Items.Except(this.LastItems).ToList();
+            var removed = this.LastItems.Except(this.Items).ToList();
+
+            this.UpdateBindings(added, removed);
+
+            // update events
+            if (this.CollectionChanged != null)
             {
-                // inventory diff
-                var added = this.Items.Except(this.LastItems).ToList();
-                var removed = this.LastItems.Except(this.Items).ToList();
-
-                this.UpdateBindings(added, removed);
-
-                // update events
-                if (this.CollectionChanged != null)
+                if (removed.Count > 0)
                 {
-                    if (removed.Count > 0)
-                    {
-                        this.CollectionChanged.Invoke(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Remove, removed));
-                    }
-
-                    if (added.Count > 0)
-                    {
-                        this.CollectionChanged.Invoke(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, added));
-                    }
+                    this.CollectionChanged.Invoke(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Remove, removed));
                 }
 
-                this.LastItems = this.Items;
+                if (added.Count > 0)
+                {
+                    this.CollectionChanged.Invoke(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, added));
+                }
             }
+
+            this.LastItems = this.Items;
         }
 
         private void UpdateBindings(IEnumerable<InventoryItem> added, IEnumerable<InventoryItem> removed)

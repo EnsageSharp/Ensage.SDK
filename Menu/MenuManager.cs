@@ -527,6 +527,14 @@ namespace Ensage.SDK.Menu
         {
             foreach (var child in menu.Children.OfType<MenuItemEntry>())
             {
+                // set default value by attribute
+                var defaultValue = child.ValueBinding.GetCustomAttribute<DefaultValueAttribute>();
+                if (defaultValue != null)
+                {
+                    child.Value = defaultValue.Value;
+                    child.AssignDefaultValue();
+                }
+
                 var entry = token?[child.ValueBinding.Name];
                 if (entry != null)
                 {
@@ -538,16 +546,6 @@ namespace Ensage.SDK.Menu
                     else
                     {
                         child.Value = this.menuSerializer.ToObject(entry, child.ValueBinding.ValueType);
-                    }
-                }
-                else
-                {
-                    // set default value by attribute
-                    var defaultValue = child.ValueBinding.GetCustomAttribute<DefaultValueAttribute>();
-                    if (defaultValue != null)
-                    {
-                        child.Value = defaultValue.Value;
-                        child.AssignDefaultValue();
                     }
                 }
             }

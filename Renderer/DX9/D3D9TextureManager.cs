@@ -15,9 +15,8 @@ namespace Ensage.SDK.Renderer.DX9
     using Ensage.SDK.Renderer.Metadata;
     using Ensage.SDK.VPK;
 
-    
-
     using PlaySharp.Toolkit.Helper.Annotations;
+
     using NLog;
 
     using SharpDX;
@@ -165,7 +164,7 @@ namespace Ensage.SDK.Renderer.DX9
 
             if (assembly == null)
             {
-                assembly = Assembly.GetCallingAssembly();
+                assembly = Assembly.GetExecutingAssembly();
             }
 
             var resourceFile = assembly.GetManifestResourceNames().FirstOrDefault(f => f.EndsWith(file));

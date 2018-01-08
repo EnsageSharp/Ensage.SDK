@@ -16,15 +16,15 @@ namespace Ensage.SDK.Helpers
     using Ensage.SDK.Abilities.npc_dota_hero_zuus;
     using Ensage.SDK.Extensions;
 
-    using log4net;
+    
 
     using PlaySharp.Toolkit.Helper.Annotations;
-    using PlaySharp.Toolkit.Logging;
+    using NLog;
 
     [PublicAPI]
     public class Combo
     {
-        private static readonly ILog Log = AssemblyLogs.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly Logger Log = LogManager.GetCurrentClassLogger();
 
         private readonly List<BaseAbility> abilities;
 

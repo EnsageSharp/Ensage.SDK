@@ -1,5 +1,5 @@
 // <copyright file="Bootstrapper.cs" company="Ensage">
-//    Copyright (c) 2017 Ensage.
+//    Copyright (c) 2018 Ensage.
 // </copyright>
 
 namespace Ensage.SDK.Service
@@ -12,17 +12,22 @@ namespace Ensage.SDK.Service
 
     using Ensage.SDK.Extensions;
     using Ensage.SDK.Helpers;
+    using Ensage.SDK.Logger;
     using Ensage.SDK.Service.Metadata;
 
-    using log4net;
+    using NLog;
 
     using PlaySharp.Toolkit.AppDomain.Loader;
     using PlaySharp.Toolkit.Helper;
-    using PlaySharp.Toolkit.Logging;
 
     public class Bootstrapper : AssemblyEntryPoint
     {
-        private static readonly ILog Log = AssemblyLogs.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly Logger Log = LogManager.GetCurrentClassLogger();
+
+        public Bootstrapper()
+        {
+            Logging.Init();
+        }
 
         public ContextContainer<IServiceContext> Default { get; private set; }
 
@@ -60,13 +65,23 @@ namespace Ensage.SDK.Service
 
         protected override void OnDeactivated()
         {
+            try
+            {
+                this.Context.MenuManager.Dispose();
+                this.Context.Renderer.Dispose();
+                this.Context.TextureManager.Dispose();
+            }
+            catch (Exception e)
+            {
+                Log.Warn(e);
+            }
         }
 
         private void ActivatePlugins()
         {
             foreach (var plugin in this.PluginContainer.OrderBy(e => e.Metadata.Priority))
             {
-                if (plugin.Menu)
+                if (plugin.Menu && !plugin.IsActive)
                 {
                     UpdateManager.BeginInvoke(plugin.Activate, plugin.Metadata.Priority);
                 }

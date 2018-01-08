@@ -47,11 +47,12 @@ namespace Ensage.SDK.Handlers
 
     public class UpdateHandler<TEventArgs> : IUpdateHandler<TEventArgs>
     {
-        public UpdateHandler(Action<TEventArgs> callback, InvokeHandler<TEventArgs> executor)
+        public UpdateHandler(Action<TEventArgs> callback, InvokeHandler<TEventArgs> executor, bool isEnabled = true)
         {
             this.Name = $"{callback?.Method.DeclaringType?.Name}.{callback?.Method.Name}";
             this.Callback = callback;
             this.Executor = executor;
+            this.IsEnabled = isEnabled;
         }
 
         public Action<TEventArgs> Callback { get; }

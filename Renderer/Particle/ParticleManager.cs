@@ -11,16 +11,16 @@ namespace Ensage.SDK.Renderer.Particle
 
     using Ensage.SDK.Renderer.Particle.Metadata;
 
-    using log4net;
+    
 
-    using PlaySharp.Toolkit.Logging;
+    using NLog;
 
     using SharpDX;
 
     [ExportParticleManager]
     public sealed class ParticleManager : IParticleManager
     {
-        private static readonly ILog Log = AssemblyLogs.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly Logger Log = LogManager.GetCurrentClassLogger();
 
         private static readonly List<ParticleEffectContainer> Particles = new List<ParticleEffectContainer>();
 

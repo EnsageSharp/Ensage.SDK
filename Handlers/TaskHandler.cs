@@ -11,14 +11,14 @@ namespace Ensage.SDK.Handlers
 
     using Ensage.SDK.Helpers;
 
-    using log4net;
+    
 
     using PlaySharp.Toolkit.Helper.Annotations;
-    using PlaySharp.Toolkit.Logging;
+    using NLog;
 
     public class TaskHandler
     {
-        private static readonly ILog Log = AssemblyLogs.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly Logger Log = LogManager.GetCurrentClassLogger();
 
         private bool isRunning;
 

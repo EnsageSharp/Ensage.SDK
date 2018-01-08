@@ -8,7 +8,6 @@ namespace Ensage.SDK.TargetSelector.Modes
     using System.Collections.Generic;
     using System.ComponentModel.Composition;
     using System.Linq;
-    using System.Windows.Forms;
 
     using Ensage.SDK.Extensions;
     using Ensage.SDK.Helpers;

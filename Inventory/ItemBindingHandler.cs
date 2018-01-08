@@ -11,13 +11,13 @@ namespace Ensage.SDK.Inventory
     using Ensage.SDK.Abilities;
     using Ensage.SDK.Persistence;
 
-    using log4net;
+    
 
-    using PlaySharp.Toolkit.Logging;
+    using NLog;
 
     public class ItemBindingHandler
     {
-        private static readonly ILog Log = AssemblyLogs.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly Logger Log = LogManager.GetCurrentClassLogger();
 
         private BaseAbility value;
 

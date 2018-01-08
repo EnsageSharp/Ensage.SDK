@@ -8,6 +8,8 @@ namespace Ensage.SDK.Service
 
     using Ensage.SDK.Helpers;
 
+    using Newtonsoft.Json;
+
     using PlaySharp.Toolkit.Helper;
 
     public abstract class ControllableService : IControllable, IDisposable
@@ -22,6 +24,7 @@ namespace Ensage.SDK.Service
             }
         }
 
+        [JsonIgnore]
         public bool IsActive { get; private set; }
 
         public void Activate()

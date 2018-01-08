@@ -13,14 +13,14 @@ namespace Ensage.SDK.Helpers
 
     using Ensage.SDK.Handlers;
 
-    using log4net;
+    
 
     using PlaySharp.Toolkit.Helper.Annotations;
-    using PlaySharp.Toolkit.Logging;
+    using NLog;
 
     public static class UpdateManager
     {
-        private static readonly ILog Log = AssemblyLogs.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly Logger Log = LogManager.GetCurrentClassLogger();
 
         static UpdateManager()
         {
@@ -39,6 +39,8 @@ namespace Ensage.SDK.Helpers
         public static TaskFactory Factory { get; }
 
         public static ulong Frame { get; private set; }
+
+        public static long Ticks { get; private set; }
 
         internal static List<IUpdateHandler> Handlers { get; } = new List<IUpdateHandler>();
 
@@ -123,6 +125,8 @@ namespace Ensage.SDK.Helpers
 
         private static void OnPreUpdate(EventArgs eventArgs)
         {
+            Ticks = DateTime.Now.Ticks;
+
             foreach (var handler in ServiceHandlers.ToArray())
             {
                 try

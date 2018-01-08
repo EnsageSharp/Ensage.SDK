@@ -6,14 +6,14 @@ namespace Ensage.SDK.Service
 {
     using System.Reflection;
 
-    using log4net;
+    
 
     using PlaySharp.Toolkit.Helper;
-    using PlaySharp.Toolkit.Logging;
+    using NLog;
 
     public static class ControllableExtensions
     {
-        private static readonly ILog Log = AssemblyLogs.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly Logger Log = LogManager.GetCurrentClassLogger();
 
         public static void TryActivate(this object target)
         {

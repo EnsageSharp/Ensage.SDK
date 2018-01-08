@@ -18,16 +18,16 @@ namespace Ensage.SDK.Orbwalker
     using Ensage.SDK.Orbwalker.Metadata;
     using Ensage.SDK.Service;
 
-    using log4net;
+    
 
-    using PlaySharp.Toolkit.Logging;
+    using NLog;
 
     using SharpDX;
 
     [ExportOrbwalkerManager]
     public sealed class OrbwalkerManager : ServiceManager<IOrbwalker, IOrbwalkerMetadata>, IOrbwalkerManager, IPartImportsSatisfiedNotification
     {
-        private static readonly ILog Log = AssemblyLogs.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly Logger Log = LogManager.GetCurrentClassLogger();
 
         [ImportingConstructor]
         public OrbwalkerManager([Import] IServiceContext context)

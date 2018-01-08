@@ -8,13 +8,13 @@ namespace Ensage.SDK.Handlers
     using System.Collections.Generic;
     using System.Reflection;
 
-    using log4net;
+    
 
-    using PlaySharp.Toolkit.Logging;
+    using NLog;
 
     public class ReflectionEventHandler<TEventArgs>
     {
-        private static readonly ILog Log = AssemblyLogs.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly Logger Log = LogManager.GetCurrentClassLogger();
 
         public ReflectionEventHandler(Type type, string name, BindingFlags flags = BindingFlags.Static | BindingFlags.NonPublic)
         {

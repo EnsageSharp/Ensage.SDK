@@ -12,6 +12,7 @@ namespace Ensage.SDK.Service
     using Ensage.SDK.Helpers;
     using Ensage.SDK.Input;
     using Ensage.SDK.Inventory;
+    using Ensage.SDK.Menu;
     using Ensage.SDK.Orbwalker;
     using Ensage.SDK.Prediction;
     using Ensage.SDK.Renderer;
@@ -49,6 +50,9 @@ namespace Ensage.SDK.Service
         [Import]
         private Lazy<ITargetSelectorManager> targetSelectorManager;
 
+        [Import]
+        private Lazy<MenuManager> menuManager;
+
         public EnsageServiceContext(Unit unit)
         {
             if (unit == null || !unit.IsValid)
@@ -76,6 +80,14 @@ namespace Ensage.SDK.Service
             get
             {
                 return this.abilityFactory.Value;
+            }
+        }
+
+        public MenuManager MenuManager
+        {
+            get
+            {
+                return this.menuManager.Value;
             }
         }
 
@@ -134,6 +146,14 @@ namespace Ensage.SDK.Service
             get
             {
                 return this.rendererManager.Value;
+            }
+        }
+
+        public ITextureManager TextureManager
+        {
+            get
+            {
+                return this.rendererManager.Value.TextureManager;
             }
         }
 

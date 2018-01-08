@@ -17,16 +17,16 @@ namespace Ensage.SDK.Inventory
     using Ensage.SDK.Inventory.Metadata;
     using Ensage.SDK.Service;
 
-    using log4net;
+    
 
-    using PlaySharp.Toolkit.Logging;
+    using NLog;
 
     using Inventory = Ensage.Inventory;
 
     [ExportInventoryManager]
     public sealed class InventoryManager : ControllableService, IInventoryManager
     {
-        private static readonly ILog Log = AssemblyLogs.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly Logger Log = LogManager.GetCurrentClassLogger();
 
         private Dictionary<Type, BaseAbility> itemCache = new Dictionary<Type, BaseAbility>();
 

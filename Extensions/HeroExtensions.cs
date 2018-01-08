@@ -6,13 +6,13 @@ namespace Ensage.SDK.Extensions
 {
     using System.Reflection;
 
-    using log4net;
+    
 
-    using PlaySharp.Toolkit.Logging;
+    using NLog;
 
     public static class HeroExtensions
     {
-        private static readonly ILog Log = AssemblyLogs.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly Logger Log = LogManager.GetCurrentClassLogger();
 
         public static float AttackPoint(this Hero hero)
         {

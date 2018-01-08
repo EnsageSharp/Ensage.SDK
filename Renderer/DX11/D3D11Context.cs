@@ -9,10 +9,13 @@ namespace Ensage.SDK.Renderer.DX11
     using System.Reflection;
     using System.Runtime.CompilerServices;
 
-    using log4net;
+    
 
-    using PlaySharp.Toolkit.Logging;
+    using NLog;
 
+    using PlaySharp.Toolkit.Helper.Annotations;
+
+    using SharpDX;
     using SharpDX.Direct2D1;
     using SharpDX.Direct3D11;
     using SharpDX.DXGI;
@@ -21,9 +24,9 @@ namespace Ensage.SDK.Renderer.DX11
     using Factory = SharpDX.Direct2D1.Factory;
 
     [Export(typeof(ID3D11Context))]
-    public sealed class D3D11Context : ID3D11Context, IDisposable
+    public sealed class D3D11Context : ID3D11Context
     {
-        private static readonly ILog Log = AssemblyLogs.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly Logger Log = LogManager.GetCurrentClassLogger();
 
         private RenderTarget renderTarget;
 

@@ -43,58 +43,54 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="clipper_library">
-      <HintPath>C:\Program Files (x86)\Ensage\References\clipper_library.dll</HintPath>
+      <HintPath>C:\EnsageSharp\References\clipper_library.dll</HintPath>
     </Reference>
     <Reference Include="Ensage">
-      <HintPath>C:\Program Files (x86)\Ensage\References\Ensage.dll</HintPath>
+      <HintPath>C:\EnsageSharp\References\Ensage.dll</HintPath>
     </Reference>
     <Reference Include="Ensage.Common">
-      <HintPath>C:\Program Files (x86)\Ensage\References\Ensage.Common.dll</HintPath>
+      <HintPath>C:\EnsageSharp\References\Ensage.Common.dll</HintPath>
     </Reference>
-    <Reference Include="EnsageSharp.Sandbox">
-      <HintPath>C:\Program Files (x86)\Ensage\System\EnsageSharp.Sandbox.dll</HintPath>
+    <Reference Include="EnsageSharp.Sandbox, Version=1.0.0.0, Culture=neutral, PublicKeyToken=0c92cb9c3763a33b, processorArchitecture=AMD64">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\EnsageSharp\System\EnsageSharp.Sandbox.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Newtonsoft.Json">
-      <HintPath>C:\Program Files (x86)\Ensage\References\Newtonsoft.Json.dll</HintPath>
+      <HintPath>C:\EnsageSharp\References\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="PlaySharp.Service">
-      <HintPath>C:\Program Files (x86)\Ensage\References\PlaySharp.Service.dll</HintPath>
+    <Reference Include="NLog">
+      <HintPath>C:\Program Files (x86)\Ensage\References\NLog.dll</HintPath>
+    </Reference>
+    <Reference Include="PlaySharp.Sentry">
+      <HintPath>C:\Program Files (x86)\Ensage\References\PlaySharp.Sentry.dll</HintPath>
     </Reference>
     <Reference Include="PlaySharp.Toolkit">
-      <HintPath>C:\Program Files (x86)\Ensage\References\PlaySharp.Toolkit.dll</HintPath>
+      <HintPath>C:\EnsageSharp\References\PlaySharp.Toolkit.dll</HintPath>
     </Reference>
     <Reference Include="SharpDX">
-      <HintPath>C:\Program Files (x86)\Ensage\References\SharpDX.dll</HintPath>
+      <HintPath>C:\EnsageSharp\References\SharpDX.dll</HintPath>
     </Reference>
     <Reference Include="SharpDX.Direct2D1">
-      <HintPath>C:\Program Files (x86)\Ensage\References\SharpDX.Direct2D1.dll</HintPath>
+      <HintPath>C:\EnsageSharp\References\SharpDX.Direct2D1.dll</HintPath>
     </Reference>
     <Reference Include="SharpDX.Direct3D11">
-      <HintPath>C:\Program Files (x86)\Ensage\References\SharpDX.Direct3D11.dll</HintPath>
+      <HintPath>C:\EnsageSharp\References\SharpDX.Direct3D11.dll</HintPath>
     </Reference>
     <Reference Include="SharpDX.Direct3D9">
-      <HintPath>C:\Program Files (x86)\Ensage\References\SharpDX.Direct3D9.dll</HintPath>
+      <HintPath>C:\EnsageSharp\References\SharpDX.Direct3D9.dll</HintPath>
     </Reference>
     <Reference Include="SharpDX.DXGI">
-      <HintPath>C:\Program Files (x86)\Ensage\References\SharpDX.DXGI.dll</HintPath>
+      <HintPath>C:\EnsageSharp\References\SharpDX.DXGI.dll</HintPath>
     </Reference>
     <Reference Include="SharpDX.Mathematics">
-      <HintPath>C:\Program Files (x86)\Ensage\References\SharpDX.Mathematics.dll</HintPath>
+      <HintPath>C:\EnsageSharp\References\SharpDX.Mathematics.dll</HintPath>
     </Reference>
     <Reference Include="System" />
-    <Reference Include="System.Collections.Immutable, Version=1.1.37.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>C:\Program Files (x86)\Ensage\References\System.Collections.Immutable.dll</HintPath>
-    </Reference>
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
-    <Reference Include="System.Runtime.Caching" />
     <Reference Include="System.Runtime.Serialization" />
-    <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Xml" />
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
@@ -542,6 +538,7 @@
     <Compile Include="Helpers\DebugTableConfig.cs" />
     <Compile Include="Helpers\DetectedAbility.cs" />
     <Compile Include="Helpers\IAbilityDetector.cs" />
+    <Compile Include="Input\MouseButtons.cs" />
     <Compile Include="Localization\Loc.cs" />
     <Compile Include="Localization\LocalizationHelper.cs" />
     <Compile Include="Helpers\Map.cs" />
@@ -558,6 +555,62 @@
     <Compile Include="Input\MouseWheelEventArgs.cs" />
     <Compile Include="Inventory\ItemBindingHandler.cs" />
     <Compile Include="Inventory\Metadata\ItemBindingAttribute.cs" />
+    <Compile Include="Logger\AssemblyMetadata.cs" />
+    <Compile Include="Logger\Logging.cs" />
+    <Compile Include="Logger\MetadataExtensions.cs" />
+    <Compile Include="Logger\SentryTarget.cs" />
+    <Compile Include="Menu\AnimationManager.cs" />
+    <Compile Include="Menu\Attributes\PermaShowAttribute.cs" />
+    <Compile Include="Menu\Attributes\TextureAttribute.cs" />
+    <Compile Include="Menu\Config\GeneralConfig.cs" />
+    <Compile Include="Menu\Config\HackConfig.cs" />
+    <Compile Include="Menu\Config\MenuConfig.cs" />
+    <Compile Include="Menu\Entries\DynamicMenu.cs" />
+    <Compile Include="Menu\Styles\Elements\TooltipStyle.cs" />
+    <Compile Include="Menu\ValueBinding\ValueChangingEventArgs.cs" />
+    <Compile Include="Menu\ValueBinding\ValueBinding.cs" />
+    <Compile Include="Menu\ValueBinding\ValueDictionaryBinding.cs" />
+    <Compile Include="Menu\ValueBinding\ValuePropertyBinding.cs" />
+    <Compile Include="Menu\Items\ILoadable.cs" />
+    <Compile Include="Menu\Items\ISelection.cs" />
+    <Compile Include="Menu\Items\PriorityChanger.cs" />
+    <Compile Include="Menu\Items\ImageToggler.cs" />
+    <Compile Include="Menu\Items\HotkeySelector.cs" />
+    <Compile Include="Menu\Items\Slider.cs" />
+    <Compile Include="Menu\MenuInputManager.cs" />
+    <Compile Include="Menu\MenuSerializer.cs" />
+    <Compile Include="Menu\MenuStyleConverter.cs" />
+    <Compile Include="Menu\StyleRepository.cs" />
+    <Compile Include="Menu\Styles\Elements\MenuStyleConverter.cs" />
+    <Compile Include="Menu\Styles\Elements\PicturePickerStyle.cs" />
+    <Compile Include="Menu\Styles\RedStyle.cs" />
+    <Compile Include="Menu\Styles\DefaultMenuStyle.cs" />
+    <Compile Include="Menu\Styles\Elements\IMenuStyle.cs" />
+    <Compile Include="Menu\Styles\Elements\SliderStyle.cs" />
+    <Compile Include="Menu\Styles\Elements\TitleBarStyle.cs" />
+    <Compile Include="Menu\Views\BooleanView.cs" />
+    <Compile Include="Menu\Styles\Elements\BorderStyle.cs" />
+    <Compile Include="Menu\Attributes\ExportViewAttribute.cs" />
+    <Compile Include="Menu\Styles\Elements\FontStyle.cs" />
+    <Compile Include="Menu\Attributes\ItemAttribute.cs" />
+    <Compile Include="Menu\Views\View.cs" />
+    <Compile Include="Menu\Views\IViewMetadata.cs" />
+    <Compile Include="Menu\Entries\MenuBase.cs" />
+    <Compile Include="Menu\Entries\MenuEntry.cs" />
+    <Compile Include="Menu\Entries\MenuItemEntry.cs" />
+    <Compile Include="Menu\MenuManager.cs" />
+    <Compile Include="Menu\Attributes\MenuAttribute.cs" />
+    <Compile Include="Menu\Views\MenuView.cs" />
+    <Compile Include="Menu\Items\Selection.cs" />
+    <Compile Include="Menu\Views\PriorityChangerView.cs" />
+    <Compile Include="Menu\Views\HotkeySelectorView.cs" />
+    <Compile Include="Menu\Views\SliderView.cs" />
+    <Compile Include="Menu\Views\SelectionView.cs" />
+    <Compile Include="Menu\Views\ImageTogglerView.cs" />
+    <Compile Include="Menu\Views\StringView.cs" />
+    <Compile Include="Menu\Styles\Elements\StyleConfig.cs" />
+    <Compile Include="Menu\Attributes\TooltipAttribute.cs" />
+    <Compile Include="Menu\ViewRepository.cs" />
     <Compile Include="Orbwalker\Config\OrbwalkerSettings.cs" />
     <Compile Include="Orbwalker\IOrbwalkerManager.cs" />
     <Compile Include="Orbwalker\Metadata\ExportOrbwalkerManagerAttribute.cs" />
@@ -568,6 +621,7 @@
     <Compile Include="Plugins\DebugTables\HeroTable.cs" />
     <Compile Include="Plugins\DebugTables\ModifiersTable.cs" />
     <Compile Include="Plugins\DebugTables\ObjectsTable.cs" />
+    <Compile Include="Plugins\MenuManagerPlugin.cs" />
     <Compile Include="Plugins\PredictionPlugin.cs" />
     <Compile Include="Prediction\Metadata\ExportPredictionManagerAttribute.cs" />
     <Compile Include="Prediction\IPredictionManager.cs" />
@@ -595,20 +649,27 @@
     <Compile Include="Prediction\PredictionManager.cs" />
     <Compile Include="Prediction\PredictionOutput.cs" />
     <Compile Include="Prediction\PredictionSkillshotType.cs" />
+    <Compile Include="Renderer\TextureNotFoundException.cs" />
     <Compile Include="Renderer\DX11\BrushCache.cs" />
     <Compile Include="Renderer\DX11\D3D11Context.cs" />
     <Compile Include="Renderer\DX11\D3D11Renderer.cs" />
+    <Compile Include="Renderer\DX9\D3D9Texture.cs" />
+    <Compile Include="Renderer\DX11\D3D11Texture.cs" />
+    <Compile Include="Renderer\DX9\D3D9TextureManager.cs" />
     <Compile Include="Renderer\DX11\ID3D11Context.cs" />
+    <Compile Include="Renderer\ITextureManager.cs" />
     <Compile Include="Renderer\DX11\TextFormatCache.cs" />
     <Compile Include="Renderer\DX9\D3D9Context.cs" />
     <Compile Include="Renderer\DX9\D3D9Renderer.cs" />
     <Compile Include="Renderer\DX9\FontCache.cs" />
     <Compile Include="Renderer\IRendererManager.cs" />
+    <Compile Include="Renderer\Metadata\ExportTextureManagerAttribute.cs" />
     <Compile Include="Renderer\Metadata\ExportRendererAttribute.cs" />
     <Compile Include="Renderer\DX9\ID3D9Context.cs" />
     <Compile Include="Renderer\Metadata\IRendererMetadata.cs" />
     <Compile Include="Renderer\IRenderer.cs" />
     <Compile Include="Renderer\RendererManager.cs" />
+    <Compile Include="Renderer\DX11\D3D11TextureManager.cs" />
     <Compile Include="Service\ControllableExtensions.cs" />
     <Compile Include="Service\ControllableService.cs" />
     <Compile Include="Inventory\InventoryItem.cs" />
@@ -722,6 +783,17 @@
     <Compile Include="Extensions\UnitExtensions.cs" />
     <Compile Include="TargetSelector\TargetSelectorManager.cs" />
     <Compile Include="Utils\Utils.cs" />
+    <Compile Include="VPK\Content\ResourceEntry.cs" />
+    <Compile Include="VPK\Content\ResourceFile.cs" />
+    <Compile Include="VPK\ValvePak\ArchiveMD5SectionEntry.cs" />
+    <Compile Include="VPK\ValvePak\Package.cs" />
+    <Compile Include="VPK\ValvePak\PackageEntry.cs" />
+    <Compile Include="VPK\ValvePak\Utilities\AsnKeyParser.cs" />
+    <Compile Include="VPK\ValvePak\Utilities\Crc32.cs" />
+    <Compile Include="VPK\ValvePak\Utilities\StreamHelpers.cs" />
+    <Compile Include="VPK\VpkBrowser.cs" />
+    <Compile Include="VPK\Content\VTex.cs" />
+    <Compile Include="VPK\Content\VTexFormat.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Properties\key.snk" />
@@ -743,7 +815,34 @@
     <EmbeddedResource Include="Resources\RadiantMiddleRoute.json" />
     <EmbeddedResource Include="Resources\RadiantTopRoute.json" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Menu\Animations\" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\MenuStyle\default_transparent\arrowleft.png" />
+    <EmbeddedResource Include="Resources\MenuStyle\default_transparent\arrowlefthover.png" />
+    <EmbeddedResource Include="Resources\MenuStyle\default_transparent\arrowright.png" />
+    <EmbeddedResource Include="Resources\MenuStyle\default_transparent\arrowrighthover.png" />
+    <EmbeddedResource Include="Resources\MenuStyle\default_transparent\circleshadow.png" />
+    <EmbeddedResource Include="Resources\MenuStyle\default_transparent\circleshadowgray.png" />
+    <EmbeddedResource Include="Resources\MenuStyle\default_transparent\itembg1.png" />
+    <EmbeddedResource Include="Resources\MenuStyle\default_transparent\menubg1.png" />
+    <EmbeddedResource Include="Resources\MenuStyle\default_transparent\sliderbgon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\MenuStyle\darkred\arrowleft.png" />
+    <EmbeddedResource Include="Resources\MenuStyle\darkred\arrowlefthover.png" />
+    <EmbeddedResource Include="Resources\MenuStyle\darkred\arrowright.png" />
+    <EmbeddedResource Include="Resources\MenuStyle\darkred\arrowrighthover.png" />
+    <EmbeddedResource Include="Resources\MenuStyle\darkred\circleshadow.png" />
+    <EmbeddedResource Include="Resources\MenuStyle\darkred\circleshadowgray.png" />
+    <EmbeddedResource Include="Resources\MenuStyle\darkred\itembg1.png" />
+    <EmbeddedResource Include="Resources\MenuStyle\darkred\menubg1.png" />
+    <EmbeddedResource Include="Resources\MenuStyle\darkred\sliderbgon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\MenuStyle\logo.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

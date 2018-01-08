@@ -13,10 +13,10 @@ namespace Ensage.SDK.Helpers
     using Ensage.SDK.Geometry;
     using Ensage.SDK.Helpers.Metadata;
 
-    using log4net;
+    
 
     using PlaySharp.Toolkit.Helper;
-    using PlaySharp.Toolkit.Logging;
+    using NLog;
 
     using SharpDX;
 
@@ -53,7 +53,7 @@ namespace Ensage.SDK.Helpers
     [ExportMap("start")]
     public class Map
     {
-        private static readonly ILog Log = AssemblyLogs.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly Logger Log = LogManager.GetCurrentClassLogger();
 
         [ImportingConstructor]
         public Map()

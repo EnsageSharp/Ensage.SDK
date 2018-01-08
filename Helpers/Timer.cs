@@ -6,21 +6,26 @@ namespace Ensage.SDK.Helpers
 {
     using System;
 
-    public sealed class Timer
+    public sealed class Timer : IDisposable
     {
-        public Timer(TimeSpan timeout)
+        public Timer(TimeSpan timeout, bool autoStart = false)
+            : this(timeout.Ticks, autoStart)
         {
-            this.Timeout = timeout;
-            UpdateManager.Subscribe(this.OnUpdate);
         }
 
         /// <param name="timeout">
         ///     <see cref="Elapsed" /> timeout in Milliseconds
         /// </param>
-        public Timer(int timeout)
+        /// <param name="autoStart">start timer on creation</param>
+        public Timer(long timeout, bool autoStart = false)
         {
-            this.Timeout = TimeSpan.FromMilliseconds(timeout);
-            UpdateManager.Subscribe(this.OnUpdate);
+            this.Timeout = timeout;
+            this.NextTimeout = this.GetNextTimeout();
+
+            if (autoStart)
+            {
+                this.Start();
+            }
         }
 
         public event EventHandler Elapsed;
@@ -29,28 +34,59 @@ namespace Ensage.SDK.Helpers
         {
             get
             {
-                return this.GetTicks() > this.NextTimeout;
+                return this.Ticks > this.NextTimeout;
             }
         }
 
-        public TimeSpan Timeout { get; set; }
+        public long NextTimeout { get; private set; }
 
-        private long NextTimeout { get; set; }
+        public long Ticks
+        {
+            get
+            {
+                return UpdateManager.Ticks;
+            }
+        }
+
+        public long Timeout { get; set; }
+
+        public void Dispose()
+        {
+            this.Stop();
+        }
 
         public void Reset()
         {
-            this.NextTimeout = this.GetTicks() + this.Timeout.Ticks;
-            this.Elapsed?.Invoke(this, EventArgs.Empty);
+            this.NextTimeout = this.GetNextTimeout();
         }
 
-        private long GetTicks()
+        public void Start()
         {
-            return DateTime.Now.Ticks;
+            UpdateManager.Subscribe(this.OnUpdate);
+        }
+
+        public void Stop()
+        {
+            UpdateManager.Unsubscribe(this.OnUpdate);
+        }
+
+        private long GetNextTimeout()
+        {
+            return this.Ticks + this.Timeout;
         }
 
         private void OnUpdate()
         {
-            if (this.HasTimeout)
+            if (!this.HasTimeout)
+            {
+                return;
+            }
+
+            try
+            {
+                this.Elapsed?.Invoke(this, EventArgs.Empty);
+            }
+            finally
             {
                 this.Reset();
             }

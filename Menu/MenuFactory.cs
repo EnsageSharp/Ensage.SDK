@@ -192,6 +192,17 @@ namespace Ensage.SDK.Menu
             return menu;
         }
 
+        private static string GetName(string displayName)
+        {
+            displayName = displayName.Replace(" ", string.Empty);
+            return displayName;
+        }
+
+        private static void OnDomainUnload(object sender, EventArgs args)
+        {
+            Save();
+        }
+
         private void Dispose(bool disposing)
         {
             if (disposing)
@@ -205,17 +216,6 @@ namespace Ensage.SDK.Menu
                     this.Parent.Target.RemoveSubMenu(this.Target.Name);
                 }
             }
-        }
-
-        private static string GetName(string displayName)
-        {
-            displayName = displayName.Replace(" ", string.Empty);
-            return displayName;
-        }
-
-        private static void OnDomainUnload(object sender, EventArgs args)
-        {
-            Save();
         }
     }
 }

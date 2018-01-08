@@ -14,14 +14,14 @@ namespace Ensage.SDK.TargetSelector.Modes
     using Ensage.SDK.Orbwalker.Config;
     using Ensage.SDK.Prediction;
 
-    using log4net;
+    
 
     using PlaySharp.Toolkit.Helper;
-    using PlaySharp.Toolkit.Logging;
+    using NLog;
 
     public class AutoAttackModeSelector
     {
-        private static readonly ILog Log = AssemblyLogs.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly Logger Log = LogManager.GetCurrentClassLogger();
 
         private IHealthPrediction healthPrediction;
 

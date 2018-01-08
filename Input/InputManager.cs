@@ -9,16 +9,15 @@ namespace Ensage.SDK.Input
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using System.Reflection;
-    using System.Windows.Forms;
     using System.Windows.Input;
 
     using Ensage.SDK.Helpers;
     using Ensage.SDK.Input.Metadata;
     using Ensage.SDK.Service;
 
-    using log4net;
+    
 
-    using PlaySharp.Toolkit.Logging;
+    using NLog;
 
     [ExportInputManager]
     [SuppressMessage("ReSharper", "InconsistentNaming")]
@@ -45,7 +44,13 @@ namespace Ensage.SDK.Input
 
         private const uint WM_RBUTTONUP = 0x0205;
 
-        private static readonly ILog Log = AssemblyLogs.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private const uint WM_XBUTTONDBLCLK = 0x020D;
+
+        private const uint WM_XBUTTONDOWN = 0x020B;
+
+        private const uint WM_XBUTTONUP = 0x020C;
+
+        private static readonly Logger Log = LogManager.GetCurrentClassLogger();
 
         private readonly List<Hotkey> hotkeys = new List<Hotkey>();
 
@@ -139,28 +144,50 @@ namespace Ensage.SDK.Input
 
             switch (args.Msg)
             {
+                case WM_LBUTTONDOWN:
+                    data.Buttons = MouseButtons.LeftDown;
+                    break;
+
+                case WM_RBUTTONDOWN:
+                    data.Buttons = MouseButtons.RightDown;
+                    break;
+
+                case WM_XBUTTONDOWN:
+                    data.Buttons = args.WParam >> 16 == 1 ? MouseButtons.XButton1Down : MouseButtons.XButton2Down;
+                    break;
+
                 case WM_LBUTTONUP:
-                    data.Buttons = MouseButtons.Left;
+                    data.Buttons = MouseButtons.LeftUp;
                     data.Clicks = 1;
                     break;
 
                 case WM_RBUTTONUP:
-                    data.Buttons = MouseButtons.Right;
+                    data.Buttons = MouseButtons.RightUp;
+                    data.Clicks = 1;
+                    break;
+
+                case WM_XBUTTONUP:
+                    data.Buttons = args.WParam >> 16 == 1 ? MouseButtons.XButton1Up : MouseButtons.XButton2Up;
                     data.Clicks = 1;
                     break;
 
                 case WM_LBUTTONDBLCLK:
-                    data.Buttons = MouseButtons.Left;
+                    data.Buttons = MouseButtons.LeftUp;
                     data.Clicks = 2;
                     break;
 
                 case WM_RBUTTONDBLCLK:
-                    data.Buttons = MouseButtons.Right;
+                    data.Buttons = MouseButtons.RightUp;
+                    data.Clicks = 2;
+                    break;
+
+                case WM_XBUTTONDBLCLK:
+                    data.Buttons = args.WParam >> 16 == 1 ? MouseButtons.XButton1Up : MouseButtons.XButton2Up;
                     data.Clicks = 2;
                     break;
             }
 
-            if (data.Clicks > 0)
+            if (data.Buttons != MouseButtons.None)
             {
                 this.MouseClick?.Invoke(this, data);
                 Messenger<MouseEventArgs>.Publish(data);
@@ -206,7 +233,9 @@ namespace Ensage.SDK.Input
 
                 case WM_MOUSEWHEEL:
                     var delta = (short)((args.WParam >> 16) & 0xFFFF);
-                    this.MouseWheel?.Invoke(this, new MouseWheelEventArgs(delta));
+                    var mouseWheelEventArgs = new MouseWheelEventArgs(delta);   
+                    this.MouseWheel?.Invoke(this, mouseWheelEventArgs);
+                    args.Process = mouseWheelEventArgs.Process;
                     break;
 
                 case WM_LBUTTONUP:
@@ -215,6 +244,9 @@ namespace Ensage.SDK.Input
                 case WM_RBUTTONUP:
                 case WM_RBUTTONDOWN:
                 case WM_RBUTTONDBLCLK:
+                case WM_XBUTTONDOWN:
+                case WM_XBUTTONUP:
+                case WM_XBUTTONDBLCLK:
                     this.UpdateMouseButtons(args);
                     this.FireMouseClick(args);
                     break;
@@ -247,6 +279,30 @@ namespace Ensage.SDK.Input
 
                 case WM_RBUTTONUP:
                     this.ActiveButtons &= ~MouseButtons.Right;
+                    break;
+
+                case WM_XBUTTONDOWN:
+                    if (args.WParam >> 16 == 1)
+                    {
+                        this.ActiveButtons |= MouseButtons.XButton1;
+                    }
+                    else
+                    {
+                        this.ActiveButtons |= MouseButtons.XButton2;
+                    }
+
+                    break;
+
+                case WM_XBUTTONUP:
+                    if (args.WParam >> 16 == 1)
+                    {
+                        this.ActiveButtons &= ~MouseButtons.XButton1;
+                    }
+                    else
+                    {
+                        this.ActiveButtons &= ~MouseButtons.XButton2;
+                    }
+
                     break;
             }
         }

@@ -12,10 +12,10 @@ namespace Ensage.SDK.Extensions
     using Ensage.SDK.Abilities;
     using Ensage.SDK.Helpers;
 
-    using log4net;
+    
 
     using PlaySharp.Toolkit.Helper.Annotations;
-    using PlaySharp.Toolkit.Logging;
+    using NLog;
 
     using SharpDX;
 
@@ -59,7 +59,7 @@ namespace Ensage.SDK.Extensions
                 "modifier_necrolyte_sadist_active"
             };
 
-        private static readonly ILog Log = AssemblyLogs.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly Logger Log = LogManager.GetCurrentClassLogger();
 
         public static float AttackPoint(this Unit unit)
         {

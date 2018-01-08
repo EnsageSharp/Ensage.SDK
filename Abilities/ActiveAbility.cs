@@ -10,16 +10,16 @@ namespace Ensage.SDK.Abilities
     using Ensage.SDK.Extensions;
     using Ensage.SDK.Helpers;
 
-    using log4net;
+    
 
     using PlaySharp.Toolkit.Helper.Annotations;
-    using PlaySharp.Toolkit.Logging;
+    using NLog;
 
     using SharpDX;
 
     public abstract class ActiveAbility : BaseAbility
     {
-        private static readonly ILog Log = AssemblyLogs.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly Logger Log = LogManager.GetCurrentClassLogger();
 
         protected ActiveAbility(Ability ability)
             : base(ability)

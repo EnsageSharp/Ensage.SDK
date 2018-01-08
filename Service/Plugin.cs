@@ -4,8 +4,11 @@
 
 namespace Ensage.SDK.Service
 {
+    using Newtonsoft.Json;
+
     public abstract class Plugin : IPluginLoader
     {
+        [JsonIgnore]
         public bool IsActive { get; private set; }
 
         public void Activate()

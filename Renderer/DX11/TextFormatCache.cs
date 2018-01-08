@@ -8,16 +8,16 @@ namespace Ensage.SDK.Renderer.DX11
     using System.ComponentModel.Composition;
     using System.Reflection;
 
-    using log4net;
+    
 
-    using PlaySharp.Toolkit.Logging;
+    using NLog;
 
     using SharpDX.DirectWrite;
 
     [Export(typeof(TextFormatCache))]
     public sealed class TextFormatCache : Dictionary<string, TextFormat>
     {
-        private static readonly ILog Log = AssemblyLogs.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly Logger Log = LogManager.GetCurrentClassLogger();
 
         [ImportingConstructor]
         public TextFormatCache([Import] ID3D11Context context)

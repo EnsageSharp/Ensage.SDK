@@ -11,14 +11,14 @@ namespace Ensage.SDK.Abilities
     using Ensage.SDK.Prediction;
     using Ensage.SDK.Prediction.Collision;
 
-    using log4net;
+    
 
     using PlaySharp.Toolkit.Helper;
-    using PlaySharp.Toolkit.Logging;
+    using NLog;
 
     public abstract class PredictionAbility : RangedAbility
     {
-        private static readonly ILog Log = AssemblyLogs.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly Logger Log = LogManager.GetCurrentClassLogger();
 
         protected PredictionAbility(Ability ability, IPrediction prediction = null)
             : base(ability)

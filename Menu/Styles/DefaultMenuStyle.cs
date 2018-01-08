@@ -6,6 +6,7 @@ namespace Ensage.SDK.Menu.Styles
 {
     using System.ComponentModel.Composition;
 
+    using Ensage.SDK.Menu.Styles.Elements;
     using Ensage.SDK.Renderer;
 
     using SharpDX;
@@ -27,9 +28,6 @@ namespace Ensage.SDK.Menu.Styles
             renderer.TextureManager.LoadFromResource(this.Checked, @"MenuStyle.default_transparent.circleshadow.png");
             renderer.TextureManager.LoadFromResource(this.Unchecked, @"MenuStyle.default_transparent.circleshadowgray.png");
             renderer.TextureManager.LoadFromResource(this.Slider, @"MenuStyle.default_transparent.sliderbgon.png");
-
-            this.StyleConfig.TitleBar.Font.Size = 13;
-            this.StyleConfig.TitleBar.Border.Thickness = new Vector4(30, 2, 30, 2);
         }
 
         public string ArrowLeft { get; } = "menuStyle/default/left";

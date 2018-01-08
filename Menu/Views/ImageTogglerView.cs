@@ -16,9 +16,9 @@ namespace Ensage.SDK.Menu.Views
     using SharpDX;
 
     [ExportView(typeof(ImageToggler))]
-    public class ImageTogglerView : IView
+    public class ImageTogglerView : View
     {
-        public virtual void Draw(MenuBase context)
+        public override void Draw(MenuBase context)
         {
             var item = (MenuItemEntry)context;
             var propValue = item.ValueBinding.GetValue<ImageToggler>();
@@ -49,19 +49,13 @@ namespace Ensage.SDK.Menu.Views
             }
         }
 
-        public virtual Vector2 GetSize(MenuBase context)
+        public override Vector2 GetSize(MenuBase context)
         {
-            var totalSize = Vector2.Zero;
+            var totalSize = base.GetSize(context);
             var styleConfig = context.MenuConfig.GeneralConfig.ActiveStyle.Value.StyleConfig;
 
-            var border = styleConfig.Border;
-            totalSize.X += border.Thickness[0] + border.Thickness[2];
-            totalSize.Y += border.Thickness[1] + border.Thickness[3];
-
-            var font = styleConfig.Font;
-            var fontSize = context.Renderer.MessureText(context.Name, font.Size, font.Family);
-            totalSize.X += styleConfig.LineWidth + fontSize.X + styleConfig.ArrowSize.X + (styleConfig.TextSpacing * 3);
-            totalSize.Y += Math.Max(Math.Max(fontSize.Y, styleConfig.ArrowSize.Y), styleConfig.PicturePicker.PictureSize.Y);
+            totalSize.X += styleConfig.TextSpacing + styleConfig.ArrowSize.X + (styleConfig.TextSpacing * 2);
+            totalSize.Y = Math.Max(Math.Max(totalSize.Y, styleConfig.ArrowSize.Y), styleConfig.PicturePicker.PictureSize.Y);
 
             var item = (MenuItemEntry)context;
             var propValue = item.ValueBinding.GetValue<ImageToggler>();
@@ -70,7 +64,7 @@ namespace Ensage.SDK.Menu.Views
             return totalSize;
         }
 
-        public virtual bool OnClick(MenuBase context, MouseButtons buttons, Vector2 clickPosition)
+        public override bool OnClick(MenuBase context, MouseButtons buttons, Vector2 clickPosition)
         {
             if ((buttons & MouseButtons.LeftUp) == MouseButtons.LeftUp)
             {

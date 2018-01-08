@@ -6,6 +6,7 @@ namespace Ensage.SDK.Logger
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Reflection;
 
     using NLog;
@@ -39,6 +40,17 @@ namespace Ensage.SDK.Logger
 
             LogManager.Configuration = Config;
             LogManager.ReconfigExistingLoggers();
+
+            foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies().Where(x => !x.GlobalAssemblyCache))
+            {
+                var metadata = assembly.GetMetadata();
+                if (metadata == null)
+                {
+                    continue;
+                }
+
+                Add(assembly, metadata, assembly.GetName().Name);
+            }
         }
 
         private static void Add(Assembly assembly, AssemblyMetadata metadata, string @namespace)

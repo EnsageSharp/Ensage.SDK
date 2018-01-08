@@ -18,12 +18,12 @@ namespace Ensage.SDK.Menu
 
     public abstract class MenuBase
     {
-        protected MenuBase(string name, IView view, IRenderer renderer, MenuConfig menuConfig, object instance)
+        protected MenuBase(string name, View view, IRenderer renderer, MenuConfig menuConfig, object instance)
             : this(name, null, view, renderer, menuConfig, instance)
         {
         }
 
-        protected MenuBase(string name, [CanBeNull] string textureKey, IView view, IRenderer renderer, MenuConfig menuConfig, object instance)
+        protected MenuBase(string name, [CanBeNull] string textureKey, View view, IRenderer renderer, MenuConfig menuConfig, object instance)
         {
             this.MenuConfig = menuConfig;
             this.Name = name;
@@ -64,9 +64,11 @@ namespace Ensage.SDK.Menu
             }
         }
 
+        public Vector2 TextSize { get; set; }
+
         public abstract void Reset();
 
-        public IView View { get; }
+        public View View { get; }
 
         public abstract void Draw();
 

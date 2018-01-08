@@ -8,6 +8,7 @@ namespace Ensage.SDK.Menu
     using System.Linq;
 
     using Ensage.SDK.Menu.Styles;
+    using Ensage.SDK.Menu.Styles.Elements;
 
     using Newtonsoft.Json;
 

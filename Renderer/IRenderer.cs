@@ -7,6 +7,8 @@ namespace Ensage.SDK.Renderer
     using System;
 
     using SharpDX;
+    using SharpDX.Direct3D9;
+    using SharpDX.DirectWrite;
 
     using Color = System.Drawing.Color;
 
@@ -23,6 +25,8 @@ namespace Ensage.SDK.Renderer
         void DrawRectangle(RectangleF rect, Color color, float width = 1.0f);
 
         void DrawText(Vector2 position, string text, Color color, float fontSize = 13f, string fontFamily = "Calibri");
+
+        void DrawText(RectangleF position, string text, Color color, FontDrawFlags flags = FontDrawFlags.Left, float fontSize = 13f, string fontFamily = "Calibri");
 
         void DrawTexture(string textureKey, RectangleF rect, float rotation = 0.0f, float opacity = 1.0f);
 

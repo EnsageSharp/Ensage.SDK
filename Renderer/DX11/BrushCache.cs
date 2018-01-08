@@ -7,15 +7,17 @@ namespace Ensage.SDK.Renderer.DX11
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.Composition;
-    using System.Drawing;
     using System.Reflection;
 
     
 
     using NLog;
 
+    using SharpDX;
     using SharpDX.Direct2D1;
     using SharpDX.Mathematics.Interop;
+
+    using Color = System.Drawing.Color;
 
     [Export(typeof(BrushCache))]
     public sealed class BrushCache : Dictionary<Color, SolidColorBrush>, IDisposable

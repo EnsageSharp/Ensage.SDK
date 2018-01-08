@@ -1,5 +1,5 @@
 ﻿// <copyright file="BorderStyle.cs" company="Ensage">
-//    Copyright (c) 2017 Ensage.
+//    Copyright (c) 2018 Ensage.
 // </copyright>
 
 namespace Ensage.SDK.Menu.Styles
@@ -18,6 +18,6 @@ namespace Ensage.SDK.Menu.Styles
         /// <summary>
         ///     Gets or sets the thickness of the border: left, top, right, bottom.
         /// </summary>
-        public Vector4 Thickness { get; set; } = new Vector4(5, 7, 1, 7);
+        public Vector4 Thickness { get; set; } = new Vector4(5, 7, 5, 7);
     }
 }

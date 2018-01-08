@@ -1,10 +1,11 @@
 ﻿// <copyright file="StyleConfig.cs" company="Ensage">
-//    Copyright (c) 2017 Ensage.
+//    Copyright (c) 2018 Ensage.
 // </copyright>
 
 namespace Ensage.SDK.Menu.Styles
 {
     using Ensage.SDK.Menu.Items;
+    using Ensage.SDK.Menu.Styles.Elements;
 
     using SharpDX;
 
@@ -12,11 +13,6 @@ namespace Ensage.SDK.Menu.Styles
 
     public class StyleConfig
     {
-        /// <summary>
-        ///     Gets or sets the style of the title bar.
-        /// </summary>
-        public TitleBarStyle TitleBar = new TitleBarStyle();
-
         /// <summary>
         ///     Gets or sets the arrow size of the menu entries.
         /// </summary>
@@ -61,5 +57,15 @@ namespace Ensage.SDK.Menu.Styles
         ///     Gets or sets the size of the space between the menu text and the content following.
         /// </summary>
         public float TextSpacing { get; set; } = 5;
+
+        /// <summary>
+        ///     Gets or sets the style of the title bar.
+        /// </summary>
+        public TitleBarStyle TitleBar { get; set; } = new TitleBarStyle();
+
+        /// <summary>
+        ///     Gets or sets the style of the tooltips.
+        /// </summary>
+        public TooltipStyle Tooltip { get; set; } = new TooltipStyle();
     }
 }

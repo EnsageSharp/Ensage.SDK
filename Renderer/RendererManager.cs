@@ -12,6 +12,8 @@ namespace Ensage.SDK.Renderer
     using Ensage.SDK.Renderer.Metadata;
 
     using SharpDX;
+    using SharpDX.Direct3D9;
+    using SharpDX.DirectWrite;
 
     using Color = System.Drawing.Color;
 
@@ -73,6 +75,11 @@ namespace Ensage.SDK.Renderer
         public void DrawText(Vector2 position, string text, Color color, float fontSize = 13f, string fontFamily = "Calibri")
         {
             this.active.DrawText(position, text, color, fontSize, fontFamily);
+        }
+
+        public void DrawText(RectangleF position, string text, Color color, FontDrawFlags flags = FontDrawFlags.Left, float fontSize = 13f, string fontFamily = "Calibri")
+        {
+            this.active.DrawText(position, text, color, flags, fontSize, fontFamily);
         }
 
         public void DrawTexture(string textureKey, RectangleF rect, float rotation = 0, float opacity = 1)

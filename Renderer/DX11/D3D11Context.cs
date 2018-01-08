@@ -13,6 +13,9 @@ namespace Ensage.SDK.Renderer.DX11
 
     using NLog;
 
+    using PlaySharp.Toolkit.Helper.Annotations;
+
+    using SharpDX;
     using SharpDX.Direct2D1;
     using SharpDX.Direct3D11;
     using SharpDX.DXGI;

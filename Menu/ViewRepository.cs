@@ -18,14 +18,14 @@ namespace Ensage.SDK.Menu
         public Lazy<MenuView> MenuView { get; set; }
 
         [ImportMany(AllowRecomposition = true)]
-        public IEnumerable<Lazy<IView, IViewMetadata>> Views { get; set; }
+        public IEnumerable<Lazy<View, IViewMetadata>> Views { get; set; }
 
-        public IView GetMenuView()
+        public View GetMenuView()
         {
             return this.MenuView.Value;
         }
 
-        public IView GetView(Type type)
+        public View GetView(Type type)
         {
             if (type.IsGenericType)
             {

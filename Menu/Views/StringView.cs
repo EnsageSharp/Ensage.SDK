@@ -1,11 +1,9 @@
 ﻿// <copyright file="StringView.cs" company="Ensage">
-//    Copyright (c) 2017 Ensage.
+//    Copyright (c) 2018 Ensage.
 // </copyright>
 
 namespace Ensage.SDK.Menu.Views
 {
-    using System;
-
     using Ensage.SDK.Input;
     using Ensage.SDK.Menu.Attributes;
     using Ensage.SDK.Menu.Entries;
@@ -13,9 +11,9 @@ namespace Ensage.SDK.Menu.Views
     using SharpDX;
 
     [ExportView(typeof(string))]
-    public class StringView : IView
+    public class StringView : View
     {
-        public void Draw(MenuBase context)
+        public override void Draw(MenuBase context)
         {
             var item = (MenuItemEntry)context;
 
@@ -38,28 +36,20 @@ namespace Ensage.SDK.Menu.Views
             context.Renderer.DrawText(pos, item.ValueBinding.GetValue<string>(), font.Color, font.Size, font.Family);
         }
 
-        public Vector2 GetSize(MenuBase context)
+        public override Vector2 GetSize(MenuBase context)
         {
-            var totalSize = Vector2.Zero;
+            var totalSize = base.GetSize(context);
             var styleConfig = context.MenuConfig.GeneralConfig.ActiveStyle.Value.StyleConfig;
-
-            var border = styleConfig.Border;
-            totalSize.X += border.Thickness[0] + border.Thickness[2];
-            totalSize.Y += border.Thickness[1] + border.Thickness[3];
-
             var font = styleConfig.Font;
-            var textSize = context.Renderer.MessureText(context.Name, font.Size, font.Family);
-            totalSize.X += styleConfig.LineWidth + textSize.X + styleConfig.ArrowSize.X + (styleConfig.TextSpacing * 3);
-            totalSize.Y += Math.Max(textSize.Y, styleConfig.ArrowSize.Y);
 
             var item = (MenuItemEntry)context;
-            textSize = context.Renderer.MessureText(item.ValueBinding.GetValue<string>(), font.Size, font.Family);
-            totalSize.X += textSize.X;
+            item.ValueSize = context.Renderer.MessureText(item.ValueBinding.GetValue<string>(), font.Size, font.Family);
+            totalSize.X += styleConfig.TextSpacing + item.ValueSize.X;
 
             return totalSize;
         }
 
-        public bool OnClick(MenuBase context, MouseButtons buttons, Vector2 clickPosition)
+        public override bool OnClick(MenuBase context, MouseButtons buttons, Vector2 clickPosition)
         {
             return false;
         }

@@ -51,6 +51,10 @@
     <Reference Include="Ensage.Common">
       <HintPath>C:\EnsageSharp\References\Ensage.Common.dll</HintPath>
     </Reference>
+    <Reference Include="EnsageSharp.Sandbox, Version=1.0.0.0, Culture=neutral, PublicKeyToken=0c92cb9c3763a33b, processorArchitecture=AMD64">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\EnsageSharp\System\EnsageSharp.Sandbox.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Newtonsoft.Json">
       <HintPath>C:\EnsageSharp\References\Newtonsoft.Json.dll</HintPath>
@@ -562,6 +566,7 @@
     <Compile Include="Menu\Config\HackConfig.cs" />
     <Compile Include="Menu\Config\MenuConfig.cs" />
     <Compile Include="Menu\Entries\DynamicMenu.cs" />
+    <Compile Include="Menu\Styles\Elements\TooltipStyle.cs" />
     <Compile Include="Menu\ValueBinding\ValueChangingEventArgs.cs" />
     <Compile Include="Menu\ValueBinding\ValueBinding.cs" />
     <Compile Include="Menu\ValueBinding\ValueDictionaryBinding.cs" />
@@ -576,19 +581,19 @@
     <Compile Include="Menu\MenuSerializer.cs" />
     <Compile Include="Menu\MenuStyleConverter.cs" />
     <Compile Include="Menu\StyleRepository.cs" />
-    <Compile Include="Menu\Styles\MenuStyleConverter.cs" />
-    <Compile Include="Menu\Styles\PicturePickerStyle.cs" />
+    <Compile Include="Menu\Styles\Elements\MenuStyleConverter.cs" />
+    <Compile Include="Menu\Styles\Elements\PicturePickerStyle.cs" />
     <Compile Include="Menu\Styles\RedStyle.cs" />
     <Compile Include="Menu\Styles\DefaultMenuStyle.cs" />
-    <Compile Include="Menu\Styles\IMenuStyle.cs" />
-    <Compile Include="Menu\Styles\SliderStyle.cs" />
-    <Compile Include="Menu\Styles\TitleBarStyle.cs" />
+    <Compile Include="Menu\Styles\Elements\IMenuStyle.cs" />
+    <Compile Include="Menu\Styles\Elements\SliderStyle.cs" />
+    <Compile Include="Menu\Styles\Elements\TitleBarStyle.cs" />
     <Compile Include="Menu\Views\BooleanView.cs" />
-    <Compile Include="Menu\Styles\BorderStyle.cs" />
+    <Compile Include="Menu\Styles\Elements\BorderStyle.cs" />
     <Compile Include="Menu\Attributes\ExportViewAttribute.cs" />
-    <Compile Include="Menu\Styles\FontStyle.cs" />
+    <Compile Include="Menu\Styles\Elements\FontStyle.cs" />
     <Compile Include="Menu\Attributes\ItemAttribute.cs" />
-    <Compile Include="Menu\Views\IView.cs" />
+    <Compile Include="Menu\Views\View.cs" />
     <Compile Include="Menu\Views\IViewMetadata.cs" />
     <Compile Include="Menu\Entries\MenuBase.cs" />
     <Compile Include="Menu\Entries\MenuEntry.cs" />
@@ -603,7 +608,7 @@
     <Compile Include="Menu\Views\SelectionView.cs" />
     <Compile Include="Menu\Views\ImageTogglerView.cs" />
     <Compile Include="Menu\Views\StringView.cs" />
-    <Compile Include="Menu\Styles\StyleConfig.cs" />
+    <Compile Include="Menu\Styles\Elements\StyleConfig.cs" />
     <Compile Include="Menu\Attributes\TooltipAttribute.cs" />
     <Compile Include="Menu\ViewRepository.cs" />
     <Compile Include="Orbwalker\Config\OrbwalkerSettings.cs" />

@@ -14,7 +14,7 @@ namespace Ensage.SDK.Menu.Attributes
     public class ExportViewAttribute : ExportAttribute, IViewMetadata
     {
         public ExportViewAttribute(Type target)
-            : base(typeof(IView))
+            : base(typeof(View))
         {
             this.Target = target;
         }

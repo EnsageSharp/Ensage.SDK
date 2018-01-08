@@ -24,13 +24,13 @@ namespace Ensage.SDK.Menu.Entries
     {
         private static readonly Logger Log = LogManager.GetCurrentClassLogger();
 
-        public MenuItemEntry(string name, IView view, IRenderer renderer, MenuConfig menuConfig, ValueBinding valueBinding)
+        public MenuItemEntry(string name, View view, IRenderer renderer, MenuConfig menuConfig, ValueBinding valueBinding)
             : this(name, null, view, renderer, menuConfig, valueBinding)
         {
             this.AssignDefaultValue();
         }
 
-        public MenuItemEntry(string name, [CanBeNull] string textureKey, IView view, IRenderer renderer, MenuConfig menuConfig, ValueBinding valueBinding)
+        public MenuItemEntry(string name, [CanBeNull] string textureKey, View view, IRenderer renderer, MenuConfig menuConfig, ValueBinding valueBinding)
             : base(name, textureKey, view, renderer, menuConfig, valueBinding)
         {
             this.ValueBinding = valueBinding;
@@ -40,6 +40,10 @@ namespace Ensage.SDK.Menu.Entries
         public object DefaultValue { get; set; }
 
         public string Tooltip { get; set; }
+
+        public Vector2 ValueSize { get; set; }
+
+        public Vector2 TooltipSize { get; set; }
 
         public object Value
         {
@@ -75,6 +79,7 @@ namespace Ensage.SDK.Menu.Entries
         public override void Draw()
         {
             this.View.Draw(this);
+            this.View.DrawTooltip(this);
         }
 
         public override void OnClick(MouseButtons buttons, Vector2 clickPosition)

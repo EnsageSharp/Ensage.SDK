@@ -1,4 +1,8 @@
-﻿namespace Ensage.SDK.Menu.Styles
+﻿// <copyright file="PicturePickerStyle.cs" company="Ensage">
+//    Copyright (c) 2018 Ensage.
+// </copyright>
+
+namespace Ensage.SDK.Menu.Styles
 {
     using SharpDX;
 

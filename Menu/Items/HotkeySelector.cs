@@ -207,7 +207,9 @@ namespace Ensage.SDK.Menu.Items
 
         public object Clone()
         {
-            return this.MemberwiseClone();
+            var result = (HotkeySelector) this.MemberwiseClone();
+            result.Hotkey = this.Hotkey;
+            return result;
         }
 
         public bool Load(object data)

@@ -15,11 +15,10 @@ namespace Ensage.SDK.Service
     using Ensage.SDK.Logger;
     using Ensage.SDK.Service.Metadata;
 
-    
+    using NLog;
 
     using PlaySharp.Toolkit.AppDomain.Loader;
     using PlaySharp.Toolkit.Helper;
-    using NLog;
 
     public class Bootstrapper : AssemblyEntryPoint
     {

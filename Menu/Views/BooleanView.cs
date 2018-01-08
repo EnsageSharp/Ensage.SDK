@@ -13,9 +13,9 @@ namespace Ensage.SDK.Menu.Views
     using SharpDX;
 
     [ExportView(typeof(bool))]
-    public class BooleanView : IView
+    public class BooleanView : View
     {
-        public void Draw(MenuBase context)
+        public override void Draw(MenuBase context)
         {
             var item = (MenuItemEntry)context;
 
@@ -47,23 +47,16 @@ namespace Ensage.SDK.Menu.Views
             }
         }
 
-        public Vector2 GetSize(MenuBase context)
+        public override Vector2 GetSize(MenuBase context)
         {
-            var totalSize = Vector2.Zero;
+            var totalSize = base.GetSize(context);
             var styleConfig = context.MenuConfig.GeneralConfig.ActiveStyle.Value.StyleConfig;
-
-            var border = styleConfig.Border;
-            totalSize.X += border.Thickness[0] + border.Thickness[2];
-            totalSize.Y += border.Thickness[1] + border.Thickness[3];
-
-            var font = styleConfig.Font;
-            var fontSize = context.Renderer.MessureText(context.Name, font.Size, font.Family);
-            totalSize.X += styleConfig.LineWidth + fontSize.X + styleConfig.TextSpacing + (styleConfig.ArrowSize.X * 2);
-            totalSize.Y += Math.Max(fontSize.Y, styleConfig.ArrowSize.Y);
+            totalSize.X += styleConfig.TextSpacing + (styleConfig.ArrowSize.X * 2); // TODO: use own bool view style options
+            totalSize.Y = Math.Max(totalSize.Y, styleConfig.ArrowSize.Y); // border missing for y
             return totalSize;
         }
 
-        public bool OnClick(MenuBase context, MouseButtons buttons, Vector2 clickPosition)
+        public override bool OnClick(MenuBase context, MouseButtons buttons, Vector2 clickPosition)
         {
             if ((buttons & MouseButtons.LeftUp) == MouseButtons.LeftUp && context is MenuItemEntry item)
             {

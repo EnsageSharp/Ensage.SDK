@@ -6,6 +6,7 @@ namespace Ensage.SDK.Menu.Styles
 {
     using System.ComponentModel.Composition;
 
+    using Ensage.SDK.Menu.Styles.Elements;
     using Ensage.SDK.Renderer;
 
     using SharpDX;
@@ -30,8 +31,6 @@ namespace Ensage.SDK.Menu.Styles
             renderer.TextureManager.LoadFromResource(this.Unchecked, @"MenuStyle.darkred.circleshadowgray.png");
             renderer.TextureManager.LoadFromResource(this.Slider, @"MenuStyle.darkred.sliderbgon.png");
 
-            this.StyleConfig.TitleBar.Font.Size = 13;
-            this.StyleConfig.TitleBar.Border.Thickness = new Vector4(30, 2, 30, 2);
             this.StyleConfig.SelectedLineColor = Color.DarkRed;
         }
 

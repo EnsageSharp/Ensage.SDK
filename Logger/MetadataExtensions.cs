@@ -8,8 +8,11 @@ namespace Ensage.SDK.Logger
     using System.Linq;
     using System.Reflection;
 
+    using PlaySharp.Toolkit.Helper.Annotations;
+
     public static class MetadataExtensions
     {
+        [CanBeNull]
         public static AssemblyMetadata GetMetadata(this Assembly assembly)
         {
             if (assembly == null)

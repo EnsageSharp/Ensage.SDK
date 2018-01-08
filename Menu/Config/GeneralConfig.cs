@@ -6,6 +6,7 @@ namespace Ensage.SDK.Menu.Config
 {
     using Ensage.SDK.Menu.Items;
     using Ensage.SDK.Menu.Styles;
+    using Ensage.SDK.Menu.Styles.Elements;
 
     public class GeneralConfig
     {

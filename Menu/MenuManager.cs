@@ -1,5 +1,5 @@
 ﻿// <copyright file="MenuManager.cs" company="Ensage">
-//    Copyright (c) 2017 Ensage.
+//    Copyright (c) 2018 Ensage.
 // </copyright>
 
 namespace Ensage.SDK.Menu
@@ -19,15 +19,17 @@ namespace Ensage.SDK.Menu
     using Ensage.SDK.Menu.Entries;
     using Ensage.SDK.Menu.Items;
     using Ensage.SDK.Menu.Styles;
+    using Ensage.SDK.Menu.Styles.Elements;
     using Ensage.SDK.Service;
 
-    
+    using EnsageSharp.Sandbox;
 
     using Newtonsoft.Json.Converters;
     using Newtonsoft.Json.Linq;
 
-    using PlaySharp.Toolkit.Helper.Annotations;
     using NLog;
+
+    using PlaySharp.Toolkit.Helper.Annotations;
 
     using SharpDX;
 
@@ -76,7 +78,7 @@ namespace Ensage.SDK.Menu
             this.styleRepository = styleRepository;
         }
 
-        public bool IsVisible { get; private set; } = true;
+        public bool IsVisible { get; private set; } = false;
 
         public MenuBase LastHoverEntry
         {
@@ -178,7 +180,6 @@ namespace Ensage.SDK.Menu
 
             return null;
         }
-
 
         [CanBeNull]
         public MenuEntry FindParentMenu(MenuEntry menu, MenuBase findEntry)
@@ -362,10 +363,18 @@ namespace Ensage.SDK.Menu
             this.context.Renderer.Draw += this.OnDraw;
             this.context.Input.MouseMove += this.OnMouseMove;
             this.context.Input.MouseClick += this.OnMouseClick;
+
+            this.context.Input.RegisterHotkey("Ensage.SDK.ToggleKey", (uint)SandboxConfig.MenuToggleKey, this.ToggleKey);
+            this.context.Input.KeyDown += this.MenuKeyDown;
+            this.context.Input.KeyUp += this.MenuKeyUp;
         }
 
         protected override void OnDeactivate()
         {
+            this.context.Input.UnregisterHotkey("Ensage.SDK.ToggleKey");
+            this.context.Input.KeyDown -= this.MenuKeyDown;
+            this.context.Input.KeyUp -= this.MenuKeyUp;
+
             Messenger<AddDynamicMenuMessage>.Unsubscribe(this.AddDynamicMenu);
             Messenger<DynamicMenuRemoveMessage>.Unsubscribe(this.DynamicMenuRemovedMessage);
 
@@ -403,13 +412,7 @@ namespace Ensage.SDK.Menu
             }
             else
             {
-                var menuEntry = new MenuEntry(
-                    args.Name,
-                    args.TextureKey,
-                    this.viewRepository.MenuView.Value,
-                    this.context.Renderer,
-                    this.MenuConfig,
-                    args.Instance);
+                var menuEntry = new MenuEntry(args.Name, args.TextureKey, this.viewRepository.MenuView.Value, this.context.Renderer, this.MenuConfig, args.Instance);
 
                 parent.AddChild(menuEntry);
                 this.positionDirty = this.sizeDirty = true;
@@ -517,7 +520,7 @@ namespace Ensage.SDK.Menu
 
         private void DynamicMenuRemovedMessage(DynamicMenuRemoveMessage obj)
         {
-           // TODO:
+            // TODO:
         }
 
         private void LoadLayer(MenuEntry menu, [CanBeNull] JToken token)
@@ -536,8 +539,6 @@ namespace Ensage.SDK.Menu
                     {
                         child.Value = this.menuSerializer.ToObject(entry, child.ValueBinding.ValueType);
                     }
-
-                    child.AssignDefaultValue();
                 }
                 else
                 {
@@ -558,6 +559,24 @@ namespace Ensage.SDK.Menu
                 {
                     this.LoadLayer(child, subToken);
                 }
+            }
+        }
+
+        private void MenuKeyDown(object sender, KeyEventArgs e)
+        {
+            var key = KeyInterop.KeyFromVirtualKey(SandboxConfig.MenuKey);
+            if (e.Key == key)
+            {
+                this.IsVisible = true;
+            }
+        }
+
+        private void MenuKeyUp(object sender, KeyEventArgs e)
+        {
+            var key = KeyInterop.KeyFromVirtualKey(SandboxConfig.MenuKey);
+            if (e.Key == key)
+            {
+                this.IsVisible = false;
             }
         }
 
@@ -795,6 +814,11 @@ namespace Ensage.SDK.Menu
             }
         }
 
+        private void ToggleKey(KeyEventArgs obj)
+        {
+            this.IsVisible = !this.IsVisible;
+        }
+
         private Vector2 UpdateMenuEntryPosition(MenuEntry entry, Vector2 pos)
         {
             entry.Position = pos;
@@ -868,7 +892,13 @@ namespace Ensage.SDK.Menu
                 var textureAttribute = propertyInfo.GetCustomAttribute<TexureAttribute>();
 
                 var view = this.viewRepository.GetView(propertyInfo.PropertyType);
-                var menuItemEntry = new MenuItemEntry(menuItemName, textureAttribute?.TextureKey, view, this.context.Renderer, this.MenuConfig, new ValuePropertyBinding(instance, propertyInfo));
+                var menuItemEntry = new MenuItemEntry(
+                    menuItemName,
+                    textureAttribute?.TextureKey,
+                    view,
+                    this.context.Renderer,
+                    this.MenuConfig,
+                    new ValuePropertyBinding(instance, propertyInfo));
 
                 var tooltip = propertyInfo.GetCustomAttribute<TooltipAttribute>();
                 if (tooltip != null)

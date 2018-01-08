@@ -11,6 +11,7 @@ namespace Ensage.SDK.Renderer.DX11
 
     using SharpDX;
     using SharpDX.Direct2D1;
+    using SharpDX.Direct3D9;
     using SharpDX.DirectWrite;
     using SharpDX.Mathematics.Interop;
 
@@ -89,6 +90,31 @@ namespace Ensage.SDK.Renderer.DX11
             using (var layout = new TextLayout(this.context.DirectWrite, text, font, float.MaxValue, float.MaxValue))
             {
                 this.context.RenderTarget.DrawTextLayout(position, layout, brush);
+            }
+        }
+
+        public void DrawText(RectangleF position, string text, Color color, FontDrawFlags flags = FontDrawFlags.Left, float fontSize = 13f, string fontFamily = "Calibri")
+        {
+            var font = this.textFormatCache.GetOrCreate(fontFamily, fontSize);
+            var brush = this.brushCache.GetOrCreate(color);
+
+            using (var layout = new TextLayout(this.context.DirectWrite, text, font, position.Width, position.Height))
+            {
+                if ((flags & FontDrawFlags.Center) == FontDrawFlags.Center)
+                {
+                    layout.TextAlignment = TextAlignment.Center;
+                }
+                else if ((flags & FontDrawFlags.Right) == FontDrawFlags.Right)
+                {
+                    layout.TextAlignment = TextAlignment.Trailing;
+                }
+
+                if ((flags & FontDrawFlags.VerticalCenter) == FontDrawFlags.VerticalCenter)
+                {
+                    position.Y = (position.Y + (position.Height / 2)) - (font.FontSize / 2);
+                }
+
+                this.context.RenderTarget.DrawTextLayout(new RawVector2(position.X, position.Y), layout, brush);
             }
         }
 

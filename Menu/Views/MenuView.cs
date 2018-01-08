@@ -13,9 +13,9 @@ namespace Ensage.SDK.Menu.Views
     using SharpDX;
 
     [Export]
-    public class MenuView : IView
+    public class MenuView : View
     {
-        public void Draw(MenuBase context)
+        public override void Draw(MenuBase context)
         {
             var menuEntry = (MenuEntry)context;
 
@@ -46,7 +46,7 @@ namespace Ensage.SDK.Menu.Views
             var font = styleConfig.Font;
             context.Renderer.DrawText(pos, context.Name, styleConfig.Font.Color, font.Size, font.Family);
 
-            pos.X = (context.Position.X + size.X) - border.Thickness[2] - (styleConfig.TextSpacing * 2) - styleConfig.ArrowSize.X;
+            pos.X = (context.Position.X + size.X) - border.Thickness[2] - styleConfig.ArrowSize.X - styleConfig.TextSpacing;
             if (context.IsHovered || !menuEntry.IsCollapsed)
             {
                 pos.X += styleConfig.TextSpacing;
@@ -55,33 +55,28 @@ namespace Ensage.SDK.Menu.Views
             context.Renderer.DrawTexture(activeStyle.ArrowRight, new RectangleF(pos.X, pos.Y, styleConfig.ArrowSize.X, styleConfig.ArrowSize.Y));
         }
 
-        public Vector2 GetSize(MenuBase context)
+        public override Vector2 GetSize(MenuBase context)
         {
-            var totalSize = Vector2.Zero;
+            var totalSize = base.GetSize(context);
+
             var styleConfig = context.MenuConfig.GeneralConfig.ActiveStyle.Value.StyleConfig;
-
-            var border = styleConfig.Border;
-            totalSize.X += border.Thickness[0] + border.Thickness[2];
-            totalSize.Y += border.Thickness[1] + border.Thickness[3];
-
-            var font = styleConfig.Font;
-            var fontSize = context.Renderer.MessureText(context.Name, font.Size, font.Family);
-            totalSize.X += styleConfig.LineWidth + fontSize.X + styleConfig.ArrowSize.X + (styleConfig.TextSpacing * 3);
-
-            var height = Math.Max(fontSize.Y, styleConfig.ArrowSize.Y);
-            totalSize.Y += height;
+            totalSize.X += styleConfig.TextSpacing + styleConfig.ArrowSize.X + (styleConfig.TextSpacing * 2);
 
             if (!string.IsNullOrEmpty(context.TextureKey))
             {
                 var textureSize = context.Renderer.GetTextureSize(context.TextureKey);
-                var scale = height / textureSize.Y;
-                totalSize.X += (textureSize.X * scale) + styleConfig.TextSpacing;
+
+                totalSize.Y = Math.Max(totalSize.Y, styleConfig.ArrowSize.Y);
+
+                var scale = totalSize.Y / textureSize.Y;
+                totalSize.X += styleConfig.TextSpacing + (textureSize.X * scale);
             }
 
             return totalSize;
+
         }
 
-        public bool OnClick(MenuBase context, MouseButtons buttons, Vector2 clickPosition)
+        public override bool OnClick(MenuBase context, MouseButtons buttons, Vector2 clickPosition)
         {
             if ((buttons & MouseButtons.LeftUp) == MouseButtons.LeftUp)
             {

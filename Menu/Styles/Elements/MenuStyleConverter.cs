@@ -1,15 +1,17 @@
-﻿namespace Ensage.SDK.Menu.Styles
+﻿// <copyright file="MenuStyleConverter.cs" company="Ensage">
+//    Copyright (c) 2018 Ensage.
+// </copyright>
+
+namespace Ensage.SDK.Menu.Styles.Elements
 {
     using System;
     using System.Linq;
-    using System.Reflection;
-
-    
 
     using Newtonsoft.Json;
 
-    using PlaySharp.Toolkit.Helper;
     using NLog;
+
+    using PlaySharp.Toolkit.Helper;
 
     public class MenuStyleConverter : JsonConverter
     {

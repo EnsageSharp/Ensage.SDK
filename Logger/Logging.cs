@@ -16,6 +16,8 @@ namespace Ensage.SDK.Logger
 
     public static class Logging
     {
+        private static readonly Logger Log = LogManager.GetCurrentClassLogger();
+
         public static LoggingConfiguration Config { get; private set; }
 
         public static LoggingRule ConsoleRule { get; private set; }
@@ -26,8 +28,6 @@ namespace Ensage.SDK.Logger
 
         public static void Init()
         {
-            AppDomain.CurrentDomain.AssemblyLoad += OnAssemblyLoad;
-
             Config = new LoggingConfiguration();
 
             ConsoleTarget = new ColoredConsoleTarget();
@@ -43,42 +43,50 @@ namespace Ensage.SDK.Logger
 
             foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies().Where(x => !x.GlobalAssemblyCache))
             {
-                var metadata = assembly.GetMetadata();
-                if (metadata == null)
-                {
-                    continue;
-                }
-
-                Add(assembly, metadata, assembly.GetName().Name);
+                Add(assembly);
             }
+
+            AppDomain.CurrentDomain.AssemblyLoad += OnAssemblyLoad;
         }
 
-        private static void Add(Assembly assembly, AssemblyMetadata metadata, string @namespace)
+        private static void Add(Assembly assembly)
         {
-            Console.WriteLine($"SentryTarget({@namespace})");
+            if (assembly == null)
+            {
+                throw new ArgumentNullException(nameof(assembly));
+            }
 
-            var target = new SentryTarget(assembly, metadata);
-            var rule = new LoggingRule($"{@namespace}*", LogLevel.Trace, target) { Final = true };
+            try
+            {
+                var metadata = assembly.GetMetadata();
+                var @namespace = assembly.GetName().Name;
 
-            Targets[assembly] = target;
+                if (string.IsNullOrEmpty(metadata?.SentryKey) || string.IsNullOrEmpty(metadata?.SentryProject))
+                {
+                    Log.Info($"Skipped ({@namespace}) missing SentryKey or SentryProject");
+                    return;
+                }
 
-            Config.AddTarget(@namespace, target);
-            Config.LoggingRules.Add(rule);
+                var target = new SentryTarget(assembly, metadata);
+                var rule = new LoggingRule($"{@namespace}*", LogLevel.Trace, target) { Final = true };
 
-            LogManager.ReconfigExistingLoggers();
+                Targets[assembly] = target;
+
+                Config.AddTarget(@namespace, target);
+                Config.LoggingRules.Add(rule);
+
+                Log.Info($"SentryTarget({@namespace})");
+                LogManager.ReconfigExistingLoggers();
+            }
+            catch (Exception e)
+            {
+                Log.Error(e);
+            }
         }
 
         private static void OnAssemblyLoad(object sender, AssemblyLoadEventArgs args)
         {
-            var assembly = args.LoadedAssembly;
-            var metadata = args.LoadedAssembly.GetMetadata();
-
-            if (metadata == null)
-            {
-                return;
-            }
-
-            Add(assembly, metadata, assembly.GetName().Name);
+            Add(args.LoadedAssembly);
         }
     }
 }

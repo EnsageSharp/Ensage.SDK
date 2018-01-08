@@ -8,7 +8,7 @@ namespace Ensage.SDK.Logger
 
     public class AssemblyMetadata
     {
-        public int Build { get; internal set; }
+        public string Build { get; internal set; }
 
         public string Channel { get; internal set; }
 
@@ -16,12 +16,12 @@ namespace Ensage.SDK.Logger
 
         public Dictionary<string, string> Extra { get; } = new Dictionary<string, string>();
 
-        public int Id { get; internal set; }
+        public string Id { get; internal set; }
 
         public string SentryKey { get; internal set; }
 
         public string SentryProject { get; internal set; }
 
-        public int Version { get; internal set; }
+        public string Version { get; internal set; }
     }
 }

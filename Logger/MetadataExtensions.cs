@@ -35,7 +35,7 @@ namespace Ensage.SDK.Logger
                     switch (data.Key)
                     {
                         case "Id":
-                            metadata.Id = int.Parse(data.Value);
+                            metadata.Id = data.Value;
                             break;
 
                         case "Commit":
@@ -47,11 +47,11 @@ namespace Ensage.SDK.Logger
                             break;
 
                         case "Version":
-                            metadata.Version = int.Parse(data.Value);
+                            metadata.Version = data.Value;
                             break;
 
                         case "Build":
-                            metadata.Build = int.Parse(data.Value);
+                            metadata.Build = data.Value;
                             break;
 
                         case "SentryKey":

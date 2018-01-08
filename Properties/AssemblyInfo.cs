@@ -16,6 +16,5 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("Release")]
 #endif
 
-//[assembly: AssemblyMetadata("SENTRY_DSN", "https://d8b414df0f964a9c8f803dda0a8b6a98@sentry.ensage.io/2")]
-//[assembly: AssemblyMetadata("SentryKey", "d8b414df0f964a9c8f803dda0a8b6a98:042c04de68ec4c5cafdd9dcfe8264f3e")]
-//[assembly: AssemblyMetadata("SentryProject", "2")]
+[assembly: AssemblyMetadata("SentryKey", "d8b414df0f964a9c8f803dda0a8b6a98:042c04de68ec4c5cafdd9dcfe8264f3e")]
+[assembly: AssemblyMetadata("SentryProject", "2")]

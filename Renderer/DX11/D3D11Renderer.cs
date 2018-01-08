@@ -93,23 +93,23 @@ namespace Ensage.SDK.Renderer.DX11
             }
         }
 
-        public void DrawText(RectangleF position, string text, Color color, FontDrawFlags flags = FontDrawFlags.Left, float fontSize = 13f, string fontFamily = "Calibri")
+        public void DrawText(RectangleF position, string text, Color color, RendererFontFlags flags = RendererFontFlags.Left, float fontSize = 13f, string fontFamily = "Calibri")
         {
             var font = this.textFormatCache.GetOrCreate(fontFamily, fontSize);
             var brush = this.brushCache.GetOrCreate(color);
 
             using (var layout = new TextLayout(this.context.DirectWrite, text, font, position.Width, position.Height))
             {
-                if ((flags & FontDrawFlags.Center) == FontDrawFlags.Center)
+                if ((flags & RendererFontFlags.Center) == RendererFontFlags.Center)
                 {
                     layout.TextAlignment = TextAlignment.Center;
                 }
-                else if ((flags & FontDrawFlags.Right) == FontDrawFlags.Right)
+                else if ((flags & RendererFontFlags.Right) == RendererFontFlags.Right)
                 {
                     layout.TextAlignment = TextAlignment.Trailing;
                 }
 
-                if ((flags & FontDrawFlags.VerticalCenter) == FontDrawFlags.VerticalCenter)
+                if ((flags & RendererFontFlags.VerticalCenter) == RendererFontFlags.VerticalCenter)
                 {
                     position.Y = (position.Y + (position.Height / 2)) - (font.FontSize / 2);
                 }

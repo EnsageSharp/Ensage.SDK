@@ -649,6 +649,7 @@
     <Compile Include="Prediction\PredictionManager.cs" />
     <Compile Include="Prediction\PredictionOutput.cs" />
     <Compile Include="Prediction\PredictionSkillshotType.cs" />
+    <Compile Include="Renderer\RendererFontFlags.cs" />
     <Compile Include="Renderer\TextureNotFoundException.cs" />
     <Compile Include="Renderer\DX11\BrushCache.cs" />
     <Compile Include="Renderer\DX11\D3D11Context.cs" />

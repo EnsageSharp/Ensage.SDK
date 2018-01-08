@@ -9,6 +9,7 @@ namespace Ensage.SDK.Renderer
     using System.ComponentModel.Composition;
     using System.Linq;
 
+    using Ensage.SDK.Renderer.DX11;
     using Ensage.SDK.Renderer.Metadata;
 
     using SharpDX;
@@ -77,7 +78,7 @@ namespace Ensage.SDK.Renderer
             this.active.DrawText(position, text, color, fontSize, fontFamily);
         }
 
-        public void DrawText(RectangleF position, string text, Color color, FontDrawFlags flags = FontDrawFlags.Left, float fontSize = 13f, string fontFamily = "Calibri")
+        public void DrawText(RectangleF position, string text, Color color, RendererFontFlags flags = RendererFontFlags.Left, float fontSize = 13f, string fontFamily = "Calibri")
         {
             this.active.DrawText(position, text, color, flags, fontSize, fontFamily);
         }

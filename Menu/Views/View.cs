@@ -6,11 +6,11 @@ namespace Ensage.SDK.Menu.Views
 {
     using Ensage.SDK.Input;
     using Ensage.SDK.Menu.Entries;
+    using Ensage.SDK.Renderer;
 
     using PlaySharp.Toolkit.Extensions;
 
     using SharpDX;
-    using SharpDX.Direct3D9;
 
     using Color = System.Drawing.Color;
 
@@ -54,7 +54,7 @@ namespace Ensage.SDK.Menu.Views
             }
 
             var font = style.Font;
-            context.Renderer.DrawText(rectangleF, item.Tooltip, font.Color,  FontDrawFlags.Center | FontDrawFlags.VerticalCenter, font.Size, font.Family);
+            context.Renderer.DrawText(rectangleF, item.Tooltip, font.Color, RendererFontFlags.Center | RendererFontFlags.VerticalCenter, font.Size, font.Family);
         }
 
         public virtual Vector2 GetSize(MenuBase context)

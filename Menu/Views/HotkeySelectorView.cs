@@ -8,9 +8,9 @@ namespace Ensage.SDK.Menu.Views
     using Ensage.SDK.Menu.Attributes;
     using Ensage.SDK.Menu.Entries;
     using Ensage.SDK.Menu.Items;
+    using Ensage.SDK.Renderer;
 
     using SharpDX;
-    using SharpDX.Direct3D9;
 
     [ExportView(typeof(HotkeySelector))]
     public class HotkeySelectorView : View
@@ -46,7 +46,7 @@ namespace Ensage.SDK.Menu.Views
             rect.Right = rightSide;
             rect.Bottom = context.Position.Y + size.Y;
 
-            context.Renderer.DrawText(rect, propValue.ToString(), styleConfig.Font.Color, FontDrawFlags.Center, font.Size, font.Family);
+            context.Renderer.DrawText(rect, propValue.ToString(), styleConfig.Font.Color, RendererFontFlags.Center, font.Size, font.Family);
         }
 
         public override Vector2 GetSize(MenuBase context)

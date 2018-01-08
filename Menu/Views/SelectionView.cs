@@ -1,21 +1,19 @@
 ﻿// <copyright file="SelectionView.cs" company="Ensage">
-//    Copyright (c) 2017 Ensage.
+//    Copyright (c) 2018 Ensage.
 // </copyright>
 
 namespace Ensage.SDK.Menu.Views
 {
     using System;
-    using System.Collections.Generic;
     using System.Linq;
 
     using Ensage.SDK.Input;
     using Ensage.SDK.Menu.Attributes;
     using Ensage.SDK.Menu.Entries;
     using Ensage.SDK.Menu.Items;
+    using Ensage.SDK.Renderer;
 
     using SharpDX;
-    using SharpDX.Direct3D9;
-    using SharpDX.DirectWrite;
 
     [ExportView(typeof(Selection<>))]
     public class SelectionView : View
@@ -43,13 +41,13 @@ namespace Ensage.SDK.Menu.Views
             context.Renderer.DrawTexture(activeStyle.ArrowLeft, new RectangleF(pos.X, pos.Y, styleConfig.ArrowSize.X, styleConfig.ArrowSize.Y));
             pos.X += styleConfig.ArrowSize.X + styleConfig.TextSpacing;
 
-            var rightSide = context.Position.X + size.X - border.Thickness[2] - 10;
+            var rightSide = (context.Position.X + size.X) - border.Thickness[2] - 10;
             var rect = new RectangleF();
             rect.X = pos.X;
             rect.Y = pos.Y;
             rect.Width = item.ValueSize.X + styleConfig.TextSpacing;
             rect.Bottom = context.Position.Y + size.Y;
-            context.Renderer.DrawText(rect, propValue.Value.ToString(), styleConfig.Font.Color, FontDrawFlags.Center, font.Size, font.Family);
+            context.Renderer.DrawText(rect, propValue.Value.ToString(), styleConfig.Font.Color, RendererFontFlags.Center, font.Size, font.Family);
 
             pos.X += item.ValueSize.X + styleConfig.TextSpacing;
             context.Renderer.DrawTexture(activeStyle.ArrowRight, new RectangleF(pos.X, pos.Y, styleConfig.ArrowSize.X, styleConfig.ArrowSize.Y));

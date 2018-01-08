@@ -9,6 +9,7 @@ namespace Ensage.SDK.Renderer.DX9
     using System.ComponentModel.Composition;
 
     using Ensage.Common.Extensions;
+    using Ensage.SDK.Renderer.DX11;
     using Ensage.SDK.Renderer.Metadata;
 
     using SharpDX;
@@ -183,10 +184,10 @@ namespace Ensage.SDK.Renderer.DX9
             var font = this.fontCache.GetOrCreate(fontFamily, fontSize);
             font.DrawText(null, text, (int)position.X, (int)position.Y, new ColorBGRA(color.R, color.G, color.B, color.A));
         }
-        public void DrawText(RectangleF position, string text, Color color, FontDrawFlags flags = FontDrawFlags.Left, float fontSize = 13f, string fontFamily = "Calibri")
+        public void DrawText(RectangleF position, string text, Color color, RendererFontFlags flags = RendererFontFlags.Left, float fontSize = 13f, string fontFamily = "Calibri")
         {
             var font = this.fontCache.GetOrCreate(fontFamily, fontSize);
-            font.DrawText(null, text, position, flags, new ColorBGRA(color.R, color.G, color.B, color.A));
+            font.DrawText(null, text, position, (FontDrawFlags)flags, new ColorBGRA(color.R, color.G, color.B, color.A));
         }
 
         public void DrawTexture(string textureKey, RectangleF rect, float rotation = 0, float opacity = 1)

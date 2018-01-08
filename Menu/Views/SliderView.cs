@@ -10,10 +10,9 @@ namespace Ensage.SDK.Menu.Views
     using Ensage.SDK.Menu.Attributes;
     using Ensage.SDK.Menu.Entries;
     using Ensage.SDK.Menu.Items;
+    using Ensage.SDK.Renderer;
 
     using SharpDX;
-    using SharpDX.Direct3D9;
-    using SharpDX.DirectWrite;
 
     [ExportView(typeof(Slider))]
     public class SliderView : View
@@ -36,9 +35,8 @@ namespace Ensage.SDK.Menu.Views
             context.Renderer.DrawText(pos, context.Name, styleConfig.Font.Color, font.Size, font.Family);
 
             var propValue = item.ValueBinding.GetValue<Slider>();
-           
 
-            var rightSide = context.Position.X + size.X - border.Thickness[2];
+            var rightSide = (context.Position.X + size.X) - border.Thickness[2];
             pos.X = rightSide - item.ValueSize.X - styleConfig.TextSpacing;
 
             var rect = new RectangleF();
@@ -46,7 +44,7 @@ namespace Ensage.SDK.Menu.Views
             rect.Y = pos.Y;
             rect.Right = rightSide;
             rect.Bottom = context.Position.Y + size.Y;
-            context.Renderer.DrawText(rect, propValue.ToString(), styleConfig.Font.Color, FontDrawFlags.Right, font.Size, font.Family);
+            context.Renderer.DrawText(rect, propValue.ToString(), styleConfig.Font.Color, RendererFontFlags.Right, font.Size, font.Family);
             pos = context.Position;
             pos.X += ((float)(propValue.Value - propValue.MinValue) / (propValue.MaxValue - propValue.MinValue)) * size.X;
             context.Renderer.DrawLine(pos, pos + new Vector2(0, size.Y), styleConfig.Slider.LineColor, styleConfig.Slider.LineWidth);

@@ -134,22 +134,26 @@ namespace Ensage.SDK.Menu.Items
         private MenuHotkey hotkey;
 
         public HotkeySelector()
+            : base(false)
         {
         }
 
         public HotkeySelector(MouseButtons mouseButton, HotkeyFlags flags = HotkeyFlags.Press)
+            : base(false)
         {
             this.Hotkey = new KeyOrMouseButton(mouseButton);
             this.flags = flags;
         }
 
         public HotkeySelector(Key key, HotkeyFlags flags = HotkeyFlags.Press)
+            : base(false)
         {
             this.Hotkey = new KeyOrMouseButton(key);
             this.flags = flags;
         }
 
         public HotkeySelector(MouseButtons mouseButton, Action<MenuInputEventArgs> action, HotkeyFlags flags = HotkeyFlags.Press)
+            : base(false)
         {
             this.Hotkey = new KeyOrMouseButton(mouseButton);
             this.Action = action;
@@ -157,6 +161,7 @@ namespace Ensage.SDK.Menu.Items
         }
 
         public HotkeySelector(Key key, Action<MenuInputEventArgs> action, HotkeyFlags flags = HotkeyFlags.Press)
+            : base(false)
         {
             this.Hotkey = new KeyOrMouseButton(key);
             this.Action = action;
@@ -230,14 +235,14 @@ namespace Ensage.SDK.Menu.Items
 
         protected override void OnActivate()
         {
-            this.hotkey = this.InputManager?.RegisterHotkey(this.Hotkey, this.ExecuteAction, this.Flags);
+            this.hotkey = this.InputManager.RegisterHotkey(this.Hotkey, this.ExecuteAction, this.Flags);
         }
 
         protected override void OnDeactivate()
         {
             if (this.hotkey != null)
             {
-                this.InputManager?.UnregisterHotkey(this.hotkey);
+                this.InputManager.UnregisterHotkey(this.hotkey);
             }
         }
 

@@ -12,6 +12,7 @@ namespace Ensage.SDK.Service
 
     using NLog;
 
+    using PlaySharp.Toolkit.Helper;
     using PlaySharp.Toolkit.Helper.Annotations;
 
     public class ContextContainer<TContext> : IDisposable, IEquatable<ContextContainer<TContext>>
@@ -65,6 +66,12 @@ namespace Ensage.SDK.Service
 
             Log.Debug($"Satisfy {instance}");
             this.Container.SatisfyImportsOnce(instance);
+
+            // Activate after satisfying imports
+            if (instance is IControllable controllable)
+            {
+                controllable.Activate();
+            }
         }
 
         public void Dispose()

@@ -57,8 +57,11 @@ namespace Ensage.SDK.Menu.Views
                     var rect = new RectangleF(pos.X, pos.Y, picturePickerStyle.PictureSize.X, picturePickerStyle.PictureSize.Y);
                     context.Renderer.DrawTexture(state.Key, rect);
 
-                    var val = propValue.PictureStates.First(x => x.Key == state.Key);
-                    context.Renderer.DrawRectangle(rect, val.Value ? picturePickerStyle.SelectedColor : picturePickerStyle.Color, picturePickerStyle.LineWidth);
+                    if (propValue.Selectable)
+                    {
+                        var val = propValue.PictureStates.First(x => x.Key == state.Key);
+                        context.Renderer.DrawRectangle(rect, val.Value ? picturePickerStyle.SelectedColor : picturePickerStyle.Color, picturePickerStyle.LineWidth);
+                    }
                 }
                 else
                 {

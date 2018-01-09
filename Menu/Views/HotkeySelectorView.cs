@@ -32,13 +32,17 @@ namespace Ensage.SDK.Menu.Views
             var font = styleConfig.Font;
             context.Renderer.DrawText(pos, context.Name, styleConfig.Font.Color, font.Size, font.Family);
 
-            var rightSide = (context.Position.X + size.X) - border.Thickness[2] - 10;
+            var rightSide = (context.Position.X + size.X) - border.Thickness[2];
 
             var propValue = item.ValueBinding.GetValue<HotkeySelector>();
-            pos.X = rightSide - item.ValueSize.X;
-            context.Renderer.DrawTexture(activeStyle.Menu, new RectangleF(pos.X - 10, pos.Y, item.ValueSize.X + 20, item.ValueSize.Y));
+            pos.X = rightSide - 10 - item.ValueSize.X - 10;
 
-            pos.X = rightSide - item.ValueSize.X - styleConfig.TextSpacing;
+            var rectangleF = new RectangleF();
+            rectangleF.X = pos.X;
+            rectangleF.Y = pos.Y;
+            rectangleF.Right = rightSide;
+            rectangleF.Height = item.ValueSize.Y;
+            context.Renderer.DrawTexture(activeStyle.Menu, rectangleF);
 
             var rect = new RectangleF();
             rect.X = pos.X;
@@ -59,7 +63,7 @@ namespace Ensage.SDK.Menu.Views
 
             // get size of longest possible hotkey
             item.ValueSize = context.Renderer.MessureText(MouseButtons.XButton2Down.ToString(), font.Size, font.Family);
-            totalSize.X += styleConfig.TextSpacing + item.ValueSize.X + 20;
+            totalSize.X += styleConfig.TextSpacing + 10 + item.ValueSize.X + 10;
 
             return totalSize;
         }
@@ -72,7 +76,6 @@ namespace Ensage.SDK.Menu.Views
                 var size = context.RenderSize;
 
                 var styleConfig = context.MenuConfig.GeneralConfig.ActiveStyle.Value.StyleConfig;
-                var font = styleConfig.Font;
                 var border = styleConfig.Border;
 
                 var item = (MenuItemEntry)context;

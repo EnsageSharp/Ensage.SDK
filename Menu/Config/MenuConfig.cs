@@ -4,6 +4,8 @@
 
 namespace Ensage.SDK.Menu.Config
 {
+    using System.ComponentModel;
+
     using Ensage.SDK.Menu.Attributes;
     using Ensage.SDK.Menu.Items;
 
@@ -21,6 +23,11 @@ namespace Ensage.SDK.Menu.Config
 
         [Menu("Hacks")]
         public HackConfig HackConfig { get; set; } = new HackConfig();
+
+        [Item("PermaShow Active")]
+        [Tooltip("Toggle menu items which will be shown, even when the menu is hidden")]
+        [DefaultValue(true)]
+        public bool IsPermaShowActive { get; set; }
 
         [Item("Menu Position")]
         public Slider<Vector2> MenuPosition { get; set; } = new Slider<Vector2>(new Vector2(200, 50), new Vector2(0, 0), new Vector2(Drawing.Width - 10, Drawing.Height - 10));

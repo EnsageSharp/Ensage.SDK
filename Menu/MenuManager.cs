@@ -294,6 +294,11 @@ namespace Ensage.SDK.Menu
             var activeStyle = this.MenuConfig.GeneralConfig.ActiveStyle.Value;
             if (!this.IsVisible)
             {
+                if (!this.MenuConfig.IsPermaShowActive)
+                {
+                    return;
+                }
+
                 var permaEntries = this.permaItemEntries.ToArray();
                 if (permaEntries.Length == 0)
                 {
@@ -791,13 +796,14 @@ namespace Ensage.SDK.Menu
                 if (this.IsVisible)
                 {
                     this.dragMouseDiff = e.Position - this.Position;
+                    this.titleBarDragged = true;
                 }
-                else
+                else if (this.MenuConfig.IsPermaShowActive)
                 {
                     this.dragMouseDiff = e.Position - this.PermaPosition;
+                    this.titleBarDragged = true;
                 }
 
-                this.titleBarDragged = true;
                 return;
             }
 

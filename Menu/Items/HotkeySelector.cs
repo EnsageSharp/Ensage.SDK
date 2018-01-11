@@ -24,7 +24,6 @@ namespace Ensage.SDK.Menu.Items
 
         public KeyOrMouseButton()
         {
-
         }
 
         public KeyOrMouseButton(Key key)
@@ -212,7 +211,7 @@ namespace Ensage.SDK.Menu.Items
 
         public object Clone()
         {
-            var result = (HotkeySelector) this.MemberwiseClone();
+            var result = (HotkeySelector)this.MemberwiseClone();
             result.Hotkey = this.Hotkey;
             return result;
         }
@@ -223,6 +222,10 @@ namespace Ensage.SDK.Menu.Items
             if (this.Hotkey != other.Hotkey)
             {
                 this.Hotkey = other.Hotkey;
+                if (this.hotkey != null)
+                {
+                    this.hotkey.Hotkey = this.Hotkey;
+                }
             }
 
             return false;

@@ -365,14 +365,10 @@ namespace Ensage.SDK.Menu
             this.context.Input.MouseClick += this.OnMouseClick;
 
             // Register hotkeys if set
-            try
+            if (SandboxConfig.Config.HotKeys.TryGetValue("MenuToggle", out var toggleKey))
             {
-                this.context.Input.RegisterHotkey("Ensage.SDK.ToggleKey", (uint)SandboxConfig.MenuToggleKey, this.ToggleKey);
+                this.context.Input.RegisterHotkey("Ensage.SDK.ToggleKey", (uint)toggleKey, this.ToggleKey);
             }
-            catch (KeyNotFoundException )
-            {
-            }
-
 
             this.context.Input.KeyDown += this.MenuKeyDown;
             this.context.Input.KeyUp += this.MenuKeyUp;
@@ -571,31 +567,25 @@ namespace Ensage.SDK.Menu
 
         private void MenuKeyDown(object sender, KeyEventArgs e)
         {
-            try
+            if (SandboxConfig.Config.HotKeys.TryGetValue("Menu", out var menuKey))
             {
-                var key = KeyInterop.KeyFromVirtualKey(SandboxConfig.MenuKey);
+                var key = KeyInterop.KeyFromVirtualKey(menuKey);
                 if (e.Key == key)
                 {
                     this.IsVisible = true;
                 }
             }
-            catch (KeyNotFoundException)
-            {
-            }
         }
 
         private void MenuKeyUp(object sender, KeyEventArgs e)
         {
-            try
+            if (SandboxConfig.Config.HotKeys.TryGetValue("Menu", out var menuKey))
             {
-                var key = KeyInterop.KeyFromVirtualKey(SandboxConfig.MenuKey);
+                var key = KeyInterop.KeyFromVirtualKey(menuKey);
                 if (e.Key == key)
                 {
                     this.IsVisible = false;
                 }
-            }
-            catch (KeyNotFoundException)
-            {
             }
         }
 

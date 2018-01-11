@@ -62,18 +62,15 @@ namespace Ensage.SDK.Menu.Views
             var totalSize = base.GetSize(context);
             var styleConfig = context.MenuConfig.GeneralConfig.ActiveStyle.Value.StyleConfig;
             totalSize.X += styleConfig.TextSpacing + (styleConfig.ArrowSize.X * 2); // TODO: use own bool view style options
+            totalSize.Y = Math.Max(totalSize.Y, styleConfig.ArrowSize.Y); // border missing for y
 
             if (!string.IsNullOrEmpty(context.TextureKey))
             {
                 var textureSize = context.Renderer.GetTextureSize(context.TextureKey);
-
-                totalSize.Y = Math.Max(totalSize.Y, styleConfig.ArrowSize.Y);
-
                 var scale = totalSize.Y / textureSize.Y;
                 totalSize.X += styleConfig.TextSpacing + (textureSize.X * scale);
             }
             
-            totalSize.Y = Math.Max(totalSize.Y, styleConfig.ArrowSize.Y); // border missing for y
             return totalSize;
         }
 

@@ -4,11 +4,12 @@
 
 namespace Ensage.SDK.Menu.Config
 {
+    using Ensage.SDK.Menu.Attributes;
     using Ensage.SDK.Menu.Items;
 
     using SharpDX;
 
-    [Menu("SDKMenu"), TexureAttribute("menuStyle/logo")]
+    [Menu("SDKMenu"), TextureResource("menuStyle/logo", @"MenuStyle.logo.png")]
     public class MenuConfig
     {
         public MenuConfig()

@@ -361,7 +361,9 @@ namespace Ensage.SDK.Menu
             }
 
             var view = this.viewRepository.GetMenuView();
-            var textureAttribute = dataType.GetCustomAttribute<TexureAttribute>();
+            var textureAttribute = dataType.GetCustomAttributes(typeof(TextureAttribute), true).OfType<TextureAttribute>().FirstOrDefault();
+            textureAttribute?.Load(this.context.Renderer);
+
             var menuEntry = new MenuEntry(menuName, textureAttribute?.TextureKey, view, this.context.Renderer, this.MenuConfig, menu);
             this.VisitInstance(menuEntry, menu, menuEntry);
 
@@ -406,7 +408,6 @@ namespace Ensage.SDK.Menu
             var titleBar = this.MenuConfig.GeneralConfig.ActiveStyle.Value.StyleConfig.TitleBar;
             this.TitleBarSize = this.context.Renderer.MessureText("Menu", titleBar.Font.Size, titleBar.Font.Family)
                                 + new Vector2(titleBar.Border.Thickness[0] + titleBar.Border.Thickness[2], titleBar.Border.Thickness[1] + titleBar.Border.Thickness[3]);
-            this.context.Renderer.TextureManager.LoadFromResource("menuStyle/logo", @"MenuStyle.logo.png");
 
             this.RegisterMenu(this.MenuConfig);
 
@@ -978,7 +979,8 @@ namespace Ensage.SDK.Menu
 
                 this.context.Container.BuildUp(propertyValue);
 
-                var textureAttribute = propertyInfo.GetCustomAttribute<TexureAttribute>();
+                var textureAttribute = propertyInfo.GetCustomAttributes(typeof(TextureAttribute), true).OfType<TextureAttribute>().FirstOrDefault();
+                textureAttribute?.Load(this.context.Renderer);
 
                 var view = this.viewRepository.GetView(propertyInfo.PropertyType);
 
@@ -1044,7 +1046,10 @@ namespace Ensage.SDK.Menu
 
                 this.context.Container.BuildUp(propertyValue);
 
-                var textureAttribute = propertyInfo.GetCustomAttribute<TexureAttribute>();
+
+                var textureAttribute = propertyInfo.GetCustomAttributes(typeof(TextureAttribute), true).OfType<TextureAttribute>().FirstOrDefault();
+                textureAttribute?.Load(this.context.Renderer);
+
                 var menuItemEntry = new MenuEntry(
                     menuItemName,
                     textureAttribute?.TextureKey,

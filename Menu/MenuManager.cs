@@ -12,14 +12,13 @@ namespace Ensage.SDK.Menu
     using System.Reflection;
     using System.Windows.Input;
 
-    using Ensage.Common.Extensions;
+    using Ensage.SDK.Extensions;
     using Ensage.SDK.Helpers;
     using Ensage.SDK.Input;
     using Ensage.SDK.Menu.Attributes;
     using Ensage.SDK.Menu.Config;
     using Ensage.SDK.Menu.Entries;
     using Ensage.SDK.Menu.Items;
-    using Ensage.SDK.Menu.Styles;
     using Ensage.SDK.Menu.Styles.Elements;
     using Ensage.SDK.Service;
 
@@ -837,11 +836,17 @@ namespace Ensage.SDK.Menu
             {
                 if (this.IsVisible)
                 {
-                    this.Position = e.Position - this.dragMouseDiff;
+                    var pos = e.Position - this.dragMouseDiff;
+                    pos.X = Math.Max(this.MenuConfig.MenuPosition.MinValue.X, Math.Min(this.MenuConfig.MenuPosition.MaxValue.X, pos.X));
+                    pos.Y = Math.Max(this.MenuConfig.MenuPosition.MinValue.Y, Math.Min(this.MenuConfig.MenuPosition.MaxValue.Y, pos.Y));
+                    this.Position = pos;
                 }
                 else
                 {
-                    this.PermaPosition = e.Position - this.dragMouseDiff;
+                    var pos = e.Position - this.dragMouseDiff;
+                    pos.X = Math.Max(this.MenuConfig.PermaPosition.MinValue.X, Math.Min(this.MenuConfig.PermaPosition.MaxValue.X, pos.X));
+                    pos.Y = Math.Max(this.MenuConfig.PermaPosition.MinValue.Y, Math.Min(this.MenuConfig.PermaPosition.MaxValue.Y, pos.Y));
+                    this.PermaPosition = pos;
                 }
 
                 return;

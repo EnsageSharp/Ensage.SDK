@@ -594,7 +594,7 @@
     <Compile Include="Menu\Styles\Elements\IMenuStyle.cs" />
     <Compile Include="Menu\Styles\Elements\SliderStyle.cs" />
     <Compile Include="Menu\Styles\Elements\TitleBarStyle.cs" />
-    <Compile Include="Menu\Views\Vector2View.cs" />
+    <Compile Include="Menu\Views\SliderVector2View.cs" />
     <Compile Include="Menu\Views\BooleanView.cs" />
     <Compile Include="Menu\Styles\Elements\BorderStyle.cs" />
     <Compile Include="Menu\Attributes\ExportViewAttribute.cs" />

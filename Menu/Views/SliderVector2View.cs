@@ -1,11 +1,9 @@
-﻿// <copyright file="SliderView.cs" company="Ensage">
+﻿// <copyright file="SliderVector2View.cs" company="Ensage">
 //    Copyright (c) 2018 Ensage.
 // </copyright>
 
 namespace Ensage.SDK.Menu.Views
 {
-    using System;
-
     using Ensage.SDK.Input;
     using Ensage.SDK.Menu.Attributes;
     using Ensage.SDK.Menu.Entries;
@@ -70,12 +68,12 @@ namespace Ensage.SDK.Menu.Views
                 var size = context.RenderSize;
 
                 var item = (MenuItemEntry)context;
-                var propValue = item.ValueBinding.GetValue<ISlider<object>>();
+                var propValue = item.ValueBinding.GetValue<ISlider<Vector2>>();
 
                 var percentage = (clickPosition.X - pos.X) / size.X;
                 if (percentage >= 0 && percentage <= 1f)
                 {
-                    //propValue.Value = (int)Math.Round(percentage * (propValue.MaxValue - propValue.MinValue)) + propValue.MinValue;
+                    // propValue.Value = (int)Math.Round(percentage * (propValue.MaxValue - propValue.MinValue)) + propValue.MinValue;
                     return true;
                 }
             }

@@ -12,6 +12,8 @@ namespace Ensage.SDK.Menu.Items
     using Ensage.SDK.Menu.ValueBinding;
     using Ensage.SDK.Service;
 
+    using EnsageSharp.Sandbox;
+
     using Newtonsoft.Json;
 
     public class KeyOrMouseButton : ICloneable
@@ -274,6 +276,17 @@ namespace Ensage.SDK.Menu.Items
 
         private void NextKeyDown(object sender, KeyEventArgs e)
         {
+            var key = KeyInterop.VirtualKeyFromKey(e.Key);
+            if (SandboxConfig.Config.HotKeys.TryGetValue("Menu", out var menuKey) && menuKey == key)
+            {
+                return;
+            }
+
+            if (SandboxConfig.Config.HotKeys.TryGetValue("MenuToggle", out var toggleKey) && toggleKey == key)
+            {
+                return;
+            }
+
             this.InputManager.InputManager.KeyDown -= this.NextKeyDown;
             this.InputManager.InputManager.MouseClick -= this.NextMouseClick;
             this.IsAssigningNewHotkey = false;

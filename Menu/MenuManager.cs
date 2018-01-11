@@ -401,14 +401,14 @@ namespace Ensage.SDK.Menu
             this.MenuConfig.GeneralConfig.ActiveStyle = new Selection<IMenuStyle>(this.styleRepository.Styles.ToArray());
             this.MenuConfig.GeneralConfig.ActiveStyle.Value = this.styleRepository.DefaultMenuStyle;
 
-            this.Position = this.MenuConfig.MenuPosition.Value;
-            this.PermaPosition = this.MenuConfig.PermaPosition.Value;
-
             var titleBar = this.MenuConfig.GeneralConfig.ActiveStyle.Value.StyleConfig.TitleBar;
             this.TitleBarSize = this.context.Renderer.MessureText("Menu", titleBar.Font.Size, titleBar.Font.Family)
                                 + new Vector2(titleBar.Border.Thickness[0] + titleBar.Border.Thickness[2], titleBar.Border.Thickness[1] + titleBar.Border.Thickness[3]);
 
             this.RegisterMenu(this.MenuConfig);
+
+            this.Position = this.MenuConfig.MenuPosition.Value;
+            this.PermaPosition = this.MenuConfig.PermaPosition.Value;
 
             this.context.Renderer.Draw += this.OnDraw;
             this.context.Input.MouseMove += this.OnMouseMove;

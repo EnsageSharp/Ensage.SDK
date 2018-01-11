@@ -566,6 +566,8 @@
     <Compile Include="Menu\Config\HackConfig.cs" />
     <Compile Include="Menu\Config\MenuConfig.cs" />
     <Compile Include="Menu\Entries\DynamicMenu.cs" />
+    <Compile Include="Menu\Entries\PermaMenuItemEntry.cs" />
+    <Compile Include="Menu\Styles\Elements\PermaConfig.cs" />
     <Compile Include="Menu\Styles\Elements\TooltipStyle.cs" />
     <Compile Include="Menu\ValueBinding\ValueChangingEventArgs.cs" />
     <Compile Include="Menu\ValueBinding\ValueBinding.cs" />

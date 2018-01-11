@@ -57,6 +57,42 @@ namespace Ensage.SDK.Menu.Views
             }
         }
 
+        public override Vector2 PermaDraw(PermaMenuItemEntry context, Vector2 position)
+        {
+            var pos = position;
+            var size = context.PermaRenderSize;
+
+            var activeStyle = context.MenuConfig.GeneralConfig.ActiveStyle.Value;
+            var styleConfig = activeStyle.StyleConfig.PermaShow;
+            var border = styleConfig.Border;
+
+            context.Renderer.DrawTexture(activeStyle.Item, new RectangleF(position.X, position.Y, size.X, size.Y));
+
+            pos += new Vector2(border.Thickness[0] + styleConfig.LineWidth, border.Thickness[1]);
+
+            var font = styleConfig.Font;
+            context.Renderer.DrawText(pos, $"{context.RootMenuName} > {context.Name}", font.Color, font.Size, font.Family);
+
+            var sliderPos = Vector2.Zero;
+            sliderPos.X = (position.X + size.X) - border.Thickness[2] - styleConfig.ArrowSize.X;
+            sliderPos.Y = pos.Y;
+            context.Renderer.DrawTexture(
+                context.ValueBinding.GetValue<bool>() ? activeStyle.Checked : activeStyle.Unchecked,
+                new RectangleF(sliderPos.X, sliderPos.Y, styleConfig.ArrowSize.X, styleConfig.ArrowSize.Y));
+
+            position.Y += size.Y;
+            return position;
+        }
+
+        public override Vector2 GetPermaSize(PermaMenuItemEntry context)
+        {
+            var totalSize = base.GetPermaSize(context);
+            var styleConfig = context.MenuConfig.GeneralConfig.ActiveStyle.Value.StyleConfig;
+            totalSize.X += styleConfig.TextSpacing + styleConfig.ArrowSize.X; // TODO: use own bool view style options
+            totalSize.Y = Math.Max(totalSize.Y, styleConfig.ArrowSize.Y); // border missing for y
+            return totalSize;
+        }
+
         public override Vector2 GetSize(MenuBase context)
         {
             var totalSize = base.GetSize(context);

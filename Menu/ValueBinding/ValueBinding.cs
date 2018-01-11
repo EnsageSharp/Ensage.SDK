@@ -26,5 +26,10 @@ namespace Ensage.SDK.Menu.Entries
         public abstract T GetValue<T>();
 
         public abstract void SetValue<T>(T value);
+
+        public override string ToString()
+        {
+            return this.Name;
+        }
     }
 }

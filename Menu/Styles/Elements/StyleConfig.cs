@@ -39,6 +39,11 @@ namespace Ensage.SDK.Menu.Styles
         public float LineWidth { get; set; } = 3;
 
         /// <summary>
+        ///     Gets or sets the style for permanent shown items.
+        /// </summary>
+        public PermaConfig PermaShow { get; set; } = new PermaConfig();
+
+        /// <summary>
         ///     Gets or sets the style of <see cref="ImageToggler" /> UI element.
         /// </summary>
         public PicturePickerStyle PicturePicker { get; set; } = new PicturePickerStyle();

@@ -57,6 +57,27 @@ namespace Ensage.SDK.Menu.Views
             context.Renderer.DrawText(rectangleF, item.Tooltip, font.Color, RendererFontFlags.Center | RendererFontFlags.VerticalCenter, font.Size, font.Family);
         }
 
+        public virtual Vector2 PermaDraw(PermaMenuItemEntry context, Vector2 position)
+        {
+            return position;
+        }
+
+        public virtual Vector2 GetPermaSize(PermaMenuItemEntry context)
+        {
+            var totalSize = Vector2.Zero;
+            var styleConfig = context.MenuConfig.GeneralConfig.ActiveStyle.Value.StyleConfig.PermaShow;
+
+            var border = styleConfig.Border;
+            totalSize.X += border.Thickness[0] + border.Thickness[2];
+            totalSize.Y += border.Thickness[1] + border.Thickness[3];
+
+            var font = styleConfig.Font;
+            context.PermaTextSize = context.Renderer.MessureText($"{context.RootMenuName} > {context.Name}", font.Size, font.Family);
+            totalSize += context.PermaTextSize;
+
+            return totalSize;
+        }
+
         public virtual Vector2 GetSize(MenuBase context)
         {
             var totalSize = Vector2.Zero;

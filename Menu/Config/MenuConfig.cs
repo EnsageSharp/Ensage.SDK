@@ -27,5 +27,7 @@ namespace Ensage.SDK.Menu.Config
         public HackConfig HackConfig { get; set; } = new HackConfig();
 
         public Vector2 MenuPosition { get; set; } = new Vector2(200, 50);
+
+        public Vector2 PermaPosition { get; set; } = new Vector2(200, 50);
     }
 }

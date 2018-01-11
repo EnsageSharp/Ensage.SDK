@@ -28,13 +28,23 @@ namespace Ensage.SDK.Menu.Views
 
             context.Renderer.DrawTexture(activeStyle.Item, new RectangleF(pos.X, pos.Y, size.X, size.Y));
 
-            var font = styleConfig.Font;
-            context.Renderer.DrawText(pos + new Vector2(border.Thickness[0], border.Thickness[1]), context.Name, font.Color, font.Size, font.Family);
-
             var sliderPos = Vector2.Zero;
             sliderPos.X = (pos.X + size.X) - border.Thickness[2] - (styleConfig.ArrowSize.X * 2);
             sliderPos.Y = pos.Y + border.Thickness[1];
             context.Renderer.DrawTexture(activeStyle.Slider, new RectangleF(sliderPos.X, sliderPos.Y, styleConfig.ArrowSize.X * 2, styleConfig.ArrowSize.Y));
+
+            pos += new Vector2(border.Thickness[0] + styleConfig.LineWidth, border.Thickness[1]);
+            if (!string.IsNullOrEmpty(context.TextureKey))
+            {
+                var textureSize = context.Renderer.GetTextureSize(context.TextureKey);
+                var scale = (size.Y - border.Thickness[1] - border.Thickness[3]) / textureSize.Y;
+                textureSize *= scale;
+                context.Renderer.DrawTexture(context.TextureKey, new RectangleF(pos.X, pos.Y, textureSize.X, textureSize.Y));
+                pos.X += textureSize.X + styleConfig.TextSpacing;
+            }
+
+            var font = styleConfig.Font;
+            context.Renderer.DrawText(pos, context.Name, font.Color, font.Size, font.Family);
 
             if (item.ValueBinding.GetValue<bool>())
             {
@@ -52,6 +62,17 @@ namespace Ensage.SDK.Menu.Views
             var totalSize = base.GetSize(context);
             var styleConfig = context.MenuConfig.GeneralConfig.ActiveStyle.Value.StyleConfig;
             totalSize.X += styleConfig.TextSpacing + (styleConfig.ArrowSize.X * 2); // TODO: use own bool view style options
+
+            if (!string.IsNullOrEmpty(context.TextureKey))
+            {
+                var textureSize = context.Renderer.GetTextureSize(context.TextureKey);
+
+                totalSize.Y = Math.Max(totalSize.Y, styleConfig.ArrowSize.Y);
+
+                var scale = totalSize.Y / textureSize.Y;
+                totalSize.X += styleConfig.TextSpacing + (textureSize.X * scale);
+            }
+            
             totalSize.Y = Math.Max(totalSize.Y, styleConfig.ArrowSize.Y); // border missing for y
             return totalSize;
         }

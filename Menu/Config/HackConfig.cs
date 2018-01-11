@@ -15,7 +15,6 @@ namespace Ensage.SDK.Menu.Config
         [Item("Auto accept games")]
         [Tooltip("Auto accept games as soon as one was found")]
         [DefaultValue(true)]
-        [PermaShow]
         public bool AutoAccept
         {
             get

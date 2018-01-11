@@ -14,8 +14,8 @@ namespace Ensage.SDK.Menu.Views
 
     using SharpDX;
 
-    [ExportView(typeof(Slider<>))]
-    public class SliderView : View
+    [ExportView(typeof(Slider<Vector2>))]
+    public class SliderVector2View : View
     {
         public override void Draw(MenuBase context)
         {
@@ -34,7 +34,7 @@ namespace Ensage.SDK.Menu.Views
             var font = styleConfig.Font;
             context.Renderer.DrawText(pos, context.Name, styleConfig.Font.Color, font.Size, font.Family);
 
-            var propValue = item.ValueBinding.GetValue<ISlider>();
+            var propValue = item.ValueBinding.GetValue<ISlider<Vector2>>();
 
             var rightSide = (context.Position.X + size.X) - border.Thickness[2];
             pos.X = rightSide - item.ValueSize.X - styleConfig.TextSpacing;
@@ -44,23 +44,7 @@ namespace Ensage.SDK.Menu.Views
             rect.Y = pos.Y;
             rect.Right = rightSide;
             rect.Bottom = context.Position.Y + size.Y;
-            context.Renderer.DrawText(rect, propValue.ToString(), styleConfig.Font.Color, RendererFontFlags.Right, font.Size, font.Family);
-            pos = context.Position;
-
-            switch (propValue)
-            {
-                case ISlider<int> intSlider:
-                    pos.X += ((float)(intSlider.Value - intSlider.MinValue) / (intSlider.MaxValue - intSlider.MinValue)) * size.X;
-                    break;
-                case ISlider<float> floatSlider:
-                    pos.X += ((floatSlider.Value - floatSlider.MinValue) / (floatSlider.MaxValue - floatSlider.MinValue)) * size.X;
-                    break;
-                case ISlider<double> doubleSlider:
-                    pos.X += (float)((doubleSlider.Value - doubleSlider.MinValue) / (doubleSlider.MaxValue - doubleSlider.MinValue)) * size.X;
-                    break;
-            }
-
-            context.Renderer.DrawLine(pos, pos + new Vector2(0, size.Y), styleConfig.Slider.LineColor, styleConfig.Slider.LineWidth);
+            context.Renderer.DrawText(rect, $"<{(int)propValue.Value.X}, {(int)propValue.Value.Y}>", styleConfig.Font.Color, RendererFontFlags.Right, font.Size, font.Family);
         }
 
         public override Vector2 GetSize(MenuBase context)
@@ -69,10 +53,10 @@ namespace Ensage.SDK.Menu.Views
             var styleConfig = context.MenuConfig.GeneralConfig.ActiveStyle.Value.StyleConfig;
 
             var item = (MenuItemEntry)context;
-            var propValue = item.ValueBinding.GetValue<ISlider>();
+            var propValue = item.ValueBinding.GetValue<ISlider<Vector2>>();
 
             var font = styleConfig.Font;
-            item.ValueSize = context.Renderer.MessureText(propValue.MaxValue.ToString(), font.Size, font.Family);
+            item.ValueSize = context.Renderer.MessureText($"<{(int)propValue.MaxValue.X}, {(int)propValue.MaxValue.Y}>", font.Size, font.Family);
             totalSize.X += styleConfig.TextSpacing + item.ValueSize.X;
 
             return totalSize;
@@ -86,24 +70,12 @@ namespace Ensage.SDK.Menu.Views
                 var size = context.RenderSize;
 
                 var item = (MenuItemEntry)context;
-                var propValue = item.ValueBinding.GetValue<ISlider>();
+                var propValue = item.ValueBinding.GetValue<ISlider<object>>();
 
                 var percentage = (clickPosition.X - pos.X) / size.X;
                 if (percentage >= 0 && percentage <= 1f)
                 {
-                    switch (propValue)
-                    {
-                        case Slider<int> intSlider:
-                            intSlider.Value = (int)Math.Round(percentage * (intSlider.MaxValue - intSlider.MinValue)) + intSlider.MinValue;
-                            break;
-                        case Slider<float> floatSlider:
-                            floatSlider.Value = (int)Math.Round(percentage * (floatSlider.MaxValue - floatSlider.MinValue)) + floatSlider.MinValue;
-                            break;
-                        case Slider<double> doubleSlider:
-                            doubleSlider.Value = (int)Math.Round(percentage * (doubleSlider.MaxValue - doubleSlider.MinValue)) + doubleSlider.MinValue;
-                            break;
-                    }
-
+                    //propValue.Value = (int)Math.Round(percentage * (propValue.MaxValue - propValue.MinValue)) + propValue.MinValue;
                     return true;
                 }
             }

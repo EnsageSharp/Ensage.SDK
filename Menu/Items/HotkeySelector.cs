@@ -14,7 +14,7 @@ namespace Ensage.SDK.Menu.Items
 
     using Newtonsoft.Json;
 
-    public class KeyOrMouseButton
+    public class KeyOrMouseButton : ICloneable
     {
         [JsonIgnore]
         private Key key = Key.None;
@@ -99,6 +99,11 @@ namespace Ensage.SDK.Menu.Items
         public static bool operator !=(KeyOrMouseButton o1, KeyOrMouseButton o2)
         {
             return !(o1 == o2);
+        }
+
+        public object Clone()
+        {
+            return this.MemberwiseClone();
         }
 
         public override bool Equals(object obj)
@@ -212,7 +217,7 @@ namespace Ensage.SDK.Menu.Items
         public object Clone()
         {
             var result = (HotkeySelector)this.MemberwiseClone();
-            result.Hotkey = this.Hotkey;
+            result.Hotkey = (KeyOrMouseButton)this.Hotkey.Clone();
             return result;
         }
 
@@ -238,11 +243,13 @@ namespace Ensage.SDK.Menu.Items
 
         protected override void OnActivate()
         {
+            this.Hotkey.ValueChanging += this.HotkeyValueChanging;
             this.hotkey = this.InputManager.RegisterHotkey(this.Hotkey, this.ExecuteAction, this.Flags);
         }
 
         protected override void OnDeactivate()
         {
+            this.Hotkey.ValueChanging -= this.HotkeyValueChanging;
             if (this.hotkey != null)
             {
                 this.InputManager.UnregisterHotkey(this.hotkey);
@@ -254,6 +261,14 @@ namespace Ensage.SDK.Menu.Items
             if (!this.IsAssigningNewHotkey)
             {
                 this.Action?.Invoke(args);
+            }
+        }
+
+        private void HotkeyValueChanging(object sender, ValueChangingEventArgs<KeyOrMouseButton> e)
+        {
+            if (this.IsAssigningNewHotkey)
+            {
+                e.Process = false;
             }
         }
 

@@ -137,7 +137,6 @@ namespace Ensage.SDK.Menu.Items
 
             if (this.Values.SequenceEqual(selection.Values))
             {
-                this.Values = selection.Values;
                 this.Value = selection.Value;
                 return true;
             }

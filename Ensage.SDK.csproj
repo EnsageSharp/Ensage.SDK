@@ -567,6 +567,7 @@
     <Compile Include="Menu\Config\MenuConfig.cs" />
     <Compile Include="Menu\Entries\DynamicMenu.cs" />
     <Compile Include="Menu\Entries\PermaMenuItemEntry.cs" />
+    <Compile Include="Menu\Items\ISlider.cs" />
     <Compile Include="Menu\Styles\Elements\PermaConfig.cs" />
     <Compile Include="Menu\Styles\Elements\TooltipStyle.cs" />
     <Compile Include="Menu\ValueBinding\ValueChangingEventArgs.cs" />
@@ -590,6 +591,7 @@
     <Compile Include="Menu\Styles\Elements\IMenuStyle.cs" />
     <Compile Include="Menu\Styles\Elements\SliderStyle.cs" />
     <Compile Include="Menu\Styles\Elements\TitleBarStyle.cs" />
+    <Compile Include="Menu\Views\Vector2View.cs" />
     <Compile Include="Menu\Views\BooleanView.cs" />
     <Compile Include="Menu\Styles\Elements\BorderStyle.cs" />
     <Compile Include="Menu\Attributes\ExportViewAttribute.cs" />

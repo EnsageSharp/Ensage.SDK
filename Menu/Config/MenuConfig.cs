@@ -4,11 +4,6 @@
 
 namespace Ensage.SDK.Menu.Config
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Windows.Input;
-
-    using Ensage.SDK.Input;
     using Ensage.SDK.Menu.Items;
 
     using SharpDX;
@@ -26,8 +21,8 @@ namespace Ensage.SDK.Menu.Config
         [Menu("Hacks")]
         public HackConfig HackConfig { get; set; } = new HackConfig();
 
-        public Vector2 MenuPosition { get; set; } = new Vector2(200, 50);
+        public Slider<Vector2> MenuPosition { get; set; } = new Slider<Vector2>(new Vector2(200, 50), new Vector2(0, 0), new Vector2(Drawing.Width, Drawing.Height));
 
-        public Vector2 PermaPosition { get; set; } = new Vector2(200, 50);
+        public Slider<Vector2> PermaPosition { get; set; } = new Slider<Vector2>(new Vector2(200, 50), new Vector2(0, 0), new Vector2(Drawing.Width, Drawing.Height));
     }
 }

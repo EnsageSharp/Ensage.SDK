@@ -131,7 +131,7 @@ namespace Ensage.SDK.Menu
             {
                 this.position = value;
                 this.positionDirty = true;
-                this.MenuConfig.MenuPosition = value;
+                this.MenuConfig.MenuPosition.Value = value;
             }
         }
 
@@ -148,7 +148,7 @@ namespace Ensage.SDK.Menu
             set
             {
                 this.permaPosition = value;
-                this.MenuConfig.PermaPosition = value;
+                this.MenuConfig.PermaPosition.Value = value;
             }
         }
 
@@ -393,8 +393,8 @@ namespace Ensage.SDK.Menu
             this.MenuConfig.GeneralConfig.ActiveStyle = new Selection<IMenuStyle>(this.styleRepository.Styles.ToArray());
             this.MenuConfig.GeneralConfig.ActiveStyle.Value = this.styleRepository.DefaultMenuStyle;
 
-            this.Position = this.MenuConfig.MenuPosition;
-            this.PermaPosition = this.MenuConfig.PermaPosition;
+            this.Position = this.MenuConfig.MenuPosition.Value;
+            this.PermaPosition = this.MenuConfig.PermaPosition.Value;
 
             var titleBar = this.MenuConfig.GeneralConfig.ActiveStyle.Value.StyleConfig.TitleBar;
             this.TitleBarSize = this.context.Renderer.MessureText("Menu", titleBar.Font.Size, titleBar.Font.Family)
@@ -426,7 +426,8 @@ namespace Ensage.SDK.Menu
             Messenger<AddDynamicMenuMessage>.Unsubscribe(this.AddDynamicMenu);
             Messenger<DynamicMenuRemoveMessage>.Unsubscribe(this.DynamicMenuRemovedMessage);
 
-            this.MenuConfig.MenuPosition = this.Position;
+            this.MenuConfig.MenuPosition.Value = this.Position;
+            this.MenuConfig.PermaPosition.Value = this.PermaPosition;
 
             this.context.Renderer.Draw -= this.OnDraw;
             this.context.Input.MouseMove -= this.OnMouseMove;

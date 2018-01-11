@@ -29,6 +29,12 @@ namespace Ensage.SDK.Menu
         {
             if (type.IsGenericType)
             {
+                var view = this.Views.FirstOrDefault(e => e.Metadata.Target == type)?.Value;
+                if (view != null)
+                {
+                    return view;
+                }
+
                 return this.Views.First(e => e.Metadata.Target == type.GetGenericTypeDefinition()).Value;
             }
 

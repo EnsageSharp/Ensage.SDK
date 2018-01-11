@@ -295,6 +295,12 @@ namespace Ensage.SDK.Menu
             var activeStyle = this.MenuConfig.GeneralConfig.ActiveStyle.Value;
             if (!this.IsVisible)
             {
+                var permaEntries = this.permaItemEntries.ToArray();
+                if (permaEntries.Length == 0)
+                {
+                    return;
+                }
+
                 // Permashow
                 var permaShow = activeStyle.StyleConfig.TitleBar;
                 this.context.Renderer.DrawTexture(activeStyle.TitleBar, new RectangleF(this.PermaPosition.X, this.PermaPosition.Y, this.TitleBarSize.X, this.TitleBarSize.Y));
@@ -307,7 +313,8 @@ namespace Ensage.SDK.Menu
 
                 var p = this.PermaPosition;
                 p.Y += this.TitleBarSize.Y;
-                foreach (var permaItemEntry in this.permaItemEntries.ToArray())
+               
+                foreach (var permaItemEntry in permaEntries)
                 {
                     p = permaItemEntry.PermaDraw(p);
                 }

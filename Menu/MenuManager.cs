@@ -41,9 +41,9 @@ namespace Ensage.SDK.Menu
 
         private readonly IServiceContext context;
 
-        private readonly List<MenuEntry> rootMenus = new List<MenuEntry>();
-
         private readonly List<PermaMenuItemEntry> permaItemEntries = new List<PermaMenuItemEntry>();
+
+        private readonly List<MenuEntry> rootMenus = new List<MenuEntry>();
 
         private readonly StyleRepository styleRepository;
 
@@ -61,6 +61,8 @@ namespace Ensage.SDK.Menu
 
         private MenuSerializer menuSerializer;
 
+        private Vector2 permaPosition;
+
         private Vector2 position;
 
         private bool positionDirty;
@@ -70,8 +72,6 @@ namespace Ensage.SDK.Menu
         private bool titleBarDragged;
 
         private bool titleBarHovered;
-
-        private Vector2 permaPosition;
 
         [ImportingConstructor]
         public MenuManager([Import] IServiceContext context, [Import] ViewRepository viewRepository, [Import] StyleRepository styleRepository)
@@ -117,6 +117,23 @@ namespace Ensage.SDK.Menu
         }
 
         /// <summary>
+        ///     Gets or sets the upper left corner position of the perma menu.
+        /// </summary>
+        public Vector2 PermaPosition
+        {
+            get
+            {
+                return this.permaPosition;
+            }
+
+            set
+            {
+                this.permaPosition = value;
+                this.MenuConfig.PermaPosition.Value = value;
+            }
+        }
+
+        /// <summary>
         ///     Gets or sets the upper left corner position of the menu.
         /// </summary>
         public Vector2 Position
@@ -131,23 +148,6 @@ namespace Ensage.SDK.Menu
                 this.position = value;
                 this.positionDirty = true;
                 this.MenuConfig.MenuPosition.Value = value;
-            }
-        }
-
-        /// <summary>
-        ///     Gets or sets the upper left corner position of the perma menu.
-        /// </summary>
-        public Vector2 PermaPosition
-        {
-            get
-            {
-                return this.permaPosition;
-            }
-
-            set
-            {
-                this.permaPosition = value;
-                this.MenuConfig.PermaPosition.Value = value;
             }
         }
 
@@ -317,7 +317,7 @@ namespace Ensage.SDK.Menu
 
                 var p = this.PermaPosition;
                 p.Y += this.TitleBarSize.Y;
-               
+
                 foreach (var permaItemEntry in permaEntries)
                 {
                     p = permaItemEntry.PermaDraw(p);
@@ -480,6 +480,24 @@ namespace Ensage.SDK.Menu
             }
         }
 
+        private void CalculateMenuPermaRenderSize(IEnumerable<PermaMenuItemEntry> entries)
+        {
+            var entryList = entries.ToList();
+
+            var renderSize = Vector2.Zero;
+            foreach (var child in entryList)
+            {
+                var menuEntrySize = child.PermaSize;
+                renderSize.X = Math.Max(renderSize.X, menuEntrySize.X);
+                renderSize.Y = Math.Max(renderSize.Y, menuEntrySize.Y);
+            }
+
+            foreach (var child in entryList)
+            {
+                child.PermaRenderSize = renderSize;
+            }
+        }
+
         private void CalculateMenuRenderSize(IEnumerable<MenuBase> entries)
         {
             var entryList = entries.ToList();
@@ -501,24 +519,6 @@ namespace Ensage.SDK.Menu
             foreach (var child in entryList)
             {
                 child.RenderSize = renderSize;
-            }
-        }
-
-        private void CalculateMenuPermaRenderSize(IEnumerable<PermaMenuItemEntry> entries)
-        {
-            var entryList = entries.ToList();
-
-            var renderSize = Vector2.Zero;
-            foreach (var child in entryList)
-            {
-                var menuEntrySize = child.PermaSize;
-                renderSize.X = Math.Max(renderSize.X, menuEntrySize.X);
-                renderSize.Y = Math.Max(renderSize.Y, menuEntrySize.Y);
-            }
-
-            foreach (var child in entryList)
-            {
-                child.PermaRenderSize = renderSize;
             }
         }
 
@@ -631,11 +631,8 @@ namespace Ensage.SDK.Menu
 
             foreach (var child in menu.Children.OfType<MenuEntry>())
             {
-                var subToken = token[child.DataContext.GetType().Name];
-                if (subToken != null)
-                {
-                    this.LoadLayer(child, subToken);
-                }
+                var subToken = token?[child.DataContext.GetType().Name] ?? token?[child.Name];
+                this.LoadLayer(child, subToken);
             }
         }
 
@@ -859,7 +856,9 @@ namespace Ensage.SDK.Menu
             }
 
             // check for titlebar mouseover
-            var titleBar = this.IsVisible ? new RectangleF(this.Position.X, this.Position.Y, this.TitleBarSize.X, this.TitleBarSize.Y) : new RectangleF(this.PermaPosition.X, this.PermaPosition.Y, this.TitleBarSize.X, this.TitleBarSize.Y);
+            var titleBar = this.IsVisible
+                               ? new RectangleF(this.Position.X, this.Position.Y, this.TitleBarSize.X, this.TitleBarSize.Y)
+                               : new RectangleF(this.PermaPosition.X, this.PermaPosition.Y, this.TitleBarSize.X, this.TitleBarSize.Y);
             this.titleBarHovered = titleBar.Contains(e.Position);
 
             if (!this.IsVisible || !this.IsInsideMenu(e.Position))
@@ -1056,7 +1055,6 @@ namespace Ensage.SDK.Menu
                 }
 
                 this.context.Container.BuildUp(propertyValue);
-
 
                 var textureAttribute = propertyInfo.GetCustomAttributes(typeof(TextureAttribute), true).OfType<TextureAttribute>().FirstOrDefault();
                 textureAttribute?.Load(this.context.Renderer);

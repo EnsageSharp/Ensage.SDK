@@ -82,6 +82,22 @@ namespace Ensage.SDK.Renderer.DX11
             this.context.RenderTarget.DrawRectangle(rect, this.brushCache.GetOrCreate(color), width);
         }
 
+        public void DrawFilledRectangle(RectangleF rect, Color color, Color BackgroundColor, uint BorderWidth = 1)
+        {
+            var _Render = this.context.RenderTarget;
+            var _C2 = this.brushCache.GetOrCreate(BackgroundColor);
+
+            if (BorderWidth > 0)
+            {
+                var _C1 = this.brushCache.GetOrCreate(color);
+                for (int i = 1; i < BorderWidth + 1; i++)
+                {
+                    _Render.DrawRectangle(new RawRectangleF(rect.Left - i, rect.Top - i, rect.Right + i, rect.Bottom + i), _C1);
+                }
+            }
+            _Render.FillRectangle(rect, _C2);
+        }
+
         public void DrawText(Vector2 position, string text, Color color, float fontSize = 13f, string fontFamily = "Calibri")
         {
             var font = this.textFormatCache.GetOrCreate(fontFamily, fontSize);

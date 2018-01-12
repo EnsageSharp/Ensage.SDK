@@ -179,6 +179,48 @@ namespace Ensage.SDK.Renderer.DX9
             }
         }
 
+        public void DrawFilledRectangle(RectangleF rect, Color color, Color BackgroundColor, uint BorderWidth = 1)
+        {
+            var c = new ColorBGRA(color.R, color.G, color.B, color.A);
+            var c2 = new ColorBGRA(BackgroundColor.R, BackgroundColor.G, BackgroundColor.B, BackgroundColor.A);
+            this.line.Width = 1;
+            this.line.Begin();
+
+            try
+            {
+                if (BorderWidth > 0)
+                {
+                    List<RawVector2> _Points = new List<RawVector2>();
+                    for (uint i = 0; i < BorderWidth; i++)
+                    {
+                        _Points.Add(new RawVector2(rect.X - i, rect.Y - i));
+                        _Points.Add(new RawVector2(rect.X + rect.Width + i, rect.Y - i));
+                        _Points.Add(new RawVector2(rect.X + rect.Width + i, rect.Y + rect.Height + i));
+                        _Points.Add(new RawVector2(rect.X - i, rect.Y + rect.Height + i));
+                        _Points.Add(new RawVector2(rect.X - i, rect.Y - i));
+                    }
+                    this.line.Draw(_Points.ToArray(), c);
+                }
+
+                List<RawVector2> _Points2 = new List<RawVector2>();
+                for (int i = 1; i < rect.Height - 1; i++)
+                {
+                    _Points2.Add(new RawVector2(rect.X + 1, rect.Y + i));
+                    _Points2.Add(new RawVector2(rect.X + rect.Width, rect.Y + i));
+                    if (i % 2 == 0) _Points2.Add(new RawVector2(rect.X + rect.Width, rect.Y + i + 1));
+                    else _Points2.Add(new RawVector2(rect.X + 1, rect.Y + i + 1));
+                }
+                if ((rect.Height - 2) % 2 != 0) _Points2.Add(new RawVector2(rect.X + rect.Width, rect.Y + rect.Height - 1));
+                else _Points2.Add(new RawVector2(rect.X, rect.Y + rect.Height - 1));
+
+                this.line.Draw(_Points2.ToArray(), c2);
+            }
+            finally
+            {
+                this.line.End();
+            }
+        }
+
         public void DrawText(Vector2 position, string text, Color color, float fontSize = 13f, string fontFamily = "Calibri")
         {
             var font = this.fontCache.GetOrCreate(fontFamily, fontSize);

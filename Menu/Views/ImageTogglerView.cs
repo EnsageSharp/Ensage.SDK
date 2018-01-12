@@ -59,7 +59,8 @@ namespace Ensage.SDK.Menu.Views
 
             var item = (MenuItemEntry)context;
             var propValue = item.ValueBinding.GetValue<ImageToggler>();
-            totalSize.X += propValue.PictureStates.Count * styleConfig.PicturePicker.PictureSize.X;
+            var picturePickerStyle = styleConfig.PicturePicker;
+            totalSize.X += propValue.PictureStates.Count * (styleConfig.PicturePicker.PictureSize.X + (2 * picturePickerStyle.LineWidth));
 
             return totalSize;
         }

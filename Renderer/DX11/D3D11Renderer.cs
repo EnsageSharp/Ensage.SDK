@@ -84,17 +84,18 @@ namespace Ensage.SDK.Renderer.DX11
 
         public void DrawFilledRectangle(RectangleF rect, Color color, Color BackgroundColor, uint BorderWidth = 1)
         {
-            for (uint i = 0; i < BorderWidth; i++)
+            var _Render = this.context.RenderTarget;
+            var _C2 = this.brushCache.GetOrCreate(BackgroundColor);
+
+            if (BorderWidth > 0)
             {
-                this.context.RenderTarget.DrawLine(new Vector2(rect.X - i, rect.Y - i), new Vector2(rect.X + rect.Width + i, rect.Y - i), this.brushCache.GetOrCreate(color));
-                this.context.RenderTarget.DrawLine(new Vector2(rect.X + rect.Width + i, rect.Y - i), new Vector2(rect.X + rect.Width + i, rect.Y + rect.Height + i), this.brushCache.GetOrCreate(color));
-                this.context.RenderTarget.DrawLine(new Vector2(rect.X + rect.Width + i, rect.Y + rect.Height + i), new Vector2(rect.X - i, rect.Y + rect.Height + i), this.brushCache.GetOrCreate(color));
-                this.context.RenderTarget.DrawLine(new Vector2(rect.X - i, rect.Y + rect.Height + i), new Vector2(rect.X - i, rect.Y - i), this.brushCache.GetOrCreate(color));
+                var _C1 = this.brushCache.GetOrCreate(color);
+                for (int i = 1; i < BorderWidth + 1; i++)
+                {
+                    _Render.DrawRectangle(new RawRectangleF(rect.Left - i, rect.Top - i, rect.Right + i, rect.Bottom + i), _C1);
+                }
             }
-            for (int i = 1; i < rect.Height; i++)
-            {
-                this.context.RenderTarget.DrawLine(new Vector2(rect.X + 1, rect.Y + i), new Vector2(rect.X + rect.Width, rect.Y + i), this.brushCache.GetOrCreate(BackgroundColor));
-            }
+            _Render.FillRectangle(rect, _C2);
         }
 
         public void DrawText(Vector2 position, string text, Color color, float fontSize = 13f, string fontFamily = "Calibri")

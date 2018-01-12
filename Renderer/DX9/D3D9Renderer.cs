@@ -188,32 +188,32 @@ namespace Ensage.SDK.Renderer.DX9
 
             try
             {
-                for (uint i = 0; i < BorderWidth; i++)
+                if (BorderWidth > 0)
                 {
-                    this.line.Draw(
-                        new[]
-                        {
-                            // top left
-                            new Vector2(rect.X - i, rect.Y - i),
-                            // to top right
-                            new Vector2(rect.X + rect.Width + i, rect.Y - i),
-                            // to bottom right
-                            new Vector2(rect.X + rect.Width + i, rect.Y + rect.Height + i),
-                            // to bottom left
-                            new Vector2(rect.X - i, rect.Y + rect.Height + i),
-                            // to top left
-                            new Vector2(rect.X - i, rect.Y - i)
-                        }, c);
+                    List<RawVector2> _Points = new List<RawVector2>();
+                    for (uint i = 0; i < BorderWidth; i++)
+                    {
+                        _Points.Add(new RawVector2(rect.X - i, rect.Y - i));
+                        _Points.Add(new RawVector2(rect.X + rect.Width + i, rect.Y - i));
+                        _Points.Add(new RawVector2(rect.X + rect.Width + i, rect.Y + rect.Height + i));
+                        _Points.Add(new RawVector2(rect.X - i, rect.Y + rect.Height + i));
+                        _Points.Add(new RawVector2(rect.X - i, rect.Y - i));
+                    }
+                    this.line.Draw(_Points.ToArray(), c);
                 }
-                for (int i = 1; i < rect.Height; i++)
+
+                List<RawVector2> _Points2 = new List<RawVector2>();
+                for (int i = 1; i < rect.Height - 1; i++)
                 {
-                    this.line.Draw(
-                        new[]
-                        {
-                                new Vector2(rect.X + 1, rect.Y + i),
-                                new Vector2(rect.X + rect.Width, rect.Y + i)
-                        }, c2);
+                    _Points2.Add(new RawVector2(rect.X + 1, rect.Y + i));
+                    _Points2.Add(new RawVector2(rect.X + rect.Width, rect.Y + i));
+                    if (i % 2 == 0) _Points2.Add(new RawVector2(rect.X + rect.Width, rect.Y + i + 1));
+                    else _Points2.Add(new RawVector2(rect.X + 1, rect.Y + i + 1));
                 }
+                if ((rect.Height - 2) % 2 != 0) _Points2.Add(new RawVector2(rect.X + rect.Width, rect.Y + rect.Height - 1));
+                else _Points2.Add(new RawVector2(rect.X, rect.Y + rect.Height - 1));
+
+                this.line.Draw(_Points2.ToArray(), c2);
             }
             finally
             {

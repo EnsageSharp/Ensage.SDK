@@ -59,6 +59,8 @@ namespace Ensage.SDK.Menu
 
         private MenuBase lastHoverEntry;
 
+        private JToken loadToken;
+
         private MenuSerializer menuSerializer;
 
         private Vector2 permaPosition;
@@ -238,15 +240,15 @@ namespace Ensage.SDK.Menu
         {
             try
             {
-                var token = this.menuSerializer.Deserialize(menu);
+                this.loadToken = this.menuSerializer.Deserialize(menu);
                 var rootMenu = this.rootMenus.First(x => x.DataContext == menu);
 
                 if (rootMenu.DataContext is DynamicMenu dynamic)
                 {
-                    dynamic.LoadToken = token;
+                    dynamic.LoadToken = this.loadToken;
                 }
 
-                this.LoadLayer(rootMenu, token);
+                this.LoadLayer(rootMenu, this.loadToken);
                 return true;
             }
             catch (Exception e)
@@ -399,6 +401,7 @@ namespace Ensage.SDK.Menu
         {
             Messenger<AddDynamicMenuMessage>.Subscribe(this.AddDynamicMenu);
             Messenger<DynamicMenuRemoveMessage>.Subscribe(this.DynamicMenuRemovedMessage);
+            Messenger<UpdateMenuItemMessage>.Subscribe(this.UpdateMenuItemMessage);
 
             this.menuSerializer = new MenuSerializer(new StringEnumConverter(), new MenuStyleConverter(this.styleRepository));
 
@@ -435,6 +438,7 @@ namespace Ensage.SDK.Menu
             this.context.Input.KeyDown -= this.MenuKeyDown;
             this.context.Input.KeyUp -= this.MenuKeyUp;
 
+            Messenger<UpdateMenuItemMessage>.Unsubscribe(this.UpdateMenuItemMessage);
             Messenger<AddDynamicMenuMessage>.Unsubscribe(this.AddDynamicMenu);
             Messenger<DynamicMenuRemoveMessage>.Unsubscribe(this.DynamicMenuRemovedMessage);
 
@@ -602,31 +606,38 @@ namespace Ensage.SDK.Menu
             // TODO:
         }
 
+        private void LoadItem(MenuItemEntry item)
+        {
+            // set default value by attribute
+            var defaultValue = item.ValueBinding.GetCustomAttribute<DefaultValueAttribute>();
+            if (defaultValue != null)
+            {
+                item.Value = defaultValue.Value;
+                item.AssignDefaultValue();
+            }
+
+            var entry = item.LoadToken?[item.ValueBinding.Name];
+            if (entry != null)
+            {
+                if (item.Value is ILoadable loadable)
+                {
+                    var loaded = this.menuSerializer.ToObject(entry, item.ValueBinding.ValueType);
+                    loadable.Load(loaded);
+                }
+                else
+                {
+                    item.Value = this.menuSerializer.ToObject(entry, item.ValueBinding.ValueType);
+                }
+            }
+        }
+
         private void LoadLayer(MenuEntry menu, [CanBeNull] JToken token)
         {
+            menu.LoadToken = token;
             foreach (var child in menu.Children.OfType<MenuItemEntry>())
             {
-                // set default value by attribute
-                var defaultValue = child.ValueBinding.GetCustomAttribute<DefaultValueAttribute>();
-                if (defaultValue != null)
-                {
-                    child.Value = defaultValue.Value;
-                    child.AssignDefaultValue();
-                }
-
-                var entry = token?[child.ValueBinding.Name];
-                if (entry != null)
-                {
-                    if (child.Value is ILoadable loadable)
-                    {
-                        var loaded = this.menuSerializer.ToObject(entry, child.ValueBinding.ValueType);
-                        loadable.Load(loaded);
-                    }
-                    else
-                    {
-                        child.Value = this.menuSerializer.ToObject(entry, child.ValueBinding.ValueType);
-                    }
-                }
+                child.LoadToken = token;
+                this.LoadItem(child);
             }
 
             foreach (var child in menu.Children.OfType<MenuEntry>())
@@ -956,6 +967,56 @@ namespace Ensage.SDK.Menu
             }
 
             return entry.Position + new Vector2(0, entry.RenderSize.Y);
+        }
+
+        [CanBeNull]
+        private MenuItemEntry FindMenuItem(MenuEntry menu, object instance)
+        {
+            foreach (var menuItemEntry in menu.Children.OfType<MenuItemEntry>())
+            {
+                if (menuItemEntry.Value == instance)
+                {
+                    return menuItemEntry;
+                }
+            }
+
+            foreach (var subMenuEntry in menu.Children.OfType<MenuEntry>())
+            {
+                var result = this.FindMenuItem(subMenuEntry, instance);
+                if (result != null)
+                {
+                    return result;
+                }
+            }
+
+            return null;
+        }
+
+        [CanBeNull]
+        private MenuItemEntry FindMenuItem(object instance)
+        {
+            foreach (var menuEntry in this.rootMenus)
+            {
+                var result = this.FindMenuItem(menuEntry, instance);
+                if (result != null)
+                {
+                    return result;
+                }
+            }
+
+            return null;
+        }
+
+        private void UpdateMenuItemMessage(UpdateMenuItemMessage obj)
+        {
+            this.sizeDirty = this.positionDirty = true;
+
+            // load layer on menu item
+            var menuItem = this.FindMenuItem(obj.Instance);
+            if (menuItem != null)
+            {
+                this.LoadItem(menuItem);
+            }
         }
 
         private void VisitInstance(MenuEntry parent, object instance, MenuEntry rootMenu)

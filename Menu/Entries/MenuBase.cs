@@ -12,6 +12,8 @@ namespace Ensage.SDK.Menu
     using Ensage.SDK.Menu.Views;
     using Ensage.SDK.Renderer;
 
+    using Newtonsoft.Json.Linq;
+
     using PlaySharp.Toolkit.Helper.Annotations;
 
     using SharpDX;
@@ -32,6 +34,8 @@ namespace Ensage.SDK.Menu
             this.Renderer = renderer;
             this.DataContext = instance;
         }
+
+        public JToken LoadToken { get; set; }
 
         public object DataContext { get; }
 

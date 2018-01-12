@@ -6,8 +6,6 @@ namespace Ensage.SDK.Menu.Config
 {
     using System.ComponentModel;
 
-    using Ensage.SDK.Menu.Attributes;
-
     using Config = Ensage.Config;
 
     public class HackConfig

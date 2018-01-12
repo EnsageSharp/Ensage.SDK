@@ -179,6 +179,48 @@ namespace Ensage.SDK.Renderer.DX9
             }
         }
 
+        public void DrawFilledRectangle(RectangleF rect, Color color, Color BackgroundColor, uint BorderWidth = 1)
+        {
+            var c = new ColorBGRA(color.R, color.G, color.B, color.A);
+            var c2 = new ColorBGRA(BackgroundColor.R, BackgroundColor.G, BackgroundColor.B, BackgroundColor.A);
+            this.line.Width = 1;
+            this.line.Begin();
+
+            try
+            {
+                for (uint i = 0; i < BorderWidth; i++)
+                {
+                    this.line.Draw(
+                        new[]
+                        {
+                            // top left
+                            new Vector2(rect.X - i, rect.Y - i),
+                            // to top right
+                            new Vector2(rect.X + rect.Width + i, rect.Y - i),
+                            // to bottom right
+                            new Vector2(rect.X + rect.Width + i, rect.Y + rect.Height + i),
+                            // to bottom left
+                            new Vector2(rect.X - i, rect.Y + rect.Height + i),
+                            // to top left
+                            new Vector2(rect.X - i, rect.Y - i)
+                        }, c);
+                }
+                for (int i = 1; i < rect.Height; i++)
+                {
+                    this.line.Draw(
+                        new[]
+                        {
+                                new Vector2(rect.X + 1, rect.Y + i),
+                                new Vector2(rect.X + rect.Width, rect.Y + i)
+                        }, c2);
+                }
+            }
+            finally
+            {
+                this.line.End();
+            }
+        }
+
         public void DrawText(Vector2 position, string text, Color color, float fontSize = 13f, string fontFamily = "Calibri")
         {
             var font = this.fontCache.GetOrCreate(fontFamily, fontSize);

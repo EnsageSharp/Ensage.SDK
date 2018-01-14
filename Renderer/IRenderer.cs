@@ -26,6 +26,8 @@ namespace Ensage.SDK.Renderer
 
         void DrawRectangle(RectangleF rect, Color color, float width = 1.0f);
 
+        void DrawFilledRectangle(RectangleF rect, Color color, Color backgroundColor, float borderWidth = 1.0f);
+
         void DrawText(Vector2 position, string text, Color color, float fontSize = 13f, string fontFamily = "Calibri");
 
         void DrawText(RectangleF position, string text, Color color, RendererFontFlags flags = RendererFontFlags.Left, float fontSize = 13f, string fontFamily = "Calibri");

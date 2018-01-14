@@ -73,6 +73,11 @@ namespace Ensage.SDK.Renderer
             this.active.DrawRectangle(rect, color, width);
         }
 
+        public void DrawFilledRectangle(RectangleF rect, Color color, Color backgroundColor, float borderWidth = 1.0f)
+        {
+            this.active.DrawFilledRectangle(rect, color, backgroundColor, borderWidth);
+        }
+
         public void DrawText(Vector2 position, string text, Color color, float fontSize = 13f, string fontFamily = "Calibri")
         {
             this.active.DrawText(position, text, color, fontSize, fontFamily);

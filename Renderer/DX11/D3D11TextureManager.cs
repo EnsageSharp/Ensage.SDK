@@ -163,7 +163,8 @@ namespace Ensage.SDK.Renderer.DX11
 
             if (assembly == null)
             {
-                assembly = Assembly.GetExecutingAssembly();
+                // assembly = Assembly.GetExecutingAssembly();
+                assembly = Assembly.GetCallingAssembly();
             }
 
             var resourceFile = assembly.GetManifestResourceNames().FirstOrDefault(f => f.EndsWith(file));

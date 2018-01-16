@@ -45,13 +45,13 @@ namespace Ensage.SDK.Service
         private Lazy<IPredictionManager> predictionManager;
 
         [Import]
-        private Lazy<IRendererManager> rendererManager;
+        internal Lazy<IRendererManager> rendererManager;
 
         [Import]
         private Lazy<ITargetSelectorManager> targetSelectorManager;
 
         [Import]
-        private Lazy<MenuManager> menuManager;
+        internal Lazy<MenuManager> menuManager;
 
         public EnsageServiceContext(Unit unit)
         {

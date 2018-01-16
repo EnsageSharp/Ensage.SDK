@@ -163,7 +163,6 @@ namespace Ensage.SDK.Renderer.DX11
 
             if (assembly == null)
             {
-                // assembly = Assembly.GetExecutingAssembly();
                 assembly = Assembly.GetCallingAssembly();
             }
 

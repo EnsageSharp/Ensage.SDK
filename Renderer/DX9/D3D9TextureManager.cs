@@ -164,7 +164,6 @@ namespace Ensage.SDK.Renderer.DX9
 
             if (assembly == null)
             {
-                // assembly = Assembly.GetExecutingAssembly();
                 assembly = Assembly.GetCallingAssembly();
             }
 

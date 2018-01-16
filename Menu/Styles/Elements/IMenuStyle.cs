@@ -4,6 +4,10 @@
 
 namespace Ensage.SDK.Menu.Styles.Elements
 {
+    using System.Runtime.CompilerServices;
+
+    using Ensage.SDK.Renderer;
+
     public interface IMenuStyle
     {
         string ArrowLeft { get; }
@@ -29,6 +33,9 @@ namespace Ensage.SDK.Menu.Styles.Elements
         string TitleBar { get; }
 
         string Unchecked { get; }
+
+        [MethodImpl(MethodImplOptions.NoInlining)]
+        void LoadResources(IRendererManager renderer);
 
         string ToString();
     }

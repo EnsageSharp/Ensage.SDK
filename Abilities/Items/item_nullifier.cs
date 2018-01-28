@@ -24,6 +24,6 @@ namespace Ensage.SDK.Abilities.Items
             }
         }
 
-        public string TargetModifierName { get; } = "modifier_nullifier_mute";
+        public string TargetModifierName { get; } = "modifier_item_nullifier_mute";
     }
 }

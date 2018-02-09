@@ -21,7 +21,7 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_antimage
             }
         }
 
-        public override float BaseCastRange
+        protected override float BaseCastRange
         {
             get
             {

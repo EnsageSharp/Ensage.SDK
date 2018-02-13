@@ -134,6 +134,10 @@ namespace Ensage.SDK.Menu.Items
         public bool Load(object data)
         {
             var selection = (Selection<T>)data;
+            if (selection.Values == null)
+            {
+                return false;
+            }
 
             if (this.Values.SequenceEqual(selection.Values))
             {

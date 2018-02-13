@@ -107,6 +107,10 @@ namespace Ensage.SDK.Menu.Items
         public virtual bool Load(object data)
         {
             var selection = (ImageToggler)data;
+            if (selection.PictureStates == null)
+            {
+                return false;
+            }
 
             // if (this.PictureStates.Keys.SequenceEqual(selection.PictureStates.Keys))
             if (this.PictureStates.Keys.All(x => selection.PictureStates.ContainsKey(x)))

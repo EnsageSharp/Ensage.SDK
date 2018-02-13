@@ -89,18 +89,18 @@ namespace Ensage.SDK.Menu
             return menu;
         }
 
-        public static void Save()
-        {
-            var file = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Cache", "game", "sdk.json");
-            var data = new Dictionary<string, object>();
+        //public static void Save()
+        //{
+        //    var file = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Cache", "game", "sdk.json");
+        //    var data = new Dictionary<string, object>();
 
-            foreach (var item in Items)
-            {
-                data[item.Key] = ((dynamic)item.Value).Value;
-            }
+        //    foreach (var item in Items)
+        //    {
+        //        data[item.Key] = ((dynamic)item.Value).Value;
+        //    }
 
-            JsonFactory.ToFile(file, data);
-        }
+        //    JsonFactory.ToFile(file, data);
+        //}
 
         public void Dispose()
         {
@@ -200,7 +200,7 @@ namespace Ensage.SDK.Menu
 
         private static void OnDomainUnload(object sender, EventArgs args)
         {
-            Save();
+            //Save();
         }
 
         private void Dispose(bool disposing)

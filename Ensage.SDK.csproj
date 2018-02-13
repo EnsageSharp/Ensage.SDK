@@ -60,10 +60,10 @@
       <HintPath>C:\EnsageSharp\References\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="NLog">
-      <HintPath>C:\Program Files (x86)\Ensage\References\NLog.dll</HintPath>
+      <HintPath>..\..\..\EnsageSharp\References\NLog.dll</HintPath>
     </Reference>
     <Reference Include="PlaySharp.Sentry">
-      <HintPath>C:\Program Files (x86)\Ensage\References\PlaySharp.Sentry.dll</HintPath>
+      <HintPath>..\..\..\EnsageSharp\References\PlaySharp.Sentry.dll</HintPath>
     </Reference>
     <Reference Include="PlaySharp.Toolkit">
       <HintPath>C:\EnsageSharp\References\PlaySharp.Toolkit.dll</HintPath>
@@ -610,6 +610,7 @@
     <Compile Include="Menu\Styles\Elements\IMenuStyle.cs" />
     <Compile Include="Menu\Styles\Elements\SliderStyle.cs" />
     <Compile Include="Menu\Styles\Elements\TitleBarStyle.cs" />
+    <Compile Include="Menu\ValueBinding\ValueType.cs" />
     <Compile Include="Menu\Views\SliderVector2View.cs" />
     <Compile Include="Menu\Views\BooleanView.cs" />
     <Compile Include="Menu\Styles\Elements\BorderStyle.cs" />

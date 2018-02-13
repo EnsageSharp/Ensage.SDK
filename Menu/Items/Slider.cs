@@ -11,7 +11,7 @@ namespace Ensage.SDK.Menu.Items
 
     using SharpDX;
 
-    public class Slider<T> : ILoadable, ICloneable, ISlider<T>
+    public class Slider<T> : ILoadable, ICloneable, ISlider<T>, IEquatable<Slider<T>>
     {
         private T value;
 
@@ -91,14 +91,76 @@ namespace Ensage.SDK.Menu.Items
             }
         }
 
+        public static bool operator ==(Slider<T> left, Slider<T> right)
+        {
+            return Equals(left, right);
+        }
+
+        public static bool operator !=(Slider<T> left, Slider<T> right)
+        {
+            return !Equals(left, right);
+        }
+
         public object Clone()
         {
             return this.MemberwiseClone();
         }
 
+        public bool Equals(Slider<T> other)
+        {
+            if (ReferenceEquals(null, other))
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, other))
+            {
+                return true;
+            }
+
+            return EqualityComparer<T>.Default.Equals(this.value, other.value)
+                   && EqualityComparer<T>.Default.Equals(this.MaxValue, other.MaxValue)
+                   && EqualityComparer<T>.Default.Equals(this.MinValue, other.MinValue);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj))
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, obj))
+            {
+                return true;
+            }
+
+            if (obj.GetType() != this.GetType())
+            {
+                return false;
+            }
+
+            return this.Equals((Slider<T>)obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                var hashCode = EqualityComparer<T>.Default.GetHashCode(this.value);
+                hashCode = (hashCode * 397) ^ EqualityComparer<T>.Default.GetHashCode(this.MaxValue);
+                hashCode = (hashCode * 397) ^ EqualityComparer<T>.Default.GetHashCode(this.MinValue);
+                return hashCode;
+            }
+        }
+
         public bool Load(object data)
         {
             var slider = (ISlider<T>)data;
+            if (slider.Equals(default(T)))
+            {
+                return false;
+            }
 
             if (!EqualityComparer<T>.Default.Equals(this.Value, slider.Value)
                 && EqualityComparer<T>.Default.Equals(this.MinValue, slider.MinValue)

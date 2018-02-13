@@ -79,6 +79,8 @@ namespace Ensage.SDK.Renderer.DX9
                 {
                     return this.LoadFromStream(textureKey, bitmapStream);
                 }
+
+                throw new Exception($"Can't find Dota Texture: {file}");
             }
             catch (Exception e)
             {

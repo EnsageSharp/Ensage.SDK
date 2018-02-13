@@ -95,6 +95,16 @@ namespace Ensage.SDK.Menu.Items
 
         public static bool operator ==(KeyOrMouseButton o1, KeyOrMouseButton o2)
         {
+            if (ReferenceEquals(o1, null))
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(o2, null))
+            {
+                return false;
+            }
+
             return o1.Key == o2.Key && o1.MouseButton == o2.MouseButton;
         }
 
@@ -226,6 +236,11 @@ namespace Ensage.SDK.Menu.Items
         public bool Load(object data)
         {
             var other = (HotkeySelector)data;
+            if (other.Hotkey == null)
+            {
+                return false;
+            }
+
             if (this.Hotkey != other.Hotkey)
             {
                 this.Hotkey = other.Hotkey;

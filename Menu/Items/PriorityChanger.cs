@@ -89,6 +89,11 @@ namespace Ensage.SDK.Menu.Items
             if (base.Load(data))
             {
                 var other = (PriorityChanger)data;
+                if (other.Priorities == null)
+                {
+                    return false;
+                }
+
                 this.Selectable = other.Selectable;
 
                 // this.Priorities = other.Priorities;

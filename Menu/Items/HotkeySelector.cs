@@ -186,6 +186,8 @@ namespace Ensage.SDK.Menu.Items
 
         [JsonIgnore]
         public Action<MenuInputEventArgs> Action { get; set; }
+        
+        public event EventHandler<Key> HotkeyChanged;
 
         [JsonIgnore]
         public HotkeyFlags Flags
@@ -309,6 +311,7 @@ namespace Ensage.SDK.Menu.Items
             if (e.Key != Key.Escape)
             {
                 this.Hotkey.Key = e.Key;
+                this.HotkeyChanged?.Invoke(null, e.Key);
             }
         }
 

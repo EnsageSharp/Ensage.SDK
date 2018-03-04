@@ -387,6 +387,7 @@ namespace Ensage.SDK.Menu
         {
             try
             {
+                Log.Debug($"Saving menu {menu}");
                 this.menuSerializer.Serialize(menu);
                 return true;
             }

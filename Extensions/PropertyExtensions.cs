@@ -10,7 +10,7 @@ namespace Ensage.SDK.Extensions
 
     public static class PropertyExtensions
     {
-        public static Func<object, object> GetPropertyGetter(this PropertyInfo property, object target)
+        public static Func<object, TResult> GetPropertyGetter<TResult>(this PropertyInfo property, object target)
         {
             var targetType = target.GetType();
             var getter = property.GetMethod;
@@ -19,27 +19,27 @@ namespace Ensage.SDK.Extensions
             var targetConvert = Expression.Convert(targetParameter, targetType);
 
             var call = Expression.Call(targetConvert, getter);
-            var resultConvert = Expression.Convert(call, typeof(object));
+            var resultConvert = Expression.Convert(call, typeof(TResult));
 
-            var action = Expression.Lambda<Func<object, object>>(resultConvert, targetParameter);
+            var action = Expression.Lambda<Func<object, TResult>>(resultConvert, targetParameter);
 
             return action.Compile();
         }
 
-        public static Action<object, object> GetPropertySetter(this PropertyInfo property, object target)
+        public static Action<object, TResult> GetPropertySetter<TResult>(this PropertyInfo property, object target)
         {
             var targetType = target.GetType();
             var propertyType = property.PropertyType;
             var setter = property.SetMethod;
 
             var targetParameter = Expression.Parameter(typeof(object), "target");
-            var valueParameter = Expression.Parameter(typeof(object), "value");
+            var valueParameter = Expression.Parameter(typeof(TResult), "value");
 
             var targetConvert = Expression.Convert(targetParameter, targetType);
             var valueConvert = Expression.Convert(valueParameter, propertyType);
 
             var call = Expression.Call(targetConvert, setter, valueConvert);
-            var action = Expression.Lambda<Action<object, object>>(call, targetParameter, valueParameter);
+            var action = Expression.Lambda<Action<object, TResult>>(call, targetParameter, valueParameter);
 
             return action.Compile();
         }

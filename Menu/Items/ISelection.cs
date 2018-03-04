@@ -19,8 +19,8 @@ namespace Ensage.SDK.Menu.Items
 
     public interface ISelection<out T> : ISelection
     {
-        T Value { get; }
+        new T Value { get; }
 
-        T[] Values { get; }
+        new T[] Values { get; }
     }
 }

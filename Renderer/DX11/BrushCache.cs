@@ -1,5 +1,5 @@
 // <copyright file="BrushCache.cs" company="Ensage">
-//    Copyright (c) 2017 Ensage.
+//    Copyright (c) 2018 Ensage.
 // </copyright>
 
 namespace Ensage.SDK.Renderer.DX11
@@ -7,17 +7,13 @@ namespace Ensage.SDK.Renderer.DX11
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.Composition;
-    using System.Reflection;
-
-    
+    using System.Drawing;
+    using System.Linq;
 
     using NLog;
 
-    using SharpDX;
     using SharpDX.Direct2D1;
     using SharpDX.Mathematics.Interop;
-
-    using Color = System.Drawing.Color;
 
     [Export(typeof(BrushCache))]
     public sealed class BrushCache : Dictionary<Color, SolidColorBrush>, IDisposable
@@ -29,6 +25,7 @@ namespace Ensage.SDK.Renderer.DX11
         [ImportingConstructor]
         public BrushCache([Import] ID3D11Context context)
         {
+            Drawing.OnD3D11ResizeBuffers += this.OnResizeBuffers;
             this.Context = context;
             this.Create(Color.White);
             this.Create(Color.Black);
@@ -72,6 +69,8 @@ namespace Ensage.SDK.Renderer.DX11
                 return;
             }
 
+            Drawing.OnD3D11ResizeBuffers -= this.OnResizeBuffers;
+
             foreach (var brush in this.Values)
             {
                 if (!brush.IsDisposed)
@@ -81,6 +80,20 @@ namespace Ensage.SDK.Renderer.DX11
             }
 
             this.disposed = true;
+        }
+
+        private void OnResizeBuffers(EventArgs args)
+        {
+            Log.Debug($"Clearing BrushCache");
+            foreach (var brush in this.Values.ToArray())
+            {
+                if (!brush.IsDisposed)
+                {
+                    brush.Dispose();
+                }
+            }
+
+            this.Clear();
         }
     }
 }

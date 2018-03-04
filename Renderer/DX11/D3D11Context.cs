@@ -1,21 +1,17 @@
 // <copyright file="D3D11Context.cs" company="Ensage">
-//    Copyright (c) 2017 Ensage.
+//    Copyright (c) 2018 Ensage.
 // </copyright>
 
 namespace Ensage.SDK.Renderer.DX11
 {
     using System;
     using System.ComponentModel.Composition;
-    using System.Reflection;
     using System.Runtime.CompilerServices;
-
-    
 
     using NLog;
 
     using PlaySharp.Toolkit.Helper.Annotations;
 
-    using SharpDX;
     using SharpDX.Direct2D1;
     using SharpDX.Direct3D11;
     using SharpDX.DXGI;
@@ -38,6 +34,7 @@ namespace Ensage.SDK.Renderer.DX11
             }
 
             Drawing.OnD3D11Present += this.OnPresent;
+            Drawing.OnD3D11ResizeBuffers += this.OnResizeBuffers;
         }
 
         public event EventHandler Draw;
@@ -99,10 +96,11 @@ namespace Ensage.SDK.Renderer.DX11
         public void Dispose()
         {
             Drawing.OnD3D11Present -= this.OnPresent;
+            Drawing.OnD3D11ResizeBuffers -= this.OnResizeBuffers;
 
-            this.Direct2D1?.Dispose();
-            this.DirectWrite?.Dispose();
-            this.RenderTarget?.Dispose();
+            this.Direct2D1.Dispose();
+            this.DirectWrite.Dispose();
+            this.renderTarget?.Dispose();
         }
 
         private void OnPresent(EventArgs args)
@@ -116,6 +114,28 @@ namespace Ensage.SDK.Renderer.DX11
             finally
             {
                 this.RenderTarget.EndDraw();
+            }
+        }
+
+        private void OnResizeBuffers(EventArgs args)
+        {
+            if (this.renderTarget != null)
+            {
+                Log.Debug($"Disposing RenderTarget");
+                this.renderTarget.Dispose();
+                this.renderTarget = null;
+            }
+
+            if (this.Surface != null)
+            {
+                Log.Debug($"Disposing Surface");
+                this.Surface.Dispose();
+            }
+
+            if (this.BackBuffer != null)
+            {
+                Log.Debug($"Disposing BackBuffer");
+                this.BackBuffer.Dispose();
             }
         }
     }

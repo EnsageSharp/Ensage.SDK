@@ -84,8 +84,7 @@ namespace Ensage.SDK.Renderer.DX9
             }
             catch (Exception e)
             {
-                Console.WriteLine(e);
-                throw;
+                Log.Error(e);
             }
 
             return false;

@@ -1,10 +1,12 @@
 // <copyright file="ID3D11Context.cs" company="Ensage">
-//    Copyright (c) 2017 Ensage.
+//    Copyright (c) 2018 Ensage.
 // </copyright>
 
 namespace Ensage.SDK.Renderer.DX11
 {
     using System;
+
+    using PlaySharp.Toolkit.Helper.Annotations;
 
     using SharpDX.Direct2D1;
 

@@ -19,10 +19,10 @@ namespace Ensage.SDK.Menu.Items
 
     public interface ISlider<out T> : ISlider
     {
-        T Value { get; }
+        new T Value { get; }
 
-        T MinValue { get; }
+        new T MinValue { get; }
 
-        T MaxValue { get; }
+        new T MaxValue { get; }
     }
 }

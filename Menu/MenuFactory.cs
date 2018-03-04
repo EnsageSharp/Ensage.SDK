@@ -12,6 +12,8 @@ namespace Ensage.SDK.Menu
 
     using Ensage.Common.Menu;
 
+    using Newtonsoft.Json;
+
     using PlaySharp.Toolkit.Helper;
 
     public sealed class MenuFactory : IDisposable
@@ -26,6 +28,7 @@ namespace Ensage.SDK.Menu
             this.Target = target;
         }
 
+        [JsonIgnore]
         public MenuFactory Parent
         {
             get

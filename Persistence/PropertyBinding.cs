@@ -24,7 +24,13 @@ namespace Ensage.SDK.Persistence
                 this.Setter = (o, newValue) =>
                                   {
                                       var getter = propertyInfo.GetPropertyGetter<IValueType>(target);
-                                      getter(this.Reference.Target).Value = (object)newValue;
+                                      if (newValue is IValueType valueType)
+                                      {
+                                          getter(this.Reference.Target).Value = valueType.Value;
+                                          return;
+                                      }
+
+                                      getter(this.Reference.Target).Value = newValue;
                                   };
                 this.Getter = o =>
                                   {

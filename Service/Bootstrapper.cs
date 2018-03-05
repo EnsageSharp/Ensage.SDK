@@ -67,15 +67,8 @@ namespace Ensage.SDK.Service
         {
             try
             {
-                if (this.Context.menuManager.IsValueCreated)
-                {
-                    this.Context.MenuManager.Dispose();
-                }
-
-                if (this.Context.rendererManager.IsValueCreated)
-                {
-                    this.Context.Renderer.Dispose();
-                }
+                this.Context.MenuManager.Dispose();
+                this.Context.Renderer.Dispose();
             }
             catch (Exception e)
             {

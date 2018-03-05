@@ -9,8 +9,11 @@ namespace Ensage.SDK.Menu.ValueBinding
 
     using Ensage.SDK.Menu.Items;
 
+    using Newtonsoft.Json;
+
     public interface IValueType
     {
+        [JsonIgnore]
         Type Type { get; }
 
         object Value { get; set; }
@@ -38,6 +41,7 @@ namespace Ensage.SDK.Menu.ValueBinding
 
         public event EventHandler<ValueChangingEventArgs<T>> Changed;
 
+        [JsonIgnore]
         public Type Type { get; }
 
         public T Value

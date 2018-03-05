@@ -1,5 +1,5 @@
 ﻿// <copyright file="MenuAttribute.cs" company="Ensage">
-//    Copyright (c) 2017 Ensage.
+//    Copyright (c) 2018 Ensage.
 // </copyright>
 
 namespace Ensage.SDK.Menu
@@ -16,33 +16,4 @@ namespace Ensage.SDK.Menu
 
         public string Name { get; }
     }
-
-    // public class SDKDynamicMenu
-    // {
-    // private readonly List<MenuItem> menuItems = new List<MenuItem>();
-
-    // public bool IsDirty { get; private set; }
-
-    // public IReadOnlyCollection<MenuItem> MenuItems
-    // {
-    // get
-    // {
-    // return this.menuItems.AsReadOnly();
-    // }
-    // }
-
-    // public void AddMenuItem(MenuItem item)
-    // {
-    // this.menuItems.Add(item);
-    // this.IsDirty = true;
-    // }
-
-    // public void RemoveMenuItem(MenuItem item)
-    // {
-    // if (this.menuItems.Remove(item))
-    // {
-    // this.IsDirty = true;
-    // }
-    // }
-    // }
 }

@@ -14,7 +14,7 @@ namespace Ensage.SDK.Service.Metadata
 
         string Name { get; }
 
-        int Priority { get; }
+        int Delay { get; }
 
         HeroId[] Units { get; }
 

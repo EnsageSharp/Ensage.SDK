@@ -1,5 +1,5 @@
 // <copyright file="ContainerFactory.cs" company="Ensage">
-//    Copyright (c) 2017 Ensage.
+//    Copyright (c) 2018 Ensage.
 // </copyright>
 
 namespace Ensage.SDK.Service
@@ -11,8 +11,6 @@ namespace Ensage.SDK.Service
     using System.Reflection;
 
     using Ensage.SDK.Extensions;
-
-    
 
     using NLog;
 

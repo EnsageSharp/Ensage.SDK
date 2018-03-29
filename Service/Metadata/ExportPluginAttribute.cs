@@ -26,7 +26,7 @@ namespace Ensage.SDK.Service.Metadata
             this.Author = author;
             this.Version = version;
             this.Description = description;
-            this.Priority = priority;
+            this.Delay = priority;
             this.Units = units?.Length > 0 ? units : null;
         }
 
@@ -43,7 +43,7 @@ namespace Ensage.SDK.Service.Metadata
 
         public string Name { get; }
 
-        public int Priority { get; }
+        public int Delay { get; }
 
         public HeroId[] Units { get; }
 

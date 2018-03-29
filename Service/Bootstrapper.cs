@@ -9,11 +9,14 @@ namespace Ensage.SDK.Service
     using System.Diagnostics;
     using System.Linq;
     using System.Reflection;
+    using System.Threading;
+    using System.Threading.Tasks;
 
     using Ensage.SDK.Extensions;
     using Ensage.SDK.Helpers;
     using Ensage.SDK.Logger;
     using Ensage.SDK.Service.Metadata;
+    using Ensage.SDK.VPK;
 
     using NLog;
 
@@ -67,8 +70,15 @@ namespace Ensage.SDK.Service
         {
             try
             {
-                this.Context.MenuManager.Dispose();
-                this.Context.Renderer.Dispose();
+                if (this.Context.menuManager.IsValueCreated)
+                {
+                    this.Context.MenuManager.Dispose();
+                }
+
+                if (this.Context.rendererManager.IsValueCreated)
+                {
+                    this.Context.Renderer.Dispose();
+                }
             }
             catch (Exception e)
             {
@@ -78,18 +88,88 @@ namespace Ensage.SDK.Service
 
         private void ActivatePlugins()
         {
-            foreach (var plugin in this.PluginContainer.OrderBy(e => e.Metadata.Priority))
+            foreach (var plugin in this.PluginContainer.OrderBy(e => e.Metadata.Delay))
             {
                 if (plugin.Menu && !plugin.IsActive)
                 {
-                    UpdateManager.BeginInvoke(plugin.Activate, plugin.Metadata.Priority);
+                    UpdateManager.BeginInvoke(plugin.Activate, plugin.Metadata.Delay);
                 }
             }
         }
 
+        private async Task ActivatePluginsTask()
+        {
+            var startTime = Stopwatch.StartNew();
+            var activationTime = new Stopwatch();
+
+            var currentFrame = UpdateManager.Frame;
+            var frameTime = new Stopwatch();
+
+            foreach (var plugin in this.PluginContainer.Where(e => e.Menu && !e.IsActive).OrderBy(e => e.Metadata.Delay))
+            {
+                if (currentFrame != UpdateManager.Frame)
+                {
+                    frameTime.Restart();
+                    currentFrame = UpdateManager.Frame;
+                }
+
+                if (startTime.ElapsedMilliseconds > plugin.Metadata.Delay)
+                {
+                    activationTime.Restart();
+                    plugin.Activate();
+                    activationTime.Stop();
+
+                    Log.Info($"Activated Plugin {plugin.Metadata.Name} in {activationTime.Elapsed}");
+
+                    if (frameTime.ElapsedMilliseconds > 100)
+                    {
+                        Log.Trace($"Delaying Plugin Activation {frameTime.Elapsed}");
+                        await Task.Delay(250);
+                    }
+                }
+
+                await Task.Delay(100);
+            }
+        }
+
+        private async Task ActivateServices()
+        {
+            var actions = new Action[]
+            {
+                () =>
+                {
+                    Log.Debug($"{Thread.CurrentThread.ManagedThreadId} VpkBrowser");
+                    this.Default.Get<VpkBrowser>();
+                },
+                () =>
+                {
+                    Log.Debug($"{Thread.CurrentThread.ManagedThreadId} TextureManager");
+                    var textures = this.Context.TextureManager;
+                },
+                () =>
+                {
+                    Log.Debug($"{Thread.CurrentThread.ManagedThreadId} Renderer");
+                    var renderer = this.Context.Renderer;
+                },
+                () =>
+                {
+                    Log.Debug($"{Thread.CurrentThread.ManagedThreadId} MenuManager");
+                    var menu = this.Context.MenuManager;
+                },
+                () =>
+                {
+                    Log.Debug($"{Thread.CurrentThread.ManagedThreadId} Maps");
+                    var maps = this.Context.GetAll<Map>();
+                }
+            };
+
+            Log.Trace($"ActivateServices {Thread.CurrentThread.ManagedThreadId}");
+            await Task.WhenAll(actions.Select(Task.Run).ToArray());
+        }
+
         private void DeactivatePlugins()
         {
-            foreach (var plugin in this.PluginContainer.OrderByDescending(e => e.Metadata.Priority))
+            foreach (var plugin in this.PluginContainer.OrderByDescending(e => e.Metadata.Delay))
             {
                 try
                 {
@@ -104,7 +184,7 @@ namespace Ensage.SDK.Service
 
         private void DiscoverPlugins()
         {
-            foreach (var assembly in this.Plugins.OrderBy(e => e.Metadata.Priority))
+            foreach (var assembly in this.Plugins.OrderBy(e => e.Metadata.Delay))
             {
                 try
                 {
@@ -126,7 +206,7 @@ namespace Ensage.SDK.Service
             }
         }
 
-        private void OnBootstrap()
+        private async void OnBootstrap()
         {
             try
             {
@@ -152,16 +232,20 @@ namespace Ensage.SDK.Service
                 Log.Debug($">> Initializing Services");
                 IoC.Initialize(this.BuildUp, this.GetInstance, this.GetAllInstances);
 
-                Log.Debug($">> Searching for Plugins");
+                Log.Debug($">> Searching Plugins");
                 this.DiscoverPlugins();
-
-                UpdateManager.BeginInvoke(this.ActivatePlugins, 250);
 
                 sw.Stop();
 
                 Log.Debug("====================================================");
                 Log.Debug($">> Bootstrap completed in {sw.Elapsed}");
                 Log.Debug("====================================================");
+
+                Log.Debug($">> Activating Services");
+                await this.ActivateServices();
+
+                Log.Debug($">> Activating Plugins");
+                await this.ActivatePluginsTask();
             }
             catch (ReflectionTypeLoadException e)
             {

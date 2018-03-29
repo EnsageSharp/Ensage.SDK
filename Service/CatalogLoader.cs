@@ -38,6 +38,8 @@ namespace Ensage.SDK.Service
 
         private bool disposed;
 
+        public event EventHandler<Assembly> AssemblyLoad; 
+
         public CatalogLoader()
         {
             AppDomain.CurrentDomain.AssemblyLoad += this.OnAssemblyLoad;
@@ -83,9 +85,42 @@ namespace Ensage.SDK.Service
                 return;
             }
 
-            Log.Debug($"Create Catalog {assembly.GetName().Name}");
+            if (!this.CanLoad(assembly))
+            {
+                Log.Warn($"Failed to resolve dependencies for {name}");
+                return;
+            }
+
+            Log.Debug($"Create Catalog {name}");
             this.Catalog.Catalogs.Add(new AssemblyCatalog(assembly));
             this.LoadedAssemblies.Add(assembly);
+
+            this.AssemblyLoad?.Invoke(this, assembly);
+        }
+
+        private bool CanLoad(Assembly assemblyToLoad)
+        {
+            try
+            {
+                var assemblies = assemblyToLoad.GetReferencedAssemblies();
+
+                foreach (var name in assemblies)
+                {
+                    var assembly = AppDomain.CurrentDomain.Load(name);
+                    if (assembly == null)
+                    {
+                        return false;
+                    }
+                }
+
+                return true;
+            }
+            catch (Exception e)
+            {
+                Log.Warn(e);
+            }
+
+            return false;
         }
 
         public void Dispose()

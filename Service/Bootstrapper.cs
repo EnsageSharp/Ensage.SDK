@@ -141,21 +141,21 @@ namespace Ensage.SDK.Service
                     Log.Debug($"{Thread.CurrentThread.ManagedThreadId} VpkBrowser");
                     this.Default.Get<VpkBrowser>();
                 },
-                () =>
-                {
-                    Log.Debug($"{Thread.CurrentThread.ManagedThreadId} TextureManager");
-                    var textures = this.Context.TextureManager;
-                },
-                () =>
-                {
-                    Log.Debug($"{Thread.CurrentThread.ManagedThreadId} Renderer");
-                    var renderer = this.Context.Renderer;
-                },
-                () =>
-                {
-                    Log.Debug($"{Thread.CurrentThread.ManagedThreadId} MenuManager");
-                    var menu = this.Context.MenuManager;
-                },
+                //() =>
+                //{
+                //    Log.Debug($"{Thread.CurrentThread.ManagedThreadId} TextureManager");
+                //    var textures = this.Context.TextureManager;
+                //},
+                //() =>
+                //{
+                //    Log.Debug($"{Thread.CurrentThread.ManagedThreadId} Renderer");
+                //    var renderer = this.Context.Renderer;
+                //},
+                //() =>
+                //{
+                //    Log.Debug($"{Thread.CurrentThread.ManagedThreadId} MenuManager");
+                //    var menu = this.Context.MenuManager;
+                //},
                 () =>
                 {
                     Log.Debug($"{Thread.CurrentThread.ManagedThreadId} Maps");

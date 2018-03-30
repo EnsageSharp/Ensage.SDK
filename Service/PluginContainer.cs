@@ -11,10 +11,9 @@ namespace Ensage.SDK.Service
     using Ensage.SDK.Menu;
     using Ensage.SDK.Service.Metadata;
 
-    
+    using NLog;
 
     using PlaySharp.Toolkit.Helper;
-    using NLog;
 
     public class PluginContainer : IActivatable, IDeactivatable
     {

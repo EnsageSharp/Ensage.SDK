@@ -182,27 +182,32 @@ namespace Ensage.SDK.Service
             }
         }
 
+        private void AddPlugin(Lazy<IPluginLoader, IPluginLoaderMetadata> assembly)
+        {
+            try
+            {
+                Log.Debug($"Found {assembly.Metadata.Name}");
+
+                if (assembly.Metadata.IsSupported())
+                {
+                    this.PluginContainer.Add(new PluginContainer(this.Context.Config.Plugins.Factory, assembly));
+                }
+                else
+                {
+                    Log.Warn($"Plugin not supported {assembly.Metadata.Name}");
+                }
+            }
+            catch (Exception e)
+            {
+                Log.Error(e);
+            }
+        }
+
         private void DiscoverPlugins()
         {
             foreach (var assembly in this.Plugins.OrderBy(e => e.Metadata.Delay))
             {
-                try
-                {
-                    Log.Debug($"Found {assembly.Metadata.Name}");
-
-                    if (assembly.Metadata.IsSupported())
-                    {
-                        this.PluginContainer.Add(new PluginContainer(this.Context.Config.Plugins.Factory, assembly));
-                    }
-                    else
-                    {
-                        Log.Warn($"Plugin not supported {assembly.Metadata.Name}");
-                    }
-                }
-                catch (Exception e)
-                {
-                    Log.Error(e);
-                }
+                this.AddPlugin(assembly);
             }
         }
 
@@ -242,10 +247,14 @@ namespace Ensage.SDK.Service
                 Log.Debug("====================================================");
 
                 Log.Debug($">> Activating Services");
+                await Task.Delay(500);
                 await this.ActivateServices();
 
                 Log.Debug($">> Activating Plugins");
+                await Task.Delay(500);
                 await this.ActivatePluginsTask();
+
+                ContainerFactory.Loader.AssemblyLoad += this.OnAssemblyLoad;
             }
             catch (ReflectionTypeLoadException e)
             {
@@ -257,6 +266,14 @@ namespace Ensage.SDK.Service
             catch (Exception e)
             {
                 Log.Fatal(e);
+            }
+        }
+
+        private void OnAssemblyLoad(object sender, Assembly assembly)
+        {
+            foreach (var plugin in this.Plugins.Where(e => e.Value.GetType().Assembly == assembly))
+            {
+                this.AddPlugin(plugin);
             }
         }
 

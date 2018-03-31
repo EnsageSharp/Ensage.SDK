@@ -576,6 +576,7 @@
     <Compile Include="Logger\MetadataExtensions.cs" />
     <Compile Include="Logger\SentryTarget.cs" />
     <Compile Include="Menu\AnimationManager.cs" />
+    <Compile Include="Menu\Attributes\ConfigSaveAttribute.cs" />
     <Compile Include="Menu\Attributes\PermaShowAttribute.cs" />
     <Compile Include="Menu\Attributes\TextureAttribute.cs" />
     <Compile Include="Menu\Attributes\TextureDotaAttribute.cs" />

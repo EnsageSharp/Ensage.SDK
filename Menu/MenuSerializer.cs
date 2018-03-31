@@ -5,81 +5,18 @@
 namespace Ensage.SDK.Menu
 {
     using System;
-    using System.Collections.Generic;
     using System.IO;
-    using System.Linq;
     using System.Reflection;
+    using System.Text;
+
+    using Ensage.SDK.Menu.Attributes;
 
     using Newtonsoft.Json;
     using Newtonsoft.Json.Linq;
-    using Newtonsoft.Json.Serialization;
 
     using NLog;
 
     using PlaySharp.Toolkit.Helper.Annotations;
-
-    //public class ShouldSerializeContractResolver : DefaultContractResolver
-    //{
-    //    public static new readonly ShouldSerializeContractResolver Instance = new ShouldSerializeContractResolver();
-
-    //    // protected override JsonProperty CreateProperty(MemberInfo member, MemberSerialization memberSerialization)
-    //    // {
-    //    // var property = base.CreateProperty(member, memberSerialization);
-    //    // var serialize = member.GetCustomAttribute<ItemAttribute>() != null || member.GetCustomAttribute<MenuAttribute>() != null;
-
-    //    // bool PropertyShouldSerialize(object instance)
-    //    // {
-    //    // if (member.GetCustomAttribute<ItemAttribute>() != null || member.GetCustomAttribute<MenuAttribute>() != null)
-    //    // {
-    //    // return true;
-    //    // }
-
-    //    // return serialize;
-    //    // }
-
-    //    // property.ShouldSerialize = PropertyShouldSerialize;
-    //    // return property;
-    //    // }
-    //    //protected override IList<JsonProperty> CreateProperties(Type type, MemberSerialization memberSerialization)
-    //    //{
-    //    //    if (type.GetCustomAttribute<ItemAttribute>() != null)
-    //    //    {
-    //    //        return type.GetProperties()
-    //    //                   .Select(
-    //    //                       p => new JsonProperty()
-    //    //                                {
-    //    //                                    PropertyName = p.Name,
-    //    //                                    PropertyType = p.PropertyType,
-    //    //                                    Readable = true,
-    //    //                                    Writable = true,
-    //    //                                    ValueProvider = this.CreateMemberValueProvider(p)
-    //    //                                })
-    //    //                   .ToList();
-    //    //    }
-
-    //    //    var list = type.GetProperties()
-    //    //                   .Where(x => x.GetCustomAttributes().Any(y => y.GetType() == typeof(MenuAttribute) || y.GetType() == typeof(ItemAttribute)))
-    //    //                   .Select(
-    //    //                       p => new JsonProperty()
-    //    //                                {
-    //    //                                    PropertyName = p.Name,
-    //    //                                    PropertyType = p.PropertyType,
-    //    //                                    Readable = true,
-    //    //                                    Writable = true,
-    //    //                                    ValueProvider = this.CreateMemberValueProvider(p)
-    //    //                                })
-    //    //                   .ToList();
-
-    //    //    return list;
-    //    //}
-
-    //    //protected override List<MemberInfo> GetSerializableMembers(Type objectType)
-    //    //{
-    //    //    var members = base.GetSerializableMembers(objectType);
-    //    //    members.RemoveAll(x => x.GetCustomAttribute<MenuAttribute>() == null && x.GetCustomAttribute<ItemAttribute>() == null);
-    //    //    return members;
-    //    //}
-    //}
 
     public class MenuSerializer
     {
@@ -95,8 +32,8 @@ namespace Ensage.SDK.Menu
                                     TypeNameHandling = TypeNameHandling.Auto,
                                     Converters = converters,
                                     ReferenceLoopHandling = ReferenceLoopHandling.Ignore
-                                    //,ContractResolver = new ShouldSerializeContractResolver()
                                 };
+
             this.JsonSerializer = JsonSerializer.Create(this.Settings);
             this.ConfigDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Config", "game");
             try
@@ -142,23 +79,108 @@ namespace Ensage.SDK.Menu
 
         public void Serialize(object dataContext)
         {
+            var sb = new StringBuilder();
+            using (var sw = new StringWriter(sb))
+            {
+                using (var writer = new JsonTextWriter(sw))
+                {
+                    writer.Formatting = Formatting.Indented;
+                    writer.WriteStartObject();
+
+                    this.Serialize(writer, dataContext);
+
+                    writer.WriteEndObject();
+                }
+            }
+
             var type = dataContext.GetType();
             var assemblyName = type.Assembly.GetName().Name;
             var dir = Path.Combine(this.ConfigDirectory, assemblyName);
             var file = Path.Combine(dir, $"{type.FullName}.json");
-            var json = JsonConvert.SerializeObject(dataContext, this.Settings);
 
             if (!Directory.Exists(dir))
             {
                 Directory.CreateDirectory(dir);
             }
 
-            File.WriteAllText(file, json);
+            File.WriteAllText(file, sb.ToString());
         }
 
         public object ToObject(JToken token, Type type)
         {
             return token.ToObject(type, this.JsonSerializer);
+        }
+
+        private void Serialize(JsonWriter writer, object context)
+        {
+            var type = context.GetType();
+            var propertyInfos = type.GetProperties(BindingFlags.Instance | BindingFlags.Public);
+
+            // save menus
+            foreach (var propertyInfo in propertyInfos)
+            {
+                var propertyValue = propertyInfo.GetValue(context);
+
+                var menuAttribute = propertyInfo.GetCustomAttribute<MenuAttribute>();
+                if (menuAttribute != null)
+                {
+                    writer.WritePropertyName(propertyInfo.Name);
+                    writer.WriteStartObject();
+                    this.Serialize(writer, propertyValue);
+                    writer.WriteEndObject();
+                    continue;
+                }
+
+                var itemAttribute = propertyInfo.GetCustomAttribute<ItemAttribute>();
+                if (itemAttribute != null)
+                {
+                    writer.WritePropertyName(propertyInfo.Name);
+                    this.WritePropertyValue(writer, propertyValue);
+                    continue;
+                }
+
+                var saveAttribute = propertyInfo.GetCustomAttribute<ConfigSaveAttribute>();
+                if (saveAttribute != null)
+                {
+                    writer.WritePropertyName(propertyInfo.Name);
+                    this.WritePropertyValue(writer, propertyValue);
+                    continue;
+                }
+            }
+        }
+
+        // public void Serialize(object dataContext)
+        // {
+        // var type = dataContext.GetType();
+        // var assemblyName = type.Assembly.GetName().Name;
+        // var dir = Path.Combine(this.ConfigDirectory, assemblyName);
+        // var file = Path.Combine(dir, $"{type.FullName}.json");
+        // var json = JsonConvert.SerializeObject(dataContext, this.Settings);
+
+        // if (!Directory.Exists(dir))
+        // {
+        // Directory.CreateDirectory(dir);
+        // }
+
+        // File.WriteAllText(file, json);
+        // }
+        private void WritePropertyValue(JsonWriter writer, object propertyValue)
+        {
+            var propertyType = propertyValue.GetType();
+            if (propertyType.IsArray && propertyValue is object[] values)
+            {
+                writer.WriteStartArray();
+                foreach (var value in values)
+                {
+                    this.JsonSerializer.Serialize(writer, propertyValue);
+                }
+
+                writer.WriteEnd();
+            }
+            else
+            {
+                this.JsonSerializer.Serialize(writer, propertyValue);
+            }
         }
     }
 }

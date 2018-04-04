@@ -4,14 +4,20 @@
 
 namespace Ensage.SDK.Menu.Config
 {
+    using System.ComponentModel;
+
     using Ensage.SDK.Menu.Items;
-    using Ensage.SDK.Menu.Styles;
     using Ensage.SDK.Menu.Styles.Elements;
 
     public class GeneralConfig
     {
         [Item("Style")]
         public Selection<IMenuStyle> ActiveStyle { get; set; }
+
+        [Item("Block player inputs for KeyBinds")]
+        [Tooltip("When a assembly uses a key, dota will ignore it")]
+        [DefaultValue(false)]
+        public bool BlockKeys { get; set; }
 
         // TODO: some day
         //[Item("Animation speed")]

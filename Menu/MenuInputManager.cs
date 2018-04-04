@@ -12,10 +12,9 @@ namespace Ensage.SDK.Menu
     using System.Windows.Input;
 
     using Ensage.SDK.Input;
+    using Ensage.SDK.Menu.Config;
     using Ensage.SDK.Menu.Items;
     using Ensage.SDK.Service;
-
-    
 
     using PlaySharp.Toolkit.Helper.Annotations;
     using NLog;
@@ -101,14 +100,17 @@ namespace Ensage.SDK.Menu
 
         public readonly IInputManager InputManager;
 
+        private readonly GeneralConfig GeneralConfig;
+
         private readonly List<MenuHotkey> hotkeys = new List<MenuHotkey>();
 
         private readonly Dictionary<Key, bool> keyDownStates = new Dictionary<Key, bool>();
 
         [ImportingConstructor]
-        public MenuInputManager([Import] IInputManager inputManager)
+        public MenuInputManager([Import] IInputManager inputManager, [Import] MenuManager menuManager)
         {
             this.InputManager = inputManager;
+            this.GeneralConfig = menuManager.MenuConfig.GeneralConfig;
         }
 
         public MenuHotkey RegisterHotkey(KeyOrMouseButton key, Action<MenuInputEventArgs> action, HotkeyFlags flags = HotkeyFlags.Press)
@@ -170,6 +172,8 @@ namespace Ensage.SDK.Menu
                         break;
                     }
                 }
+
+                this.BlockKeys(e);
             }
 
             this.keyDownStates[e.Key] = true;
@@ -182,6 +186,7 @@ namespace Ensage.SDK.Menu
             var pressArgs = new MenuInputEventArgs(e.Key, HotkeyFlags.Up);
             foreach (var menuHotkey in this.hotkeys.Where(x => x.Hotkey.Key == e.Key && (x.Flags & HotkeyFlags.Up) == HotkeyFlags.Up))
             {
+                this.BlockKeys(e);
                 menuHotkey.Execute(pressArgs);
                 if (pressArgs.Handled)
                 {
@@ -254,6 +259,14 @@ namespace Ensage.SDK.Menu
                         break;
                     }
                 }
+            }
+        }
+
+        private void BlockKeys(KeyEventArgs e)
+        {
+            if (this.GeneralConfig.BlockKeys)
+            {
+                e.Process = false;
             }
         }
     }

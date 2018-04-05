@@ -12,10 +12,9 @@ namespace Ensage.SDK.Menu
     using System.Windows.Input;
 
     using Ensage.SDK.Input;
+    using Ensage.SDK.Menu.Config;
     using Ensage.SDK.Menu.Items;
     using Ensage.SDK.Service;
-
-    
 
     using PlaySharp.Toolkit.Helper.Annotations;
     using NLog;
@@ -101,14 +100,17 @@ namespace Ensage.SDK.Menu
 
         public readonly IInputManager InputManager;
 
+        private readonly GeneralConfig GeneralConfig;
+
         private readonly List<MenuHotkey> hotkeys = new List<MenuHotkey>();
 
         private readonly Dictionary<Key, bool> keyDownStates = new Dictionary<Key, bool>();
 
         [ImportingConstructor]
-        public MenuInputManager([Import] IInputManager inputManager)
+        public MenuInputManager([Import] IInputManager inputManager, [Import] MenuManager menuManager)
         {
             this.InputManager = inputManager;
+            this.GeneralConfig = menuManager.MenuConfig.GeneralConfig;
         }
 
         public MenuHotkey RegisterHotkey(KeyOrMouseButton key, Action<MenuInputEventArgs> action, HotkeyFlags flags = HotkeyFlags.Press)
@@ -170,6 +172,8 @@ namespace Ensage.SDK.Menu
                         break;
                     }
                 }
+
+                this.BlockKeys(e);
             }
 
             this.keyDownStates[e.Key] = true;
@@ -179,14 +183,20 @@ namespace Ensage.SDK.Menu
         {
             this.keyDownStates[e.Key] = false;
 
-            var pressArgs = new MenuInputEventArgs(e.Key, HotkeyFlags.Up);
-            foreach (var menuHotkey in this.hotkeys.Where(x => x.Hotkey.Key == e.Key && (x.Flags & HotkeyFlags.Up) == HotkeyFlags.Up))
+            var menuHotkeys = this.hotkeys.Where(x => x.Hotkey.Key == e.Key).ToList();
+            if (menuHotkeys.Any())
             {
-                menuHotkey.Execute(pressArgs);
-                if (pressArgs.Handled)
+                var pressArgs = new MenuInputEventArgs(e.Key, HotkeyFlags.Up);
+                foreach (var menuHotkey in menuHotkeys.Where(x => (x.Flags & HotkeyFlags.Up) == HotkeyFlags.Up))
                 {
-                    break;
+                    menuHotkey.Execute(pressArgs);
+                    if (pressArgs.Handled)
+                    {
+                        break;
+                    }
                 }
+
+                this.BlockKeys(e);
             }
         }
 
@@ -255,6 +265,16 @@ namespace Ensage.SDK.Menu
                     }
                 }
             }
+        }
+
+        private void BlockKeys(KeyEventArgs e)
+        {
+            if (!this.GeneralConfig.BlockKeys || Game.IsChatOpen)
+            {
+                return;
+            }
+
+            e.Process = false;
         }
     }
 }

@@ -183,15 +183,20 @@ namespace Ensage.SDK.Menu
         {
             this.keyDownStates[e.Key] = false;
 
-            var pressArgs = new MenuInputEventArgs(e.Key, HotkeyFlags.Up);
-            foreach (var menuHotkey in this.hotkeys.Where(x => x.Hotkey.Key == e.Key && (x.Flags & HotkeyFlags.Up) == HotkeyFlags.Up))
+            var menuHotkeys = this.hotkeys.Where(x => x.Hotkey.Key == e.Key).ToList();
+            if (menuHotkeys.Any())
             {
-                this.BlockKeys(e);
-                menuHotkey.Execute(pressArgs);
-                if (pressArgs.Handled)
+                var pressArgs = new MenuInputEventArgs(e.Key, HotkeyFlags.Up);
+                foreach (var menuHotkey in menuHotkeys.Where(x => (x.Flags & HotkeyFlags.Up) == HotkeyFlags.Up))
                 {
-                    break;
+                    menuHotkey.Execute(pressArgs);
+                    if (pressArgs.Handled)
+                    {
+                        break;
+                    }
                 }
+
+                this.BlockKeys(e);
             }
         }
 

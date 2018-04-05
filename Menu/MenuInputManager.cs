@@ -264,10 +264,12 @@ namespace Ensage.SDK.Menu
 
         private void BlockKeys(KeyEventArgs e)
         {
-            if (this.GeneralConfig.BlockKeys)
+            if (!this.GeneralConfig.BlockKeys || Game.IsChatOpen)
             {
-                e.Process = false;
+                return;
             }
+
+            e.Process = false;
         }
     }
 }

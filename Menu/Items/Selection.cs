@@ -49,7 +49,14 @@ namespace Ensage.SDK.Menu.Items
 
             set
             {
-                this.SelectedIndex = Array.IndexOf(this.Values, value);
+                var selected = Array.IndexOf(this.Values, value);
+                if (this.SelectedIndex == selected)
+                {
+                    return;
+                }
+
+                this.SelectedIndex = selected;
+                this.OnValueChanged(this.Values[selected]);
             }
         }
 

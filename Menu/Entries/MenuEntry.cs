@@ -4,10 +4,8 @@
 
 namespace Ensage.SDK.Menu.Entries
 {
-    using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Reflection;
 
     using Ensage.SDK.Input;
     using Ensage.SDK.Menu.Config;

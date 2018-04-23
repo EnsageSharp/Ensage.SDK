@@ -1029,7 +1029,9 @@ namespace Ensage.SDK.Menu
         private void VisitItem(MenuEntry parent, object instance, MenuEntry rootMenu)
         {
             var type = instance.GetType();
-            foreach (var propertyInfo in type.GetProperties(BindingFlags.Instance | BindingFlags.Public))
+            foreach (var propertyInfo in type.GetProperties(BindingFlags.Instance | BindingFlags.Public)
+                                             .OrderBy(x => x.GetCustomAttribute<OrderAttribute>()?.OrderNumber)
+                                             .ToArray())
             {
                 var menuItemAttribute = propertyInfo.GetCustomAttribute<ItemAttribute>();
                 if (menuItemAttribute == null)
@@ -1096,7 +1098,9 @@ namespace Ensage.SDK.Menu
         private void VisitMenu(MenuEntry parent, object instance, MenuEntry rootMenu)
         {
             var type = instance.GetType();
-            foreach (var propertyInfo in type.GetProperties(BindingFlags.Instance | BindingFlags.Public))
+            foreach (var propertyInfo in type.GetProperties(BindingFlags.Instance | BindingFlags.Public)
+                                             .OrderBy(x => x.GetCustomAttribute<OrderAttribute>()?.OrderNumber)
+                                             .ToArray())
             {
                 var menuAttribute = propertyInfo.GetCustomAttribute<MenuAttribute>();
                 if (menuAttribute == null)

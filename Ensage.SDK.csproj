@@ -60,10 +60,10 @@
       <HintPath>C:\EnsageSharp\References\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="NLog">
-      <HintPath>..\..\..\EnsageSharp\References\NLog.dll</HintPath>
+      <HintPath>..\..\..\..\EnsageSharp\References\NLog.dll</HintPath>
     </Reference>
     <Reference Include="PlaySharp.Sentry">
-      <HintPath>..\..\..\EnsageSharp\References\PlaySharp.Sentry.dll</HintPath>
+      <HintPath>..\..\..\..\EnsageSharp\References\PlaySharp.Sentry.dll</HintPath>
     </Reference>
     <Reference Include="PlaySharp.Toolkit">
       <HintPath>C:\EnsageSharp\References\PlaySharp.Toolkit.dll</HintPath>
@@ -577,6 +577,7 @@
     <Compile Include="Logger\SentryTarget.cs" />
     <Compile Include="Menu\AnimationManager.cs" />
     <Compile Include="Menu\Attributes\ConfigSaveAttribute.cs" />
+    <Compile Include="Menu\Attributes\OrderAttribute.cs" />
     <Compile Include="Menu\Attributes\PermaShowAttribute.cs" />
     <Compile Include="Menu\Attributes\TextureAttribute.cs" />
     <Compile Include="Menu\Attributes\TextureDotaAttribute.cs" />

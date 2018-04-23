@@ -371,6 +371,7 @@ namespace Ensage.SDK.Menu
             textureAttribute?.Load(this.context.Renderer);
 
             var menuEntry = new MenuEntry(menuName, textureAttribute?.TextureKey, view, this.context.Renderer, this.MenuConfig, menu);
+            menuEntry.IsVisible = true;
             this.VisitInstance(menuEntry, menu, menuEntry);
 
             this.rootMenus.Add(menuEntry);
@@ -1029,7 +1030,9 @@ namespace Ensage.SDK.Menu
         private void VisitItem(MenuEntry parent, object instance, MenuEntry rootMenu)
         {
             var type = instance.GetType();
-            foreach (var propertyInfo in type.GetProperties(BindingFlags.Instance | BindingFlags.Public))
+            foreach (var propertyInfo in type.GetProperties(BindingFlags.Instance | BindingFlags.Public)
+                                             .OrderBy(x => x.GetCustomAttribute<OrderAttribute>()?.OrderNumber)
+                                             .ToArray())
             {
                 var menuItemAttribute = propertyInfo.GetCustomAttribute<ItemAttribute>();
                 if (menuItemAttribute == null)
@@ -1096,7 +1099,9 @@ namespace Ensage.SDK.Menu
         private void VisitMenu(MenuEntry parent, object instance, MenuEntry rootMenu)
         {
             var type = instance.GetType();
-            foreach (var propertyInfo in type.GetProperties(BindingFlags.Instance | BindingFlags.Public))
+            foreach (var propertyInfo in type.GetProperties(BindingFlags.Instance | BindingFlags.Public)
+                                             .OrderBy(x => x.GetCustomAttribute<OrderAttribute>()?.OrderNumber)
+                                             .ToArray())
             {
                 var menuAttribute = propertyInfo.GetCustomAttribute<MenuAttribute>();
                 if (menuAttribute == null)

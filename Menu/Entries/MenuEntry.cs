@@ -22,7 +22,7 @@ namespace Ensage.SDK.Menu.Entries
 
         private bool isCollapsed = true;
 
-        private bool isVisible = true;
+        private bool isVisible;
 
         public MenuEntry(string name, View view, IRenderer renderer, MenuConfig menuConfig, object instance)
             : base(name, view, renderer, menuConfig, instance)
@@ -69,7 +69,7 @@ namespace Ensage.SDK.Menu.Entries
                 return this.isVisible;
             }
 
-            private set
+            internal set
             {
                 this.isVisible = value;
                 foreach (var menuEntry in this.children.OfType<MenuEntry>())

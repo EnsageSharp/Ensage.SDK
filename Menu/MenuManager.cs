@@ -371,6 +371,7 @@ namespace Ensage.SDK.Menu
             textureAttribute?.Load(this.context.Renderer);
 
             var menuEntry = new MenuEntry(menuName, textureAttribute?.TextureKey, view, this.context.Renderer, this.MenuConfig, menu);
+            menuEntry.IsVisible = true;
             this.VisitInstance(menuEntry, menu, menuEntry);
 
             this.rootMenus.Add(menuEntry);

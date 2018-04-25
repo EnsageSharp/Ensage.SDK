@@ -1030,9 +1030,8 @@ namespace Ensage.SDK.Menu
         private void VisitItem(MenuEntry parent, object instance, MenuEntry rootMenu)
         {
             var type = instance.GetType();
-            foreach (var propertyInfo in type.GetProperties(BindingFlags.Instance | BindingFlags.Public)
-                                             .OrderBy(x => x.GetCustomAttribute<OrderAttribute>()?.OrderNumber)
-                                             .ToArray())
+            var propertyInfos = type.GetProperties(BindingFlags.Instance | BindingFlags.Public);
+            foreach (var propertyInfo in propertyInfos.OrderBy(x => this.Order(propertyInfos, x)).ToArray())
             {
                 var menuItemAttribute = propertyInfo.GetCustomAttribute<ItemAttribute>();
                 if (menuItemAttribute == null)
@@ -1099,9 +1098,8 @@ namespace Ensage.SDK.Menu
         private void VisitMenu(MenuEntry parent, object instance, MenuEntry rootMenu)
         {
             var type = instance.GetType();
-            foreach (var propertyInfo in type.GetProperties(BindingFlags.Instance | BindingFlags.Public)
-                                             .OrderBy(x => x.GetCustomAttribute<OrderAttribute>()?.OrderNumber)
-                                             .ToArray())
+            var propertyInfos = type.GetProperties(BindingFlags.Instance | BindingFlags.Public);
+            foreach (var propertyInfo in propertyInfos.OrderBy(x => this.Order(propertyInfos, x)).ToArray())
             {
                 var menuAttribute = propertyInfo.GetCustomAttribute<MenuAttribute>();
                 if (menuAttribute == null)
@@ -1137,6 +1135,17 @@ namespace Ensage.SDK.Menu
 
                 parent.AddChild(menuItemEntry);
             }
+        }
+
+        private int Order(PropertyInfo[] propertyInfos, PropertyInfo propertyInfo)
+        {
+            var orderAttribute = propertyInfo.GetCustomAttribute<OrderAttribute>();
+            if (orderAttribute != null)
+            {
+                return orderAttribute.OrderNumber;
+            }
+
+            return Array.IndexOf(propertyInfos, propertyInfo);
         }
     }
 }

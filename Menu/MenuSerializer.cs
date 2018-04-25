@@ -124,7 +124,7 @@ namespace Ensage.SDK.Menu
                 var menuAttribute = propertyInfo.GetCustomAttribute<MenuAttribute>();
                 if (menuAttribute != null)
                 {
-                    writer.WritePropertyName(propertyInfo.Name);
+                    writer.WritePropertyName(propertyValue.GetType().Name);
                     writer.WriteStartObject();
                     this.Serialize(writer, propertyValue);
                     writer.WriteEndObject();

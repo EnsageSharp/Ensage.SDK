@@ -1,5 +1,5 @@
 ﻿// <copyright file="CreepInfo.cs" company="Ensage">
-//    Copyright (c) 2017 Ensage.
+//    Copyright (c) 2018 Ensage.
 // </copyright>
 
 namespace Ensage.SDK.Helpers
@@ -424,8 +424,7 @@ namespace Ensage.SDK.Helpers
             {
                 foreach (var creepWave in group)
                 {
-                    var merge = group.FirstOrDefault(x => !x.Equals(creepWave) && x.Position.Distance(creepWave.Position) < 500);
-
+                    var merge = group.FirstOrDefault(x => !x.Equals(creepWave) && x.Lane == creepWave.Lane && x.Position.Distance(creepWave.Position) < 500);
                     if (merge != null)
                     {
                         merge.Creeps.ForEach(x => creepWave.AddCreep(x));

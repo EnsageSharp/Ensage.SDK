@@ -419,18 +419,12 @@ namespace Ensage.SDK.Helpers
         private void OnUpdate()
         {
             // Merge existing waves
-            var groups = this.CreepWaves.Where(x => x.IsSpawned).GroupBy(x => x.Team).ToList();
+            var groups = this.CreepWaves.Where(x => x.IsSpawned && !x.Position.IsZero).GroupBy(x => x.Team).ToList();
             foreach (var group in groups)
             {
                 foreach (var creepWave in group)
                 {
-                    var pos = creepWave.Position;
-                    if (pos.IsZero)
-                    {
-                        continue;
-                    }
-
-                    var merge = group.FirstOrDefault(x => !x.Equals(creepWave) && x.Position.Distance(pos) < 500);
+                    var merge = group.FirstOrDefault(x => !x.Equals(creepWave) && x.Position.Distance(creepWave.Position) < 500);
                     if (merge != null)
                     {
                         merge.Creeps.ForEach(x => creepWave.AddCreep(x));

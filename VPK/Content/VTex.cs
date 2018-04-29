@@ -92,71 +92,71 @@ namespace Ensage.SDK.VPK.Content
             // TODO: ...
             reader.BaseStream.Position = this.Data;
 
-            switch (Format)
+            switch (this.Format)
             {
                 case VTexFormat.IMAGE_FORMAT_PNG:
                     this.DataStream = new MemoryStream(reader.ReadBytes((int)reader.BaseStream.Length));
                     break;
 
                 case VTexFormat.IMAGE_FORMAT_RGBA8888:
-                    for (ushort i = 0; i < Depth && i < 0xFF; ++i)
+                    for (ushort i = 0; i < this.Depth && i < 0xFF; ++i)
                     {
-                        for (var j = NumMipLevels; j > 0; j--)
+                        for (var j = this.NumMipLevels; j > 0; j--)
                         {
                             if (j == 1) break;
 
-                            for (var k = 0; k < Height / Math.Pow(2.0, j - 1); ++k)
+                            for (var k = 0; k < this.Height / Math.Pow(2.0, j - 1); ++k)
                             {
-                                reader.BaseStream.Position += (int)((4 * Width) / Math.Pow(2.0f, j - 1));
+                                reader.BaseStream.Position += (int)((4 * this.Width) / Math.Pow(2.0f, j - 1));
                             }
                         }
 
-                        this.DataStream = DDSImage.ReadRGBA8888(reader, Width, Height);
+                        this.DataStream = DDSImage.ReadRGBA8888(reader, this.Width, this.Height);
                     }
                     break;
 
                 case VTexFormat.IMAGE_FORMAT_RGBA16161616F:
-                    this.DataStream = DDSImage.ReadRGBA16161616F(reader, Width, Height);
+                    this.DataStream = DDSImage.ReadRGBA16161616F(reader, this.Width, this.Height);
                     break;
 
                 case VTexFormat.IMAGE_FORMAT_DXT1:
-                    for (ushort i = 0; i < Depth && i < 0xFF; ++i)
+                    for (ushort i = 0; i < this.Depth && i < 0xFF; ++i)
                     {
-                        for (var j = NumMipLevels; j > 0; j--)
+                        for (var j = this.NumMipLevels; j > 0; j--)
                         {
                             if (j == 1) break;
 
-                            for (var k = 0; k < Height / Math.Pow(2.0, j + 1); ++k)
+                            for (var k = 0; k < this.Height / Math.Pow(2.0, j + 1); ++k)
                             {
-                                for (var l = 0; l < Width / Math.Pow(2.0, j + 1); ++l)
+                                for (var l = 0; l < this.Width / Math.Pow(2.0, j + 1); ++l)
                                 {
                                     reader.BaseStream.Position += 8;
                                 }
                             }
                         }
 
-                        this.DataStream = DDSImage.UncompressDXT1(reader, Width, Height);
+                        this.DataStream = DDSImage.UncompressDXT1(reader, this.Width, this.Height);
                     }
 
                     break;
 
                 case VTexFormat.IMAGE_FORMAT_DXT5:
-                    for (ushort i = 0; i < Depth && i < 0xFF; ++i)
+                    for (ushort i = 0; i < this.Depth && i < 0xFF; ++i)
                     {
-                        for (var j = NumMipLevels; j > 0; j--)
+                        for (var j = this.NumMipLevels; j > 0; j--)
                         {
                             if (j == 1) break;
 
-                            for (var k = 0; k < Height / Math.Pow(2.0, j + 1); ++k)
+                            for (var k = 0; k < this.Height / Math.Pow(2.0, j + 1); ++k)
                             {
-                                for (var l = 0; l < Width / Math.Pow(2.0, j + 1); ++l)
+                                for (var l = 0; l < this.Width / Math.Pow(2.0, j + 1); ++l)
                                 {
                                     reader.BaseStream.Position += 16;
                                 }
                             }
                         }
 
-                        this.DataStream = DDSImage.UncompressDXT5(reader, Width, Height, yCoCg);
+                        this.DataStream = DDSImage.UncompressDXT5(reader, this.Width, this.Height, yCoCg);
                     }
                     break;
             }

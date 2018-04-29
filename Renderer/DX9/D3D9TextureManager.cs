@@ -1,5 +1,5 @@
 ﻿// <copyright file="D3D9TextureManager.cs" company="Ensage">
-//    Copyright (c) 2017 Ensage.
+//    Copyright (c) 2018 Ensage.
 // </copyright>
 
 namespace Ensage.SDK.Renderer.DX9
@@ -14,6 +14,7 @@ namespace Ensage.SDK.Renderer.DX9
 
     using Ensage.SDK.Renderer.Metadata;
     using Ensage.SDK.VPK;
+    using Ensage.SDK.VPK.Content;
 
     using PlaySharp.Toolkit.Helper.Annotations;
 
@@ -113,13 +114,37 @@ namespace Ensage.SDK.Renderer.DX9
 
                 using (var fileStream = File.OpenRead(file))
                 {
-                    var result = this.LoadFromStream(textureKey, fileStream);
-                    if (result)
+                    var e = Path.GetExtension(file);
+                    switch (e)
                     {
-                        this.textureCache[textureKey].File = file;
-                        return true;
+                        case ".png":
+                            {
+                                var result = this.LoadFromStream(textureKey, fileStream);
+                                if (result)
+                                {
+                                    this.textureCache[textureKey].File = file;
+                                    return true;
+                                }
+                            }
+                            break;
+
+                        case ".vtex_c":
+                            {
+                                var resourceFile = new ResourceFile(fileStream);
+                                var vtex = resourceFile.ResourceEntries.OfType<VTex>().FirstOrDefault();
+                                if (vtex != null)
+                                {
+                                    var result = this.LoadFromStream(textureKey, vtex.DataStream);
+                                    if (result)
+                                    {
+                                        this.textureCache[textureKey].File = file;
+                                        return true;
+                                    }
+                                }
+                            }
+                            break;
                     }
-                }
+                } 
             }
             catch (Exception e)
             {

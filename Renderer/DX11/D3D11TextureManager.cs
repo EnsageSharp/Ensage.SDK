@@ -1,5 +1,5 @@
 ﻿// <copyright file="D3D11TextureManager.cs" company="Ensage">
-//    Copyright (c) 2017 Ensage.
+//    Copyright (c) 2018 Ensage.
 // </copyright>
 
 namespace Ensage.SDK.Renderer.DX11
@@ -13,13 +13,13 @@ namespace Ensage.SDK.Renderer.DX11
 
     using Ensage.SDK.Renderer.Metadata;
     using Ensage.SDK.VPK;
+    using Ensage.SDK.VPK.Content;
 
     using PlaySharp.Toolkit.Helper.Annotations;
 
     using NLog;
 
     using SharpDX;
-    using SharpDX.IO;
     using SharpDX.WIC;
 
     using Bitmap = SharpDX.Direct2D1.Bitmap;
@@ -112,22 +112,46 @@ namespace Ensage.SDK.Renderer.DX11
                     return true;
                 }
 
-                using (var fileStream = new NativeFileStream(file, NativeFileMode.Open, NativeFileAccess.Read))
+                using (var fileStream = File.OpenRead(file))
                 {
-                    var result = this.LoadFromStream(textureKey, fileStream);
-                    if (result)
+                    var e = Path.GetExtension(file);
+                    switch (e)
                     {
-                        this.textureCache[textureKey].File = file;
-                    }
+                        case ".png":
+                            {
+                                var result = this.LoadFromStream(textureKey, fileStream);
+                                if (result)
+                                {
+                                    this.textureCache[textureKey].File = file;
+                                    return true;
+                                }
+                            }
+                            break;
 
-                    return result;
+                        case ".vtex_c":
+                            {
+                                var resourceFile = new ResourceFile(fileStream);
+                                var vtex = resourceFile.ResourceEntries.OfType<VTex>().FirstOrDefault();
+                                if (vtex != null)
+                                {
+                                    var result = this.LoadFromStream(textureKey, vtex.DataStream);
+                                    if (result)
+                                    {
+                                        this.textureCache[textureKey].File = file;
+                                        return true;
+                                    }
+                                }
+                            }
+                            break;
+                    }
                 }
             }
             catch (Exception e)
             {
                 Log.Error(e);
-                return false;
             }
+
+            return false;
         }
 
         public bool LoadFromMemory(string textureKey, byte[] data)

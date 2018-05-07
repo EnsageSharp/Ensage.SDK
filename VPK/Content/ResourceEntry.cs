@@ -1,5 +1,5 @@
 ﻿// <copyright file="ResourceEntry.cs" company="Ensage">
-//    Copyright (c) 2017 Ensage.
+//    Copyright (c) 2018 Ensage.
 // </copyright>
 
 namespace Ensage.SDK.VPK.Content

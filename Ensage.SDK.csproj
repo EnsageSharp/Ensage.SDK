@@ -810,6 +810,7 @@
     <Compile Include="Extensions\UnitExtensions.cs" />
     <Compile Include="TargetSelector\TargetSelectorManager.cs" />
     <Compile Include="Utils\Utils.cs" />
+    <Compile Include="VPK\Content\DDSImage.cs" />
     <Compile Include="VPK\Content\ResourceEntry.cs" />
     <Compile Include="VPK\Content\ResourceFile.cs" />
     <Compile Include="VPK\ValvePak\ArchiveMD5SectionEntry.cs" />

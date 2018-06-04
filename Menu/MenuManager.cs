@@ -1030,8 +1030,7 @@ namespace Ensage.SDK.Menu
         private void VisitItem(MenuEntry parent, object instance, MenuEntry rootMenu)
         {
             var type = instance.GetType();
-            var propertyInfos = type.GetProperties(BindingFlags.Instance | BindingFlags.Public);
-            foreach (var propertyInfo in propertyInfos.OrderBy(x => this.Order(propertyInfos, x)).ToArray())
+            foreach (var propertyInfo in this.Order(type.GetProperties(BindingFlags.Instance | BindingFlags.Public)))
             {
                 var menuItemAttribute = propertyInfo.GetCustomAttribute<ItemAttribute>();
                 if (menuItemAttribute == null)
@@ -1098,15 +1097,14 @@ namespace Ensage.SDK.Menu
         private void VisitMenu(MenuEntry parent, object instance, MenuEntry rootMenu)
         {
             var type = instance.GetType();
-            var propertyInfos = type.GetProperties(BindingFlags.Instance | BindingFlags.Public);
-            foreach (var propertyInfo in propertyInfos.OrderBy(x => this.Order(propertyInfos, x)).ToArray())
+            foreach (var propertyInfo in this.Order(type.GetProperties(BindingFlags.Instance | BindingFlags.Public)))
             {
                 var menuAttribute = propertyInfo.GetCustomAttribute<MenuAttribute>();
                 if (menuAttribute == null)
                 {
                     continue;
                 }
-
+                
                 var propertyValue = propertyInfo.GetValue(instance);
                 if (propertyValue == null)
                 {
@@ -1137,15 +1135,24 @@ namespace Ensage.SDK.Menu
             }
         }
 
-        private int Order(PropertyInfo[] propertyInfos, PropertyInfo propertyInfo)
+        private List<PropertyInfo> Order(PropertyInfo[] propertyInfos)
         {
-            var orderAttribute = propertyInfo.GetCustomAttribute<OrderAttribute>();
-            if (orderAttribute != null)
+            propertyInfos = propertyInfos.Where(x => x.IsDefined(typeof(ItemAttribute)) || x.IsDefined(typeof(MenuAttribute))).ToArray();
+
+            var order = propertyInfos.Where(x => !x.IsDefined(typeof(OrderAttribute))).ToList();
+
+            foreach (var propertyInfo in propertyInfos)
             {
-                return orderAttribute.OrderNumber;
+                var orderAttribute = propertyInfo.GetCustomAttribute<OrderAttribute>();
+                if (orderAttribute == null)
+                {
+                    continue;
+                }
+
+                order.Insert(orderAttribute.OrderNumber, propertyInfo);
             }
 
-            return Array.IndexOf(propertyInfos, propertyInfo);
+            return order;
         }
     }
 }

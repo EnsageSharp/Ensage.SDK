@@ -11,7 +11,7 @@ namespace Ensage.SDK.Menu.Attributes
     {
         public OrderAttribute(int orderNumber)
         {
-            this.OrderNumber = orderNumber;
+            this.OrderNumber = orderNumber - 1;
         }
 
         public int OrderNumber { get; }

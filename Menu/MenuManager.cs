@@ -367,7 +367,7 @@ namespace Ensage.SDK.Menu
             }
 
             var view = this.viewRepository.GetMenuView();
-            var textureAttribute = dataType.GetCustomAttributes(typeof(TextureAttribute), true).OfType<TextureAttribute>().FirstOrDefault();
+            var textureAttribute = dataType.GetCustomAttribute<TextureAttribute>();
             textureAttribute?.Load(this.context.Renderer);
 
             var menuEntry = new MenuEntry(menuName, textureAttribute?.TextureKey, view, this.context.Renderer, this.MenuConfig, menu);
@@ -1053,7 +1053,7 @@ namespace Ensage.SDK.Menu
 
                 this.context.Container.BuildUp(propertyValue);
 
-                var textureAttribute = propertyInfo.GetCustomAttributes(typeof(TextureAttribute), true).OfType<TextureAttribute>().FirstOrDefault();
+                var textureAttribute = propertyInfo.GetCustomAttribute<TextureAttribute>();
                 textureAttribute?.Load(this.context.Renderer);
 
                 var view = this.viewRepository.GetView(propertyInfo.PropertyType);
@@ -1121,7 +1121,7 @@ namespace Ensage.SDK.Menu
 
                 this.context.Container.BuildUp(propertyValue);
 
-                var textureAttribute = propertyInfo.GetCustomAttributes(typeof(TextureAttribute), true).OfType<TextureAttribute>().FirstOrDefault();
+                var textureAttribute = propertyInfo.GetCustomAttribute<TextureAttribute>();
                 textureAttribute?.Load(this.context.Renderer);
 
                 var menuItemEntry = new MenuEntry(

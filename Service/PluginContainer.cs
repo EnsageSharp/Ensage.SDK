@@ -52,7 +52,7 @@ namespace Ensage.SDK.Service
                     return;
                 }
 
-                Log.Info($"Activate {this.Metadata.Name}");
+                Log.Info($"Activating {this.Metadata.Name}");
                 this.Part.Value.Activate();
             }
             catch (Exception e)

@@ -11,7 +11,7 @@ namespace Ensage.SDK.Plugins
     using Ensage.SDK.Service;
     using Ensage.SDK.Service.Metadata;
 
-    [ExportPlugin("MenuManager", StartupMode.Auto, priority: 0, description: "SDK MenuManager Framework")]
+    [ExportPlugin("MenuManager", StartupMode.Auto, priority: -1, description: "SDK MenuManager Framework")]
     public class MenuManagerPlugin : Plugin
     {
         [ImportingConstructor]

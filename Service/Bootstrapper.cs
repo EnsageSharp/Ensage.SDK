@@ -9,6 +9,7 @@ namespace Ensage.SDK.Service
     using System.Diagnostics;
     using System.Linq;
     using System.Reflection;
+    using System.Threading.Tasks;
 
     using Ensage.SDK.Extensions;
     using Ensage.SDK.Helpers;
@@ -67,8 +68,15 @@ namespace Ensage.SDK.Service
         {
             try
             {
-                this.Context.MenuManager.Dispose();
-                this.Context.Renderer.Dispose();
+                if (this.Context.menuManager.IsValueCreated)
+                {
+                    this.Context.MenuManager.Dispose();
+                }
+
+                if (this.Context.rendererManager.IsValueCreated)
+                {
+                    this.Context.Renderer.Dispose();
+                }
             }
             catch (Exception e)
             {
@@ -76,14 +84,36 @@ namespace Ensage.SDK.Service
             }
         }
 
-        private void ActivatePlugins()
+        private async Task ActivatePluginsTask()
         {
-            foreach (var plugin in this.PluginContainer.OrderBy(e => e.Metadata.Priority))
+            var activationTime = new Stopwatch();
+
+            foreach (var plugin in this.PluginContainer.Where(e => e.Menu && !e.IsActive).OrderBy(e => e.Metadata.Priority))
             {
-                if (plugin.Menu && !plugin.IsActive)
+                activationTime.Restart();
+                plugin.Activate();
+                activationTime.Stop();
+
+                Log.Info($"Activated {plugin.Metadata.Name} in {activationTime.Elapsed}");
+
+                await Task.Delay(100);
+            }
+        }
+
+        private void AddPlugin(Lazy<IPluginLoader, IPluginLoaderMetadata> assembly)
+        {
+            try
+            {
+                Log.Debug($"Found {assembly.Metadata.Name}");
+
+                if (assembly.Metadata.IsSupported())
                 {
-                    UpdateManager.BeginInvoke(plugin.Activate, plugin.Metadata.Priority);
+                    this.PluginContainer.Add(new PluginContainer(this.Context.Config.Plugins.Factory, assembly));
                 }
+            }
+            catch (Exception e)
+            {
+                Log.Error(e);
             }
         }
 
@@ -106,27 +136,19 @@ namespace Ensage.SDK.Service
         {
             foreach (var assembly in this.Plugins.OrderBy(e => e.Metadata.Priority))
             {
-                try
-                {
-                    Log.Debug($"Found {assembly.Metadata.Name}");
-
-                    if (assembly.Metadata.IsSupported())
-                    {
-                        this.PluginContainer.Add(new PluginContainer(this.Context.Config.Plugins.Factory, assembly));
-                    }
-                    else
-                    {
-                        Log.Warn($"Plugin not supported {assembly.Metadata.Name}");
-                    }
-                }
-                catch (Exception e)
-                {
-                    Log.Error(e);
-                }
+                this.AddPlugin(assembly);
             }
         }
 
-        private void OnBootstrap()
+        private void OnAssemblyLoad(object sender, Assembly assembly)
+        {
+            foreach (var plugin in this.Plugins.Where(e => e.Value.GetType().Assembly == assembly))
+            {
+                this.AddPlugin(plugin);
+            }
+        }
+
+        private async void OnBootstrap()
         {
             try
             {
@@ -152,16 +174,20 @@ namespace Ensage.SDK.Service
                 Log.Debug($">> Initializing Services");
                 IoC.Initialize(this.BuildUp, this.GetInstance, this.GetAllInstances);
 
-                Log.Debug($">> Searching for Plugins");
+                Log.Debug($">> Searching Plugins");
                 this.DiscoverPlugins();
 
-                UpdateManager.BeginInvoke(this.ActivatePlugins, 250);
+                Log.Debug($">> Activating Plugins");
+                await Task.Delay(1000);
+                await this.ActivatePluginsTask();
 
                 sw.Stop();
 
                 Log.Debug("====================================================");
                 Log.Debug($">> Bootstrap completed in {sw.Elapsed}");
                 Log.Debug("====================================================");
+
+                ContainerFactory.Loader.AssemblyLoad += this.OnAssemblyLoad;
             }
             catch (ReflectionTypeLoadException e)
             {

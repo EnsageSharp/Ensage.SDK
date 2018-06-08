@@ -63,7 +63,7 @@ namespace Ensage.SDK.Logger
 
                 if (string.IsNullOrEmpty(metadata?.SentryKey) || string.IsNullOrEmpty(metadata?.SentryProject))
                 {
-                    Log.Info($"Skipped ({@namespace}) missing SentryKey or SentryProject");
+                    //Log.Info($"Skipped ({@namespace}) missing SentryKey or SentryProject");
                     return;
                 }
 

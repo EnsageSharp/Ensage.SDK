@@ -12,7 +12,7 @@ namespace Ensage.SDK.Plugins.DebugTables
     using Ensage.SDK.Handlers;
     using Ensage.SDK.Helpers;
 
-    [Export(typeof(Table))]
+    //[Export(typeof(Table))]
     public sealed class CallbacksTable : Table
     {
         public CallbacksTable()

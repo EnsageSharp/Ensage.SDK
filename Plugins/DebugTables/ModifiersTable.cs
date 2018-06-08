@@ -13,7 +13,7 @@ namespace Ensage.SDK.Plugins.DebugTables
     using Ensage.SDK.Helpers;
     using Ensage.SDK.Service;
 
-    [Export(typeof(Table))]
+    //[Export(typeof(Table))]
     public sealed class ModifiersTable : Table
     {
         [ImportingConstructor]

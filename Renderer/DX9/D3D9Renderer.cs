@@ -287,6 +287,14 @@ namespace Ensage.SDK.Renderer.DX9
             return this.textureManager.GetTextureSize(textureKey);
         }
 
+        public Vector2 MeasureText(string text, float fontSize = 13, string fontFamily = "Calibri")
+        {
+            var font = this.fontCache.GetOrCreate(fontFamily, fontSize);
+            var rect = font.MeasureText(null, text, FontDrawFlags.Left);
+            return new Vector2(rect.Right - rect.Left, rect.Bottom - rect.Top);
+        }
+
+        [Obsolete("Use MeasureText")]
         public Vector2 MessureText(string text, float fontSize = 13, string fontFamily = "Calibri")
         {
             var font = this.fontCache.GetOrCreate(fontFamily, fontSize);

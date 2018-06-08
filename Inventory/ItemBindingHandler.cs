@@ -49,7 +49,7 @@ namespace Ensage.SDK.Inventory
 
         public PropertyBinding Add(PropertyInfo info, object target)
         {
-            Log.Debug($"Attach [{this.Id}] {target}.{info.Name}");
+            //Log.Debug($"Attach [{this.Id}] {target}.{info.Name}");
             var binding = new PropertyBinding(info, target);
 
             this.Bindings.Add(binding);

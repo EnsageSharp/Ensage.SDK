@@ -63,14 +63,14 @@ namespace Ensage.SDK.Service
                     Log.Debug($"Assembly {catalog.Assembly.GetName().Name}");
                 }
 
-                Log.Debug($"====================================================");
-                Log.Debug($"Resolving Parts {container.Catalog.Parts.Count()}");
-                Log.Debug($"====================================================");
+                //Log.Debug($"====================================================");
+                //Log.Debug($"Resolving Parts {container.Catalog.Parts.Count()}");
+                //Log.Debug($"====================================================");
 
-                foreach (var part in container.Catalog.Parts)
-                {
-                    Log.Debug($"{part}");
-                }
+                //foreach (var part in container.Catalog.Parts)
+                //{
+                //    Log.Debug($"{part}");
+                //}
 
                 Log.Debug($"====================================================");
             }

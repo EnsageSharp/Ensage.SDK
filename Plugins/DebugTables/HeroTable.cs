@@ -11,7 +11,7 @@ namespace Ensage.SDK.Plugins.DebugTables
     using Ensage.SDK.Extensions;
     using Ensage.SDK.Helpers;
 
-    [Export(typeof(Table))]
+    //[Export(typeof(Table))]
     public sealed class HeroTable : Table
     {
         public HeroTable()

@@ -64,7 +64,7 @@ namespace Ensage.SDK.Service
                 return;
             }
 
-            Log.Debug($"Satisfy {instance}");
+            //Log.Debug($"Satisfy {instance}");
             this.Container.SatisfyImportsOnce(instance);
 
             // Activate after satisfying imports

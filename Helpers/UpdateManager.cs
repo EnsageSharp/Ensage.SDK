@@ -192,7 +192,7 @@ namespace Ensage.SDK.Helpers
                     handler = new UpdateHandler(callback, InvokeHandler.Default, isEnabled);
                 }
 
-                Log.Debug($"Create {handler}");
+                //Log.Debug($"Create {handler}");
                 handlers.Add(handler);
             }
 
@@ -204,7 +204,7 @@ namespace Ensage.SDK.Helpers
             var handler = handlers.FirstOrDefault(h => h.Callback == callback);
             if (handler != null)
             {
-                Log.Debug($"Remove {handler}");
+                //Log.Debug($"Remove {handler}");
                 handlers.Remove(handler);
             }
         }

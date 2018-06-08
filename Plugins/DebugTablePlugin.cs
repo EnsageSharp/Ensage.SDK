@@ -18,7 +18,7 @@ namespace Ensage.SDK.Plugins
 
     using SharpDX;
 
-    [ExportPlugin("Debug Tables", StartupMode.Manual, priority: 1000, description: "Display Debug Tables")]
+    //[ExportPlugin("Debug Tables", StartupMode.Manual, priority: 1000, description: "Display Debug Tables")]
     public class DebugTablePlugin : Plugin, IPartImportsSatisfiedNotification
     {
         private const float ScrollSpeed = 20f;

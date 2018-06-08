@@ -32,7 +32,7 @@ namespace Ensage.SDK.Renderer.DX9
 
         public Font Create(string familyName, float fontSize)
         {
-            Log.Debug($"Create Font {familyName}-{fontSize}");
+            //Log.Debug($"Create Font {familyName}-{fontSize}");
 
             var key = $"{familyName}-{fontSize}";
             var font = new Font(

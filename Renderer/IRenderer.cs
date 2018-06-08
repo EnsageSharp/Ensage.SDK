@@ -34,7 +34,10 @@ namespace Ensage.SDK.Renderer
 
         void DrawTexture(string textureKey, RectangleF rect, float rotation = 0.0f, float opacity = 1.0f);
 
+        [Obsolete("Use MeasureText")]
         Vector2 MessureText(string text, float fontSize = 13f, string fontFamily = "Calibri");
+
+        Vector2 MeasureText(string text, float fontSize = 13f, string fontFamily = "Calibri");
 
         Vector2 GetTextureSize(string textureKey);
     }

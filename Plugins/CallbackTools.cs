@@ -16,7 +16,7 @@ namespace Ensage.SDK.Plugins
 
     using NLog;
 
-    [ExportPlugin("Callback Tools", StartupMode.Manual, priority: 1000, description: "Display UpdateManager callback times in CPU Ticks")]
+    //[ExportPlugin("Callback Tools", StartupMode.Manual, priority: 1000, description: "Display UpdateManager callback times in CPU Ticks")]
     public class CallbackTools : Plugin
     {
         private static readonly Logger Log = LogManager.GetCurrentClassLogger();

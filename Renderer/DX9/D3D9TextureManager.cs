@@ -266,6 +266,8 @@ namespace Ensage.SDK.Renderer.DX9
                 }
 
                 this.textureCache.Clear();
+
+                this.vpkBrowser.Dispose();
             }
 
             this.disposed = true;

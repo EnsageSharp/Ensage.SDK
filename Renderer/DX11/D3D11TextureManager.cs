@@ -257,6 +257,7 @@ namespace Ensage.SDK.Renderer.DX11
 
                 this.textureCache.Clear();
 
+                this.vpkBrowser.Dispose();
                 this.imagingFactory.Dispose();
             }
 

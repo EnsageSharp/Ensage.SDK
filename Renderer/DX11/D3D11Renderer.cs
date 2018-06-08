@@ -164,7 +164,18 @@ namespace Ensage.SDK.Renderer.DX11
             }
         }
 
+        [Obsolete("Use MeasureText")]
         public Vector2 MessureText(string text, float fontSize = 13, string fontFamily = "Calibri")
+        {
+            var font = this.textFormatCache.GetOrCreate(fontFamily, fontSize);
+            using (var layout = new TextLayout(this.context.DirectWrite, text, font, float.MaxValue, float.MaxValue))
+            {
+                var size = layout.Metrics;
+                return new Vector2(size.Width, size.Height);
+            }
+        }
+
+        public Vector2 MeasureText(string text, float fontSize = 13, string fontFamily = "Calibri")
         {
             var font = this.textFormatCache.GetOrCreate(fontFamily, fontSize);
             using (var layout = new TextLayout(this.context.DirectWrite, text, font, float.MaxValue, float.MaxValue))

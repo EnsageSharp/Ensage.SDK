@@ -98,6 +98,12 @@ namespace Ensage.SDK.Renderer
             return this.active.TextureManager.GetTextureSize(textureKey);
         }
 
+        public Vector2 MeasureText(string text, float fontSize = 13, string fontFamily = "Calibri")
+        {
+            return this.active.MeasureText(text, fontSize, fontFamily);
+        }
+
+        [Obsolete("Use MeasureText")]
         public Vector2 MessureText(string text, float fontSize = 13, string fontFamily = "Calibri")
         {
             return this.active.MessureText(text, fontSize, fontFamily);

@@ -1,5 +1,5 @@
 // <copyright file="CatalogLoader.cs" company="Ensage">
-//    Copyright (c) 2017 Ensage.
+//    Copyright (c) 2018 Ensage.
 // </copyright>
 
 namespace Ensage.SDK.Service
@@ -50,6 +50,8 @@ namespace Ensage.SDK.Service
             }
         }
 
+        public event EventHandler<Assembly> AssemblyLoad;
+
         public AggregateCatalog Catalog { get; } = new AggregateCatalog();
 
         private List<Assembly> LoadedAssemblies { get; } = new List<Assembly>();
@@ -83,9 +85,17 @@ namespace Ensage.SDK.Service
                 return;
             }
 
-            Log.Debug($"Create Catalog {assembly.GetName().Name}");
+            if (!this.CanLoad(assembly))
+            {
+                Log.Error($"Failed to resolve dependencies for {name}");
+                return;
+            }
+
+            Log.Debug($"Create Catalog {name}");
             this.Catalog.Catalogs.Add(new AssemblyCatalog(assembly));
             this.LoadedAssemblies.Add(assembly);
+
+            this.AssemblyLoad?.Invoke(this, assembly);
         }
 
         public void Dispose()
@@ -107,6 +117,23 @@ namespace Ensage.SDK.Service
             }
 
             this.disposed = true;
+        }
+
+        private bool CanLoad(Assembly assemblyToLoad)
+        {
+            try
+            {
+                foreach (var name in assemblyToLoad.GetReferencedAssemblies())
+                {
+                    AppDomain.CurrentDomain.Load(name);
+                }
+
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
 
         private void OnAssemblyLoad(object sender, AssemblyLoadEventArgs args)

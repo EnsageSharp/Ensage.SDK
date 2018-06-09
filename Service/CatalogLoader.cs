@@ -130,8 +130,9 @@ namespace Ensage.SDK.Service
 
                 return true;
             }
-            catch
+            catch (Exception e)
             {
+                Log.Warn(e);
                 return false;
             }
         }

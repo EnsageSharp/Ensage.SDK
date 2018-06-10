@@ -164,21 +164,25 @@ namespace Ensage.SDK.Service
                 Log.Debug("====================================================");
 
                 Game.UnhandledException += this.OnUnhandledException;
+                await Task.Delay(200);
 
                 Log.Debug($">> Building Context for LocalHero");
                 this.Context = new EnsageServiceContext(ObjectManager.LocalHero);
+                await Task.Delay(200);
 
                 this.Default = this.Context.Container;
                 this.Default.RegisterValue(this);
+                await Task.Delay(200);
 
                 Log.Debug($">> Initializing Services");
                 IoC.Initialize(this.BuildUp, this.GetInstance, this.GetAllInstances);
+                await Task.Delay(200);
 
                 Log.Debug($">> Searching Plugins");
                 this.DiscoverPlugins();
+                await Task.Delay(200);
 
                 Log.Debug($">> Activating Plugins");
-                await Task.Delay(1000);
                 await this.ActivatePluginsTask();
 
                 sw.Stop();

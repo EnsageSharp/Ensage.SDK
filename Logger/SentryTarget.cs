@@ -66,7 +66,7 @@ namespace Ensage.SDK.Logger
             }
 
             this.cache.Add(id);
-            this.Client.CaptureAsync(logEvent.Exception);
+            //this.Client.CaptureAsync(logEvent.Exception);
         }
     }
 }

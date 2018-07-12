@@ -81,7 +81,13 @@ namespace Ensage.SDK.Renderer.DX9
                     return this.LoadFromStream(textureKey, bitmapStream);
                 }
 
-                throw new Exception($"Can't find Dota Texture: {file}");
+                Log.Error(new Exception($"Can't find Dota Texture: {file}"));
+
+                bitmapStream = this.vpkBrowser.FindImage(@"panorama\images\spellicons\invoker_empty1_png.vtex_c");
+                if (bitmapStream != null)
+                {
+                    return this.LoadFromStream(textureKey, bitmapStream);
+                }
             }
             catch (Exception e)
             {

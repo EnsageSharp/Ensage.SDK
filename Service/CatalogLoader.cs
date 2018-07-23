@@ -123,16 +123,31 @@ namespace Ensage.SDK.Service
         {
             try
             {
-                foreach (var name in assemblyToLoad.GetReferencedAssemblies())
+                var _Attached = assemblyToLoad.GetManifestResourceNames().Select(x => System.IO.Path.GetFileNameWithoutExtension(x));
+                _Attached = _Attached.Select(x => x.Substring(x.LastIndexOf(".") + 1));
+                var _Refs = assemblyToLoad.GetReferencedAssemblies();
+                _Refs = _Refs.Where(x => _Attached.Contains(x.Name) == false).ToArray();
+
+                foreach (var name in _Refs)
                 {
-                    AppDomain.CurrentDomain.Load(name);
+                    try
+                    {
+                        AppDomain.CurrentDomain.Load(name);
+                    }
+                    catch (Exception ex)
+                    {
+
+                        Log.Warn(ex);
+                        return false;
+                    }
                 }
 
                 return true;
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                Log.Warn(e);
+
+                Log.Warn(ex);
                 return false;
             }
         }

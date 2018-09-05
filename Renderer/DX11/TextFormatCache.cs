@@ -29,7 +29,7 @@ namespace Ensage.SDK.Renderer.DX11
 
         public TextFormat Create(string familyName, float fontSize)
         {
-            Log.Debug($"Create Font {familyName}-{fontSize}");
+            //Log.Debug($"Create Font {familyName}-{fontSize}");
 
             var key = $"{familyName}-{fontSize}";
             var format = new TextFormat(this.Context.DirectWrite, familyName, fontSize);

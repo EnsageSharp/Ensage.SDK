@@ -132,11 +132,12 @@ namespace Ensage.SDK.Service
             }
         }
 
-        private void DiscoverPlugins()
+        private async Task DiscoverPlugins()
         {
             foreach (var assembly in this.Plugins.OrderBy(e => e.Metadata.Priority))
             {
                 this.AddPlugin(assembly);
+                await Task.Delay(100);
             }
         }
 
@@ -164,7 +165,6 @@ namespace Ensage.SDK.Service
                 Log.Debug("====================================================");
 
                 Game.UnhandledException += this.OnUnhandledException;
-                await Task.Delay(200);
 
                 Log.Debug($">> Building Context for LocalHero");
                 this.Context = new EnsageServiceContext(ObjectManager.LocalHero);
@@ -179,7 +179,7 @@ namespace Ensage.SDK.Service
                 await Task.Delay(200);
 
                 Log.Debug($">> Searching Plugins");
-                this.DiscoverPlugins();
+                await this.DiscoverPlugins();
                 await Task.Delay(200);
 
                 Log.Debug($">> Activating Plugins");

@@ -19,6 +19,7 @@ namespace Ensage.SDK.Menu
     using Ensage.SDK.Menu.Config;
     using Ensage.SDK.Menu.Entries;
     using Ensage.SDK.Menu.Items;
+    using Ensage.SDK.Menu.Messages;
     using Ensage.SDK.Menu.Styles.Elements;
     using Ensage.SDK.Service;
 
@@ -404,6 +405,7 @@ namespace Ensage.SDK.Menu
             Messenger<AddDynamicMenuMessage>.Subscribe(this.AddDynamicMenu);
             Messenger<DynamicMenuRemoveMessage>.Subscribe(this.DynamicMenuRemovedMessage);
             Messenger<UpdateMenuItemMessage>.Subscribe(this.UpdateMenuItemMessage);
+            Messenger<RootMenuExpandMessage>.Subscribe(this.RootMenuExpandMessage);
 
             this.menuSerializer = new MenuSerializer(new StringEnumConverter(), new MenuStyleConverter(this.styleRepository));
 
@@ -443,6 +445,7 @@ namespace Ensage.SDK.Menu
             Messenger<UpdateMenuItemMessage>.Unsubscribe(this.UpdateMenuItemMessage);
             Messenger<AddDynamicMenuMessage>.Unsubscribe(this.AddDynamicMenu);
             Messenger<DynamicMenuRemoveMessage>.Unsubscribe(this.DynamicMenuRemovedMessage);
+            Messenger<RootMenuExpandMessage>.Unsubscribe(this.RootMenuExpandMessage);
 
             this.MenuConfig.MenuPosition.Value = this.Position;
             this.MenuConfig.PermaPosition.Value = this.PermaPosition;
@@ -457,6 +460,19 @@ namespace Ensage.SDK.Menu
             }
 
             this.MenuConfig = null;
+        }
+
+        private void RootMenuExpandMessage(RootMenuExpandMessage args)
+        {
+            if (args.MainMenuName == "SDK")
+            {
+                return;
+            }
+
+            foreach (var rootMenu in this.rootMenus)
+            {
+                rootMenu.IsCollapsed = true;
+            }
         }
 
         private void AddDynamicMenu(AddDynamicMenuMessage args)
@@ -837,6 +853,10 @@ namespace Ensage.SDK.Menu
                         if (!menuEntry.IsCollapsed)
                         {
                             this.CollapseLayer(menuEntry, this.rootMenus);
+                            if (this.rootMenus.Contains(menuEntry))
+                            {
+                                Messenger<RootMenuExpandMessage>.Publish(new RootMenuExpandMessage("SDK"));
+                            }
                         }
                     }
                 }

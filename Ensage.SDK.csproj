@@ -589,6 +589,7 @@
     <Compile Include="Menu\Entries\DynamicMenu.cs" />
     <Compile Include="Menu\Entries\PermaMenuItemEntry.cs" />
     <Compile Include="Menu\Items\ISlider.cs" />
+    <Compile Include="Menu\Messages\RootMenuExpandMessage.cs" />
     <Compile Include="Menu\Styles\Elements\PermaConfig.cs" />
     <Compile Include="Menu\Styles\Elements\TooltipStyle.cs" />
     <Compile Include="Menu\ValueBinding\ValueChangingEventArgs.cs" />

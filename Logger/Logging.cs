@@ -41,12 +41,12 @@ namespace Ensage.SDK.Logger
             LogManager.Configuration = Config;
             LogManager.ReconfigExistingLoggers();
 
-            foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies().Where(x => !x.GlobalAssemblyCache))
-            {
-                Add(assembly);
-            }
+            //foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies().Where(x => !x.GlobalAssemblyCache))
+            //{
+            //    Add(assembly);
+            //}
 
-            AppDomain.CurrentDomain.AssemblyLoad += OnAssemblyLoad;
+            //AppDomain.CurrentDomain.AssemblyLoad += OnAssemblyLoad;
         }
 
         private static void Add(Assembly assembly)

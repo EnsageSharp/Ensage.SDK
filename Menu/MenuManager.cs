@@ -261,86 +261,93 @@ namespace Ensage.SDK.Menu
 
         public void OnDraw(object sender, EventArgs e)
         {
-            var drawList = this.rootMenus.ToArray();
-
-            if (this.positionDirty)
+            try
             {
-                // recalculate positions
-                var pos = this.MenuPosition;
-                foreach (var menuEntry in drawList)
+                var drawList = this.rootMenus.ToArray();
+
+                if (this.positionDirty)
                 {
-                    pos = this.UpdateMenuEntryPosition(menuEntry, pos);
+                    // recalculate positions
+                    var pos = this.MenuPosition;
+                    foreach (var menuEntry in drawList)
+                    {
+                        pos = this.UpdateMenuEntryPosition(menuEntry, pos);
+                    }
+
+                    this.sizeDirty = true;
+                    this.positionDirty = false;
                 }
 
-                this.sizeDirty = true;
-                this.positionDirty = false;
-            }
-
-            if (this.sizeDirty)
-            {
-                // recalculate size
-                this.CalculateMenuRenderSize(this.rootMenus);
-                this.Size = this.CalculateMenuTotalSize(this.rootMenus);
-
-                this.CalculateMenuPermaRenderSize(this.permaItemEntries);
-
-                // recalculate positions by rendersize
-                var pos = this.MenuPosition;
-                foreach (var menuEntry in drawList)
+                if (this.sizeDirty)
                 {
-                    pos = this.UpdateMenuEntryRenderPosition(menuEntry, pos);
+                    // recalculate size
+                    this.CalculateMenuRenderSize(this.rootMenus);
+                    this.Size = this.CalculateMenuTotalSize(this.rootMenus);
+
+                    this.CalculateMenuPermaRenderSize(this.permaItemEntries);
+
+                    // recalculate positions by rendersize
+                    var pos = this.MenuPosition;
+                    foreach (var menuEntry in drawList)
+                    {
+                        pos = this.UpdateMenuEntryRenderPosition(menuEntry, pos);
+                    }
+
+                    this.sizeDirty = false;
                 }
 
-                this.sizeDirty = false;
-            }
-
-            var activeStyle = this.MenuConfig.GeneralConfig.ActiveStyle.Value;
-            if (!this.IsVisible)
-            {
-                if (!this.MenuConfig.IsPermaShowActive)
+                var activeStyle = this.MenuConfig.GeneralConfig.ActiveStyle.Value;
+                if (!this.IsVisible)
                 {
+                    if (!this.MenuConfig.IsPermaShowActive)
+                    {
+                        return;
+                    }
+
+                    var permaEntries = this.permaItemEntries.ToArray();
+                    if (permaEntries.Length == 0)
+                    {
+                        return;
+                    }
+
+                    // Permashow
+                    var permaShow = activeStyle.StyleConfig.TitleBar;
+                    this.context.Renderer.DrawTexture(activeStyle.TitleBar, new RectangleF(this.PermaPosition.X, this.PermaPosition.Y, this.TitleBarSize.X, this.TitleBarSize.Y));
+                    this.context.Renderer.DrawText(
+                        this.PermaPosition + new Vector2(permaShow.Border.Thickness[0], permaShow.Border.Thickness[1]),
+                        "Menu",
+                        permaShow.Font.Color,
+                        permaShow.Font.Size,
+                        permaShow.Font.Family);
+
+                    var p = this.PermaPosition;
+                    p.Y += this.TitleBarSize.Y;
+
+                    foreach (var permaItemEntry in permaEntries)
+                    {
+                        p = permaItemEntry.PermaDraw(p);
+                    }
+
                     return;
                 }
 
-                var permaEntries = this.permaItemEntries.ToArray();
-                if (permaEntries.Length == 0)
-                {
-                    return;
-                }
-
-                // Permashow
-                var permaShow = activeStyle.StyleConfig.TitleBar;
-                this.context.Renderer.DrawTexture(activeStyle.TitleBar, new RectangleF(this.PermaPosition.X, this.PermaPosition.Y, this.TitleBarSize.X, this.TitleBarSize.Y));
+                var titleBar = activeStyle.StyleConfig.TitleBar;
+                this.context.Renderer.DrawTexture(activeStyle.TitleBar, new RectangleF(this.Position.X, this.Position.Y, this.TitleBarSize.X, this.TitleBarSize.Y));
                 this.context.Renderer.DrawText(
-                    this.PermaPosition + new Vector2(permaShow.Border.Thickness[0], permaShow.Border.Thickness[1]),
+                    this.Position + new Vector2(titleBar.Border.Thickness[0], titleBar.Border.Thickness[1]),
                     "Menu",
-                    permaShow.Font.Color,
-                    permaShow.Font.Size,
-                    permaShow.Font.Family);
+                    titleBar.Font.Color,
+                    titleBar.Font.Size,
+                    titleBar.Font.Family);
 
-                var p = this.PermaPosition;
-                p.Y += this.TitleBarSize.Y;
-
-                foreach (var permaItemEntry in permaEntries)
+                foreach (var menuEntry in drawList)
                 {
-                    p = permaItemEntry.PermaDraw(p);
+                    this.DrawMenuEntry(menuEntry);
                 }
-
-                return;
             }
-
-            var titleBar = activeStyle.StyleConfig.TitleBar;
-            this.context.Renderer.DrawTexture(activeStyle.TitleBar, new RectangleF(this.Position.X, this.Position.Y, this.TitleBarSize.X, this.TitleBarSize.Y));
-            this.context.Renderer.DrawText(
-                this.Position + new Vector2(titleBar.Border.Thickness[0], titleBar.Border.Thickness[1]),
-                "Menu",
-                titleBar.Font.Color,
-                titleBar.Font.Size,
-                titleBar.Font.Family);
-
-            foreach (var menuEntry in drawList)
+            catch (Exception exception)
             {
-                this.DrawMenuEntry(menuEntry);
+                Log.Error(exception);
             }
         }
 

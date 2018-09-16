@@ -180,7 +180,7 @@ namespace Ensage.SDK.Service
 
                 Log.Debug($">> Searching Plugins");
                 await this.DiscoverPlugins();
-                await Task.Delay(200);
+                await Task.Delay(1000);
 
                 Log.Debug($">> Activating Plugins");
                 await this.ActivatePluginsTask();

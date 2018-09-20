@@ -242,7 +242,7 @@ namespace Ensage.SDK.Menu
             }
             else if ((e.Buttons & MouseButtons.XButton2Up) == MouseButtons.XButton2Up)
             {
-                button = MouseButtons.XButton1;
+                button = MouseButtons.XButton2;
                 downEvent = false;
             }
             else

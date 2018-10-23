@@ -8,7 +8,7 @@ namespace Ensage.SDK.Renderer.DX9
     using System.Collections.Generic;
     using System.ComponentModel.Composition;
     using System.Linq;
-    
+
     using Ensage.Common.Extensions;
     using Ensage.SDK.Renderer.DX11;
     using Ensage.SDK.Renderer.Metadata;

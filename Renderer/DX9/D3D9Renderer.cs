@@ -7,7 +7,7 @@ namespace Ensage.SDK.Renderer.DX9
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.Composition;
-
+    using System.Linq;
     using Ensage.Common.Extensions;
     using Ensage.SDK.Renderer.DX11;
     using Ensage.SDK.Renderer.Metadata;
@@ -312,6 +312,7 @@ namespace Ensage.SDK.Renderer.DX9
             if (disposing)
             {
                 this.textureManager.Dispose();
+                this.fontCache.Dispose();
                 this.context.Dispose();
             }
 

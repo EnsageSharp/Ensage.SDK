@@ -200,6 +200,7 @@ namespace Ensage.SDK.Renderer.DX11
             if (disposing)
             {
                 this.textureManager.Dispose();
+                this.textFormatCache.Dispose();
                 this.context.Dispose();
             }
 

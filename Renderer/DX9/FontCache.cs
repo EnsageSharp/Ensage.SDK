@@ -16,7 +16,7 @@ namespace Ensage.SDK.Renderer.DX9
     using SharpDX.Direct3D9;
 
     [Export(typeof(FontCache))]
-    public sealed class FontCache : Dictionary<string, Font>
+    public sealed class FontCache : Dictionary<string, Font>, IDisposable
     {
         private static readonly Logger Log = LogManager.GetCurrentClassLogger();
 
@@ -81,10 +81,28 @@ namespace Ensage.SDK.Renderer.DX9
 
         public void Dispose()
         {
-            foreach (var value in this.Values)
+            this.Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        private bool disposed;
+
+        private void Dispose(bool disposing)
+        {
+            if (this.disposed)
             {
-                value.Dispose();
+                return;
             }
+
+            if (disposing)
+            {
+                foreach (var value in this.Values)
+                {
+                    value.Dispose();
+                }
+            }
+
+            this.disposed = true;
         }
     }
 }

@@ -4,6 +4,7 @@
 
 namespace Ensage.SDK.Renderer.DX11
 {
+    using System;
     using System.Collections.Generic;
     using System.ComponentModel.Composition;
     using System.Reflection;
@@ -15,7 +16,7 @@ namespace Ensage.SDK.Renderer.DX11
     using SharpDX.DirectWrite;
 
     [Export(typeof(TextFormatCache))]
-    public sealed class TextFormatCache : Dictionary<string, TextFormat>
+    public sealed class TextFormatCache : Dictionary<string, TextFormat>, IDisposable
     {
         private static readonly Logger Log = LogManager.GetCurrentClassLogger();
 
@@ -49,6 +50,32 @@ namespace Ensage.SDK.Renderer.DX11
             }
 
             return this.Create(familyName, fontSize);
+        }
+
+        public void Dispose()
+        {
+            this.Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        private bool disposed;
+
+        private void Dispose(bool disposing)
+        {
+            if (this.disposed)
+            {
+                return;
+            }
+
+            if (disposing)
+            {
+                foreach (var value in this.Values)
+                {
+                    value.Dispose();
+                }
+            }
+
+            this.disposed = true;
         }
     }
 }

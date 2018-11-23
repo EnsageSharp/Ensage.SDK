@@ -31,34 +31,34 @@ namespace Ensage.SDK.Extensions
 
         public static string GetDisplayName(this Hero hero)
         {
-            var heroId = hero.HeroId;
-            switch (heroId)
+            var networkName = hero.NetworkName;
+            switch (networkName)
             {
-                case HeroId.npc_dota_hero_doom_bringer:
+                case "CDOTA_Unit_Hero_DoomBringer":
                     return "Doom";
-                case HeroId.npc_dota_hero_furion:
+                case "CDOTA_Unit_Hero_Furion":
                     return "Nature's Prophet";
-                case HeroId.npc_dota_hero_magnataur:
+                case "CDOTA_Unit_Hero_Magnataur":
                     return "Magnus";
-                case HeroId.npc_dota_hero_necrolyte:
+                case "CDOTA_Unit_Hero_Necrolyte":
                     return "Necrophos";
-                case HeroId.npc_dota_hero_nevermore:
+                case "CDOTA_Unit_Hero_Nevermore":
                     return "ShadowFiend";
-                case HeroId.npc_dota_hero_obsidian_destroyer:
+                case "CDOTA_Unit_Hero_Obsidian_Destroyer":
                     return "OutworldDevourer";
-                case HeroId.npc_dota_hero_rattletrap:
+                case "CDOTA_Unit_Hero_Rattletrap":
                     return "Clockwerk";
-                case HeroId.npc_dota_hero_shredder:
+                case "CDOTA_Unit_Hero_Shredder":
                     return "Timbersaw";
-                case HeroId.npc_dota_hero_skeleton_king:
+                case "CDOTA_Unit_Hero_SkeletonKing":
                     return "WraithKing";
-                case HeroId.npc_dota_hero_wisp:
+                case "CDOTA_Unit_Hero_Wisp":
                     return "Io";
-                case HeroId.npc_dota_hero_zuus:
+                case "CDOTA_Unit_Hero_Zuus":
                     return "Zeus";
             }
 
-            return heroId.ToString().Substring("npc_dota_hero_".Length).Replace("_", string.Empty);
+            return networkName.Substring("CDOTA_Unit_Hero_".Length).Replace("_", string.Empty);
         }
     }
 }

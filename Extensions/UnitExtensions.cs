@@ -61,6 +61,18 @@ namespace Ensage.SDK.Extensions
 
         private static readonly Logger Log = LogManager.GetCurrentClassLogger();
 
+        public static string GetDisplayName(this Unit unit)
+        {
+            var hero = unit as Hero;
+            if (hero != null)
+            {
+                return hero.GetDisplayName();
+            }
+
+            var networkName = unit.NetworkName;
+            return networkName.Substring("CDOTA_Unit_".Length).Replace("_", string.Empty);
+        }
+
         public static float AttackPoint(this Unit unit)
         {
             try

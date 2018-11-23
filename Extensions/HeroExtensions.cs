@@ -29,9 +29,9 @@ namespace Ensage.SDK.Extensions
             }
         }
 
-        public static string GetDisplayName(this Unit unit)
+        public static string GetDisplayName(this Hero hero)
         {
-            var networkName = unit.NetworkName;
+            var networkName = hero.NetworkName;
             switch (networkName)
             {
                 case "CDOTA_Unit_Hero_DoomBringer":

@@ -34,7 +34,7 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_broodmother
         {
             get
             {
-                return EntityManager<Unit>.Entities.Count(x => x.ClassId == ClassId.CDOTA_Unit_Broodmother_Web && x.IsControllable);
+                return EntityManager<Unit>.Entities.Count(x => x.NetworkName == "CDOTA_Unit_Broodmother_Web" && x.IsControllable);
             }
         }
 

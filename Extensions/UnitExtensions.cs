@@ -470,13 +470,32 @@ namespace Ensage.SDK.Extensions
             var hero = source as Hero;
             if (hero != null)
             {
-                spellAmp += hero.TotalIntelligence / 15.0f / 100.0f;
+                if (hero.PrimaryAttribute == Ensage.Attribute.Intelligence)
+                {
+                    spellAmp += hero.TotalIntelligence / 11.42f / 100f;
+                }
+                else
+                {
+                    spellAmp += hero.TotalIntelligence / 14.28f / 100f;
+                } 
             }
 
             var kaya = source.GetItemById(AbilityId.item_kaya);
             if (kaya != null)
             {
                 spellAmp += kaya.AbilitySpecialData.First(x => x.Name == "spell_amp").Value / 100.0f;
+            }
+
+            var yashaAndKaya = source.GetItemById(AbilityId.item_yasha_and_kaya);
+            if (yashaAndKaya != null)
+            {
+                spellAmp += yashaAndKaya.AbilitySpecialData.First(x => x.Name == "spell_amp").Value / 100.0f;
+            }
+
+            var kayaAndSange = source.GetItemById(AbilityId.item_kaya_and_sange);
+            if (kayaAndSange != null)
+            {
+                spellAmp += kayaAndSange.AbilitySpecialData.First(x => x.Name == "spell_amp").Value / 100.0f;
             }
 
             var talent = source.Spellbook.Spells.FirstOrDefault(x => x.Level > 0 && x.Name.StartsWith("special_bonus_spell_amplify_"));

@@ -62,8 +62,7 @@ namespace Ensage.SDK.Abilities.Items
             get
             {
                 var regen = this.Ability.GetAbilitySpecialData("soul_heal_amount");
-                var hpPercentage = this.Owner.Health * (this.Ability.GetAbilitySpecialData("ally_hp_gain") / 100f); // approx
-                return (regen + hpPercentage) * this.Duration;
+                return regen * this.Duration;
             }
         }
 

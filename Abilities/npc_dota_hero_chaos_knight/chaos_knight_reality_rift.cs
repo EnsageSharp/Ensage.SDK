@@ -28,6 +28,6 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_chaos_knight
             }
         }
 
-        public string TargetModifierName { get; } = "modifier_chaos_knight_reality_rift";
+        public string TargetModifierName { get; } = "modifier_chaos_knight_reality_rift_buff";
     }
 }

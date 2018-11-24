@@ -7,21 +7,11 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_chen
     using Ensage.SDK.Abilities.Components;
     using Ensage.SDK.Extensions;
 
-    public class chen_penitence : RangedAbility, IHasDamageAmplifier, IHasTargetModifier
+    public class chen_penitence : RangedAbility, IHasTargetModifier, IHasModifier
     {
         public chen_penitence(Ability ability)
             : base(ability)
         {
-        }
-
-        public DamageType AmplifierType { get; } = DamageType.Magical | DamageType.Physical | DamageType.Pure;
-
-        public float DamageAmplification
-        {
-            get
-            {
-                return this.Ability.GetAbilitySpecialData("bonus_damage_taken") / 100f;
-            }
         }
 
         public override float Speed
@@ -33,5 +23,6 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_chen
         }
 
         public string TargetModifierName { get; } = "modifier_chen_penitence";
+        public string ModifierName { get; } = "modifier_chen_penitence_attack_speed_buff";
     }
 }

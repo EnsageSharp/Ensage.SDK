@@ -11,7 +11,7 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_obsidian_destroyer
     using Ensage.SDK.Extensions;
     using Ensage.SDK.Helpers;
 
-    public class obsidian_destroyer_arcane_orb : OrbAbility, IHasModifier, IHasTargetModifier
+    public class obsidian_destroyer_arcane_orb : OrbAbility, IHasModifier, IHasTargetModifier, IAreaOfEffectAbility
     {
         public obsidian_destroyer_arcane_orb(Ability ability)
             : base(ability)
@@ -50,6 +50,14 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_obsidian_destroyer
 
             damage += DamageHelpers.GetSpellDamage(bonusDamage, spellAmp, reduction);
             return damage;
+        }
+
+        public float Radius
+        {
+            get
+            {
+                return Ability.GetAbilitySpecialData("radius");
+            }
         }
     }
 }

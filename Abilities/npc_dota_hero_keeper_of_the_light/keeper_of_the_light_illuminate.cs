@@ -2,11 +2,13 @@
 //    Copyright (c) 2017 Ensage.
 // </copyright>
 
+using Ensage.SDK.Abilities.Components;
+
 namespace Ensage.SDK.Abilities.npc_dota_hero_keeper_of_the_light
 {
     using Ensage.SDK.Extensions;
 
-    public class keeper_of_the_light_illuminate : LineAbility, IChannable
+    public class keeper_of_the_light_illuminate : LineAbility, IChannable, IHasHealthRestore
     {
         public keeper_of_the_light_illuminate(Ability ability)
             : base(ability)
@@ -71,6 +73,15 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_keeper_of_the_light
         public override bool UseAbility()
         {
             return this.IlluminateEndAbility.UseAbility();
+        }
+
+        public float TotalHealthRestore
+        {
+            get
+            {
+                // Heals the same amount as raw damage.
+                return RawDamage;
+            }
         }
     }
 }

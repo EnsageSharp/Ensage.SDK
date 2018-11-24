@@ -76,6 +76,14 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_jakiro
             }
         }
 
+        public float LingerDuration
+        {
+            get
+            {
+                return this.Ability.GetAbilitySpecialData("linger_duration");
+            }
+        }
+
         public float GetTickDamage(params Unit[] targets)
         {
             var damage = this.RawTickDamage;

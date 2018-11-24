@@ -6,13 +6,13 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_brewmaster
 {
     using Ensage.SDK.Abilities.Components;
 
-    public class brewmaster_drunken_haze : RangedAbility, IHasTargetModifier
+    public class brewmaster_cinder_brew : CircleAbility, IHasTargetModifier
     {
-        public brewmaster_drunken_haze(Ability ability)
+        public brewmaster_cinder_brew(Ability ability)
             : base(ability)
         {
         }
 
-        public string TargetModifierName { get; } = "modifier_brewmaster_drunken_haze";
+        public string TargetModifierName { get; } = "modifier_brewmaster_cinder_brew";
     }
 }

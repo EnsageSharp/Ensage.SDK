@@ -7,7 +7,8 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_centaur
     using Ensage.SDK.Abilities.Components;
     using Ensage.SDK.Extensions;
 
-    public class centaur_return : PassiveAbility, IAuraAbility, IHasModifier
+    // Retailate ability, they didn't change the internal name.
+    public class centaur_return : ActiveAbility, IAuraAbility, IHasModifier
     {
         public centaur_return(Ability ability)
             : base(ability)

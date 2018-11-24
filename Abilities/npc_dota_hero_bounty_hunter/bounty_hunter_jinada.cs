@@ -6,10 +6,11 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_bounty_hunter
 {
     using System.Linq;
 
+    using Ensage.SDK.Helpers;
     using Ensage.SDK.Abilities.Components;
     using Ensage.SDK.Extensions;
 
-    public class bounty_hunter_jinada : PassiveAbility, IHasTargetModifier
+    public class bounty_hunter_jinada : PassiveAbility
     {
         public bounty_hunter_jinada(Ability ability)
             : base(ability)
@@ -18,32 +19,31 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_bounty_hunter
 
         public override DamageType DamageType { get; } = DamageType.Physical;
 
-        public string TargetModifierName { get; } = "modifier_bounty_hunter_jinada_slow";
 
         protected override float RawDamage
         {
             get
             {
-                var crit = this.Ability.GetAbilitySpecialData("crit_multiplier") / 100f;
-
-                var talent = this.Owner.GetAbilityById(AbilityId.special_bonus_unique_bounty_hunter);
-                if (talent?.Level > 0)
-                {
-                    crit += talent.GetAbilitySpecialData("value") / 100f;
-                }
-
-                return crit;
+                return this.Ability.GetAbilitySpecialData("bonus_damage");
             }
         }
 
         public override float GetDamage(params Unit[] targets)
         {
-            if (!targets.Any())
+            var target = targets.FirstOrDefault();
+            var owner = this.Owner;
+            if (target == null)
             {
-                return 0;
+                return this.RawDamage + owner.MinimumDamage + owner.BonusDamage;
             }
 
-            return this.Owner.GetAttackDamage(targets.First()) * this.RawDamage;
+            var attackDamage = owner.GetAttackDamage(target);
+
+            var amplify = this.Owner.GetSpellAmplification();
+            var reduction = this.Ability.GetDamageReduction(target, this.DamageType);
+            var abilityDamage = DamageHelpers.GetSpellDamage(this.RawDamage, amplify, reduction);
+
+            return attackDamage + abilityDamage;
         }
     }
 }

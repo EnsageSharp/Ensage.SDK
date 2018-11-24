@@ -2,9 +2,12 @@
 //    Copyright (c) 2017 Ensage.
 // </copyright>
 
+using Ensage.Common.Extensions;
+
 namespace Ensage.SDK.Abilities.npc_dota_hero_juggernaut
 {
     using System.Linq;
+    using System;
 
     using Ensage.SDK.Abilities.Components;
     using Ensage.SDK.Extensions;
@@ -21,15 +24,15 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_juggernaut
         {
             get
             {
-                var jumps = this.Ability.GetAbilitySpecialData(this.Owner.HasAghanimsScepter() ? "omni_slash_jumps_scepter" : "omni_slash_jumps");
+                var duration = this.Ability.GetAbilitySpecialData(this.Owner.HasAghanimsScepter() ? "duration" : "duration_scepter");
 
                 var talent = this.Owner.GetAbilityById(AbilityId.special_bonus_unique_juggernaut_2);
                 if (talent?.Level > 0)
                 {
-                    jumps += talent.GetAbilitySpecialData("value");
+                    duration += talent.GetAbilitySpecialData("value");
                 }
 
-                return (jumps - 1) * this.TickRate;
+                return duration;
             }
         }
 
@@ -57,7 +60,7 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_juggernaut
         {
             get
             {
-                return this.Ability.GetAbilitySpecialData("omni_slash_damage", 1);
+                return this.Ability.GetAbilitySpecialData("bonus_damage") + (this.Owner.DamageAverage + this.Owner.BonusDamage);
             }
         }
 
@@ -67,7 +70,15 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_juggernaut
         {
             get
             {
-                return this.Ability.GetAbilitySpecialData("omni_slash_bounce_tick");
+                return (float)this.Owner.AttackRate() * this.Ability.GetAbilitySpecialData("attack_rate_multiplier");
+            }
+        }
+
+        public float JumpCount
+        {
+            get
+            {
+                return (float)Math.Ceiling(this.DamageDuration / this.TickRate);
             }
         }
 
@@ -91,7 +102,7 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_juggernaut
 
         public float GetTotalDamage(params Unit[] targets)
         {
-            return this.GetTickDamage(targets) * (this.DamageDuration / this.TickRate);
+            return this.GetTickDamage(targets) * JumpCount;
         }
     }
 }

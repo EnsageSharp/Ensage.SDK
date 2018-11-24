@@ -7,9 +7,9 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_dazzle
     using Ensage.SDK.Abilities.Components;
     using Ensage.SDK.Extensions;
 
-    public class dazzle_weave : CircleAbility, IHasTargetModifier
+    public class dazzle_bad_juju : PassiveAbility, IHasTargetModifier
     {
-        public dazzle_weave(Ability ability)
+        public dazzle_bad_juju(Ability ability)
             : base(ability)
         {
         }
@@ -22,7 +22,7 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_dazzle
             }
         }
 
-        public override float Radius
+        public float Radius
         {
             get
             {
@@ -30,6 +30,6 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_dazzle
             }
         }
 
-        public string TargetModifierName { get; } = "modifier_dazzle_weave_armor";
+        public string TargetModifierName { get; } = "modifier_dazzle_bad_juju_armor";
     }
 }

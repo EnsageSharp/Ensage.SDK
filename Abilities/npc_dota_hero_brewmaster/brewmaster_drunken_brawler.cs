@@ -4,7 +4,7 @@
 
 namespace Ensage.SDK.Abilities.npc_dota_hero_brewmaster
 {
-    public class brewmaster_drunken_brawler : PassiveAbility
+    public class brewmaster_drunken_brawler : ActiveAbility
     {
         public brewmaster_drunken_brawler(Ability ability)
             : base(ability)

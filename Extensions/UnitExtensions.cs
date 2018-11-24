@@ -472,11 +472,10 @@ namespace Ensage.SDK.Extensions
             {
                 if (hero.PrimaryAttribute == Ensage.Attribute.Intelligence)
                 {
-                    spellAmp += hero.TotalIntelligence / 11.42f / 100f;
                 }
                 else
                 {
-                    spellAmp += hero.TotalIntelligence / 14.28f / 100f;
+                    spellAmp += hero.TotalIntelligence * 0.07f / 100f;
                 } 
             }
 

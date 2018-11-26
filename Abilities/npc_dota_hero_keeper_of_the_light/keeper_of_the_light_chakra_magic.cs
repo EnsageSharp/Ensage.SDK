@@ -23,5 +23,13 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_keeper_of_the_light
                 return this.Ability.GetAbilitySpecialDataWithTalent(this.Owner, "mana_restore");
             }
         }
+
+        public float CooldownReduction
+        {
+            get
+            {
+                return Ability.GetAbilitySpecialData("cooldown_reduction");
+            }
+        }
     }
 }

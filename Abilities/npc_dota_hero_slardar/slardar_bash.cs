@@ -4,6 +4,9 @@
 
 namespace Ensage.SDK.Abilities.npc_dota_hero_slardar
 {
+    using Ensage.Common.Extensions;
+
+    using Ensage.SDK.Extensions;
     using Ensage.SDK.Abilities.Components;
 
     public class slardar_bash : PassiveAbility, IHasTargetModifierTexture, IHasModifier, IHasTargetModifier
@@ -13,10 +16,19 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_slardar
         {
         }
 
-        public string ModifierName { get; } = "modifier_slardar_bash";
+        public string ModifierName { get; } = "modifier_slardar_bash_active";
 
         public string TargetModifierName { get; } = "modifier_bashed";
 
         public string[] TargetModifierTextureName { get; } = { "slardar_bash" };
+
+        public float GetAttackCount
+        {
+            get
+            {
+                var modifier = this.Owner.GetModifierByName(this.ModifierName);
+                return modifier?.StackCount ?? 0;
+            }
+        }
     }
 }

@@ -7,7 +7,7 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_drow_ranger
     using Ensage.SDK.Abilities.Components;
     using Ensage.SDK.Extensions;
 
-    public class drow_ranger_marksmanship : PassiveAbility, IHasModifier, IAreaOfEffectAbility
+    public class drow_ranger_marksmanship : PassiveAbility, IHasModifier, IAreaOfEffectAbility, IHasProcChance
     {
         public drow_ranger_marksmanship(Ability ability)
             : base(ability)
@@ -21,6 +21,16 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_drow_ranger
             get
             {
                 return this.Ability.GetAbilitySpecialData("radius");
+            }
+        }
+
+        public bool IsPseudoChance { get; } = true;
+
+        public float ProcChance
+        {
+            get
+            {
+                return this.Ability.GetAbilitySpecialData("chance");
             }
         }
     }

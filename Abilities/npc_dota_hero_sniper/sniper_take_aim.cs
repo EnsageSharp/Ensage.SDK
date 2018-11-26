@@ -4,7 +4,7 @@
 
 namespace Ensage.SDK.Abilities.npc_dota_hero_sniper
 {
-    public class sniper_take_aim : PassiveAbility
+    public class sniper_take_aim : ActiveAbility
     {
         public sniper_take_aim(Ability ability)
             : base(ability)

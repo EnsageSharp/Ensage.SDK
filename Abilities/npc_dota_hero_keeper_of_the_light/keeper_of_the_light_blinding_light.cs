@@ -2,6 +2,8 @@
 //    Copyright (c) 2017 Ensage.
 // </copyright>
 
+using Ensage.SDK.Extensions;
+
 namespace Ensage.SDK.Abilities.npc_dota_hero_keeper_of_the_light
 {
     using Ensage.SDK.Abilities.Components;
@@ -13,11 +15,19 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_keeper_of_the_light
         {
         }
 
-        public override bool IsReady
+        public float KnocbackDuration
         {
             get
             {
-                return base.IsReady && this.Ability.IsActivated;
+                return Ability.GetAbilitySpecialData("knockback_duration");
+            }
+        }
+
+        public float KnocbackDistance
+        {
+            get
+            {
+                return Ability.GetAbilitySpecialData("knockback_distance");
             }
         }
 

@@ -10,7 +10,7 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_bounty_hunter
     using Ensage.SDK.Extensions;
     using Ensage.SDK.Helpers;
 
-    public class bounty_hunter_wind_walk : ActiveAbility, IHasModifier
+    public class bounty_hunter_wind_walk : ActiveAbility, IHasModifier, IHasTargetModifier
     {
         public bounty_hunter_wind_walk(Ability ability)
             : base(ability)
@@ -20,31 +20,6 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_bounty_hunter
         public override UnitState AppliesUnitState { get; } = UnitState.Invisible;
 
         public string ModifierName { get; } = "modifier_bounty_hunter_wind_walk";
-
-        protected override float RawDamage
-        {
-            get
-            {
-                return this.Ability.GetAbilitySpecialData("bonus_damage");
-            }
-        }
-
-        public override float GetDamage(params Unit[] targets)
-        {
-            var target = targets.FirstOrDefault();
-            var owner = this.Owner;
-            if (target == null)
-            {
-                return this.RawDamage + owner.MinimumDamage + owner.BonusDamage;
-            }
-
-            var attackDamage = owner.GetAttackDamage(target);
-
-            var amplify = this.Owner.GetSpellAmplification();
-            var reduction = this.Ability.GetDamageReduction(target, this.DamageType);
-            var abilityDamage = DamageHelpers.GetSpellDamage(this.RawDamage, amplify, reduction);
-
-            return attackDamage + abilityDamage;
-        }
+        public string TargetModifierName { get; } = "modifier_bounty_hunter_wind_walk_slow";
     }
 }

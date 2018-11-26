@@ -7,8 +7,9 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_abaddon
     using Ensage.SDK.Abilities.Components;
     using Ensage.SDK.Extensions;
 
-    public class abaddon_death_coil : RangedAbility, IHasHealthCost, IHasHealthRestore
+    public class abaddon_death_coil : RangedAbility, IHasHealthCost, IHasHealthRestore, IAreaOfEffectAbility
     {
+
         public abaddon_death_coil(Ability ability)
             : base(ability)
         {
@@ -43,6 +44,20 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_abaddon
             get
             {
                 return this.Ability.GetAbilitySpecialDataWithTalent(this.Owner, "target_damage");
+            }
+        }
+
+        public float Radius
+        {
+            get
+            {
+                var talent = this.Owner.GetAbilityById(AbilityId.special_bonus_unique_abaddon_4);
+                if (talent?.Level > 0)
+                {
+                    return talent.GetAbilitySpecialData("value");
+                }
+
+                return 0;
             }
         }
     }

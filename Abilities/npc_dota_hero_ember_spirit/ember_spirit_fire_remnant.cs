@@ -7,7 +7,7 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_ember_spirit
     using Ensage.SDK.Abilities.Components;
     using Ensage.SDK.Extensions;
 
-    public class ember_spirit_fire_remnant : CircleAbility, IHasModifier
+    public class ember_spirit_fire_remnant : LineAbility, IHasModifier
     {
         public ember_spirit_fire_remnant(Ability ability)
             : base(ability)

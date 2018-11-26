@@ -14,6 +14,8 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_dark_seer
         {
         }
 
+        public override UnitState AppliesUnitState { get; } = UnitState.Unslowable;
+
         public override float Duration
         {
             get

@@ -2,6 +2,9 @@
 //    Copyright (c) 2017 Ensage.
 // </copyright>
 
+using System.Linq;
+using Ensage.SDK.Helpers;
+
 namespace Ensage.SDK.Abilities.npc_dota_hero_centaur
 {
     using Ensage.SDK.Abilities.Components;
@@ -34,8 +37,23 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_centaur
         {
             get
             {
-                return this.Ability.GetAbilitySpecialDataWithTalent(this.Owner, "edge_damage");
+                return this.Ability.GetAbilitySpecialData("edge_damage");
             }
+        }
+
+        public override float GetDamage(params Unit[] targets)
+        {
+            var owner = this.Owner as Hero;
+            var damageFromStrength = (Ability.GetAbilitySpecialDataWithTalent(this.Owner, "strength_damage") / 100f) * owner.TotalStrength;
+            var damage = this.RawDamage + damageFromStrength;
+            var amplify = this.Ability.SpellAmplification();
+            var reduction = 0.0f;
+            if (targets.Any())
+            {
+                reduction = this.Ability.GetDamageReduction(targets.First(), this.DamageType);
+            }
+
+            return DamageHelpers.GetSpellDamage(damage, amplify, reduction);
         }
     }
 }

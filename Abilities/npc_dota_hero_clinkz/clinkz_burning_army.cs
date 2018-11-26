@@ -38,7 +38,6 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_clinkz
             }
 
             var result = this.Ability.UseAbility(startPosition);
-
             if (result)
             {
                 this.LastCastAttempt = Game.RawGameTime;
@@ -50,8 +49,9 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_clinkz
         public override bool UseAbility(Vector3 position)
         {
             // simple position to get as close as possible to target
-            var distance = Math.Max(this.Owner.AttackRange(), this.Owner.Distance2D(position) - this.CastRange);
-            var startPosition = position.Extend(this.Owner.Position, distance);
+            var pos = Owner.Position;
+            var distance = pos.Distance(position) + Owner.AttackRange() - Owner.HullRadius;
+            var startPosition = pos.Extend(position, Math.Min(distance, CastRange));
 
             return this.UseAbility(startPosition, position);
         }

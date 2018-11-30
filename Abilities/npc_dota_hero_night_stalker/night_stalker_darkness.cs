@@ -6,7 +6,8 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_night_stalker
 {
     using Ensage.SDK.Abilities.Components;
 
-    public class night_stalker_darkness : ActiveAbility, IHasModifier, IHasTargetModifier
+    // They didn't change the internal name again.
+    public class night_stalker_darkness : ActiveAbility, IHasModifier
     {
         public night_stalker_darkness(Ability ability)
             : base(ability)
@@ -14,7 +15,5 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_night_stalker
         }
 
         public string ModifierName { get; } = "modifier_night_stalker_darkness";
-
-        public string TargetModifierName { get; } = "modifier_nightstalker_darkness_blind";
     }
 }

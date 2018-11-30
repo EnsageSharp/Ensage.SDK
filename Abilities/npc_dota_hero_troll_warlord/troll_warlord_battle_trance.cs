@@ -13,6 +13,8 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_troll_warlord
         {
         }
 
+        public override UnitState AppliesUnitState { get; } = UnitState.CommandRestricted | UnitState.Unslowable;
+
         public string ModifierName { get; } = "modifier_troll_warlord_berserkers_rage";
     }
 }

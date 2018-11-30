@@ -15,7 +15,7 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_puck
         {
         }
 
-        public override UnitState AppliesUnitState { get; } = UnitState.Stunned;
+        public override UnitState AppliesUnitState { get; } = UnitState.Stunned | UnitState.Tethered;
 
         public override float Radius
         {

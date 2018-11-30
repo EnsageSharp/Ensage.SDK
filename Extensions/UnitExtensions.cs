@@ -61,6 +61,18 @@ namespace Ensage.SDK.Extensions
 
         private static readonly Logger Log = LogManager.GetCurrentClassLogger();
 
+        public static string GetDisplayName(this Unit unit)
+        {
+            var hero = unit as Hero;
+            if (hero != null)
+            {
+                return hero.GetDisplayName();
+            }
+
+            var networkName = unit.NetworkName;
+            return networkName.Substring("CDOTA_Unit_".Length).Replace("_", string.Empty);
+        }
+
         public static float AttackPoint(this Unit unit)
         {
             try
@@ -389,7 +401,7 @@ namespace Ensage.SDK.Extensions
 
             var armor = target.Armor;
 
-            mult *= 1 - ((0.05f * armor) / (1 + (0.05f * Math.Abs(armor))));
+            mult *= 1 - ((0.052f * armor) / (0.9f + (0.048f * Math.Abs(armor))));
             mult *= (1.0f + damageAmplifier);
             return damage * mult;
         }
@@ -458,13 +470,32 @@ namespace Ensage.SDK.Extensions
             var hero = source as Hero;
             if (hero != null)
             {
-                spellAmp += hero.TotalIntelligence / 15.0f / 100.0f;
+                if (hero.PrimaryAttribute == Ensage.Attribute.Intelligence)
+                {
+                    spellAmp += hero.TotalIntelligence * 0.0875f / 100f;
+                }
+                else
+                {
+                    spellAmp += hero.TotalIntelligence * 0.07f / 100f;
+                } 
             }
 
             var kaya = source.GetItemById(AbilityId.item_kaya);
             if (kaya != null)
             {
                 spellAmp += kaya.AbilitySpecialData.First(x => x.Name == "spell_amp").Value / 100.0f;
+            }
+
+            var yashaAndKaya = source.GetItemById(AbilityId.item_yasha_and_kaya);
+            if (yashaAndKaya != null)
+            {
+                spellAmp += yashaAndKaya.AbilitySpecialData.First(x => x.Name == "spell_amp").Value / 100.0f;
+            }
+
+            var kayaAndSange = source.GetItemById(AbilityId.item_kaya_and_sange);
+            if (kayaAndSange != null)
+            {
+                spellAmp += kayaAndSange.AbilitySpecialData.First(x => x.Name == "spell_amp").Value / 100.0f;
             }
 
             var talent = source.Spellbook.Spells.FirstOrDefault(x => x.Level > 0 && x.Name.StartsWith("special_bonus_spell_amplify_"));

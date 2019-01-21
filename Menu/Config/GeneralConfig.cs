@@ -18,7 +18,7 @@ namespace Ensage.SDK.Menu.Config
 
         [Item("Discord RPC")]
         [Tooltip("Enables rich present of Discord")]
-        [DefaultValue(true)]
+        [DefaultValue(false)]
         public bool Discord
         {
             get

@@ -9,10 +9,28 @@ namespace Ensage.SDK.Menu.Config
     using Ensage.SDK.Menu.Items;
     using Ensage.SDK.Menu.Styles.Elements;
 
+    using Config = Ensage.Config;
+
     public class GeneralConfig
     {
         [Item("Style")]
         public Selection<IMenuStyle> ActiveStyle { get; set; }
+
+        [Item("Discord RPC")]
+        [Tooltip("Enables rich present of Discord")]
+        [DefaultValue(true)]
+        public bool Discord
+        {
+            get
+            {
+                return Config.Discord;
+            }
+
+            set
+            {
+                Config.Discord = value;
+            }
+        }
 
         [Item("Block player inputs for KeyBinds")]
         [Tooltip("When a assembly uses a key, dota will ignore it")]

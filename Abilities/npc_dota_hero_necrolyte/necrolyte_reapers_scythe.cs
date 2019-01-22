@@ -10,7 +10,7 @@ using Ensage.SDK.Extensions;
 using Ensage.SDK.Helpers;
 using PlaySharp.Toolkit.Helper.Annotations;
 
-namespace wtf.Sdk.Abilities.npc_dota_hero_necrolyte
+namespace Ensage.Sdk.Abilities.npc_dota_hero_necrolyte
 {
     public class necrolyte_reapers_scythe : RangedAbility, IHasTargetModifier
     {

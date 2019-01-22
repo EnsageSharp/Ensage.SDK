@@ -7,7 +7,7 @@ using Ensage.SDK.Abilities;
 using Ensage.SDK.Abilities.Components;
 using Ensage.SDK.Extensions;
 
-namespace wtf.Sdk.Abilities.npc_dota_hero_necrolyte
+namespace Ensage.Sdk.Abilities.npc_dota_hero_necrolyte
 {
     public class necrolyte_sadist : AreaOfEffectAbility, IHasTargetModifier,IHasModifier
     {

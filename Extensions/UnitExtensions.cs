@@ -470,14 +470,7 @@ namespace Ensage.SDK.Extensions
             var hero = source as Hero;
             if (hero != null)
             {
-                if (hero.PrimaryAttribute == Ensage.Attribute.Intelligence)
-                {
-                    spellAmp += hero.TotalIntelligence * 0.0875f / 100f;
-                }
-                else
-                {
-                    spellAmp += hero.TotalIntelligence * 0.07f / 100f;
-                } 
+                spellAmp += hero.TotalIntelligence * 0.07f / 100f;
             }
 
             var kaya = source.GetItemById(AbilityId.item_kaya);

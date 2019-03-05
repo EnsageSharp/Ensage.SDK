@@ -87,6 +87,11 @@ namespace Ensage.SDK.Menu.Entries
             this.View.OnClick(this, buttons, clickPosition);
         }
 
+        public override void OnMouseMove(MouseButtons buttons, Vector2 position)
+        {
+            this.View.OnMouseMove(this, buttons, position);
+        }
+
         public override void Reset()
         {
             Log.Debug($"Resetting {this.Value} to {this.DefaultValue}");

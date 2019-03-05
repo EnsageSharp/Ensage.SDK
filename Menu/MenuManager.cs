@@ -21,6 +21,7 @@ namespace Ensage.SDK.Menu
     using Ensage.SDK.Menu.Items;
     using Ensage.SDK.Menu.Messages;
     using Ensage.SDK.Menu.Styles.Elements;
+    using Ensage.SDK.Menu.Views;
     using Ensage.SDK.Service;
 
     using EnsageSharp.Sandbox;
@@ -909,6 +910,12 @@ namespace Ensage.SDK.Menu
                     this.LastHoverEntry = null;
                 }
 
+                return;
+            }
+            
+            if (this.LastHoverEntry != null && LastHoverEntry.View is SliderView && (e.Buttons & MouseButtons.Left) == MouseButtons.Left)
+            {
+                this.LastHoverEntry.OnMouseMove(e.Buttons, e.Position);
                 return;
             }
 

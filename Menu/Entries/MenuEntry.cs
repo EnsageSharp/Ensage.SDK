@@ -69,7 +69,7 @@ namespace Ensage.SDK.Menu.Entries
                 return this.isVisible;
             }
 
-            internal set
+            set
             {
                 this.isVisible = value;
                 foreach (var menuEntry in this.children.OfType<MenuEntry>())

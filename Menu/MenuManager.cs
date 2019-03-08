@@ -462,11 +462,6 @@ namespace Ensage.SDK.Menu
             this.context.Input.MouseMove -= this.OnMouseMove;
             this.context.Input.MouseClick -= this.OnMouseClick;
 
-            foreach (var menuEntry in this.rootMenus)
-            {
-                this.SaveMenu(menuEntry.DataContext);
-            }
-
             this.MenuConfig = null;
         }
 

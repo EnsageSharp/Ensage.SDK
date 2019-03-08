@@ -162,7 +162,7 @@ namespace Ensage.SDK.Menu
 
         public Vector2 TitleBarSize { get; private set; }
 
-        public bool DeregisterMenu(object menu, bool saveMenu = true)
+        public bool DeregisterMenu(object menu)
         {
             var dataType = menu.GetType();
             var sdkAttribute = dataType.GetCustomAttribute<MenuAttribute>();
@@ -171,7 +171,8 @@ namespace Ensage.SDK.Menu
                 throw new Exception($"Missing attribute {nameof(MenuAttribute)}");
             }
 
-            if (saveMenu)
+            var saveAttribute = menu.GetType().GetCustomAttribute<ConfigSaveAttribute>();
+            if (saveAttribute == null || saveAttribute.Save)
             {
                 this.SaveMenu(menu);
             }
@@ -461,6 +462,17 @@ namespace Ensage.SDK.Menu
             this.context.Renderer.Draw -= this.OnDraw;
             this.context.Input.MouseMove -= this.OnMouseMove;
             this.context.Input.MouseClick -= this.OnMouseClick;
+
+            foreach (var menuEntry in this.rootMenus)
+            {
+                var saveAttribute = menuEntry.DataContext.GetType().GetCustomAttribute<ConfigSaveAttribute>();
+                if (saveAttribute != null && !saveAttribute.Save)
+                {
+                    continue;
+                }
+
+                this.SaveMenu(menuEntry.DataContext);
+            }
 
             this.MenuConfig = null;
         }
@@ -908,7 +920,7 @@ namespace Ensage.SDK.Menu
                 return;
             }
             
-            if (this.LastHoverEntry != null && LastHoverEntry.View is SliderView && (e.Buttons & MouseButtons.Left) == MouseButtons.Left)
+            if (this.LastHoverEntry != null && this.LastHoverEntry.View is SliderView && (e.Buttons & MouseButtons.Left) == MouseButtons.Left)
             {
                 this.LastHoverEntry.OnMouseMove(e.Buttons, e.Position);
                 return;

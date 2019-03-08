@@ -6,11 +6,14 @@ namespace Ensage.SDK.Menu.Attributes
 {
     using System;
 
-    [AttributeUsage(AttributeTargets.Property)]
+    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Property)]
     public class ConfigSaveAttribute : Attribute
     {
-        public ConfigSaveAttribute()
+        public ConfigSaveAttribute(bool save = true)
         {
+            this.Save = save;
         }
+
+        public bool Save { get; }
     }
 }

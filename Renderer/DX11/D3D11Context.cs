@@ -100,7 +100,7 @@ namespace Ensage.SDK.Renderer.DX11
 
             this.Direct2D1.Dispose();
             this.DirectWrite.Dispose();
-            this.renderTarget?.Dispose();
+            //this.renderTarget?.Dispose(); fix crash!!!
         }
 
         private void OnPresent(EventArgs args)

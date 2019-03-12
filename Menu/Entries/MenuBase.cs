@@ -4,6 +4,7 @@
 
 namespace Ensage.SDK.Menu
 {
+    using System;
     using System.Reflection;
 
     using Ensage.SDK.Input;
@@ -85,6 +86,10 @@ namespace Ensage.SDK.Menu
         }
 
         public abstract void OnClick(MouseButtons buttons, Vector2 clickPosition);
+
+        public virtual void OnMouseMove(MouseButtons buttons, Vector2 position)
+        {
+        }
 
         public override string ToString()
         {

@@ -80,35 +80,31 @@ namespace Ensage.SDK.Menu.Views
 
         public override bool OnClick(MenuBase context, MouseButtons buttons, Vector2 clickPosition)
         {
-            if ((buttons & MouseButtons.Left) == MouseButtons.Left)
-            {
-                var pos = context.Position;
-                var size = context.RenderSize;
-
-                var item = (MenuItemEntry)context;
-                var propValue = item.ValueBinding.GetValue<ISlider>();
-
-                var percentage = (clickPosition.X - pos.X) / size.X;
-                if (percentage >= 0 && percentage <= 1f)
-                {
-                    switch (propValue)
-                    {
-                        case Slider<int> intSlider:
-                            intSlider.Value = (int)Math.Round(percentage * (intSlider.MaxValue - intSlider.MinValue)) + intSlider.MinValue;
-                            break;
-                        case Slider<float> floatSlider:
-                            floatSlider.Value = (int)Math.Round(percentage * (floatSlider.MaxValue - floatSlider.MinValue)) + floatSlider.MinValue;
-                            break;
-                        case Slider<double> doubleSlider:
-                            doubleSlider.Value = (int)Math.Round(percentage * (doubleSlider.MaxValue - doubleSlider.MinValue)) + doubleSlider.MinValue;
-                            break;
-                    }
-
-                    return true;
-                }
-            }
-
             return false;
+        }
+
+        public override void OnMouseMove(MenuBase context, MouseButtons buttons, Vector2 position)
+        {
+            var pos = context.Position;
+            var size = context.RenderSize;
+
+            var item = (MenuItemEntry)context;
+            var propValue = item.ValueBinding.GetValue<ISlider>();
+
+            var percentage = Math.Max(Math.Min((position.X - pos.X) / size.X, 1), 0);
+
+            switch (propValue)
+            {
+                case Slider<int> intSlider:
+                    intSlider.Value = (int)Math.Round(percentage * (intSlider.MaxValue - intSlider.MinValue)) + intSlider.MinValue;
+                    break;
+                case Slider<float> floatSlider:
+                    floatSlider.Value = (int)Math.Round(percentage * (floatSlider.MaxValue - floatSlider.MinValue)) + floatSlider.MinValue;
+                    break;
+                case Slider<double> doubleSlider:
+                    doubleSlider.Value = (int)Math.Round(percentage * (doubleSlider.MaxValue - doubleSlider.MinValue)) + doubleSlider.MinValue;
+                    break;
+            }
         }
     }
 }

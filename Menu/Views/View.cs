@@ -4,6 +4,7 @@
 
 namespace Ensage.SDK.Menu.Views
 {
+    using System;
     using Ensage.SDK.Input;
     using Ensage.SDK.Menu.Entries;
     using Ensage.SDK.Renderer;
@@ -114,5 +115,9 @@ namespace Ensage.SDK.Menu.Views
         }
 
         public abstract bool OnClick(MenuBase context, MouseButtons buttons, Vector2 clickPosition);
+
+        public virtual void OnMouseMove(MenuBase context, MouseButtons buttons, Vector2 position)
+        {
+        }
     }
 }

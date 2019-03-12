@@ -139,13 +139,13 @@ namespace Ensage.SDK.Menu
                     continue;
                 }
 
-                var saveAttribute = propertyInfo.GetCustomAttribute<ConfigSaveAttribute>();
-                if (saveAttribute != null)
-                {
-                    writer.WritePropertyName(propertyInfo.Name);
-                    this.WritePropertyValue(writer, propertyValue);
-                    continue;
-                }
+                // var saveAttribute = propertyInfo.GetCustomAttribute<ConfigSaveAttribute>();
+                // if (saveAttribute != null)
+                // {
+                //     writer.WritePropertyName(propertyInfo.Name);
+                //     this.WritePropertyValue(writer, propertyValue);
+                //     continue;
+                // }
             }
         }
 

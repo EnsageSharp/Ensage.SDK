@@ -386,7 +386,11 @@ namespace Ensage.SDK.Menu
 
             this.rootMenus.Add(menuEntry);
 
-            this.LoadMenu(menu);
+            var saveAttribute = dataType.GetCustomAttribute<ConfigSaveAttribute>();
+            if (saveAttribute == null || saveAttribute.Save)
+            {
+                this.LoadMenu(menu);
+            }
 
             this.positionDirty = true;
             this.sizeDirty = true;

@@ -31,7 +31,7 @@ namespace Ensage.SDK.Menu.Views
             var font = styleConfig.Font;
             context.Renderer.DrawText(pos, context.Name, font.Color, font.Size, font.Family);
 
-            var textSize = context.Renderer.MessureText(item.ValueBinding.GetValue<string>(), font.Size, font.Family);
+            var textSize = context.Renderer.MeasureText(item.ValueBinding.GetValue<string>(), font.Size, font.Family);
             pos.X = (context.Position.X + size.X) - border.Thickness[2] - styleConfig.TextSpacing - textSize.X;
             context.Renderer.DrawText(pos, item.ValueBinding.GetValue<string>(), font.Color, font.Size, font.Family);
         }
@@ -43,7 +43,7 @@ namespace Ensage.SDK.Menu.Views
             var font = styleConfig.Font;
 
             var item = (MenuItemEntry)context;
-            item.ValueSize = context.Renderer.MessureText(item.ValueBinding.GetValue<string>(), font.Size, font.Family);
+            item.ValueSize = context.Renderer.MeasureText(item.ValueBinding.GetValue<string>(), font.Size, font.Family);
             totalSize.X += styleConfig.TextSpacing + item.ValueSize.X;
 
             return totalSize;

@@ -87,10 +87,6 @@ namespace Ensage.SDK.Menu
 
         public abstract void OnClick(MouseButtons buttons, Vector2 clickPosition);
 
-        public virtual void OnMouseMove(MouseButtons buttons, Vector2 position)
-        {
-        }
-
         public override string ToString()
         {
             return this.Name;

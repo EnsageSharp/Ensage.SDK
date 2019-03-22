@@ -87,7 +87,7 @@ namespace Ensage.SDK.Menu.Entries
             this.View.OnClick(this, buttons, clickPosition);
         }
 
-        public override void OnMouseMove(MouseButtons buttons, Vector2 position)
+        public virtual void OnMouseMove(MouseButtons buttons, Vector2 position)
         {
             this.View.OnMouseMove(this, buttons, position);
         }

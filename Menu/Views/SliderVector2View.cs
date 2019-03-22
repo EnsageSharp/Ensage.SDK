@@ -54,7 +54,7 @@ namespace Ensage.SDK.Menu.Views
             var propValue = item.ValueBinding.GetValue<ISlider<Vector2>>();
 
             var font = styleConfig.Font;
-            item.ValueSize = context.Renderer.MessureText($"<{(int)propValue.MaxValue.X}, {(int)propValue.MaxValue.Y}>", font.Size, font.Family);
+            item.ValueSize = context.Renderer.MeasureText($"<{(int)propValue.MaxValue.X}, {(int)propValue.MaxValue.Y}>", font.Size, font.Family);
             totalSize.X += styleConfig.TextSpacing + item.ValueSize.X;
 
             return totalSize;

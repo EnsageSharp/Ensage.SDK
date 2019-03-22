@@ -62,7 +62,7 @@ namespace Ensage.SDK.Menu.Views
             var font = styleConfig.Font;
 
             // get size of longest possible hotkey
-            item.ValueSize = context.Renderer.MessureText(MouseButtons.XButton2Down.ToString(), font.Size, font.Family);
+            item.ValueSize = context.Renderer.MeasureText(MouseButtons.XButton2Down.ToString(), font.Size, font.Family);
             totalSize.X += styleConfig.TextSpacing + 10 + item.ValueSize.X + 10;
 
             return totalSize;

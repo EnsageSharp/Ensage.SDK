@@ -423,7 +423,7 @@ namespace Ensage.SDK.Menu
             this.MenuConfig.GeneralConfig.ActiveStyle.Value = this.styleRepository.DefaultMenuStyle;
 
             var titleBar = this.MenuConfig.GeneralConfig.ActiveStyle.Value.StyleConfig.TitleBar;
-            this.TitleBarSize = this.context.Renderer.MessureText("Menu", titleBar.Font.Size, titleBar.Font.Family)
+            this.TitleBarSize = this.context.Renderer.MeasureText("Menu", titleBar.Font.Size, titleBar.Font.Family)
                                 + new Vector2(titleBar.Border.Thickness[0] + titleBar.Border.Thickness[2], titleBar.Border.Thickness[1] + titleBar.Border.Thickness[3]);
 
             this.RegisterMenu(this.MenuConfig);
@@ -919,10 +919,10 @@ namespace Ensage.SDK.Menu
 
                 return;
             }
-            
-            if (this.LastHoverEntry != null && this.LastHoverEntry.View is SliderView && (e.Buttons & MouseButtons.Left) == MouseButtons.Left)
+
+            if (this.LastHoverEntry is MenuItemEntry item && item.Value is ISlider && (e.Buttons & MouseButtons.Left) == MouseButtons.Left)
             {
-                this.LastHoverEntry.OnMouseMove(e.Buttons, e.Position);
+                item.OnMouseMove(e.Buttons, e.Position);
                 return;
             }
 

@@ -11,10 +11,6 @@ namespace Ensage.SDK.Menu.Items
         object MinValue { get; }
 
         object Value { get; }
-
-        object Clone();
-
-        bool Load(object data);
     }
 
     public interface ISlider<out T> : ISlider

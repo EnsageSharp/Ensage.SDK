@@ -45,8 +45,6 @@ namespace Ensage.SDK.Menu
 
         private readonly List<PermaMenuItemEntry> permaItemEntries = new List<PermaMenuItemEntry>();
 
-        private readonly List<MenuEntry> rootMenus = new List<MenuEntry>();
-
         private readonly StyleRepository styleRepository;
 
         private readonly ViewRepository viewRepository;
@@ -85,6 +83,8 @@ namespace Ensage.SDK.Menu
             this.viewRepository = viewRepository;
             this.styleRepository = styleRepository;
         }
+
+        public List<MenuEntry> RootMenus { get; } = new List<MenuEntry>();
 
         public bool IsVisible { get; private set; } = false;
 
@@ -177,13 +177,13 @@ namespace Ensage.SDK.Menu
                 this.SaveMenu(menu);
             }
 
-            return this.rootMenus.RemoveAll(x => x.DataContext == menu) != 0;
+            return this.RootMenus.RemoveAll(x => x.DataContext == menu) != 0;
         }
 
         [CanBeNull]
         public MenuEntry FindDynamicMenuEntry(DynamicMenu menu)
         {
-            foreach (var menuEntry in this.rootMenus)
+            foreach (var menuEntry in this.RootMenus)
             {
                 if (menuEntry.DataContext is DynamicMenu && menuEntry.DataContext == menu)
                 {
@@ -244,7 +244,7 @@ namespace Ensage.SDK.Menu
             try
             {
                 this.loadToken = this.menuSerializer.Deserialize(menu);
-                var rootMenu = this.rootMenus.First(x => x.DataContext == menu);
+                var rootMenu = this.RootMenus.First(x => x.DataContext == menu);
 
                 if (rootMenu.DataContext is DynamicMenu dynamic)
                 {
@@ -265,7 +265,7 @@ namespace Ensage.SDK.Menu
         {
             try
             {
-                var drawList = this.rootMenus.ToArray();
+                var drawList = this.RootMenus.ToArray();
 
                 if (this.positionDirty)
                 {
@@ -283,8 +283,8 @@ namespace Ensage.SDK.Menu
                 if (this.sizeDirty)
                 {
                     // recalculate size
-                    this.CalculateMenuRenderSize(this.rootMenus);
-                    this.Size = this.CalculateMenuTotalSize(this.rootMenus);
+                    this.CalculateMenuRenderSize(this.RootMenus);
+                    this.Size = this.CalculateMenuTotalSize(this.RootMenus);
 
                     this.CalculateMenuPermaRenderSize(this.permaItemEntries);
 
@@ -363,7 +363,7 @@ namespace Ensage.SDK.Menu
                 throw new Exception($"Missing attribute {nameof(MenuAttribute)}");
             }
 
-            if (this.rootMenus.Any(x => x.DataContext == menu))
+            if (this.RootMenus.Any(x => x.DataContext == menu))
             {
                 throw new ArgumentException($"{menu} is already registered");
             }
@@ -384,7 +384,7 @@ namespace Ensage.SDK.Menu
             menuEntry.IsVisible = true;
             this.VisitInstance(menuEntry, menu, menuEntry);
 
-            this.rootMenus.Add(menuEntry);
+            this.RootMenus.Add(menuEntry);
 
             var saveAttribute = dataType.GetCustomAttribute<ConfigSaveAttribute>();
             if (saveAttribute == null || saveAttribute.Save)
@@ -467,7 +467,7 @@ namespace Ensage.SDK.Menu
             this.context.Input.MouseMove -= this.OnMouseMove;
             this.context.Input.MouseClick -= this.OnMouseClick;
 
-            foreach (var menuEntry in this.rootMenus)
+            foreach (var menuEntry in this.RootMenus)
             {
                 var saveAttribute = menuEntry.DataContext.GetType().GetCustomAttribute<ConfigSaveAttribute>();
                 if (saveAttribute != null && !saveAttribute.Save)
@@ -488,7 +488,7 @@ namespace Ensage.SDK.Menu
                 return;
             }
 
-            foreach (var rootMenu in this.rootMenus)
+            foreach (var rootMenu in this.RootMenus)
             {
                 rootMenu.IsCollapsed = true;
             }
@@ -871,8 +871,8 @@ namespace Ensage.SDK.Menu
                     {
                         if (!menuEntry.IsCollapsed)
                         {
-                            this.CollapseLayer(menuEntry, this.rootMenus);
-                            if (this.rootMenus.Contains(menuEntry))
+                            this.CollapseLayer(menuEntry, this.RootMenus);
+                            if (this.RootMenus.Contains(menuEntry))
                             {
                                 Messenger<RootMenuExpandMessage>.Publish(new RootMenuExpandMessage("SDK"));
                             }
@@ -938,7 +938,7 @@ namespace Ensage.SDK.Menu
             if (!this.titleBarHovered)
             {
                 // check for mouse hover
-                foreach (var menuEntry in this.rootMenus)
+                foreach (var menuEntry in this.RootMenus)
                 {
                     var hoverItem = this.OnInsideCheck(menuEntry, e.Position);
                     if (hoverItem != null)
@@ -1042,7 +1042,7 @@ namespace Ensage.SDK.Menu
         [CanBeNull]
         private MenuItemEntry FindMenuItem(object instance)
         {
-            foreach (var menuEntry in this.rootMenus)
+            foreach (var menuEntry in this.RootMenus)
             {
                 var result = this.FindMenuItem(menuEntry, instance);
                 if (result != null)

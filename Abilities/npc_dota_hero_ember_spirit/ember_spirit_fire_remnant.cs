@@ -32,7 +32,9 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_ember_spirit
         {
             get
             {
-                return (this.Ability.GetAbilitySpecialData("speed_multiplier") / 100) * this.Owner.MovementSpeed;
+                return this.Owner.HasAghanimsScepter() ?
+                    ((this.Ability.GetAbilitySpecialData("speed_multiplier") / 100) * this.Owner.MovementSpeed) * this.Ability.GetAbilitySpecialData("scepter_speed_multiplier") 
+                    : (this.Ability.GetAbilitySpecialData("speed_multiplier") / 100) * this.Owner.MovementSpeed;
             }
         }
     }

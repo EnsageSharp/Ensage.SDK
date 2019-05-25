@@ -10,7 +10,7 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_axe
     using Ensage.SDK.Extensions;
     using Ensage.SDK.Helpers;
 
-    public class axe_battle_hunger : RangedAbility, IHasDot, IHasModifier
+    public class axe_battle_hunger : RangedAbility, IHasDot, IHasModifier, IAreaOfEffectAbility
     {
         public axe_battle_hunger(Ability ability)
             : base(ability)
@@ -57,6 +57,14 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_axe
         public float GetTotalDamage(params Unit[] targets)
         {
             return this.GetTickDamage(targets) * (this.DamageDuration / this.TickRate);
+        }
+
+        public float Radius
+        {
+            get
+            {
+                return Ability.GetAbilitySpecialData("scepter_range");
+            }
         }
     }
 }

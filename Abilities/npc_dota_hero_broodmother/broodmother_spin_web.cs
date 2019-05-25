@@ -50,7 +50,7 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_broodmother
         {
             get
             {
-                return (int)this.Ability.GetAbilitySpecialData("count");
+                return this.Owner.HasAghanimsScepter() ? (int)this.Ability.GetAbilitySpecialData("count_scepter") : (int)this.Ability.GetAbilitySpecialData("count");
             }
         }
 

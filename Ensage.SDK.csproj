@@ -120,6 +120,7 @@
     <Compile Include="Abilities\npc_dota_hero_ancient_apparition\ancient_apparition_ice_vortex.cs" />
     <Compile Include="Abilities\npc_dota_hero_arc_warden\arc_warden_flux.cs" />
     <Compile Include="Abilities\npc_dota_hero_arc_warden\arc_warden_magnetic_field.cs" />
+    <Compile Include="Abilities\npc_dota_hero_arc_warden\arc_warden_scepter.cs" />
     <Compile Include="Abilities\npc_dota_hero_arc_warden\arc_warden_spark_wraith.cs" />
     <Compile Include="Abilities\npc_dota_hero_arc_warden\arc_warden_tempest_double.cs" />
     <Compile Include="Abilities\npc_dota_hero_bane\bane_brain_sap.cs" />

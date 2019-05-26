@@ -26,9 +26,6 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_pangolier
             }
         }
 
-        // modifier_pangolier_luckyshot_silence
-        // modifier_pangolier_luckyshot_disarm
-        // I don't know how it should be handled. Didn't want to turn TargetModifierName to string array for 1 spell.
-        public string TargetModifierName { get; } = "modifier_pangolier_luckyshot_";
+        public string TargetModifierName { get; } = "modifier_pangolier_luckyshot_disarm";
     }
 }

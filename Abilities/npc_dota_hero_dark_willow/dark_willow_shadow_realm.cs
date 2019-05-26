@@ -41,12 +41,6 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_dark_willow
 
                 var damage = this.Ability.GetAbilitySpecialData("damage");
 
-                var talent = this.Owner.GetAbilityById(AbilityId.special_bonus_unique_dark_willow_1);
-                if (talent?.Level > 0)
-                {
-                    damage += talent.GetAbilitySpecialData("value");
-                }
-
                 var timeMultiplier = Math.Min(modifier.ElapsedTime / this.Ability.GetAbilitySpecialData("max_damage_duration"), 1);
 
                 return damage * timeMultiplier;

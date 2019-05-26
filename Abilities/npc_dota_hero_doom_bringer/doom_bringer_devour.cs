@@ -4,7 +4,7 @@
 
 namespace Ensage.SDK.Abilities.npc_dota_hero_doom_bringer
 {
-    using Ensage.Common.Extensions;
+    using Ensage.SDK.Extensions;
     using Ensage.SDK.Abilities.Components;
 
     public class doom_bringer_devour : ToggleAbility, IHasModifier
@@ -15,5 +15,13 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_doom_bringer
         }
 
         public string ModifierName { get; } = "modifier_doom_bringer_devour";
+
+        public float CreepLevelLimit
+        {
+            get
+            {
+                return this.Ability.GetAbilitySpecialData("creep_level");
+            }
+        }
     }
 }

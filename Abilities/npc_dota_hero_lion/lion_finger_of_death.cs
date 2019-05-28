@@ -10,6 +10,8 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_lion
 
     using Ensage.SDK.Abilities.Components;
     using Ensage.SDK.Extensions;
+    using Ensage.SDK.Helpers;
+
 
     public class lion_finger_of_death : RangedAbility, IHasTargetModifier, IAreaOfEffectAbility, IHasModifier
     {
@@ -20,6 +22,7 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_lion
 
         public string TargetModifierName { get; } = "modifier_lion_finger_of_death";
         public string TargetDelayModifierName { get; } = "modifier_lion_finger_of_death_delay";
+        public override DamageType DamageType { get; } = DamageType.Magical;
 
         protected override float RawDamage
         {
@@ -52,6 +55,21 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_lion
             {
                 return this.Ability.GetAbilitySpecialData("splash_radius_scepter");
             }
+        }
+
+        public override float GetDamage(params Unit[] targets)
+        {
+            var totalDamage = 0.0f;
+
+            var damage = this.RawDamage;
+            var amplify = this.Owner.GetSpellAmplification();
+            foreach (var target in targets)
+            {
+                var reduction = this.Ability.GetDamageReduction(target, this.DamageType);
+                totalDamage += DamageHelpers.GetSpellDamage(damage, amplify, reduction);
+            }
+
+            return totalDamage;
         }
 
         public string ModifierName { get; } = "modifier_lion_finger_of_death_kill_counter";

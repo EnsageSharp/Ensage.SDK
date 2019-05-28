@@ -259,6 +259,10 @@
     <Compile Include="Abilities\npc_dota_hero_lion\lion_impale.cs" />
     <Compile Include="Abilities\npc_dota_hero_lion\lion_mana_drain.cs" />
     <Compile Include="Abilities\npc_dota_hero_lion\lion_voodoo.cs" />
+    <Compile Include="Abilities\npc_dota_hero_mars\mars_arena_of_blood.cs" />
+    <Compile Include="Abilities\npc_dota_hero_mars\mars_bulwark.cs" />
+    <Compile Include="Abilities\npc_dota_hero_mars\mars_gods_rebuke.cs" />
+    <Compile Include="Abilities\npc_dota_hero_mars\mars_spear.cs" />
     <Compile Include="Abilities\npc_dota_hero_pangolier\pangolier_gyroshell.cs" />
     <Compile Include="Abilities\npc_dota_hero_pangolier\pangolier_gyroshell_stop.cs" />
     <Compile Include="Abilities\npc_dota_hero_pangolier\pangolier_lucky_shot.cs" />
@@ -272,6 +276,10 @@
     <Compile Include="Abilities\npc_dota_hero_tidehunter\tidehunter_gush.cs" />
     <Compile Include="Abilities\npc_dota_hero_tidehunter\tidehunter_kraken_shell.cs" />
     <Compile Include="Abilities\npc_dota_hero_tidehunter\tidehunter_ravage.cs" />
+    <Compile Include="Abilities\npc_dota_hero_tinker\tinker_heat_seeking_missile.cs" />
+    <Compile Include="Abilities\npc_dota_hero_tinker\tinker_laser.cs" />
+    <Compile Include="Abilities\npc_dota_hero_tinker\tinker_march_of_the_machines.cs" />
+    <Compile Include="Abilities\npc_dota_hero_tinker\tinker_rearm.cs" />
     <Compile Include="Abilities\npc_dota_hero_troll_warlord\troll_warlord_fervor.cs" />
     <Compile Include="Abilities\npc_dota_hero_troll_warlord\troll_warlord_battle_trance.cs" />
     <Compile Include="Abilities\npc_dota_hero_troll_warlord\troll_warlord_whirling_axes_melee.cs" />

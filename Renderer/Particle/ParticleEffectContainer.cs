@@ -173,6 +173,11 @@ namespace Ensage.SDK.Renderer.Particle
             }
         }
 
+        public void Release()
+        { 
+            Effect.Release();
+        }
+
         private void Dispose(bool disposing)
         {
             if (this.disposed)

@@ -1,5 +1,5 @@
 // <copyright file="ParticleManager.cs" company="Ensage">
-//    Copyright (c) 2017 Ensage.
+//    Copyright (c) 2018 Ensage.
 // </copyright>
 
 namespace Ensage.SDK.Renderer.Particle
@@ -7,11 +7,8 @@ namespace Ensage.SDK.Renderer.Particle
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Reflection;
 
     using Ensage.SDK.Renderer.Particle.Metadata;
-
-    
 
     using NLog;
 
@@ -25,6 +22,18 @@ namespace Ensage.SDK.Renderer.Particle
         private static readonly List<ParticleEffectContainer> Particles = new List<ParticleEffectContainer>();
 
         private bool disposed;
+
+        public void Release(string name)
+        {
+            if (name == null)
+            {
+                throw new ArgumentNullException(nameof(name));
+            }
+
+            var particle = Particles.FirstOrDefault(p => p.Name == name);
+            if (particle != null)
+                particle.Release();
+        }
 
         public void AddOrUpdate(Entity unit, string name, string file, ParticleAttachment attachment, RestartType restart = RestartType.FullRestart, params object[] controlPoints)
         {
@@ -50,35 +59,42 @@ namespace Ensage.SDK.Renderer.Particle
 
             var particle = Particles.FirstOrDefault(p => p.Name == name);
 
-            if (particle == null)
+            try
             {
-                Particles.Add(new ParticleEffectContainer(name, file, unit, attachment, controlPoints));
-            }
-            else
-            {
-                // parts changed
-                if (particle.Unit != unit || particle.File != file || particle.Attachment != attachment)
+                if (particle == null)
                 {
-                    particle.Dispose();
-
-                    Particles.Remove(particle);
                     Particles.Add(new ParticleEffectContainer(name, file, unit, attachment, controlPoints));
-                    return;
                 }
-
-                // control points changed
-                // var hash = controlPoints.Sum(p => p.GetHashCode());
-                var hash = controlPoints.Aggregate(0, (sum, p) => unchecked(sum + p.GetHashCode()));
-                if (particle.GetControlPointsHashCode() != hash)
+                else
                 {
-                    particle.SetControlPoints(restart, controlPoints);
+                    // parts changed
+                    if (particle.Unit != unit || particle.File != file || particle.Attachment != attachment)
+                    {
+                        particle.Dispose();
+
+                        Particles.Remove(particle);
+                        Particles.Add(new ParticleEffectContainer(name, file, unit, attachment, controlPoints));
+                        return;
+                    }
+
+                    // control points changed
+                    // var hash = controlPoints.Sum(p => p.GetHashCode());
+                    var hash = controlPoints.Aggregate(0, (sum, p) => unchecked(sum + p.GetHashCode()));
+                    if (particle.GetControlPointsHashCode() != hash)
+                    {
+                        particle.SetControlPoints(restart, controlPoints);
+                    }
                 }
+            }
+            catch (ParticleEffectNotCreatedException e)
+            {
+                Log.Error(e);
             }
         }
 
         public void Dispose()
         {
-            this.Dispose(true);
+            Dispose(true);
             GC.SuppressFinalize(this);
         }
 
@@ -91,7 +107,7 @@ namespace Ensage.SDK.Renderer.Particle
         /// <param name="color"></param>
         public void DrawCircle(Vector3 center, string id, float range, Color color)
         {
-            this.AddOrUpdate(
+            AddOrUpdate(
                 ObjectManager.LocalHero,
                 id,
                 "particles/ui_mouseactions/drag_selected_ring.vpcf",
@@ -114,7 +130,7 @@ namespace Ensage.SDK.Renderer.Particle
         /// <param name="color"></param>
         public void DrawDangerLine(Unit unit, string id, Vector3 endPosition, Color? color = null)
         {
-            this.AddOrUpdate(
+            AddOrUpdate(
                 unit,
                 id,
                 "materials/ensage_ui/particles/target_d.vpcf",
@@ -142,7 +158,7 @@ namespace Ensage.SDK.Renderer.Particle
             var startPos = unit.Position;
             var pos1 = !red ? startPos : endPosition;
 
-            this.AddOrUpdate(unit, id, "particles/ui_mouseactions/range_finder_line.vpcf", ParticleAttachment.AbsOrigin, RestartType.FullRestart, 0, startPos, 1, pos1, 2, endPosition);
+            AddOrUpdate(unit, id, "particles/ui_mouseactions/range_finder_line.vpcf", ParticleAttachment.AbsOrigin, RestartType.FullRestart, 0, startPos, 1, pos1, 2, endPosition);
         }
 
         /// <summary>
@@ -154,7 +170,7 @@ namespace Ensage.SDK.Renderer.Particle
         /// <param name="color"></param>
         public void DrawRange(Unit unit, string id, float range, Color color)
         {
-            this.AddOrUpdate(unit, id, "particles/ui_mouseactions/drag_selected_ring.vpcf", ParticleAttachment.AbsOriginFollow, RestartType.FullRestart, 1, color, 2, range * -1.1f);
+            AddOrUpdate(unit, id, "particles/ui_mouseactions/drag_selected_ring.vpcf", ParticleAttachment.AbsOriginFollow, RestartType.FullRestart, 1, color, 2, range * -1.1f);
         }
 
         /// <summary>
@@ -166,7 +182,7 @@ namespace Ensage.SDK.Renderer.Particle
         /// <param name="color"></param>
         public void DrawTargetLine(Unit unit, string id, Vector3 endPosition, Color? color = null)
         {
-            this.AddOrUpdate(
+            AddOrUpdate(
                 unit,
                 id,
                 "materials/ensage_ui/particles/target.vpcf",
@@ -215,7 +231,7 @@ namespace Ensage.SDK.Renderer.Particle
         /// <param name="color"></param>
         public void ShowClick(Unit unit, string id, Vector3 position, Color color)
         {
-            this.AddOrUpdate(
+            AddOrUpdate(
                 unit,
                 id,
                 "particles/ui_mouseactions/clicked_basemove.vpcf",
@@ -229,7 +245,7 @@ namespace Ensage.SDK.Renderer.Particle
 
         private void Dispose(bool disposing)
         {
-            if (this.disposed)
+            if (disposed)
             {
                 return;
             }
@@ -249,7 +265,7 @@ namespace Ensage.SDK.Renderer.Particle
                 }
             }
 
-            this.disposed = true;
+            disposed = true;
         }
     }
 }

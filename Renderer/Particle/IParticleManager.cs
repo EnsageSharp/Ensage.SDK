@@ -26,6 +26,8 @@ namespace Ensage.SDK.Renderer.Particle
 
         void Remove(string name);
 
+        void Release(string name);
+
         void ShowClick(Unit unit, string id, Vector3 position, Color color);
     }
 }

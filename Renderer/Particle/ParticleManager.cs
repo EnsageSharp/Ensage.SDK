@@ -26,6 +26,18 @@ namespace Ensage.SDK.Renderer.Particle
 
         private bool disposed;
 
+        public void Release(string name)
+        {
+            if (name == null)
+            {
+                throw new ArgumentNullException(nameof(name));
+            }
+
+            var particle = Particles.FirstOrDefault(p => p.Name == name);
+            if (particle != null)
+                particle.Release();
+        }
+
         public void AddOrUpdate(Entity unit, string name, string file, ParticleAttachment attachment, RestartType restart = RestartType.FullRestart, params object[] controlPoints)
         {
             if (unit == null)

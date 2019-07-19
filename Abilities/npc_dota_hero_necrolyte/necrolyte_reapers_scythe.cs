@@ -3,6 +3,7 @@
 // </copyright>
 
 using System;
+using System.Linq;
 using Ensage;
 using Ensage.SDK.Abilities;
 using Ensage.SDK.Abilities.Components;
@@ -10,7 +11,7 @@ using Ensage.SDK.Extensions;
 using Ensage.SDK.Helpers;
 using PlaySharp.Toolkit.Helper.Annotations;
 
-namespace Ensage.Sdk.Abilities.npc_dota_hero_necrolyte
+namespace Ensage.SDK.Abilities.npc_dota_hero_necrolyte
 {
     public class necrolyte_reapers_scythe : RangedAbility, IHasTargetModifier
     {
@@ -21,7 +22,9 @@ namespace Ensage.Sdk.Abilities.npc_dota_hero_necrolyte
 
         public string TargetModifierName { get; } = "modifier_necrolyte_reapers_scythe";
 
-        public float DamagePerHealth
+        public override DamageType DamageType { get; } = DamageType.Magical;
+
+        public float DamagePerMissingHealth
         {
             get
             {
@@ -29,18 +32,20 @@ namespace Ensage.Sdk.Abilities.npc_dota_hero_necrolyte
             }
         }
 
-        public override float GetDamage([NotNull] Unit target, float damageModifier, float targetHealth = float.MinValue)
+        public override float GetDamage(params Unit[] targets)
         {
-            var damage = (target.MaximumHealth-targetHealth)* DamagePerHealth;
-            if (damage <= 0)
+            var target = targets.FirstOrDefault();
+            if (target == null)
             {
-                return 0;
+                return this.RawDamage;
             }
 
+            var missingHealthToDamage = (target.MaximumHealth - target.Health) * DamagePerMissingHealth;
             var amplify = this.Owner.GetSpellAmplification();
             var reduction = this.Ability.GetDamageReduction(target, this.DamageType);
+            var damage = DamageHelpers.GetSpellDamage(this.RawDamage * missingHealthToDamage, amplify, reduction);
 
-            return DamageHelpers.GetSpellDamage(damage, amplify, -reduction, damageModifier);
+            return damage;
         }
     }
 }

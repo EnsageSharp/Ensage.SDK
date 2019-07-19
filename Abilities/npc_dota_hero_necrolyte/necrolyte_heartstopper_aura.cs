@@ -7,9 +7,9 @@ using Ensage.SDK.Abilities;
 using Ensage.SDK.Abilities.Components;
 using Ensage.SDK.Extensions;
 
-namespace Ensage.Sdk.Abilities.npc_dota_hero_necrolyte
+namespace Ensage.SDK.Abilities.npc_dota_hero_necrolyte
 {
-    public class necrolyte_heartstopper_aura : AuraAbility,IHasModifier, IHasTargetModifier
+    public class necrolyte_heartstopper_aura : AuraAbility, IHasModifier, IHasTargetModifier
     {
         public necrolyte_heartstopper_aura(Ability ability)
             : base(ability)
@@ -25,11 +25,6 @@ namespace Ensage.Sdk.Abilities.npc_dota_hero_necrolyte
             {
                 return this.Ability.GetAbilitySpecialData("aura_damage", this.Ability.Level);
             }
-        }
-        //计算持续时间内目标单位所受伤害
-        public float GetDamage(Unit target, uint duration = 1)
-        {
-            return target.MaximumHealth * DamagePerSecond/100f * duration;
         }
     }
 }

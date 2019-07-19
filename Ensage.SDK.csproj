@@ -268,6 +268,10 @@
     <Compile Include="Abilities\npc_dota_hero_mars\mars_bulwark.cs" />
     <Compile Include="Abilities\npc_dota_hero_mars\mars_gods_rebuke.cs" />
     <Compile Include="Abilities\npc_dota_hero_mars\mars_spear.cs" />
+    <Compile Include="Abilities\npc_dota_hero_necrolyte\necrolyte_death_pulse.cs" />
+    <Compile Include="Abilities\npc_dota_hero_necrolyte\necrolyte_heartstopper_aura.cs" />
+    <Compile Include="Abilities\npc_dota_hero_necrolyte\necrolyte_reapers_scythe.cs" />
+    <Compile Include="Abilities\npc_dota_hero_necrolyte\necrolyte_sadist.cs" />
     <Compile Include="Abilities\npc_dota_hero_pangolier\pangolier_gyroshell.cs" />
     <Compile Include="Abilities\npc_dota_hero_pangolier\pangolier_gyroshell_stop.cs" />
     <Compile Include="Abilities\npc_dota_hero_pangolier\pangolier_lucky_shot.cs" />

@@ -7,7 +7,7 @@ using Ensage.SDK.Abilities;
 using Ensage.SDK.Abilities.Components;
 using Ensage.SDK.Extensions;
 
-namespace Ensage.Sdk.Abilities.npc_dota_hero_necrolyte
+namespace Ensage.SDK.Abilities.npc_dota_hero_necrolyte
 {
     public class necrolyte_sadist : AreaOfEffectAbility, IHasTargetModifier,IHasModifier
     {
@@ -15,14 +15,6 @@ namespace Ensage.Sdk.Abilities.npc_dota_hero_necrolyte
             : base(ability)
         {
         }
-
-//        public override float Radius
-//        {
-//            get
-//            {
-//                return this.Ability.GetAbilitySpecialData("crush_radius");
-//            }
-//        }
 
         public string TargetModifierName { get; } = "modifier_necrolyte_sadist_aura_effect";
 

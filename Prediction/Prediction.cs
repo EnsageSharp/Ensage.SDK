@@ -60,14 +60,16 @@ namespace Ensage.SDK.Prediction
                 {
                     movingObjects.AddRange(
                         EntityManager<Creep>.Entities.Where(
-                            unit => unit.IsAlly(input.Owner) && unit.IsValidTarget(float.MaxValue, false) && input.Owner.IsInRange(unit, scanRange)));
+                            unit => unit.IsAlly(input.Owner) && unit.IsValidTarget(float.MaxValue, false) && input.Owner.IsInRange(unit, scanRange) 
+                                    && unit != input.Target));
                 }
 
                 if ((input.CollisionTypes & CollisionTypes.EnemyCreeps) == CollisionTypes.EnemyCreeps)
                 {
                     movingObjects.AddRange(
                         EntityManager<Creep>.Entities.Where(
-                            unit => unit.IsEnemy(input.Owner) && unit.IsValidTarget(float.MaxValue, false) && input.Owner.IsInRange(unit, scanRange)));
+                            unit => unit.IsEnemy(input.Owner) && unit.IsValidTarget(float.MaxValue, false) && input.Owner.IsInRange(unit, scanRange)
+                                    && unit != input.Target));
                 }
 
                 if ((input.CollisionTypes & CollisionTypes.AllyHeroes) == CollisionTypes.AllyHeroes)
@@ -77,7 +79,8 @@ namespace Ensage.SDK.Prediction
                             unit => unit.IsAlly(input.Owner)
                                     && unit.IsValidTarget(float.MaxValue, false)
                                     && input.Owner.IsInRange(unit, scanRange)
-                                    && unit != input.Owner));
+                                    && unit != input.Owner
+                                    && unit != input.Target));
                 }
 
                 if ((input.CollisionTypes & CollisionTypes.EnemyHeroes) == CollisionTypes.EnemyHeroes)

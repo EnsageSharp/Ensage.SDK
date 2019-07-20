@@ -28,7 +28,7 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_necrolyte
         {
             get
             {
-                return this.Ability.GetAbilitySpecialData("damage_per_health",this.Ability.Level);
+                return this.Ability.GetAbilitySpecialData("damage_per_health", this.Ability.Level);
             }
         }
 
@@ -43,7 +43,7 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_necrolyte
             var missingHealthToDamage = (target.MaximumHealth - target.Health) * DamagePerMissingHealth;
             var amplify = this.Owner.GetSpellAmplification();
             var reduction = this.Ability.GetDamageReduction(target, this.DamageType);
-            var damage = DamageHelpers.GetSpellDamage(this.RawDamage * missingHealthToDamage, amplify, reduction);
+            var damage = DamageHelpers.GetSpellDamage(missingHealthToDamage, amplify, reduction);
 
             return damage;
         }

@@ -17,5 +17,7 @@ namespace Ensage.SDK.VPK.Content
         IMAGE_FORMAT_RGBA16161616F = 10,
 
         IMAGE_FORMAT_PNG = 16,
+
+        IMAGE_FORMAT_BGRA8888 = 28
     }
 }

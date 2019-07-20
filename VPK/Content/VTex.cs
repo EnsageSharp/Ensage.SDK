@@ -99,6 +99,7 @@ namespace Ensage.SDK.VPK.Content
                     break;
 
                 case VTexFormat.IMAGE_FORMAT_RGBA8888:
+                case VTexFormat.IMAGE_FORMAT_BGRA8888:
                     for (ushort i = 0; i < this.Depth && i < 0xFF; ++i)
                     {
                         for (var j = this.NumMipLevels; j > 0; j--)

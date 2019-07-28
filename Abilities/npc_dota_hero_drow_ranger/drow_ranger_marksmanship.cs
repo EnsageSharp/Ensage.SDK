@@ -20,7 +20,7 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_drow_ranger
         {
             get
             {
-                return this.Ability.GetAbilitySpecialData("radius");
+                return this.Ability.GetAbilitySpecialData("disable_range");
             }
         }
 

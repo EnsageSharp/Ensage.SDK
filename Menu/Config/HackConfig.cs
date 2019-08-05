@@ -28,7 +28,7 @@ namespace Ensage.SDK.Menu.Config
 
         [Item("Show spawn boxes")]
         [Tooltip("Spawn boxes of neutrals are permanently visible")]
-        [DefaultValue(true)]
+        [DefaultValue(false)]
         public bool ShowSpawnBoxes
         {
             get
@@ -44,7 +44,7 @@ namespace Ensage.SDK.Menu.Config
 
         [Item("Show tower range")]
         [Tooltip("The range indicator of towers are permanently visible")]
-        [DefaultValue(true)]
+        [DefaultValue(false)]
         public bool ShowTowerRange
         {
             get

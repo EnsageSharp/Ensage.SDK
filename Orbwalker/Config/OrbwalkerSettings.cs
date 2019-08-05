@@ -30,8 +30,8 @@ namespace Ensage.SDK.Orbwalker.Config
 
             this.Move = this.Factory.Item("Move", true);
             this.Attack = this.Factory.Item("Attack", true);
-            this.DrawRange = this.Factory.Item("Draw Attack Range", true);
-            this.DrawHoldRange = this.Factory.Item("Draw Hold Range", true);
+            this.DrawRange = this.Factory.Item("Draw Attack Range", false);
+            this.DrawHoldRange = this.Factory.Item("Draw Hold Range", false);
 
             this.MoveDelay = this.Factory.Item("Move Delay", new Slider(60, 0, 200));
             this.AttackDelay = this.Factory.Item("Attack Delay", new Slider(5, 0, 200));

@@ -35,6 +35,30 @@ namespace Ensage.SDK.VPK.Content
             return memoryStream;
         }
 
+        public static MemoryStream ReadBGRA8888(BinaryReader r, int w, int h)
+        {
+            var res = new Bitmap(w, h);
+            for (var y = 0; y < h; y++)
+            {
+                for (var x = 0; x < w; x++)
+                {
+                    var rawColor = r.ReadInt32();
+
+                    var color = Color.FromArgb(
+                        (rawColor >> 24) & 0x0FF,
+                        (rawColor >> 16) & 0x0FF,
+                        (rawColor >> 8) & 0x0FF,
+                        rawColor & 0x0FF);
+
+                    res.SetPixel(x, y, color);
+                }
+            }
+
+            var memoryStream = new MemoryStream();
+            res.Save(memoryStream, ImageFormat.Bmp);
+            return memoryStream;
+        }
+
         public static MemoryStream ReadRGBA16161616F(BinaryReader r, int w, int h)
         {
             var res = new Bitmap(w, h);

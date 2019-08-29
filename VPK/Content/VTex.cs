@@ -99,7 +99,6 @@ namespace Ensage.SDK.VPK.Content
                     break;
 
                 case VTexFormat.IMAGE_FORMAT_RGBA8888:
-                case VTexFormat.IMAGE_FORMAT_BGRA8888:
                     for (ushort i = 0; i < this.Depth && i < 0xFF; ++i)
                     {
                         for (var j = this.NumMipLevels; j > 0; j--)
@@ -113,6 +112,23 @@ namespace Ensage.SDK.VPK.Content
                         }
 
                         this.DataStream = DDSImage.ReadRGBA8888(reader, this.Width, this.Height);
+                    }
+                    break;
+
+                case VTexFormat.IMAGE_FORMAT_BGRA8888:
+                    for (ushort i = 0; i < this.Depth && i < 0xFF; ++i)
+                    {
+                        for (var j = this.NumMipLevels; j > 0; j--)
+                        {
+                            if (j == 1) break;
+
+                            for (var k = 0; k < this.Height / Math.Pow(2.0, j - 1); ++k)
+                            {
+                                reader.BaseStream.Position += (int)((4 * this.Width) / Math.Pow(2.0f, j - 1));
+                            }
+                        }
+
+                        this.DataStream = DDSImage.ReadBGRA8888(reader, this.Width, this.Height);
                     }
                     break;
 

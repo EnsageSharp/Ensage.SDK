@@ -68,24 +68,6 @@ namespace Ensage.SDK.Renderer.Utils
             return bitmap;
         }
 
-        public static Bitmap AdjustGamma(this Image source, float value)
-        {
-            var attributes = new ImageAttributes();
-            attributes.SetGamma(value, ColorAdjustType.Bitmap);
-
-            var bitmap = new Bitmap(source.Width, source.Height);
-
-            using (var gr = Graphics.FromImage(bitmap))
-            {
-                var points = new[] { new Point(0, 0), new Point(source.Width, 0), new Point(0, source.Height) };
-                var rect = new Rectangle(0, 0, source.Width, source.Height);
-
-                gr.DrawImage(source, points, rect, GraphicsUnit.Pixel, attributes);
-            }
-
-            return bitmap;
-        }
-
         public static Bitmap Pie(this Image source, int pct)
         {
             var bitmap = new Bitmap(source.Width, source.Height);

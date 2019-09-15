@@ -43,53 +43,53 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="clipper_library">
-      <HintPath>..\..\..\..\..\Program Files (x86)\Ensage\References\clipper_library.dll</HintPath>
+      <HintPath>..\..\..\..\..\Ensage\References\clipper_library.dll</HintPath>
     </Reference>
     <Reference Include="Ensage">
-      <HintPath>..\..\..\..\..\Program Files (x86)\Ensage\References\Ensage.dll</HintPath>
+      <HintPath>..\..\..\..\..\Ensage\References\Ensage.dll</HintPath>
     </Reference>
     <Reference Include="Ensage.Common">
-      <HintPath>..\..\..\..\..\Program Files (x86)\Ensage\References\Ensage.Common.dll</HintPath>
+      <HintPath>..\..\..\..\..\Ensage\References\Ensage.Common.dll</HintPath>
     </Reference>
     <Reference Include="EnsageSharp.Sandbox, Version=1.0.0.0, Culture=neutral, PublicKeyToken=0c92cb9c3763a33b, processorArchitecture=AMD64">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\Program Files (x86)\Ensage\System\EnsageSharp.Sandbox.dll</HintPath>
+      <HintPath>..\..\..\..\..\Ensage\System\EnsageSharp.Sandbox.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\Program Files (x86)\Ensage\References\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\..\..\..\..\Ensage\References\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="NLog">
-      <HintPath>..\..\..\..\..\Program Files (x86)\Ensage\References\NLog.dll</HintPath>
+      <HintPath>..\..\..\..\..\Ensage\References\NLog.dll</HintPath>
     </Reference>
     <Reference Include="PlaySharp.Sentry">
-      <HintPath>..\..\..\..\..\Program Files (x86)\Ensage\References\PlaySharp.Sentry.dll</HintPath>
+      <HintPath>..\..\..\..\..\Ensage\References\PlaySharp.Sentry.dll</HintPath>
     </Reference>
     <Reference Include="PlaySharp.Toolkit">
-      <HintPath>..\..\..\..\..\Program Files (x86)\Ensage\References\PlaySharp.Toolkit.dll</HintPath>
+      <HintPath>..\..\..\..\..\Ensage\References\PlaySharp.Toolkit.dll</HintPath>
     </Reference>
     <Reference Include="SharpDX, Version=2.4.2.0, Culture=neutral, PublicKeyToken=627a3d6d1956f55a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\Program Files (x86)\Ensage\References\SharpDX.dll</HintPath>
+      <HintPath>..\..\..\..\..\Ensage\References\SharpDX.dll</HintPath>
     </Reference>
     <Reference Include="SharpDX.Direct2D1, Version=2.4.2.0, Culture=neutral, PublicKeyToken=627a3d6d1956f55a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\Program Files (x86)\Ensage\References\SharpDX.Direct2D1.dll</HintPath>
+      <HintPath>..\..\..\..\..\Ensage\References\SharpDX.Direct2D1.dll</HintPath>
     </Reference>
     <Reference Include="SharpDX.Direct3D11, Version=2.4.2.0, Culture=neutral, PublicKeyToken=627a3d6d1956f55a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\Program Files (x86)\Ensage\References\SharpDX.Direct3D11.dll</HintPath>
+      <HintPath>..\..\..\..\..\Ensage\References\SharpDX.Direct3D11.dll</HintPath>
     </Reference>
     <Reference Include="SharpDX.Direct3D9">
-      <HintPath>..\..\..\..\..\Program Files (x86)\Ensage\References\SharpDX.Direct3D9.dll</HintPath>
+      <HintPath>..\..\..\..\..\Ensage\References\SharpDX.Direct3D9.dll</HintPath>
     </Reference>
     <Reference Include="SharpDX.DXGI, Version=2.4.2.0, Culture=neutral, PublicKeyToken=627a3d6d1956f55a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\Program Files (x86)\Ensage\References\SharpDX.DXGI.dll</HintPath>
+      <HintPath>..\..\..\..\..\Ensage\References\SharpDX.DXGI.dll</HintPath>
     </Reference>
     <Reference Include="SharpDX.Mathematics">
-      <HintPath>..\..\..\..\..\Program Files (x86)\Ensage\References\SharpDX.Mathematics.dll</HintPath>
+      <HintPath>..\..\..\..\..\Ensage\References\SharpDX.Mathematics.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />

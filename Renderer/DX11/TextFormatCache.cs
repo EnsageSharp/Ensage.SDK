@@ -1,5 +1,5 @@
-// <copyright file="TextFormatCache.cs" company="Ensage">
-//    Copyright (c) 2017 Ensage.
+﻿// <copyright file="TextFormatCache.cs" company="Ensage">
+//    Copyright (c) 2019 Ensage.
 // </copyright>
 
 namespace Ensage.SDK.Renderer.DX11
@@ -7,18 +7,13 @@ namespace Ensage.SDK.Renderer.DX11
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.Composition;
-    using System.Reflection;
-
-    
-
-    using NLog;
 
     using SharpDX.DirectWrite;
 
     [Export(typeof(TextFormatCache))]
     public sealed class TextFormatCache : Dictionary<string, TextFormat>, IDisposable
     {
-        private static readonly Logger Log = LogManager.GetCurrentClassLogger();
+        private bool disposed;
 
         [ImportingConstructor]
         public TextFormatCache([Import] ID3D11Context context)
@@ -40,6 +35,12 @@ namespace Ensage.SDK.Renderer.DX11
             return format;
         }
 
+        public void Dispose()
+        {
+            this.Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
         public TextFormat GetOrCreate(string familyName, float fontSize)
         {
             var key = $"{familyName}-{fontSize}";
@@ -51,14 +52,6 @@ namespace Ensage.SDK.Renderer.DX11
 
             return this.Create(familyName, fontSize);
         }
-
-        public void Dispose()
-        {
-            this.Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        private bool disposed;
 
         private void Dispose(bool disposing)
         {

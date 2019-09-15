@@ -19,7 +19,7 @@ namespace Ensage.SDK.Menu.Attributes
 
         public string ResourceFileName { get; set; }
 
-        public override void Load(IRendererManager renderer)
+        public override void Load(IRenderManager renderer)
         {
             renderer.TextureManager.LoadFromResource(this.TextureKey, this.ResourceFileName);
         }

@@ -18,7 +18,7 @@ namespace Ensage.SDK.Menu.Attributes
 
         public string TextureKey { get; }
 
-        public virtual void Load(IRendererManager renderer)
+        public virtual void Load(IRenderManager renderer)
         {
         }
     }

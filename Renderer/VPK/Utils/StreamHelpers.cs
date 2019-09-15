@@ -1,16 +1,14 @@
-﻿using System.IO;
-using System.Text;
+﻿// <copyright file="StreamHelpers.cs" company="Ensage">
+//    Copyright (c) 2019 Ensage.
+// </copyright>
 
-namespace SteamDatabase.ValvePak
+namespace Ensage.SDK.Renderer.VPK.Utils
 {
+    using System.IO;
+    using System.Text;
+
     internal static class StreamHelpers
     {
-        /// <summary>
-        /// Reads a null terminated string.
-        /// </summary>
-        /// <returns>String.</returns>
-        /// <param name="stream">Stream.</param>
-        /// <param name="encoding">Encoding.</param>
         public static string ReadNullTermString(this BinaryReader stream, Encoding encoding)
         {
             var characterSize = encoding.GetByteCount("e");

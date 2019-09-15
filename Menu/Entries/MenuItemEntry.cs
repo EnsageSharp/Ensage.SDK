@@ -24,13 +24,13 @@ namespace Ensage.SDK.Menu.Entries
     {
         private static readonly Logger Log = LogManager.GetCurrentClassLogger();
 
-        public MenuItemEntry(string name, View view, IRenderer renderer, MenuConfig menuConfig, ValueBinding valueBinding)
+        public MenuItemEntry(string name, View view, IRenderManager renderer, MenuConfig menuConfig, ValueBinding valueBinding)
             : this(name, null, view, renderer, menuConfig, valueBinding)
         {
             this.AssignDefaultValue();
         }
 
-        public MenuItemEntry(string name, [CanBeNull] string textureKey, View view, IRenderer renderer, MenuConfig menuConfig, ValueBinding valueBinding)
+        public MenuItemEntry(string name, [CanBeNull] string textureKey, View view, IRenderManager renderer, MenuConfig menuConfig, ValueBinding valueBinding)
             : base(name, textureKey, view, renderer, menuConfig, valueBinding)
         {
             this.ValueBinding = valueBinding;

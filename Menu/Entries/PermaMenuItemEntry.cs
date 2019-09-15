@@ -14,12 +14,12 @@ namespace Ensage.SDK.Menu.Entries
 
     public class PermaMenuItemEntry : MenuItemEntry
     {
-        public PermaMenuItemEntry(string name, View view, IRenderer renderer, MenuConfig menuConfig, ValueBinding valueBinding)
+        public PermaMenuItemEntry(string name, View view, IRenderManager renderer, MenuConfig menuConfig, ValueBinding valueBinding)
             : base(name, view, renderer, menuConfig, valueBinding)
         {
         }
 
-        public PermaMenuItemEntry(string name, [CanBeNull] string textureKey, View view, IRenderer renderer, MenuConfig menuConfig, ValueBinding valueBinding)
+        public PermaMenuItemEntry(string name, [CanBeNull] string textureKey, View view, IRenderManager renderer, MenuConfig menuConfig, ValueBinding valueBinding)
             : base(name, textureKey, view, renderer, menuConfig, valueBinding)
         {
         }

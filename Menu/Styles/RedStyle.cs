@@ -21,7 +21,7 @@ namespace Ensage.SDK.Menu.Styles
         private static readonly Logger Log = LogManager.GetCurrentClassLogger();
 
         [ImportingConstructor]
-        public RedStyle([Import] IRendererManager renderer)
+        public RedStyle([Import] IRenderManager renderer)
         {
             this.StyleConfig.SelectedLineColor = Color.DarkRed;
             this.LoadResources(renderer);
@@ -52,7 +52,7 @@ namespace Ensage.SDK.Menu.Styles
         public string Unchecked { get; } = "menuStyle/darkred/unchecked";
 
         [MethodImpl(MethodImplOptions.NoInlining)]
-        public void LoadResources(IRendererManager renderer)
+        public void LoadResources(IRenderManager renderer)
         {
             try
             {

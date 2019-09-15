@@ -1,17 +1,17 @@
-﻿// <copyright file="DDSImage.cs" company="Ensage">
-//    Copyright (c) 2018 Ensage.
+﻿// <copyright file="TextureDecompressors.cs" company="Ensage">
+//    Copyright (c) 2019 Ensage.
 // </copyright>
 
-namespace Ensage.SDK.VPK.Content
+namespace Ensage.SDK.Renderer.VPK.Utils
 {
     using System.Drawing;
     using System.Drawing.Imaging;
     using System.IO;
     using System.Runtime.InteropServices;
 
-    internal static class DDSImage
+    internal static class TextureDecompressors
     {
-        public static MemoryStream ReadRGBA8888(BinaryReader r, int w, int h)
+        public static Bitmap ReadBGRA8888(BinaryReader r, int w, int h)
         {
             var res = new Bitmap(w, h);
             for (var y = 0; y < h; y++)
@@ -20,46 +20,16 @@ namespace Ensage.SDK.VPK.Content
                 {
                     var rawColor = r.ReadInt32();
 
-                    var color = Color.FromArgb(
-                        (rawColor >> 24) & 0x0FF,
-                        rawColor & 0x0FF,
-                        (rawColor >> 8) & 0x0FF,
-                        (rawColor >> 16) & 0x0FF);
+                    var color = Color.FromArgb((rawColor >> 24) & 0x0FF, (rawColor >> 16) & 0x0FF, (rawColor >> 8) & 0x0FF, rawColor & 0x0FF);
 
                     res.SetPixel(x, y, color);
                 }
             }
 
-            var memoryStream = new MemoryStream();
-            res.Save(memoryStream, ImageFormat.Bmp);
-            return memoryStream;
+            return res;
         }
 
-        public static MemoryStream ReadBGRA8888(BinaryReader r, int w, int h)
-        {
-            var res = new Bitmap(w, h);
-            for (var y = 0; y < h; y++)
-            {
-                for (var x = 0; x < w; x++)
-                {
-                    var rawColor = r.ReadInt32();
-
-                    var color = Color.FromArgb(
-                        (rawColor >> 24) & 0x0FF,
-                        (rawColor >> 16) & 0x0FF,
-                        (rawColor >> 8) & 0x0FF,
-                        rawColor & 0x0FF);
-
-                    res.SetPixel(x, y, color);
-                }
-            }
-
-            var memoryStream = new MemoryStream();
-            res.Save(memoryStream, ImageFormat.Bmp);
-            return memoryStream;
-        }
-
-        public static MemoryStream ReadRGBA16161616F(BinaryReader r, int w, int h)
+        public static Bitmap ReadRGBA16161616F(BinaryReader r, int w, int h)
         {
             var res = new Bitmap(w, h);
 
@@ -76,12 +46,28 @@ namespace Ensage.SDK.VPK.Content
                 }
             }
 
-            var memoryStream = new MemoryStream();
-            res.Save(memoryStream, ImageFormat.Bmp);
-            return memoryStream;
+            return res;
         }
 
-        public static Stream UncompressDXT1(BinaryReader r, int w, int h)
+        public static Bitmap ReadRGBA8888(BinaryReader r, int w, int h)
+        {
+            var res = new Bitmap(w, h);
+            for (var y = 0; y < h; y++)
+            {
+                for (var x = 0; x < w; x++)
+                {
+                    var rawColor = r.ReadInt32();
+
+                    var color = Color.FromArgb((rawColor >> 24) & 0x0FF, rawColor & 0x0FF, (rawColor >> 8) & 0x0FF, (rawColor >> 16) & 0x0FF);
+
+                    res.SetPixel(x, y, color);
+                }
+            }
+
+            return res;
+        }
+
+        public static Bitmap UncompressDXT1(BinaryReader r, int w, int h)
         {
             var rect = new Rectangle(0, 0, w, h);
             var res = new Bitmap(w, h, PixelFormat.Format32bppRgb);
@@ -103,18 +89,52 @@ namespace Ensage.SDK.VPK.Content
             }
 
             Marshal.Copy(data, 0, lockBits.Scan0, data.Length);
-
             res.UnlockBits(lockBits);
 
-            var memoryStream = new MemoryStream();
-            res.Save(memoryStream, ImageFormat.Bmp);
-            return memoryStream;
+            return res;
+        }
+
+        public static Bitmap UncompressDXT5(BinaryReader r, int w, int h, int w2, bool yCoCg)
+        {
+            var rect = new Rectangle(0, 0, w2, h);
+            var res = new Bitmap(w2, h, PixelFormat.Format32bppArgb);
+
+            var blockCountX = w / 4;
+            var blockCountY = h / 4;
+
+            var lockBits = res.LockBits(rect, ImageLockMode.WriteOnly, res.PixelFormat);
+
+            var data = new byte[lockBits.Stride * lockBits.Height];
+
+            for (var j = 0; j < blockCountY; j++)
+            {
+                for (var i = 0; i < blockCountX; i++)
+                {
+                    var blockStorage = r.ReadBytes(16);
+                    DecompressBlockDXT5(i * 4, j * 4, w2, blockStorage, ref data, lockBits.Stride, yCoCg);
+                }
+            }
+
+            Marshal.Copy(data, 0, lockBits.Scan0, data.Length);
+            res.UnlockBits(lockBits);
+
+            return res;
+        }
+
+        private static byte ClampColor(int a)
+        {
+            if (a > 255)
+            {
+                return 255;
+            }
+
+            return a < 0 ? (byte)0 : (byte)a;
         }
 
         private static void DecompressBlockDXT1(int x, int y, int width, byte[] blockStorage, ref byte[] pixels, int stride)
         {
-            var color0 = (ushort)(blockStorage[0] | blockStorage[1] << 8);
-            var color1 = (ushort)(blockStorage[2] | blockStorage[3] << 8);
+            var color0 = (ushort)(blockStorage[0] | (blockStorage[1] << 8));
+            var color1 = (ushort)(blockStorage[2] | (blockStorage[3] << 8));
 
             int temp;
 
@@ -185,7 +205,7 @@ namespace Ensage.SDK.VPK.Content
                             break;
                     }
 
-                    if (x + i < width)
+                    if ((x + i) < width)
                     {
                         var pixelIndex = ((y + j) * stride) + ((x + i) * 4);
                         pixels[pixelIndex] = finalB;
@@ -194,36 +214,6 @@ namespace Ensage.SDK.VPK.Content
                     }
                 }
             }
-        }
-
-        public static Stream UncompressDXT5(BinaryReader r, int w, int h, bool yCoCg)
-        {
-            var rect = new Rectangle(0, 0, w, h);
-            var res = new Bitmap(w, h, PixelFormat.Format32bppArgb);
-
-            var blockCountX = (w + 3) / 4;
-            var blockCountY = (h + 3) / 4;
-
-            var lockBits = res.LockBits(rect, ImageLockMode.WriteOnly, res.PixelFormat);
-
-            var data = new byte[lockBits.Stride * lockBits.Height];
-
-            for (var j = 0; j < blockCountY; j++)
-            {
-                for (var i = 0; i < blockCountX; i++)
-                {
-                    var blockStorage = r.ReadBytes(16);
-                    DecompressBlockDXT5(i * 4, j * 4, w, blockStorage, ref data, lockBits.Stride, yCoCg);
-                }
-            }
-
-            Marshal.Copy(data, 0, lockBits.Scan0, data.Length);
-
-            res.UnlockBits(lockBits);
-
-            var memoryStream = new MemoryStream();
-            res.Save(memoryStream, ImageFormat.Bmp);
-            return memoryStream;
         }
 
         private static void DecompressBlockDXT5(int x, int y, int width, byte[] blockStorage, ref byte[] pixels, int stride, bool yCoCg)
@@ -239,8 +229,8 @@ namespace Ensage.SDK.VPK.Content
 
             var alphaCode2 = (ushort)(blockStorage[2] | (blockStorage[3] << 8));
 
-            var color0 = (ushort)(blockStorage[8] | blockStorage[9] << 8);
-            var color1 = (ushort)(blockStorage[10] | blockStorage[11] << 8);
+            var color0 = (ushort)(blockStorage[8] | (blockStorage[9] << 8));
+            var color1 = (ushort)(blockStorage[10] | (blockStorage[11] << 8));
 
             int temp;
 
@@ -344,7 +334,7 @@ namespace Ensage.SDK.VPK.Content
                             break;
                     }
 
-                    if (x + i < width)
+                    if ((x + i) < width)
                     {
                         if (yCoCg)
                         {
@@ -352,7 +342,7 @@ namespace Ensage.SDK.VPK.Content
                             var co = (finalR - 128) / s;
                             var cg = (finalG - 128) / s;
 
-                            finalR = ClampColor(finalAlpha + co - cg);
+                            finalR = ClampColor((finalAlpha + co) - cg);
                             finalG = ClampColor(finalAlpha + cg);
                             finalB = ClampColor(finalAlpha - co - cg);
                         }
@@ -361,20 +351,10 @@ namespace Ensage.SDK.VPK.Content
                         pixels[pixelIndex] = finalB;
                         pixels[pixelIndex + 1] = finalG;
                         pixels[pixelIndex + 2] = finalR;
-                        pixels[pixelIndex + 3] = byte.MaxValue; // TODO: Where's my alpha at?
+                        pixels[pixelIndex + 3] = byte.MaxValue;
                     }
                 }
             }
-        }
-
-        private static byte ClampColor(int a)
-        {
-            if (a > 255)
-            {
-                return 255;
-            }
-
-            return a < 0 ? (byte)0 : (byte)a;
         }
     }
 }

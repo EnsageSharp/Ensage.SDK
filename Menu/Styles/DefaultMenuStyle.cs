@@ -20,7 +20,7 @@ namespace Ensage.SDK.Menu.Styles
         private static readonly Logger Log = LogManager.GetCurrentClassLogger();
 
         [ImportingConstructor]
-        public DefaultMenuStyle([Import] IRendererManager renderer)
+        public DefaultMenuStyle([Import] IRenderManager renderer)
         {
             this.LoadResources(renderer);
         }
@@ -50,7 +50,7 @@ namespace Ensage.SDK.Menu.Styles
         public string Unchecked { get; } = "menuStyle/default/unchecked";
 
         [MethodImpl(MethodImplOptions.NoInlining)]
-        public void LoadResources(IRendererManager renderer)
+        public void LoadResources(IRenderManager renderer)
         {
             try
             {

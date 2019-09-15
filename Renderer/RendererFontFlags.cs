@@ -1,5 +1,5 @@
-// <copyright file="RendererFontFlags.cs" company="Ensage">
-//    Copyright (c) 2018 Ensage.
+﻿// <copyright file="RendererFontFlags.cs" company="Ensage">
+//    Copyright (c) 2019 Ensage.
 // </copyright>
 
 namespace Ensage.SDK.Renderer
@@ -7,7 +7,7 @@ namespace Ensage.SDK.Renderer
     using System;
 
     /// <summary>
-    /// Comaptible with DrawFontFlags from SharpDX9
+    ///     Compatible with DrawFontFlags from SharpDX9
     /// </summary>
     [Flags]
     public enum RendererFontFlags

@@ -1,34 +1,29 @@
 ﻿// <copyright file="ITextureManager.cs" company="Ensage">
-//    Copyright (c) 2017 Ensage.
+//    Copyright (c) 2019 Ensage.
 // </copyright>
 
 namespace Ensage.SDK.Renderer
 {
     using System;
-    using System.IO;
-    using System.Reflection;
 
-    using SharpDX;
+    using Ensage.SDK.Renderer.Texture;
 
     public interface ITextureManager : IDisposable
     {
-        bool LoadFromFile(string textureKey, string file);
+        void LoadAbilityFromDota(string abilityName, bool rounded = false);
 
-        bool LoadFromMemory(string textureKey, byte[] data);
+        void LoadAbilityFromDota(AbilityId abilityId, bool rounded = false);
 
-        bool LoadFromStream(string textureKey, Stream stream);
+        void LoadFromDota(string textureKey, string file, TextureProperties properties = default);
 
-        bool LoadFromDota(string textureKey, string file);
+        void LoadFromFile(string textureKey, string file, TextureProperties properties = default);
 
-        /// <summary>
-        /// Loads a resource from the given assembly.
-        /// </summary>
-        /// <param name="textureKey"></param>
-        /// <param name="file"></param>
-        /// <param name="assembly">If assembly is null, it will try to get the calling assembly.</param>
-        /// <returns></returns>
-        bool LoadFromResource(string textureKey, string file, Assembly assembly = null);
+        void LoadFromResource(string textureKey, string file, TextureProperties properties = default);
 
-        Vector2 GetTextureSize(string textureKey);
+        void LoadHeroFromDota(HeroId heroId, bool rounded = false, bool icon = false);
+
+        void LoadHeroFromDota(string heroName, bool rounded = false, bool icon = false);
+
+        void LoadUnitFromDota(string unitName, bool rounded = false);
     }
 }

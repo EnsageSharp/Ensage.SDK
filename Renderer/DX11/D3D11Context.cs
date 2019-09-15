@@ -1,5 +1,5 @@
-// <copyright file="D3D11Context.cs" company="Ensage">
-//    Copyright (c) 2018 Ensage.
+﻿// <copyright file="D3D11Context.cs" company="Ensage">
+//    Copyright (c) 2019 Ensage.
 // </copyright>
 
 namespace Ensage.SDK.Renderer.DX11
@@ -9,8 +9,6 @@ namespace Ensage.SDK.Renderer.DX11
     using System.Runtime.CompilerServices;
 
     using NLog;
-
-    using PlaySharp.Toolkit.Helper.Annotations;
 
     using SharpDX.Direct2D1;
     using SharpDX.Direct3D11;
@@ -58,7 +56,7 @@ namespace Ensage.SDK.Renderer.DX11
                     }
                     catch (Exception e)
                     {
-                        Log.Warn(e);
+                        Log.Error(e);
                     }
                 }
 
@@ -100,7 +98,7 @@ namespace Ensage.SDK.Renderer.DX11
 
             this.Direct2D1.Dispose();
             this.DirectWrite.Dispose();
-            //this.renderTarget?.Dispose(); fix crash!!!
+            this.renderTarget.Dispose();
         }
 
         private void OnPresent(EventArgs args)

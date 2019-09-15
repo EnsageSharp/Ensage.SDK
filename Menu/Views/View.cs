@@ -73,7 +73,7 @@ namespace Ensage.SDK.Menu.Views
             totalSize.Y += border.Thickness[1] + border.Thickness[3];
 
             var font = styleConfig.Font;
-            context.PermaTextSize = context.Renderer.MessureText($"{context.RootMenuName} > {context.Name}", font.Size, font.Family);
+            context.PermaTextSize = context.Renderer.MeasureText($"{context.RootMenuName} > {context.Name}", font.Size, font.Family);
             totalSize += context.PermaTextSize;
 
             return totalSize;
@@ -89,7 +89,7 @@ namespace Ensage.SDK.Menu.Views
             totalSize.Y += border.Thickness[1] + border.Thickness[3];
 
             var font = styleConfig.Font;
-            context.TextSize = context.Renderer.MessureText(context.Name, font.Size, font.Family);
+            context.TextSize = context.Renderer.MeasureText(context.Name, font.Size, font.Family);
             totalSize.X += styleConfig.LineWidth + context.TextSize.X;
             totalSize.Y += context.TextSize.Y;
 
@@ -102,7 +102,7 @@ namespace Ensage.SDK.Menu.Views
 
                     tooltipSize.X = style.Border.Thickness[0]
                                     + styleConfig.TextSpacing
-                                    + context.Renderer.MessureText(item.Tooltip, style.Font.Size, style.Font.Family).X
+                                    + context.Renderer.MeasureText(item.Tooltip, style.Font.Size, style.Font.Family).X
                                     + styleConfig.TextSpacing
                                     + style.Border.Thickness[2];
                     tooltipSize.Y = totalSize.Y;

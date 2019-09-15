@@ -66,7 +66,7 @@ namespace Ensage.SDK.Menu.Views
             var propValue = item.ValueBinding.GetValue<ISelection>();
 
             var longestElement = propValue.Values.OrderByDescending(x => x.ToString().Length).First();
-            item.ValueSize = context.Renderer.MessureText(longestElement.ToString(), font.Size, font.Family);
+            item.ValueSize = context.Renderer.MeasureText(longestElement.ToString(), font.Size, font.Family);
 
             totalSize.X += styleConfig.TextSpacing + item.ValueSize.X + styleConfig.TextSpacing;
 

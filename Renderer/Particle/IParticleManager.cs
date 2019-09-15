@@ -1,5 +1,5 @@
 ﻿// <copyright file="IParticleManager.cs" company="Ensage">
-//    Copyright (c) 2017 Ensage.
+//    Copyright (c) 2019 Ensage.
 // </copyright>
 
 namespace Ensage.SDK.Renderer.Particle
@@ -24,9 +24,9 @@ namespace Ensage.SDK.Renderer.Particle
 
         bool HasParticle(string name);
 
-        void Remove(string name);
-
         void Release(string name);
+
+        void Remove(string name);
 
         void ShowClick(Unit unit, string id, Vector3 position, Color color);
     }

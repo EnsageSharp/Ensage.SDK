@@ -1,46 +1,33 @@
 // <copyright file="D3D9Texture.cs" company="Ensage">
-//    Copyright (c) 2017 Ensage.
+//    Copyright (c) 2019 Ensage.
 // </copyright>
 
-namespace Ensage.SDK.Renderer
+namespace Ensage.SDK.Renderer.DX9
 {
-    using System;
     using System.Drawing;
 
-    using PlaySharp.Toolkit.Helper.Annotations;
+    using Ensage.SDK.Renderer.Texture;
 
     using SharpDX;
     using SharpDX.Direct3D9;
 
-    public sealed class D3D9Texture : IDisposable
+    public sealed class D3D9Texture : D3Texture
     {
         private bool disposed;
 
-        public D3D9Texture([NotNull] Texture texture, Bitmap bitmap, [CanBeNull] string file = null)
+        public D3D9Texture(Texture texture, Bitmap bitmap)
         {
             this.Bitmap = bitmap;
-            this.File = file;
             this.Texture = texture;
-            this.Center = new Vector2((float)this.Bitmap.Width / 2.0f, (float)this.Bitmap.Height / 2.0f);
+            this.Size = new Vector2(this.Bitmap.Size.Width, this.Bitmap.Size.Height);
+            this.Center = new Vector2(this.Size.X / 2.0f, this.Size.Y / 2.0f);
         }
 
         public Bitmap Bitmap { get; }
 
-        public Vector2 Center { get; }
-
-        [CanBeNull]
-        public string File { get; internal set; }
-
-        [NotNull]
         public Texture Texture { get; }
 
-        public void Dispose()
-        {
-            this.Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        private void Dispose(bool disposing)
+        protected override void Dispose(bool disposing)
         {
             if (this.disposed)
             {
@@ -50,6 +37,7 @@ namespace Ensage.SDK.Renderer
             if (disposing)
             {
                 this.Texture.Dispose();
+                this.Bitmap.Dispose();
             }
 
             this.disposed = true;

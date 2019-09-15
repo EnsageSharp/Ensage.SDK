@@ -1,42 +1,28 @@
 // <copyright file="D3D11Texture.cs" company="Ensage">
-//    Copyright (c) 2017 Ensage.
+//    Copyright (c) 2019 Ensage.
 // </copyright>
 
-namespace Ensage.SDK.Renderer
+namespace Ensage.SDK.Renderer.DX11
 {
-    using System;
-
-    using PlaySharp.Toolkit.Helper.Annotations;
+    using Ensage.SDK.Renderer.Texture;
 
     using SharpDX;
     using SharpDX.Direct2D1;
 
-    public sealed class D3D11Texture : IDisposable
+    public sealed class D3D11Texture : D3Texture
     {
         private bool disposed;
 
-        public D3D11Texture([NotNull] Bitmap bitmap, [CanBeNull] string file = null)
+        public D3D11Texture(Bitmap bitmap)
         {
-            this.File = file;
             this.Bitmap = bitmap;
-            this.Center = new Vector2((float)this.Bitmap.Size.Width / 2.0f, (float)this.Bitmap.Size.Height / 2.0f);
+            this.Size = new Vector2(this.Bitmap.Size.Width, this.Bitmap.Size.Height);
+            this.Center = new Vector2(this.Size.X / 2.0f, this.Size.Y / 2.0f);
         }
 
-        [NotNull]
         public Bitmap Bitmap { get; }
 
-        public Vector2 Center { get; }
-
-        [CanBeNull]
-        public string File { get; internal set; }
-
-        public void Dispose()
-        {
-            this.Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        private void Dispose(bool disposing)
+        protected override void Dispose(bool disposing)
         {
             if (this.disposed)
             {

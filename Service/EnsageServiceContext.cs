@@ -45,7 +45,7 @@ namespace Ensage.SDK.Service
         private Lazy<IPredictionManager> predictionManager;
 
         [Import]
-        internal Lazy<IRendererManager> rendererManager;
+        internal Lazy<IRenderManager> rendererManager;
 
         [Import]
         private Lazy<ITargetSelectorManager> targetSelectorManager;
@@ -141,7 +141,16 @@ namespace Ensage.SDK.Service
             }
         }
 
-        public IRendererManager Renderer
+        public IRenderManager RenderManager
+        {
+            get
+            {
+                return this.rendererManager.Value;
+            }
+        }
+
+        [Obsolete("Use RenderManager")]
+        public IRenderManager Renderer
         {
             get
             {

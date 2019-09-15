@@ -1,10 +1,11 @@
 ﻿// <copyright file="VTexFormat.cs" company="Ensage">
-//    Copyright (c) 2018 Ensage.
+//    Copyright (c) 2019 Ensage.
 // </copyright>
 
-namespace Ensage.SDK.VPK.Content
+namespace Ensage.SDK.Renderer.VPK.Enums
 {
-    public enum VTexFormat : byte
+    // ReSharper disable InconsistentNaming
+    internal enum VTexFormat : byte
     {
         IMAGE_FORMAT_NONE = 0,
 

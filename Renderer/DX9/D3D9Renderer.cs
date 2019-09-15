@@ -1,5 +1,5 @@
 // <copyright file="D3D9Renderer.cs" company="Ensage">
-//    Copyright (c) 2018 Ensage.
+//    Copyright (c) 2019 Ensage.
 // </copyright>
 
 namespace Ensage.SDK.Renderer.DX9
@@ -7,15 +7,14 @@ namespace Ensage.SDK.Renderer.DX9
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.Composition;
-    using System.Linq;
 
-    using Ensage.Common.Extensions;
-    using Ensage.SDK.Renderer.DX11;
+    using Ensage.SDK.Extensions;
     using Ensage.SDK.Renderer.Metadata;
+
+    using NLog;
 
     using SharpDX;
     using SharpDX.Direct3D9;
-    using SharpDX.DirectWrite;
     using SharpDX.Mathematics.Interop;
 
     using Color = System.Drawing.Color;
@@ -23,6 +22,8 @@ namespace Ensage.SDK.Renderer.DX9
     [ExportRenderer(RenderMode.Dx9)]
     public sealed class D3D9Renderer : IRenderer
     {
+        private static readonly Logger Log = LogManager.GetCurrentClassLogger();
+
         private readonly ID3D9Context context;
 
         private readonly FontCache fontCache;
@@ -35,32 +36,31 @@ namespace Ensage.SDK.Renderer.DX9
 
         private bool disposed;
 
+        private RenderManager.EventHandler renderEventHandler;
+
         [ImportingConstructor]
-        public D3D9Renderer([Import] ID3D9Context context, [Import] FontCache fontCache, [Import] D3D9TextureManager textureManager)
+        public D3D9Renderer(ID3D9Context context, FontCache fontCache, D3D9TextureManager textureManager)
         {
             this.context = context;
             this.fontCache = fontCache;
             this.textureManager = textureManager;
-            this.line = new Line(this.context.Device)
-                            {
-                                //Antialias = true
-                            };
+            this.line = new Line(this.context.Device);
             this.sprite = new Sprite(this.context.Device);
 
-            context.PreReset += this.OnPreReset;
-            context.PostReset += this.OnPostReset;
+            textureManager.VpkLoaded += this.OnVpkLoaded;
         }
 
-        public event EventHandler Draw
+        public event RenderManager.EventHandler Draw
         {
             add
             {
-                this.context.Draw += value;
+                this.renderEventHandler += value;
             }
 
             remove
             {
-                this.context.Draw -= value;
+                // ReSharper disable once DelegateSubtraction
+                this.renderEventHandler -= value;
             }
         }
 
@@ -80,14 +80,14 @@ namespace Ensage.SDK.Renderer.DX9
 
         public void DrawCircle(Vector2 center, float radius, Color color, float width = 1.0f)
         {
-            var quality = 120f;
-            var outRadius = radius / (float)Math.Cos((2 * Math.PI) / quality);
+            const float Quality = 120f;
+            var outRadius = radius / (float)Math.Cos((2 * Math.PI) / Quality);
             var points = new List<Vector2>();
             var c = new ColorBGRA(color.R, color.G, color.B, color.A);
 
-            for (var i = 1; i <= quality; i++)
+            for (var i = 1; i <= Quality; i++)
             {
-                var angle = (i * 2 * Math.PI) / quality;
+                var angle = (i * 2 * Math.PI) / Quality;
                 var point = new Vector2(center.X + (outRadius * (float)Math.Cos(angle)), center.Y + (outRadius * (float)Math.Sin(angle)));
 
                 points.Add(point);
@@ -110,6 +110,29 @@ namespace Ensage.SDK.Renderer.DX9
             }
         }
 
+        public void DrawFilledRectangle(RectangleF rect, Color color, Color borderColor, float borderWidth = 1.0f)
+        {
+            this.DrawFilledRectangle(new RectangleF(rect.X - borderWidth, rect.Y - borderWidth, rect.Width + (borderWidth * 2), rect.Height + (borderWidth * 2)), borderColor);
+            this.DrawFilledRectangle(rect, color);
+        }
+
+        public void DrawFilledRectangle(RectangleF rect, Color color)
+        {
+            var c = new ColorBGRA(color.R, color.G, color.B, color.A);
+            var heightFix = new Vector2(0, rect.Height / 2);
+            this.line.Width = rect.Height;
+            this.line.Begin();
+
+            try
+            {
+                this.line.Draw(new RawVector2[] { rect.TopLeft + heightFix, rect.TopRight + heightFix }, c);
+            }
+            finally
+            {
+                this.line.End();
+            }
+        }
+
         public void DrawLine(Vector2 start, Vector2 end, Color color, float width = 1.0f)
         {
             this.line.Width = width;
@@ -125,114 +148,18 @@ namespace Ensage.SDK.Renderer.DX9
             }
         }
 
-        public void DrawRectangle(RectangleF rect, Color color, float width = 1.0f)
+        public void DrawRectangle(RectangleF rect, Color color, float borderWidth = 1.0f)
         {
             var c = new ColorBGRA(color.R, color.G, color.B, color.A);
-            this.line.Width = width;
+            this.line.Width = borderWidth;
             this.line.Begin();
 
             try
             {
-                float w = width / 2.0f;
-                this.line.Draw(
-                    new[]
-                        {
-                            // top left
-                            new RawVector2(rect.X, rect.Y),
-
-                            // to top right
-                            new RawVector2(rect.X + rect.Width - w, rect.Y),
-
-                            // to bottom right
-                            new RawVector2(rect.X + rect.Width - w, rect.Y + rect.Height - w),
-
-                            // to bottom left
-                            new RawVector2(rect.X, rect.Y + rect.Height - w),
-
-                            // to top left
-                            new RawVector2(rect.X, rect.Y)
-                        },
-                    c);
-
-                //// bottom | left to right
-                // this.line.Draw(
-                // new[] { new RawVector2(rect.X + (width / 2f), (rect.Y + rect.Height) - (width / 2f)), new RawVector2(rect.X + (width / 2f), rect.Y - (width / 2f)) },
-                // c);
-
-                //// right | top to bottom
-                // this.line.Draw(new[] { new RawVector2(rect.X + rect.Width, rect.Y + rect.Height), new RawVector2(rect.X, rect.Y + rect.Height) }, c);
-
-                //// bottom | left to right
-                // this.line.Draw(new[] { new RawVector2(rect.X, rect.Y), new RawVector2(rect.X + rect.Width, rect.Y) }, c);
-
-                //// left | top to bottom
-                // this.line.Draw(
-                // new[]
-                // {
-                // new RawVector2((rect.X + rect.Width) - (width / 2f), rect.Y - (width / 2f)),
-                // new RawVector2((rect.X + rect.Width) - (width / 2f), (rect.Y + rect.Height) - (width / 2f))
-                // },
-                // c);
-            }
-            finally
-            {
-                this.line.End();
-            }
-        }
-
-        public void DrawFilledRectangle(RectangleF rect, Color color, Color backgroundColor, float borderWidth = 1.0f)
-        {
-            var c = new ColorBGRA(color.R, color.G, color.B, color.A);
-            var c2 = new ColorBGRA(backgroundColor.R, backgroundColor.G, backgroundColor.B, backgroundColor.A);
-
-            this.line.Width = 1;
-            this.line.Begin();
-
-            try
-            {
-                if (borderWidth > 0)
-                {
-                    var points = new List<RawVector2>();
-
-                    for (uint i = 0; i < borderWidth; i++)
-                    {
-                        points.Add(new RawVector2(rect.X - i, rect.Y - i));
-                        points.Add(new RawVector2(rect.X + rect.Width + i, rect.Y - i));
-                        points.Add(new RawVector2(rect.X + rect.Width + i, rect.Y + rect.Height + i));
-                        points.Add(new RawVector2(rect.X - i, rect.Y + rect.Height + i));
-                        points.Add(new RawVector2(rect.X - i, rect.Y - i));
-                    }
-
-                    this.line.Draw(points.ToArray(), c);
-                }
-
-                var points2 = new List<RawVector2>();
-
-                for (var i = 1; i < (rect.Height - 1); i++)
-                {
-                    points2.Add(new RawVector2(rect.X + 1, rect.Y + i));
-                    points2.Add(new RawVector2(rect.X + rect.Width, rect.Y + i));
-
-                    if (i % 2 == 0)
-                    {
-                        points2.Add(new RawVector2(rect.X + rect.Width, rect.Y + i + 1));
-                    }
-                    else
-                    {
-                        points2.Add(new RawVector2(rect.X + 1, rect.Y + i + 1));
-                    }
-                }
-
-                if ((rect.Height - 2) % 2 != 0)
-                {
-                    points2.Add(new RawVector2(rect.X + rect.Width, (rect.Y + rect.Height) - 1));
-                }
-                else
-                {
-                    points2.Add(new RawVector2(rect.X, (rect.Y + rect.Height) - 1));
-                }
-
-                this.line.Draw(points2.ToArray(), c2);
+                this.line.Draw(new RawVector2[] { rect.TopLeft, rect.TopRight }, c);
+                this.line.Draw(new RawVector2[] { rect.TopRight, rect.BottomRight }, c);
+                this.line.Draw(new RawVector2[] { rect.BottomRight, rect.BottomLeft }, c);
+                this.line.Draw(new RawVector2[] { rect.BottomLeft, rect.TopLeft }, c);
             }
             finally
             {
@@ -245,28 +172,37 @@ namespace Ensage.SDK.Renderer.DX9
             var font = this.fontCache.GetOrCreate(fontFamily, fontSize);
             font.DrawText(null, text, (int)position.X, (int)position.Y, new ColorBGRA(color.R, color.G, color.B, color.A));
         }
+
         public void DrawText(RectangleF position, string text, Color color, RendererFontFlags flags = RendererFontFlags.Left, float fontSize = 13f, string fontFamily = "Calibri")
         {
             var font = this.fontCache.GetOrCreate(fontFamily, fontSize);
-            font.DrawText(null, text, position, (FontDrawFlags)flags, new ColorBGRA(color.R, color.G, color.B, color.A));
+            font.DrawText(null, text, position, (FontDrawFlags)flags | FontDrawFlags.NoClip, new ColorBGRA(color.R, color.G, color.B, color.A));
+        }
+
+        public void DrawTexture(string textureKey, Vector2 position, Vector2 size, float rotation = 0.0f, float opacity = 1.0f)
+        {
+            this.DrawTexture(textureKey, new RectangleF(position.X, position.Y, size.X, size.Y), rotation, opacity);
         }
 
         public void DrawTexture(string textureKey, RectangleF rect, float rotation = 0, float opacity = 1)
         {
             var textureEntry = this.textureManager.GetTexture(textureKey);
-            if (textureEntry == null)
-            {
-                throw new TextureNotFoundException(textureKey);
-            }
 
             this.sprite.Begin(SpriteFlags.AlphaBlend);
 
+            byte alpha = 255;
+            if (opacity < 1)
+            {
+                alpha = (byte)(alpha * Math.Max(opacity, 0));
+            }
+
+            var color = new RawColorBGRA(255, 255, 255, alpha);
             var matrix = this.sprite.Transform;
-            var scaling = new Vector2((float)rect.Width / textureEntry.Bitmap.Width, (float)rect.Height / textureEntry.Bitmap.Height);
+            var scaling = new Vector2(rect.Width / textureEntry.Bitmap.Width, rect.Height / textureEntry.Bitmap.Height);
             if (rotation == 0.0f)
             {
                 this.sprite.Transform = Matrix.Scaling(scaling.X, scaling.Y, 0) * Matrix.Translation(rect.X, rect.Y, 0);
-                this.sprite.Draw(textureEntry.Texture, SharpDX.Color.White);
+                this.sprite.Draw(textureEntry.Texture, color);
             }
             else
             {
@@ -276,7 +212,7 @@ namespace Ensage.SDK.Renderer.DX9
                                         * Matrix.Translation(center)
                                         * Matrix.Scaling(scaling.X, scaling.Y, 0)
                                         * Matrix.Translation(rect.X, rect.Y, 0);
-                this.sprite.Draw(textureEntry.Texture, SharpDX.Color.White);
+                this.sprite.Draw(textureEntry.Texture, color);
             }
 
             this.sprite.Transform = matrix;
@@ -295,14 +231,6 @@ namespace Ensage.SDK.Renderer.DX9
             return new Vector2(rect.Right - rect.Left, rect.Bottom - rect.Top);
         }
 
-        [Obsolete("Use MeasureText")]
-        public Vector2 MessureText(string text, float fontSize = 13, string fontFamily = "Calibri")
-        {
-            var font = this.fontCache.GetOrCreate(fontFamily, fontSize);
-            var rect = font.MeasureText(null, text, FontDrawFlags.Left);
-            return new Vector2(rect.Right - rect.Left, rect.Bottom - rect.Top);
-        }
-
         private void Dispose(bool disposing)
         {
             if (this.disposed)
@@ -312,12 +240,35 @@ namespace Ensage.SDK.Renderer.DX9
 
             if (disposing)
             {
+                this.context.Draw -= this.OnDraw;
+
+                this.context.Dispose();
                 this.textureManager.Dispose();
                 this.fontCache.Dispose();
-                this.context.Dispose();
             }
 
             this.disposed = true;
+        }
+
+        private void OnDraw(object sender, EventArgs args)
+        {
+            if (this.renderEventHandler == null)
+            {
+                return;
+            }
+
+            // ReSharper disable once PossibleInvalidCastExceptionInForeachLoop
+            foreach (RenderManager.EventHandler draw in this.renderEventHandler.GetInvocationList())
+            {
+                try
+                {
+                    draw(this);
+                }
+                catch (Exception e)
+                {
+                    Log.Error(e);
+                }
+            }
         }
 
         private void OnPostReset(object sender, EventArgs eventArgs)
@@ -330,6 +281,13 @@ namespace Ensage.SDK.Renderer.DX9
         {
             this.line.OnLostDevice();
             this.sprite.OnLostDevice();
+        }
+
+        private void OnVpkLoaded(object sender, EventArgs e)
+        {
+            this.context.PreReset += this.OnPreReset;
+            this.context.PostReset += this.OnPostReset;
+            this.context.Draw += this.OnDraw;
         }
     }
 }

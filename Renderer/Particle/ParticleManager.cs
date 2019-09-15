@@ -1,5 +1,5 @@
 // <copyright file="ParticleManager.cs" company="Ensage">
-//    Copyright (c) 2017 Ensage.
+//    Copyright (c) 2019 Ensage.
 // </copyright>
 
 namespace Ensage.SDK.Renderer.Particle
@@ -7,11 +7,8 @@ namespace Ensage.SDK.Renderer.Particle
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Reflection;
 
     using Ensage.SDK.Renderer.Particle.Metadata;
-
-    
 
     using NLog;
 
@@ -25,18 +22,6 @@ namespace Ensage.SDK.Renderer.Particle
         private static readonly List<ParticleEffectContainer> Particles = new List<ParticleEffectContainer>();
 
         private bool disposed;
-
-        public void Release(string name)
-        {
-            if (name == null)
-            {
-                throw new ArgumentNullException(nameof(name));
-            }
-
-            var particle = Particles.FirstOrDefault(p => p.Name == name);
-            if (particle != null)
-                particle.Release();
-        }
 
         public void AddOrUpdate(Entity unit, string name, string file, ParticleAttachment attachment, RestartType restart = RestartType.FullRestart, params object[] controlPoints)
         {
@@ -154,7 +139,18 @@ namespace Ensage.SDK.Renderer.Particle
             var startPos = unit.Position;
             var pos1 = !red ? startPos : endPosition;
 
-            this.AddOrUpdate(unit, id, "particles/ui_mouseactions/range_finder_line.vpcf", ParticleAttachment.AbsOrigin, RestartType.FullRestart, 0, startPos, 1, pos1, 2, endPosition);
+            this.AddOrUpdate(
+                unit,
+                id,
+                "particles/ui_mouseactions/range_finder_line.vpcf",
+                ParticleAttachment.AbsOrigin,
+                RestartType.FullRestart,
+                0,
+                startPos,
+                1,
+                pos1,
+                2,
+                endPosition);
         }
 
         /// <summary>
@@ -166,7 +162,16 @@ namespace Ensage.SDK.Renderer.Particle
         /// <param name="color"></param>
         public void DrawRange(Unit unit, string id, float range, Color color)
         {
-            this.AddOrUpdate(unit, id, "particles/ui_mouseactions/drag_selected_ring.vpcf", ParticleAttachment.AbsOriginFollow, RestartType.FullRestart, 1, color, 2, range * -1.1f);
+            this.AddOrUpdate(
+                unit,
+                id,
+                "particles/ui_mouseactions/drag_selected_ring.vpcf",
+                ParticleAttachment.AbsOriginFollow,
+                RestartType.FullRestart,
+                1,
+                color,
+                2,
+                range * -1.1f);
         }
 
         /// <summary>
@@ -202,6 +207,20 @@ namespace Ensage.SDK.Renderer.Particle
             }
 
             return Particles.Any(p => p.Name == name);
+        }
+
+        public void Release(string name)
+        {
+            if (name == null)
+            {
+                throw new ArgumentNullException(nameof(name));
+            }
+
+            var particle = Particles.FirstOrDefault(p => p.Name == name);
+            if (particle != null)
+            {
+                particle.Release();
+            }
         }
 
         public void Remove(string name)

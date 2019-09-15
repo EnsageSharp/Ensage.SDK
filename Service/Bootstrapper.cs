@@ -75,7 +75,7 @@ namespace Ensage.SDK.Service
 
                 if (this.Context.rendererManager.IsValueCreated)
                 {
-                    this.Context.Renderer.Dispose();
+                    this.Context.RenderManager.Dispose();
                 }
             }
             catch (Exception e)

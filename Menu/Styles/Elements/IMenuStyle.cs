@@ -35,7 +35,7 @@ namespace Ensage.SDK.Menu.Styles.Elements
         string Unchecked { get; }
 
         [MethodImpl(MethodImplOptions.NoInlining)]
-        void LoadResources(IRendererManager renderer);
+        void LoadResources(IRenderManager renderer);
 
         string ToString();
     }

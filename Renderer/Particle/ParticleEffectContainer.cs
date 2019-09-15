@@ -1,5 +1,5 @@
 // <copyright file="ParticleEffectContainer.cs" company="Ensage">
-//    Copyright (c) 2017 Ensage.
+//    Copyright (c) 2019 Ensage.
 // </copyright>
 
 namespace Ensage.SDK.Renderer.Particle
@@ -12,17 +12,17 @@ namespace Ensage.SDK.Renderer.Particle
     public enum RestartType
     {
         /// <summary>
-        /// Don't restart the particle
+        ///     Don't restart the particle
         /// </summary>
         None,
 
         /// <summary>
-        /// Restart the particle
+        ///     Restart the particle
         /// </summary>
         NormalRestart,
 
         /// <summary>
-        /// Fully restart the particle
+        ///     Fully restart the particle
         /// </summary>
         FullRestart
     }
@@ -132,6 +132,11 @@ namespace Ensage.SDK.Renderer.Particle
             }
         }
 
+        public void Release()
+        {
+            this.Effect.Release();
+        }
+
         public void SetControlPoints(RestartType restart = RestartType.FullRestart, params object[] controlPoints)
         {
             if (controlPoints?.Length > 0)
@@ -171,11 +176,6 @@ namespace Ensage.SDK.Renderer.Particle
             {
                 this.Effect.Restart();
             }
-        }
-
-        public void Release()
-        {
-            this.Effect.Release();
         }
 
         private void Dispose(bool disposing)

@@ -1,5 +1,5 @@
 ﻿// <copyright file="FontCache.cs" company="Ensage">
-//    Copyright (c) 2017 Ensage.
+//    Copyright (c) 2019 Ensage.
 // </copyright>
 
 namespace Ensage.SDK.Renderer.DX9
@@ -7,18 +7,13 @@ namespace Ensage.SDK.Renderer.DX9
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.Composition;
-    using System.Reflection;
-
-    
-
-    using NLog;
 
     using SharpDX.Direct3D9;
 
     [Export(typeof(FontCache))]
     public sealed class FontCache : Dictionary<string, Font>, IDisposable
     {
-        private static readonly Logger Log = LogManager.GetCurrentClassLogger();
+        private bool disposed;
 
         [ImportingConstructor]
         public FontCache([Import] ID3D9Context context)
@@ -32,8 +27,6 @@ namespace Ensage.SDK.Renderer.DX9
 
         public Font Create(string familyName, float fontSize)
         {
-            //Log.Debug($"Create Font {familyName}-{fontSize}");
-
             var key = $"{familyName}-{fontSize}";
             var font = new Font(
                 this.Context.Device,
@@ -51,6 +44,12 @@ namespace Ensage.SDK.Renderer.DX9
             return font;
         }
 
+        public void Dispose()
+        {
+            this.Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
         public Font GetOrCreate(string familyName, float fontSize)
         {
             var key = $"{familyName}-{fontSize}";
@@ -62,30 +61,6 @@ namespace Ensage.SDK.Renderer.DX9
 
             return this.Create(familyName, fontSize);
         }
-
-        private void PostReset(object sender, EventArgs e)
-        {
-            foreach (var value in this.Values)
-            {
-                value.OnResetDevice();
-            }
-        }
-
-        private void PreReset(object sender, EventArgs e)
-        {
-            foreach (var value in this.Values)
-            {
-                value.OnLostDevice();
-            }
-        }
-
-        public void Dispose()
-        {
-            this.Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        private bool disposed;
 
         private void Dispose(bool disposing)
         {
@@ -103,6 +78,22 @@ namespace Ensage.SDK.Renderer.DX9
             }
 
             this.disposed = true;
+        }
+
+        private void PostReset(object sender, EventArgs e)
+        {
+            foreach (var value in this.Values)
+            {
+                value.OnResetDevice();
+            }
+        }
+
+        private void PreReset(object sender, EventArgs e)
+        {
+            foreach (var value in this.Values)
+            {
+                value.OnLostDevice();
+            }
         }
     }
 }

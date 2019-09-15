@@ -44,7 +44,10 @@ namespace Ensage.SDK.Service
 
         MenuManager MenuManager { get; }
 
-        IRendererManager Renderer { get; }
+        IRenderManager RenderManager { get; }
+
+        [Obsolete("Use RenderManager")]
+        IRenderManager Renderer { get; }
 
         ITextureManager TextureManager { get; }
 

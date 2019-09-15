@@ -1,5 +1,5 @@
 // <copyright file="ImportParticleManagerAttribute.cs" company="Ensage">
-//    Copyright (c) 2017 Ensage.
+//    Copyright (c) 2019 Ensage.
 // </copyright>
 
 namespace Ensage.SDK.Renderer.Particle.Metadata

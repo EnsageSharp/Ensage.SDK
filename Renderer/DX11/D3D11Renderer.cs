@@ -1,5 +1,5 @@
 // <copyright file="D3D11Renderer.cs" company="Ensage">
-//    Copyright (c) 2017 Ensage.
+//    Copyright (c) 2019 Ensage.
 // </copyright>
 
 namespace Ensage.SDK.Renderer.DX11
@@ -9,9 +9,10 @@ namespace Ensage.SDK.Renderer.DX11
 
     using Ensage.SDK.Renderer.Metadata;
 
+    using NLog;
+
     using SharpDX;
     using SharpDX.Direct2D1;
-    using SharpDX.Direct3D9;
     using SharpDX.DirectWrite;
     using SharpDX.Mathematics.Interop;
 
@@ -20,6 +21,8 @@ namespace Ensage.SDK.Renderer.DX11
     [ExportRenderer(RenderMode.Dx11)]
     public sealed class D3D11Renderer : IRenderer
     {
+        private static readonly Logger Log = LogManager.GetCurrentClassLogger();
+
         private readonly BrushCache brushCache;
 
         private readonly ID3D11Context context;
@@ -30,26 +33,29 @@ namespace Ensage.SDK.Renderer.DX11
 
         private bool disposed;
 
+        private RenderManager.EventHandler renderEventHandler;
+
         [ImportingConstructor]
-        public D3D11Renderer([Import] ID3D11Context context, [Import] BrushCache brushCache, [Import] TextFormatCache textFormatCache, [Import] D3D11TextureManager textureManager)
+        public D3D11Renderer(ID3D11Context context, BrushCache brushCache, TextFormatCache textFormatCache, D3D11TextureManager textureManager)
         {
             this.context = context;
-
             this.brushCache = brushCache;
             this.textFormatCache = textFormatCache;
             this.textureManager = textureManager;
+
+            textureManager.VpkLoaded += this.OnVpkLoaded;
         }
 
-        public event EventHandler Draw
+        public event RenderManager.EventHandler Draw
         {
             add
             {
-                this.context.Draw += value;
+                this.renderEventHandler += value;
             }
 
             remove
             {
-                this.context.Draw -= value;
+                this.renderEventHandler -= value;
             }
         }
 
@@ -72,24 +78,14 @@ namespace Ensage.SDK.Renderer.DX11
             this.context.RenderTarget.DrawEllipse(new Ellipse(center, radius, radius), this.brushCache.GetOrCreate(color), width);
         }
 
-        public void DrawLine(Vector2 start, Vector2 end, Color color, float width = 1.0f)
-        {
-            this.context.RenderTarget.DrawLine(start, end, this.brushCache.GetOrCreate(color), width);
-        }
-
-        public void DrawRectangle(RectangleF rect, Color color, float width = 1.0f)
-        {
-            this.context.RenderTarget.DrawRectangle(rect, this.brushCache.GetOrCreate(color), width);
-        }
-
-        public void DrawFilledRectangle(RectangleF rect, Color color, Color backgroundColor, float borderWidth = 1.0f)
+        public void DrawFilledRectangle(RectangleF rect, Color color, Color borderColor, float borderWidth = 1.0f)
         {
             var target = this.context.RenderTarget;
-            var backgroundBrush = this.brushCache.GetOrCreate(backgroundColor);
+            var backgroundBrush = this.brushCache.GetOrCreate(color);
 
             if (borderWidth > 0)
             {
-                var borderBrush = this.brushCache.GetOrCreate(color);
+                var borderBrush = this.brushCache.GetOrCreate(borderColor);
 
                 for (var i = 1; i < (borderWidth + 1); i++)
                 {
@@ -98,6 +94,23 @@ namespace Ensage.SDK.Renderer.DX11
             }
 
             target.FillRectangle(rect, backgroundBrush);
+        }
+
+        public void DrawFilledRectangle(RectangleF rect, Color color)
+        {
+            var target = this.context.RenderTarget;
+            var backgroundBrush = this.brushCache.GetOrCreate(color);
+            target.FillRectangle(rect, backgroundBrush);
+        }
+
+        public void DrawLine(Vector2 start, Vector2 end, Color color, float width = 1.0f)
+        {
+            this.context.RenderTarget.DrawLine(start, end, this.brushCache.GetOrCreate(color), width);
+        }
+
+        public void DrawRectangle(RectangleF rect, Color color, float borderWidth = 1.0f)
+        {
+            this.context.RenderTarget.DrawRectangle(rect, this.brushCache.GetOrCreate(color), borderWidth);
         }
 
         public void DrawText(Vector2 position, string text, Color color, float fontSize = 13f, string fontFamily = "Calibri")
@@ -118,6 +131,8 @@ namespace Ensage.SDK.Renderer.DX11
 
             using (var layout = new TextLayout(this.context.DirectWrite, text, font, position.Width, position.Height))
             {
+                layout.WordWrapping = WordWrapping.NoWrap;
+
                 if ((flags & RendererFontFlags.Center) == RendererFontFlags.Center)
                 {
                     layout.TextAlignment = TextAlignment.Center;
@@ -129,20 +144,21 @@ namespace Ensage.SDK.Renderer.DX11
 
                 if ((flags & RendererFontFlags.VerticalCenter) == RendererFontFlags.VerticalCenter)
                 {
-                    position.Y = (position.Y + (position.Height / 2)) - (font.FontSize / 2);
+                    position.Y += (position.Height / 2) - (font.FontSize * 0.6f);
                 }
 
-                this.context.RenderTarget.DrawTextLayout(new RawVector2(position.X, position.Y), layout, brush);
+                this.context.RenderTarget.DrawTextLayout(position.Location, layout, brush);
             }
+        }
+
+        public void DrawTexture(string textureKey, Vector2 position, Vector2 size, float rotation = 0.0f, float opacity = 1.0f)
+        {
+            this.DrawTexture(textureKey, new RectangleF(position.X, position.Y, size.X, size.Y), rotation, opacity);
         }
 
         public void DrawTexture(string textureKey, RectangleF rect, float rotation = 0.0f, float opacity = 1.0f)
         {
             var textureEntry = this.textureManager.GetTexture(textureKey);
-            if (textureEntry == null)
-            {
-                throw new TextureNotFoundException(textureKey);
-            }
 
             if (rotation == 0.0f)
             {
@@ -152,7 +168,7 @@ namespace Ensage.SDK.Renderer.DX11
             {
                 var mtx = this.context.RenderTarget.Transform;
 
-                var scaling = new Vector2((float)rect.Width / textureEntry.Bitmap.Size.Width, (float)rect.Height / textureEntry.Bitmap.Size.Height);
+                var scaling = new Vector2(rect.Width / textureEntry.Bitmap.Size.Width, rect.Height / textureEntry.Bitmap.Size.Height);
                 this.context.RenderTarget.Transform = Matrix3x2.Translation(-textureEntry.Center)
                                                       * Matrix3x2.Rotation(rotation)
                                                       * Matrix3x2.Translation(textureEntry.Center)
@@ -164,15 +180,9 @@ namespace Ensage.SDK.Renderer.DX11
             }
         }
 
-        [Obsolete("Use MeasureText")]
-        public Vector2 MessureText(string text, float fontSize = 13, string fontFamily = "Calibri")
+        public Vector2 GetTextureSize(string textureKey)
         {
-            var font = this.textFormatCache.GetOrCreate(fontFamily, fontSize);
-            using (var layout = new TextLayout(this.context.DirectWrite, text, font, float.MaxValue, float.MaxValue))
-            {
-                var size = layout.Metrics;
-                return new Vector2(size.Width, size.Height);
-            }
+            return this.textureManager.GetTextureSize(textureKey);
         }
 
         public Vector2 MeasureText(string text, float fontSize = 13, string fontFamily = "Calibri")
@@ -185,11 +195,6 @@ namespace Ensage.SDK.Renderer.DX11
             }
         }
 
-        public Vector2 GetTextureSize(string textureKey)
-        {
-            return this.textureManager.GetTextureSize(textureKey);
-        }
-
         private void Dispose(bool disposing)
         {
             if (this.disposed)
@@ -199,12 +204,40 @@ namespace Ensage.SDK.Renderer.DX11
 
             if (disposing)
             {
+                this.context.Draw -= this.OnDraw;
+
+                this.context.Dispose();
                 this.textureManager.Dispose();
                 this.textFormatCache.Dispose();
-                this.context.Dispose();
             }
 
             this.disposed = true;
+        }
+
+        private void OnDraw(object sender, EventArgs args)
+        {
+            if (this.renderEventHandler == null)
+            {
+                return;
+            }
+
+            // ReSharper disable once PossibleInvalidCastExceptionInForeachLoop
+            foreach (RenderManager.EventHandler draw in this.renderEventHandler.GetInvocationList())
+            {
+                try
+                {
+                    draw(this);
+                }
+                catch (Exception e)
+                {
+                    Log.Error(e);
+                }
+            }
+        }
+
+        private void OnVpkLoaded(object sender, EventArgs e)
+        {
+            this.context.Draw += this.OnDraw;
         }
     }
 }

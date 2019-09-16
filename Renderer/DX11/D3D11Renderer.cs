@@ -43,7 +43,7 @@ namespace Ensage.SDK.Renderer.DX11
             this.textFormatCache = textFormatCache;
             this.textureManager = textureManager;
 
-            textureManager.VpkLoaded += this.OnVpkLoaded;
+            this.textureManager.VpkLoaded += this.OnVpkLoaded;
         }
 
         public event RenderManager.EventHandler Draw
@@ -209,6 +209,7 @@ namespace Ensage.SDK.Renderer.DX11
                 this.context.Dispose();
                 this.textureManager.Dispose();
                 this.textFormatCache.Dispose();
+                this.brushCache.Dispose();
             }
 
             this.disposed = true;
@@ -238,6 +239,7 @@ namespace Ensage.SDK.Renderer.DX11
         private void OnVpkLoaded(object sender, EventArgs e)
         {
             this.context.Draw += this.OnDraw;
+            this.textureManager.VpkLoaded -= this.OnVpkLoaded;
         }
     }
 }

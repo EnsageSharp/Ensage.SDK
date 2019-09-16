@@ -47,7 +47,9 @@ namespace Ensage.SDK.Renderer.DX9
             this.line = new Line(this.context.Device);
             this.sprite = new Sprite(this.context.Device);
 
-            textureManager.VpkLoaded += this.OnVpkLoaded;
+            this.context.PreReset += this.OnPreReset;
+            this.context.PostReset += this.OnPostReset;
+            this.textureManager.VpkLoaded += this.OnVpkLoaded;
         }
 
         public event RenderManager.EventHandler Draw
@@ -245,6 +247,8 @@ namespace Ensage.SDK.Renderer.DX9
                 this.context.Dispose();
                 this.textureManager.Dispose();
                 this.fontCache.Dispose();
+                this.line.Dispose();
+                this.sprite.Dispose();
             }
 
             this.disposed = true;
@@ -285,9 +289,8 @@ namespace Ensage.SDK.Renderer.DX9
 
         private void OnVpkLoaded(object sender, EventArgs e)
         {
-            this.context.PreReset += this.OnPreReset;
-            this.context.PostReset += this.OnPostReset;
             this.context.Draw += this.OnDraw;
+            this.textureManager.VpkLoaded -= this.OnVpkLoaded;
         }
     }
 }

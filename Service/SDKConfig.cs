@@ -48,7 +48,7 @@ namespace Ensage.SDK.Service
             public OrbwalkerConfig(MenuFactory parent)
             {
                 this.Factory = parent.Menu("Orbwalker");
-                this.TickRate = this.Factory.Item("Tickrate", new Slider(100, 0, 200));
+                this.TickRate = this.Factory.Item("Tickrate", new Slider(100, 100, 200));
             }
 
             public MenuFactory Factory { get; }

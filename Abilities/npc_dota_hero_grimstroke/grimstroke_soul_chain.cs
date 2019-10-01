@@ -16,14 +16,6 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_grimstroke
 
         public string TargetModifierName { get; } = "modifier_grimstroke_soul_chain";
 
-        public override float CastRange
-        {
-            get
-            {
-                return Ability.GetAbilitySpecialData("cast_range_tooltip");
-            }
-        }
-
         public override float Duration
         {
             get

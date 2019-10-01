@@ -18,14 +18,6 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_grimstroke
 
         public string ModifierName { get; } = "modifier_grimstroke_spirit_walk";
 
-        public override float CastRange
-        {
-            get
-            {
-               return Ability.GetAbilitySpecialData("cast_range_tooltip");
-            }
-        }
-
         public float Radius
         {
             get

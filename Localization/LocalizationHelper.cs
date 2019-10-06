@@ -38,14 +38,34 @@ namespace Ensage.SDK.Helpers
             return Game.Localize(text);
         }
 
+        public static string LocalizeAbilityName(string name)
+        {
+            return Localize(Loc.DOTA_Tooltip_Ability_STRING, name);
+        }
+
+        public static string LocalizeName(AbilityId id)
+        {
+            return LocalizeAbilityName(id.ToString());
+        }
+
+        public static string LocalizeName(string name)
+        {
+            return Game.Localize(name);
+        }
+
+        public static string LocalizeName(HeroId id)
+        {
+            return LocalizeName(id.ToString());
+        }
+
         public static string LocalizeName(Ability ability)
         {
-            return Localize(Loc.DOTA_Tooltip_Ability_STRING, ability.Name);
+            return LocalizeAbilityName(ability.Name);
         }
 
         public static string LocalizeName(Entity entity)
         {
-            return Game.Localize($"{entity.Name}");
+            return LocalizeName(entity.Name);
         }
     }
 }

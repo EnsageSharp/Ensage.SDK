@@ -171,12 +171,22 @@ namespace Ensage.SDK.Renderer.DX9
 
         public void DrawText(Vector2 position, string text, Color color, float fontSize = 13f, string fontFamily = "Calibri")
         {
+            if (text.Length == 0)
+            {
+                return;
+            }
+
             var font = this.fontCache.GetOrCreate(fontFamily, fontSize);
             font.DrawText(null, text, (int)position.X, (int)position.Y, new ColorBGRA(color.R, color.G, color.B, color.A));
         }
 
         public void DrawText(RectangleF position, string text, Color color, RendererFontFlags flags = RendererFontFlags.Left, float fontSize = 13f, string fontFamily = "Calibri")
         {
+            if (text.Length == 0)
+            {
+                return;
+            }
+
             var font = this.fontCache.GetOrCreate(fontFamily, fontSize);
             font.DrawText(null, text, position, (FontDrawFlags)flags | FontDrawFlags.NoClip, new ColorBGRA(color.R, color.G, color.B, color.A));
         }

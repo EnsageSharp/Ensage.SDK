@@ -22,7 +22,7 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_drow_ranger
         {
             if (target is Hero)
             {
-                return this.Ability.GetAbilitySpecialData("frost_arrows_hero_duration_tooltip");
+                return this.Ability.GetAbilitySpecialData("frost_arrows_creep_duration") / 4.0f; // 1.5 seconds. They removed the hero tooltip.
             }
 
             return this.Ability.GetAbilitySpecialData("frost_arrows_creep_duration");

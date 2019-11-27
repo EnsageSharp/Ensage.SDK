@@ -53,7 +53,7 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_obsidian_destroyer
                 }
 
                 var reduction = this.Ability.GetDamageReduction(hero, this.DamageType);
-                totalDamage += DamageHelpers.GetSpellDamage((manaDifference + rawDamage) * multiplier, amplify, reduction);
+                totalDamage += DamageHelpers.GetSpellDamage((manaDifference * multiplier) + rawDamage , amplify, reduction);
             }
 
             return totalDamage;

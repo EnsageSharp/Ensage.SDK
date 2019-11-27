@@ -2,12 +2,16 @@
 //    Copyright (c) 2017 Ensage.
 // </copyright>
 
+using Ensage.Common.Extensions;
+
 namespace Ensage.SDK.Helpers
 {
     using Ensage.SDK.Extensions;
 
     public static class DamageHelpers
     {
+        private static bool hasVeilDebuff = false;
+
         public static float GetDamageReduction(this Ability ability, Unit target)
         {
             return GetDamageReduction(ability, target, ability.DamageType);
@@ -21,6 +25,8 @@ namespace Ensage.SDK.Helpers
                 return 0.0f;
             }
 
+            hasVeilDebuff = target.HasModifier("modifier_item_veil_of_discord_debuff"); // :broscience:
+
             var reduction = 0.0f;
             switch (damageType)
             {
@@ -31,7 +37,6 @@ namespace Ensage.SDK.Helpers
                     reduction = target.DamageResist;
                     break;
             }
-
             return reduction;
         }
 
@@ -44,7 +49,7 @@ namespace Ensage.SDK.Helpers
         /// <returns>The total spell damage.</returns>
         public static float GetSpellDamage(float damage, float amplify = 0, float reduction = 0)
         {
-            return damage * (1.0f + amplify) * (1.0f - reduction);
+            return hasVeilDebuff ? (damage * (1.0f + amplify) * (1.0f - reduction)) * 1.2f : damage * (1.0f + amplify) * (1.0f - reduction);
         }
 
         /// <summary>

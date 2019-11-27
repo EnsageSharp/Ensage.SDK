@@ -4,7 +4,7 @@
 
 namespace Ensage.SDK.Abilities.npc_dota_hero_mars
 {
-    public class mars_bulwark : PassiveAbility
+    public class mars_bulwark : ToggleAbility
     {
         public mars_bulwark(Ability ability) 
             : base(ability)

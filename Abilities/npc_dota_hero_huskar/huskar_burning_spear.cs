@@ -31,7 +31,7 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_huskar
         {
             get
             {
-                return this.Ability.GetAbilitySpecialData("health_cost");
+                return (this.Ability.GetAbilitySpecialData("health_cost") / 100) * Owner.Health;
             }
         }
 

@@ -37,6 +37,7 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_huskar
         }
 
         public string TargetModifierName { get; } = "modifier_huskar_life_break_slow";
+        public string ScepterModifierName { get; } = "modifier_huskar_life_break_taunt";
 
         protected override float RawDamage
         {

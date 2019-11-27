@@ -28,6 +28,10 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_pudge
         {
             get
             {
+                if (Owner.Health == 1)
+                {
+                    return 0;
+                }
                 var amplify = this.Owner.GetSpellAmplification();
                 var reduction = this.Ability.GetDamageReduction(this.Owner, this.DamageType);
                 return DamageHelpers.GetSpellDamage(this.RawTickDamage, amplify, reduction);

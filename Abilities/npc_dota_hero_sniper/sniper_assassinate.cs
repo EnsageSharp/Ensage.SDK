@@ -7,19 +7,11 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_sniper
     using Ensage.SDK.Extensions;
     using Ensage.SDK.Helpers;
 
-    public class sniper_assassinate : RangedAbility, IAreaOfEffectAbility
+    public class sniper_assassinate : RangedAbility
     {
         public sniper_assassinate(Ability ability)
             : base(ability)
         {
-        }
-
-        public float Radius
-        {
-            get
-            {
-                return this.Owner.HasAghanimsScepter() ? this.Ability.GetAbilitySpecialData("scepter_radius") : 0;
-            }
         }
 
         public override float Speed

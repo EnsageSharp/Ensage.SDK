@@ -10,7 +10,7 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_puck
     using Ensage.SDK.Extensions;
     using Ensage.SDK.Helpers;
 
-    public class puck_waning_rift : ActiveAbility, IAreaOfEffectAbility, IHasTargetModifierTexture
+    public class puck_waning_rift : CircleAbility, IAreaOfEffectAbility, IHasTargetModifierTexture
     {
         public puck_waning_rift(Ability ability)
             : base(ability)
@@ -19,7 +19,7 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_puck
 
         public override UnitState AppliesUnitState { get; } = UnitState.Silenced;
 
-        public float Radius
+        public override float Radius
         {
             get
             {
@@ -28,11 +28,6 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_puck
         }
 
         public string[] TargetModifierTextureName { get; } = { "puck_waning_rift" };
-
-        public override bool CanHit(params Unit[] targets)
-        {
-            return targets.All(x => x.Distance2D(this.Owner) < this.Radius);
-        }
 
         public override float GetDamage(params Unit[] targets)
         {

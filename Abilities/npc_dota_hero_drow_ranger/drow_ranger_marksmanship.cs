@@ -14,7 +14,7 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_drow_ranger
         {
         }
 
-        public string ModifierName { get; } = "modifier_drow_ranger_marksmanship";
+        public string ModifierName { get; } = "modifier_drow_ranger_marksmanship_aura_bonus";
 
         public float Radius
         {

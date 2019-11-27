@@ -15,7 +15,7 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_obsidian_destroyer
         {
         }
 
-        public string ModifierName { get; } = "modifier_obsidian_destroyer_equilibrium";
+        public string ModifierName { get; } = "modifier_obsidian_destroyer_equilibrium_active";
         public string TargetModifierName { get; } = "modifier_obsidian_destroyer_equilibrium_debuff";
     }
 }

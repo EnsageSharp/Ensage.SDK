@@ -9,7 +9,7 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_terrorblade
     using Ensage.SDK.Abilities.Components;
     using Ensage.SDK.Extensions;
 
-    public class terrorblade_reflection : ActiveAbility, IAreaOfEffectAbility, IHasTargetModifier
+    public class terrorblade_reflection : CircleAbility, IAreaOfEffectAbility, IHasTargetModifier
     {
         public terrorblade_reflection(Ability ability)
             : base(ability)

@@ -24,11 +24,12 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_dark_seer
             }
         }
 
-        public float Radius
+        public override float Radius
         {
             get
             {
-                return this.Ability.GetAbilitySpecialData("width");
+                return Owner.HasAghanimsScepter() ? this.Ability.GetAbilitySpecialData("width") * this.Ability.GetAbilitySpecialData("scepter_length_multiplier") 
+                    : this.Ability.GetAbilitySpecialData("width");
             }
         }
 

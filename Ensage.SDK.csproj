@@ -43,53 +43,53 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="clipper_library">
-      <HintPath>..\..\..\..\..\Ensage\References\clipper_library.dll</HintPath>
+      <HintPath>..\..\..\..\..\Program Files (x86)\Ensage\References\clipper_library.dll</HintPath>
     </Reference>
     <Reference Include="Ensage">
-      <HintPath>..\..\..\..\..\Ensage\References\Ensage.dll</HintPath>
+      <HintPath>..\..\..\..\..\Program Files (x86)\Ensage\References\Ensage.dll</HintPath>
     </Reference>
     <Reference Include="Ensage.Common">
-      <HintPath>..\..\..\..\..\Ensage\References\Ensage.Common.dll</HintPath>
+      <HintPath>..\..\..\..\..\Program Files (x86)\Ensage\References\Ensage.Common.dll</HintPath>
     </Reference>
     <Reference Include="EnsageSharp.Sandbox, Version=1.0.0.0, Culture=neutral, PublicKeyToken=0c92cb9c3763a33b, processorArchitecture=AMD64">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\Ensage\System\EnsageSharp.Sandbox.dll</HintPath>
+      <HintPath>..\..\..\..\..\Program Files (x86)\Ensage\System\EnsageSharp.Sandbox.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\Ensage\References\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\..\..\..\..\Program Files (x86)\Ensage\References\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="NLog">
-      <HintPath>..\..\..\..\..\Ensage\References\NLog.dll</HintPath>
+      <HintPath>..\..\..\..\..\Program Files (x86)\Ensage\References\NLog.dll</HintPath>
     </Reference>
     <Reference Include="PlaySharp.Sentry">
-      <HintPath>..\..\..\..\..\Ensage\References\PlaySharp.Sentry.dll</HintPath>
+      <HintPath>..\..\..\..\..\Program Files (x86)\Ensage\References\PlaySharp.Sentry.dll</HintPath>
     </Reference>
     <Reference Include="PlaySharp.Toolkit">
-      <HintPath>..\..\..\..\..\Ensage\References\PlaySharp.Toolkit.dll</HintPath>
+      <HintPath>..\..\..\..\..\Program Files (x86)\Ensage\References\PlaySharp.Toolkit.dll</HintPath>
     </Reference>
     <Reference Include="SharpDX, Version=2.4.2.0, Culture=neutral, PublicKeyToken=627a3d6d1956f55a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\Ensage\References\SharpDX.dll</HintPath>
+      <HintPath>..\..\..\..\..\Program Files (x86)\Ensage\References\SharpDX.dll</HintPath>
     </Reference>
     <Reference Include="SharpDX.Direct2D1, Version=2.4.2.0, Culture=neutral, PublicKeyToken=627a3d6d1956f55a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\Ensage\References\SharpDX.Direct2D1.dll</HintPath>
+      <HintPath>..\..\..\..\..\Program Files (x86)\Ensage\References\SharpDX.Direct2D1.dll</HintPath>
     </Reference>
     <Reference Include="SharpDX.Direct3D11, Version=2.4.2.0, Culture=neutral, PublicKeyToken=627a3d6d1956f55a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\Ensage\References\SharpDX.Direct3D11.dll</HintPath>
+      <HintPath>..\..\..\..\..\Program Files (x86)\Ensage\References\SharpDX.Direct3D11.dll</HintPath>
     </Reference>
     <Reference Include="SharpDX.Direct3D9">
-      <HintPath>..\..\..\..\..\Ensage\References\SharpDX.Direct3D9.dll</HintPath>
+      <HintPath>..\..\..\..\..\Program Files (x86)\Ensage\References\SharpDX.Direct3D9.dll</HintPath>
     </Reference>
     <Reference Include="SharpDX.DXGI, Version=2.4.2.0, Culture=neutral, PublicKeyToken=627a3d6d1956f55a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\Ensage\References\SharpDX.DXGI.dll</HintPath>
+      <HintPath>..\..\..\..\..\Program Files (x86)\Ensage\References\SharpDX.DXGI.dll</HintPath>
     </Reference>
     <Reference Include="SharpDX.Mathematics">
-      <HintPath>..\..\..\..\..\Ensage\References\SharpDX.Mathematics.dll</HintPath>
+      <HintPath>..\..\..\..\..\Program Files (x86)\Ensage\References\SharpDX.Mathematics.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
@@ -113,6 +113,30 @@
     <Compile Include="Abilities\IAuraAbility.cs" />
     <Compile Include="Abilities\Aggregation\Dagon.cs" />
     <Compile Include="Abilities\Items\item_aeon_disk.cs" />
+    <Compile Include="Abilities\Items\item_arcane_ring.cs" />
+    <Compile Include="Abilities\Items\item_clumsy_net.cs" />
+    <Compile Include="Abilities\Items\item_elixer.cs" />
+    <Compile Include="Abilities\Items\item_essence_ring.cs" />
+    <Compile Include="Abilities\Items\item_demonicon.cs" />
+    <Compile Include="Abilities\Items\item_ex_machina.cs" />
+    <Compile Include="Abilities\Items\item_woodland_striders.cs" />
+    <Compile Include="Abilities\Items\item_fusion_rune.cs" />
+    <Compile Include="Abilities\Items\item_fallen_sky.cs" />
+    <Compile Include="Abilities\Items\item_flicker.cs" />
+    <Compile Include="Abilities\Items\item_force_boots.cs" />
+    <Compile Include="Abilities\Items\item_greater_faerie_fire.cs" />
+    <Compile Include="Abilities\Items\item_havoc_hammer.cs" />
+    <Compile Include="Abilities\Items\item_illusionsts_cape.cs" />
+    <Compile Include="Abilities\Items\item_ironwood_tree.cs" />
+    <Compile Include="Abilities\Items\item_mango_tree.cs" />
+    <Compile Include="Abilities\Items\item_minataur_horn.cs" />
+    <Compile Include="Abilities\Items\item_ninja_gear.cs" />
+    <Compile Include="Abilities\Items\item_repair_kit.cs" />
+    <Compile Include="Abilities\Items\item_royal_jelly.cs" />
+    <Compile Include="Abilities\Items\item_spell_prism.cs" />
+    <Compile Include="Abilities\Items\item_spider_legs.cs" />
+    <Compile Include="Abilities\Items\item_tome_of_aghanim.cs" />
+    <Compile Include="Abilities\Items\item_trusty_shovel.cs" />
     <Compile Include="Abilities\npc_dota_hero_ancient_apparition\ancient_apparition_chilling_touch.cs" />
     <Compile Include="Abilities\npc_dota_hero_ancient_apparition\ancient_apparition_cold_feet.cs" />
     <Compile Include="Abilities\npc_dota_hero_ancient_apparition\ancient_apparition_ice_blast.cs" />
@@ -205,6 +229,7 @@
     <Compile Include="Abilities\npc_dota_hero_elder_titan\elder_titan_echo_stomp.cs" />
     <Compile Include="Abilities\npc_dota_hero_elder_titan\elder_titan_natural_order.cs" />
     <Compile Include="Abilities\npc_dota_hero_elder_titan\elder_titan_return_spirit.cs" />
+    <Compile Include="Abilities\npc_dota_hero_enchantress\enchantress_bunny_hop.cs" />
     <Compile Include="Abilities\npc_dota_hero_faceless_void\faceless_void_chronosphere.cs" />
     <Compile Include="Abilities\npc_dota_hero_faceless_void\faceless_void_time_dilation.cs" />
     <Compile Include="Abilities\npc_dota_hero_faceless_void\faceless_void_time_lock.cs" />
@@ -251,6 +276,7 @@
     <Compile Include="Abilities\npc_dota_hero_kunkka\kunkka_return.cs" />
     <Compile Include="Abilities\npc_dota_hero_kunkka\kunkka_tidebringer.cs" />
     <Compile Include="Abilities\npc_dota_hero_kunkka\kunkka_torrent.cs" />
+    <Compile Include="Abilities\npc_dota_hero_kunkka\kunkka_torrent_storm.cs" />
     <Compile Include="Abilities\npc_dota_hero_kunkka\kunkka_x_marks_the_spot.cs" />
     <Compile Include="Abilities\npc_dota_hero_leshrac\leshrac_diabolic_edict.cs" />
     <Compile Include="Abilities\npc_dota_hero_leshrac\leshrac_lightning_storm.cs" />
@@ -277,10 +303,15 @@
     <Compile Include="Abilities\npc_dota_hero_pangolier\pangolier_lucky_shot.cs" />
     <Compile Include="Abilities\npc_dota_hero_pangolier\pangolier_shield_crash.cs" />
     <Compile Include="Abilities\npc_dota_hero_pangolier\pangolier_swashbuckle.cs" />
+    <Compile Include="Abilities\npc_dota_hero_rattletrap\rattletrap_overclocking.cs" />
     <Compile Include="Abilities\npc_dota_hero_slardar\slardar_amplify_damage.cs" />
     <Compile Include="Abilities\npc_dota_hero_slardar\slardar_bash.cs" />
     <Compile Include="Abilities\npc_dota_hero_slardar\slardar_slithereen_crush.cs" />
     <Compile Include="Abilities\npc_dota_hero_slardar\slardar_sprint.cs" />
+    <Compile Include="Abilities\npc_dota_hero_snapfire\snapfire_firesnap_cookie.cs" />
+    <Compile Include="Abilities\npc_dota_hero_snapfire\snapfire_lil_shredder.cs" />
+    <Compile Include="Abilities\npc_dota_hero_snapfire\snapfire_mortimer_kisses.cs" />
+    <Compile Include="Abilities\npc_dota_hero_snapfire\snapfire_scatterblast.cs" />
     <Compile Include="Abilities\npc_dota_hero_tidehunter\tidehunter_anchor_smash.cs" />
     <Compile Include="Abilities\npc_dota_hero_tidehunter\tidehunter_gush.cs" />
     <Compile Include="Abilities\npc_dota_hero_tidehunter\tidehunter_kraken_shell.cs" />
@@ -474,7 +505,7 @@
     <Compile Include="Abilities\npc_dota_hero_obsidian_destroyer\obsidian_destroyer_arcane_orb.cs" />
     <Compile Include="Abilities\LineAbility.cs" />
     <Compile Include="Abilities\AuraAbility.cs" />
-    <Compile Include="Abilities\npc_dota_hero_drow_ranger\drow_ranger_trueshot.cs" />
+    <Compile Include="Abilities\npc_dota_hero_drow_ranger\drow_ranger_multishot.cs" />
     <Compile Include="Abilities\AreaOfEffectAbility.cs" />
     <Compile Include="Abilities\Components\IHasHealthCost.cs" />
     <Compile Include="Abilities\IChannable.cs" />
@@ -530,6 +561,10 @@
     <Compile Include="Abilities\npc_dota_hero_venomancer\venomancer_poison_nova.cs" />
     <Compile Include="Abilities\npc_dota_hero_venomancer\venomancer_poison_sting.cs" />
     <Compile Include="Abilities\npc_dota_hero_venomancer\venomancer_venomous_gale.cs" />
+    <Compile Include="Abilities\npc_dota_hero_void_spirit\void_spirit_aether_remnant.cs" />
+    <Compile Include="Abilities\npc_dota_hero_void_spirit\void_spirit_astral_step.cs" />
+    <Compile Include="Abilities\npc_dota_hero_void_spirit\void_spirit_dissimilate.cs" />
+    <Compile Include="Abilities\npc_dota_hero_void_spirit\void_spirit_resonant_pulse.cs" />
     <Compile Include="Abilities\npc_dota_hero_warlock\warlock_fatal_bonds.cs" />
     <Compile Include="Abilities\npc_dota_hero_warlock\warlock_rain_of_chaos.cs" />
     <Compile Include="Abilities\npc_dota_hero_warlock\warlock_shadow_word.cs" />

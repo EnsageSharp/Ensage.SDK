@@ -2,6 +2,8 @@
 //    Copyright (c) 2017 Ensage.
 // </copyright>
 
+using Ensage.SDK.Abilities.Components;
+
 namespace Ensage.SDK.Abilities.npc_dota_hero_obsidian_destroyer
 {
     using System.Linq;
@@ -9,7 +11,7 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_obsidian_destroyer
     using Ensage.SDK.Extensions;
     using Ensage.SDK.Helpers;
 
-    public class obsidian_destroyer_sanity_eclipse : CircleAbility
+    public class obsidian_destroyer_sanity_eclipse : CircleAbility, IHasModifier
     {
         public obsidian_destroyer_sanity_eclipse(Ability ability)
             : base(ability)
@@ -20,7 +22,7 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_obsidian_destroyer
         {
             get
             {
-                return this.Ability.GetAbilitySpecialDataWithTalent(this.Owner, "damage_multiplier");
+                return this.Ability.GetAbilitySpecialData("base_damage");
             }
         }
 
@@ -32,7 +34,8 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_obsidian_destroyer
             }
 
             var amplify = this.Ability.SpellAmplification();
-            var multiplier = this.RawDamage;
+            var rawDamage = this.RawDamage;
+            var multiplier = Ability.GetAbilitySpecialDataWithTalent(Owner, "damage_multiplier");
             var totalDamage = 0.0f;
 
             foreach (var target in targets)
@@ -43,17 +46,19 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_obsidian_destroyer
                     continue;
                 }
 
-                var intelligenceDifference = ((Hero)this.Owner).TotalIntelligence - hero.TotalIntelligence;
-                if (intelligenceDifference <= 0)
+                var manaDifference = ((Hero)this.Owner).MaximumMana - hero.MaximumMana;
+                if (manaDifference <= 0)
                 {
                     continue;
                 }
 
                 var reduction = this.Ability.GetDamageReduction(hero, this.DamageType);
-                totalDamage += DamageHelpers.GetSpellDamage(intelligenceDifference * multiplier, amplify, reduction);
+                totalDamage += DamageHelpers.GetSpellDamage((manaDifference + rawDamage) * multiplier, amplify, reduction);
             }
 
             return totalDamage;
         }
+
+        public string ModifierName { get; } = "modifier_obsidian_destroyer_sanity_eclipse_charge";
     }
 }

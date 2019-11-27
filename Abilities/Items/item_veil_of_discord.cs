@@ -17,13 +17,13 @@ namespace Ensage.SDK.Abilities.Items
         {
         }
 
-        public DamageType AmplifierType { get; } = DamageType.Magical;
+        public DamageType AmplifierType { get; } = DamageType.All;
 
         public float DamageAmplification
         {
             get
             {
-                return this.Ability.GetAbilitySpecialData("resist_debuff") / -100.0f; // -25
+                return this.Ability.GetAbilitySpecialData("spell_amp") / -100.0f; // -20 to all abilities
             }
         }
 

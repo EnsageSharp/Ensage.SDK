@@ -9,21 +9,11 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_undying
     using Ensage.SDK.Abilities.Components;
     using Ensage.SDK.Extensions;
 
-    public class undying_flesh_golem : ActiveAbility, IAuraAbility, IHasModifier
+    public class undying_flesh_golem : ActiveAbility, IHasModifier, IHasTargetModifier
     {
         public undying_flesh_golem(Ability ability)
             : base(ability)
         {
-        }
-
-        public string AuraModifierName { get; } = "modifier_undying_flesh_golem_plague_aura";
-
-        public float AuraRadius
-        {
-            get
-            {
-                return this.Ability.GetAbilitySpecialData("radius");
-            }
         }
 
         public string ModifierName { get; } = "modifier_undying_flesh_golem";
@@ -40,5 +30,7 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_undying
         {
             return targets.All(x => x.Distance2D(this.Owner) <= (this.CastRange + this.Radius));
         }
+
+        public string TargetModifierName { get; } = "modifier_undying_flesh_golem_slow";
     }
 }

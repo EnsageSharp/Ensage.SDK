@@ -23,7 +23,8 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_necrolyte
         {
             get
             {
-                return this.Ability.GetAbilitySpecialData("aura_damage", this.Ability.Level);
+                return Owner.HasAghanimsScepter() ? this.Ability.GetAbilitySpecialData("aura_damage", this.Ability.Level) * Ability.GetAbilitySpecialData("scepter_multiplier") 
+                    : this.Ability.GetAbilitySpecialData("aura_damage", this.Ability.Level);
             }
         }
     }

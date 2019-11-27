@@ -11,22 +11,13 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_obsidian_destroyer
     using Ensage.SDK.Extensions;
     using Ensage.SDK.Helpers;
 
-    public class obsidian_destroyer_arcane_orb : OrbAbility, IHasModifier, IHasTargetModifier, IAreaOfEffectAbility
+    public class obsidian_destroyer_arcane_orb : OrbAbility
     {
         public obsidian_destroyer_arcane_orb(Ability ability)
             : base(ability)
         {
         }
 
-        /// <summary>
-        ///     Gets the name of the modifier for each stack instance of the buff.
-        /// </summary>
-        public string ModifierName { get; } = "modifier_obsidian_destroyer_astral_imprisonment_buff";
-
-        /// <summary>
-        ///     Gets the name of the modifier for enemy heroes, for each stack instance of the debuff.
-        /// </summary>
-        public string TargetModifierName { get; } = "modifier_obsidian_destroyer_astral_imprisonment_debuff";
 
         public override float GetDamage(params Unit[] targets)
         {
@@ -41,23 +32,10 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_obsidian_destroyer
             {
                 var target = targets.First();
                 reduction = this.Ability.GetDamageReduction(target, this.DamageType);
-
-                if (target.IsIllusion || target.IsSummoned)
-                {
-                    bonusDamage += this.Ability.GetAbilitySpecialData("illusion_damage");
-                }
             }
 
             damage += DamageHelpers.GetSpellDamage(bonusDamage, spellAmp, reduction);
             return damage;
-        }
-
-        public float Radius
-        {
-            get
-            {
-                return Ability.GetAbilitySpecialData("radius");
-            }
         }
     }
 }

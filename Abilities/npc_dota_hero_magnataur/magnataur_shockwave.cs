@@ -25,11 +25,6 @@ namespace Ensage.SDK.Abilities.npc_dota_hero_magnataur
         {
             get
             {
-                if (this.Owner.HasAghanimsScepter())
-                {
-                    return this.Ability.GetAbilitySpecialData("scepter_speed");
-                }
-
                 return this.Ability.GetAbilitySpecialData("shock_speed");
             }
         }

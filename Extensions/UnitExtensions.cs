@@ -212,6 +212,14 @@ namespace Ensage.SDK.Extensions
                         }
 
                         break;
+                    case HeroId.npc_dota_hero_snapfire:
+                        var lilShredder = hero.GetAbilityById(AbilityId.snapfire_lil_shredder);
+                        if (lilShredder != null && hero.HasModifier("modifier_snapfire_lil_shredder_buff"))
+                        {
+                            result += lilShredder.GetAbilitySpecialData("attack_range_bonus");
+                        }
+
+                        break;
                 }
             }
 
@@ -226,8 +234,13 @@ namespace Ensage.SDK.Extensions
                 return 600;
             }
 
+            if (unit.GetAbilityById(AbilityId.snapfire_lil_shredder) != null && unit.HasModifier("modifier_snapfire_lil_shredder_buff"))
+            {
+                return 300;
+            }
+
             var attackSpeed = Math.Max(20, unit.AttackSpeedValue);
-            return Math.Min(attackSpeed, 600);
+            return Math.Min(attackSpeed, 1000);
         }
 
         public static float CalculateSpellDamage(this Hero source, Unit target, DamageType damageType, float amount)
@@ -489,6 +502,24 @@ namespace Ensage.SDK.Extensions
             if (kayaAndSange != null)
             {
                 spellAmp += kayaAndSange.AbilitySpecialData.First(x => x.Name == "spell_amp").Value / 100.0f;
+            }
+
+            var trident = source.GetItemById(AbilityId.item_trident);
+            if (trident != null)
+            {
+                spellAmp += trident.AbilitySpecialData.First(x => x.Name == "spell_amp").Value / 100.0f;
+            }
+
+            var netherShawl = source.GetItemById(AbilityId.item_nether_shawl);
+            if (netherShawl != null)
+            {
+                spellAmp += netherShawl.AbilitySpecialData.First(x => x.Name == "bonus_spell_amp").Value / 100.0f;
+            }
+
+            var timelessRelic = source.GetItemById(AbilityId.item_timeless_relic);
+            if (timelessRelic != null)
+            {
+                spellAmp += timelessRelic.AbilitySpecialData.First(x => x.Name == "spell_amp").Value / 100.0f;
             }
 
             var talent = source.Spellbook.Spells.FirstOrDefault(x => x.Level > 0 && x.Name.StartsWith("special_bonus_spell_amplify_"));

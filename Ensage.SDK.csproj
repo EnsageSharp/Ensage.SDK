@@ -133,9 +133,7 @@
     <Compile Include="Abilities\Items\item_ninja_gear.cs" />
     <Compile Include="Abilities\Items\item_repair_kit.cs" />
     <Compile Include="Abilities\Items\item_royal_jelly.cs" />
-    <Compile Include="Abilities\Items\item_spell_prism.cs" />
     <Compile Include="Abilities\Items\item_spider_legs.cs" />
-    <Compile Include="Abilities\Items\item_tome_of_aghanim.cs" />
     <Compile Include="Abilities\Items\item_trusty_shovel.cs" />
     <Compile Include="Abilities\npc_dota_hero_ancient_apparition\ancient_apparition_chilling_touch.cs" />
     <Compile Include="Abilities\npc_dota_hero_ancient_apparition\ancient_apparition_cold_feet.cs" />

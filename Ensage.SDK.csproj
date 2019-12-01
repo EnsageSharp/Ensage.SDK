@@ -471,7 +471,7 @@
     <Compile Include="Abilities\npc_dota_hero_broodmother\broodmother_spin_web.cs" />
     <Compile Include="Abilities\npc_dota_hero_clinkz\clinkz_burning_army.cs" />
     <Compile Include="Abilities\npc_dota_hero_clinkz\clinkz_searing_arrows.cs" />
-    <Compile Include="Abilities\npc_dota_hero_clinkz\clinkz_strafe.cs" />
+    <Compile Include="Abilities\npc_dota_hero_clinkz\clinkz_death_pact.cs" />
     <Compile Include="Abilities\npc_dota_hero_clinkz\clinkz_wind_walk.cs" />
     <Compile Include="Abilities\npc_dota_hero_crystal_maiden\crystal_maiden_brilliance_aura.cs" />
     <Compile Include="Abilities\npc_dota_hero_crystal_maiden\crystal_maiden_crystal_nova.cs" />

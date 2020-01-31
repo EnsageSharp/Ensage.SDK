@@ -86,6 +86,7 @@ namespace Ensage.SDK.Service
 
         private async Task ActivatePluginsTask()
         {
+            var sw = Stopwatch.StartNew();
             var activationTime = new Stopwatch();
 
             foreach (var plugin in this.PluginContainer.Where(e => e.Menu && !e.IsActive).OrderBy(e => e.Metadata.Priority))
@@ -96,7 +97,11 @@ namespace Ensage.SDK.Service
 
                 Log.Info($"Activated {plugin.Metadata.Name} in {activationTime.Elapsed}");
 
-                await Task.Delay(100);
+                if (sw.Elapsed.Seconds >= 2)
+                {
+                    await Task.Delay(500);
+                    sw.Restart();
+                }
             }
         }
 
@@ -134,10 +139,17 @@ namespace Ensage.SDK.Service
 
         private async Task DiscoverPlugins()
         {
+            var sw = Stopwatch.StartNew();
+
             foreach (var assembly in this.Plugins.OrderBy(e => e.Metadata.Priority))
             {
                 this.AddPlugin(assembly);
-                await Task.Delay(100);
+
+                if (sw.Elapsed.Seconds >= 2)
+                {
+                    await Task.Delay(500);
+                    sw.Restart();
+                }
             }
         }
 
@@ -168,15 +180,12 @@ namespace Ensage.SDK.Service
 
                 Log.Debug($">> Building Context for LocalHero");
                 this.Context = new EnsageServiceContext(ObjectManager.LocalHero);
-                await Task.Delay(200);
 
                 this.Default = this.Context.Container;
                 this.Default.RegisterValue(this);
-                await Task.Delay(200);
 
                 Log.Debug($">> Initializing Services");
                 IoC.Initialize(this.BuildUp, this.GetInstance, this.GetAllInstances);
-                await Task.Delay(200);
 
                 Log.Debug($">> Searching Plugins");
                 await this.DiscoverPlugins();

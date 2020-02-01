@@ -177,7 +177,7 @@ namespace Ensage.SDK.Renderer.DX9
             }
 
             var font = this.fontCache.GetOrCreate(fontFamily, fontSize);
-            font.DrawText(null, text, (int)position.X, (int)position.Y, new ColorBGRA(color.R, color.G, color.B, color.A));
+            font.DrawText(null, text, (int)position.X, (int)position.Y, new RawColorBGRA(color.B, color.G, color.R, color.A));
         }
 
         public void DrawText(RectangleF position, string text, Color color, RendererFontFlags flags = RendererFontFlags.Left, float fontSize = 13f, string fontFamily = "Calibri")
@@ -188,7 +188,7 @@ namespace Ensage.SDK.Renderer.DX9
             }
 
             var font = this.fontCache.GetOrCreate(fontFamily, fontSize);
-            font.DrawText(null, text, position, (FontDrawFlags)flags | FontDrawFlags.NoClip, new ColorBGRA(color.R, color.G, color.B, color.A));
+            font.DrawText(null, text, position, (FontDrawFlags)flags | FontDrawFlags.NoClip, new RawColorBGRA(color.B, color.G, color.R, color.A));
         }
 
         public void DrawTexture(string textureKey, Vector2 position, Vector2 size, float rotation = 0.0f, float opacity = 1.0f)

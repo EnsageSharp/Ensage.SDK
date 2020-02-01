@@ -35,7 +35,7 @@ namespace Ensage.SDK.Renderer.DX9
                     FaceName = familyName,
                     Height = (int)fontSize + 6,
                     OutputPrecision = FontPrecision.Default,
-                    Quality = FontQuality.Default,
+                    Quality = FontQuality.ClearType,
                     Weight = FontWeight.Thin,
                 });
 

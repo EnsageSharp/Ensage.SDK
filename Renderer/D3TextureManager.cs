@@ -105,7 +105,8 @@ namespace Ensage.SDK.Renderer
                 file,
                 new TextureProperties
                 {
-                    Rounded = rounded
+                    Rounded = rounded,
+                    Squared = isItem
                 });
         }
 
@@ -291,6 +292,10 @@ namespace Ensage.SDK.Renderer
                 if (properties.Rounded)
                 {
                     bitmap = bitmap.Round(this.textureRoundRatio.GetRatio(textureKey));
+                }
+                else if (properties.Squared)
+                {
+                    bitmap = bitmap.Square();
                 }
 
                 if (!properties.ColorRatio.IsZero)

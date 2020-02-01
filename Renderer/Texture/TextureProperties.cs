@@ -23,6 +23,8 @@ namespace Ensage.SDK.Renderer.Texture
 
         public bool Rounded { get; set; }
 
+        public bool Squared { get; set; }
+
         public bool Sliced { get; set; }
 
         public Vector4 ColorRatio { get; set; }

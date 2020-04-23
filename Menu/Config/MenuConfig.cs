@@ -24,6 +24,9 @@ namespace Ensage.SDK.Menu.Config
         [Menu("Hacks")]
         public HackConfig HackConfig { get; set; } = new HackConfig();
 
+        [Menu("Humanizer")]
+        public HumanizerConfig HumanizerConfig { get; set; } = new HumanizerConfig();
+
         [Item("PermaShow Active")]
         [Tooltip("Toggle menu items which will be shown, even when the menu is hidden")]
         [DefaultValue(true)]

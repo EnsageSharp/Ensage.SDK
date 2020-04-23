@@ -638,6 +638,7 @@
     <Compile Include="Menu\Attributes\TextureResourceAttribute.cs" />
     <Compile Include="Menu\Config\GeneralConfig.cs" />
     <Compile Include="Menu\Config\HackConfig.cs" />
+    <Compile Include="Menu\Config\HumanizerConfig.cs" />
     <Compile Include="Menu\Config\MenuConfig.cs" />
     <Compile Include="Menu\Entries\DynamicMenu.cs" />
     <Compile Include="Menu\Entries\PermaMenuItemEntry.cs" />

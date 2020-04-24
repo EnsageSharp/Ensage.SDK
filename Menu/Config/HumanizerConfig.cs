@@ -52,7 +52,6 @@ namespace Ensage.SDK.Menu.Config
 
         [Item("Queue Size")]
         [Tooltip("Internal queue size for orders. Higher values can cause more order lag.")]
-        [DefaultValue(8)]
         public Slider<int> QueueSize { get; set; } = new Slider<int>(8, 1, 32);
 
     }

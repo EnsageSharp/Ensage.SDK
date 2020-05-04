@@ -68,8 +68,7 @@ namespace Ensage.SDK.Service
         {
             try
             {
-                //if (this.Context.menuManager.IsValueCreated) the menu is not saved. 
-                // MenuManager is always created but not in Lazy<MenuManager>
+                if (this.Context.menuManager.IsValueCreated)
                 {
                     this.Context.MenuManager.Dispose();
                 }

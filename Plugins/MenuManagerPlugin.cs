@@ -7,7 +7,6 @@ namespace Ensage.SDK.Plugins
     using System;
     using System.ComponentModel.Composition;
 
-    using Ensage.SDK.Menu;
     using Ensage.SDK.Service;
     using Ensage.SDK.Service.Metadata;
 
@@ -15,21 +14,21 @@ namespace Ensage.SDK.Plugins
     public class MenuManagerPlugin : Plugin
     {
         [ImportingConstructor]
-        public MenuManagerPlugin([Import] Lazy<MenuManager> service)
+        public MenuManagerPlugin([Import] Lazy<IServiceContext> context)
         {
-            this.Service = service;
+            this.Context = context;
         }
 
-        public Lazy<MenuManager> Service { get; }
+        public Lazy<IServiceContext> Context { get; }
 
         protected override void OnActivate()
         {
-            this.Service.Value.Activate();
+            this.Context.Value.MenuManager.Activate();
         }
 
         protected override void OnDeactivate()
         {
-            this.Service.Value.Deactivate();
+            this.Context.Value.MenuManager.Deactivate();
         }
     }
 }
